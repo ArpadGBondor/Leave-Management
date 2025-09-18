@@ -1,11 +1,16 @@
-import './App.css';
-
-function App() {
+import BackgroundDecor from './components/decoration/BackgroundDecor';
+export default function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>{' '}
-    </>
+    <div className="min-h-screen w-full flex flex-col justify-center items-center relative bg-brand-purple-50 bg-no-repeat bg-cover bg-bottom">
+      <BackgroundDecor />
+      <div className="relative p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
+        <h1 className="text-4xl font-bold text-brand-purple-600">
+          Holiday Management System
+        </h1>
+        <button className="mt-6 px-6 py-2 rounded-xl bg-brand-green-500 text-white hover:bg-brand-green-600 transition">
+          Get Started
+        </button>
+      </div>
+    </div>
   );
 }
-
-export default App;

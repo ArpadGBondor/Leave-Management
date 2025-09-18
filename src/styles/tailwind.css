@@ -1,1 +1,27 @@
 @import 'tailwindcss';
+
+@theme {
+  /* Purple shades */
+  --color-brand-purple-50: #f5f3ff;
+  --color-brand-purple-100: #ede9fe;
+  --color-brand-purple-200: #ddd6fe;
+  --color-brand-purple-300: #c4b5fd;
+  --color-brand-purple-400: #a78bfa;
+  --color-brand-purple-500: #8b5cf6;
+  --color-brand-purple-600: #7c3aed;
+  --color-brand-purple-700: #6d28d9;
+  --color-brand-purple-800: #5b21b6;
+  --color-brand-purple-900: #4c1d95;
+
+  /* Green shades */
+  --color-brand-green-50: #f0fdf4;
+  --color-brand-green-100: #dcfce7;
+  --color-brand-green-200: #bbf7d0;
+  --color-brand-green-300: #86efac;
+  --color-brand-green-400: #4ade80;
+  --color-brand-green-500: #22c55e;
+  --color-brand-green-600: #16a34a;
+  --color-brand-green-700: #15803d;
+  --color-brand-green-800: #166534;
+  --color-brand-green-900: #14532d;
+}
