@@ -1,4 +1,4 @@
-import { sizes, themes, adjacentTheme } from './types';
+import { sizes, themes, borders, adjacentTheme } from './types';
 import NestedLeaf from './NestedLeaf';
 
 interface LeafDecorProps {
@@ -18,10 +18,19 @@ export default function Leaf({
 }: LeafDecorProps) {
   return (
     <div
-      className={`absolute z-0 ${sizes[size]} rounded-full rounded-bl-none rounded-tr-none ${themes[theme]} ${position} overflow-hidden`}
+      className={`absolute z-0 ${sizes[size]} rounded-full rounded-bl-none rounded-tr-none ${themes[theme]} ${borders[theme]} ${position} overflow-hidden`}
       style={{ rotate: `${rotation}deg` }}
     >
       <NestedLeaf size={size} theme={theme} baseTheme={theme} layers={layers} />
+      <div className="w-full h-full flex justify-center items-center">
+        <hr
+          className={` ${borders[theme]} absolute border-t-0`}
+          style={{
+            rotate: '135deg',
+            width: '200%',
+          }}
+        />
+      </div>
     </div>
   );
 }

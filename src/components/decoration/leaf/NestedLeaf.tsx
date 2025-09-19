@@ -19,7 +19,7 @@ export default function NestedLeaf({
 
   return (
     <div
-      className={`absolute z-0 ${sizes[size]} rounded-full rounded-bl-none rounded-tr-none ${themes[currentTheme]} top-[10%] -left-[10%]`}
+      className={`absolute z-0 w-full h-full rounded-full rounded-bl-none rounded-tr-none ${themes[currentTheme]} top-[10%] -left-[10%]`}
     >
       <NestedLeaf
         size={size}
