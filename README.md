@@ -2,6 +2,8 @@
 
 Work in progress...
 
+![work in progress](work-in-progress.jpg)
+
 ## Project goals
 
 - Practise React
