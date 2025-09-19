@@ -17,7 +17,7 @@ export default function BackgroundDecor() {
       />
       <Leaf
         size="96"
-        theme="green-2"
+        theme="purple-2"
         rotation={75}
         position="-top-[10%] left-[10%]"
       />
@@ -35,19 +35,19 @@ export default function BackgroundDecor() {
       />
       <Leaf
         size="48"
-        theme="green-2"
+        theme="purple-2"
         rotation={220}
         position="bottom-[20%] left-[40%]"
       />
       <Leaf
         size="48"
-        theme="green-2"
+        theme="purple-2"
         rotation={325}
         position="bottom-[40%] left-[80%]"
       />
       <Leaf
         size="48"
-        theme="green-1"
+        theme="white"
         rotation={125}
         position="bottom-[70%] left-[10%]"
       />
