@@ -11,45 +11,69 @@ export default function BackgroundDecor() {
       />
       <Leaf
         size="192"
+        theme="purple-3"
+        rotation={55}
+        position="-bottom-[10%] -right-[10%]"
+      />
+      <Leaf
+        size="192"
         theme="purple-4"
-        rotation={35}
+        rotation={25}
         position="-top-[10%] -right-[10%]"
       />
       <Leaf
         size="96"
-        theme="purple-2"
-        rotation={75}
+        theme="purple-1"
+        rotation={255}
         position="-top-[10%] left-[10%]"
       />
       <Leaf
         size="96"
-        theme="white"
-        rotation={75}
-        position="bottom-[10%] left-[20%]"
+        theme="purple-4"
+        rotation={105}
+        position="bottom-[0%] left-[20%]"
       />
       <Leaf
         size="96"
-        theme="purple-4"
+        theme="purple-1"
         rotation={165}
         position="-bottom-[10%] right-[20%]"
       />
       <Leaf
         size="48"
-        theme="purple-2"
+        theme="white"
         rotation={220}
-        position="bottom-[20%] left-[40%]"
-      />
-      <Leaf
-        size="48"
-        theme="purple-2"
-        rotation={325}
-        position="bottom-[40%] left-[80%]"
+        position="bottom-[15%] left-[0%]"
       />
       <Leaf
         size="48"
         theme="white"
-        rotation={125}
-        position="bottom-[70%] left-[10%]"
+        rotation={65}
+        position="bottom-[40%] right-[0%]"
+      />
+      <Leaf
+        size="48"
+        theme="white"
+        rotation={15}
+        position="bottom-[35%] right-[0%]"
+      />
+      <Leaf
+        size="48"
+        theme="white"
+        rotation={245}
+        position="bottom-[60%] left-[0%]"
+      />
+      <Leaf
+        size="48"
+        theme="green-2"
+        rotation={335}
+        position="top-[0%] left-[40%]"
+      />
+      <Leaf
+        size="48"
+        theme="green-2"
+        rotation={75}
+        position="-bottom-[5%] left-[50%]"
       />
     </>
   );
