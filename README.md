@@ -1,5 +1,7 @@
 # Leave management
 
+Work in progress...
+
 ## Project goals
 
 - Practise React
