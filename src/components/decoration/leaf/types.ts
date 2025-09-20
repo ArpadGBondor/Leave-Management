@@ -31,14 +31,4 @@ export const adjacentTheme: Record<keyof typeof themes, keyof typeof themes> = {
   white: 'green-2',
 };
 
-export const borders: Record<keyof typeof themes, string> = {
-  'purple-1': 'border-4 border-brand-green-500',
-  'purple-2': 'border-4 border-brand-green-400',
-  'purple-3': 'border-4 border-brand-green-300',
-  'purple-4': 'border-4 border-brand-green-200',
-  'green-1': 'border-4 border-brand-purple-500',
-  'green-2': 'border-4 border-brand-purple-400',
-  'green-3': 'border-4 border-brand-purple-300',
-  'green-4': 'border-4 border-brand-purple-200',
-  white: 'border-4 border-brand-green-300',
-};
+export const fixBorder = 'border-2 border-brand-green-500';

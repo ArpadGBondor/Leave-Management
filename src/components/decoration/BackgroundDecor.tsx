@@ -55,7 +55,7 @@ export default function BackgroundDecor() {
         size="48"
         theme="white"
         rotation={15}
-        position="bottom-[35%] right-[0%]"
+        position="bottom-[30%] right-[0%]"
       />
       <Leaf
         size="48"
