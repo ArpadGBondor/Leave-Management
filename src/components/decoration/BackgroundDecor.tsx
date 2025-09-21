@@ -13,13 +13,13 @@ export default function BackgroundDecor() {
         size="192"
         theme="purple-3"
         rotation={55}
-        position="-bottom-[10%] -right-[10%]"
+        position="top-[50%] -right-[10%]"
       />
       <Leaf
         size="192"
         theme="purple-4"
         rotation={25}
-        position="-top-[10%] -right-[10%]"
+        position="bottom-[50%] -right-[10%]"
       />
       <Leaf
         size="96"
