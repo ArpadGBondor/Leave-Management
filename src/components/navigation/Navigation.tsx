@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import NavButton from '../buttons/NavButton';
 
-const navItems = [{ name: 'Home' }, { name: 'Profile' }, { name: 'Settings' }];
+const navItems = [
+  { name: 'Home', link: '/' },
+  { name: 'Login', link: '/login' },
+  { name: 'About', link: '/about' },
+];
 
 const appName = 'Manage your leaves';
 
@@ -13,9 +17,9 @@ export default function Navbar() {
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex flex-col w-60 h-screen bg-brand-green-700 text-white p-4">
         <h1 className="text-xl font-bold mb-6">{appName}</h1>
-        <nav className="flex flex-col gap-4">
+        <nav className="flex flex-col gap-2">
           {navItems.map((item) => (
-            <NavButton key={item.name} label={item.name} />
+            <NavButton key={item.name} label={item.name} link={item.link} />
           ))}
         </nav>
       </div>
@@ -34,12 +38,13 @@ export default function Navbar() {
       {/* Mobile Menu Drawer */}
       {isOpen && (
         <div className="lg:hidden fixed top-12 left-0 w-full bg-brand-green-700 text-white p-4 z-40 shadow-lg rounded-b-2xl">
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-2">
             {navItems.map((item) => (
               <NavButton
                 key={item.name}
                 label={item.name}
-                onClick={() => setIsOpen(false)}
+                link={item.link}
+                onClick={() => setIsOpen(!isOpen)}
               />
             ))}
           </nav>
