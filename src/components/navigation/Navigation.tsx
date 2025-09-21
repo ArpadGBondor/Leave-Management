@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import NavButton from '../buttons/NavButton';
-
-const navItems = [
-  { name: 'Home', link: '/' },
-  { name: 'Login', link: '/login' },
-  { name: 'About', link: '/about' },
-];
+import { navItems } from '../../config/navbar';
 
 const appName = 'Manage your leaves';
 
