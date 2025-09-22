@@ -8,17 +8,17 @@ export default function About() {
         About this project
       </h1>
       <div className="mb-8">
-        <p className="mb-4">
+        <p className="mb-4 text-brand-green-800">
           This is a Leave Management practise project, to keep my React skills
           up to date.
         </p>
-        <p>
+        <p className="text-brand-green-800">
           Created by{' '}
           <a
             href="https://github.com/ArpadGBondor"
             target="_blank"
             rel="noreferrer"
-            className="text-brand-purple-700 hover:text-brand-purple-500 active:text-brand-purple-900 cursor-pointer hover:underline"
+            className="text-brand-purple-600 hover:text-brand-purple-400 active:text-brand-purple-900 cursor-pointer hover:underline"
           >
             Árpád Gábor Bondor
           </a>{' '}

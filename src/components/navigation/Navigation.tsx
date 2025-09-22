@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import NavButton from '../buttons/NavButton';
-import { navItems } from '../../config/navbar';
+import useNavItems from '../../hooks/useNavitems';
 
 const appName = 'Manage your leaves';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { navItems } = useNavItems();
 
   return (
     <>

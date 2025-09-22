@@ -1,8 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import BackgroundDecor from './components/decoration/BackgroundDecor';
 import Navigation from './components/navigation/Navigation';
+import PrivateRoute from './components/auth/PrivateRoute';
+
 import Home from './pages/Home';
+import Login from './pages/Login';
 import About from './pages/About';
+import Logout from './pages/Logout';
 
 export default function App() {
   return (
@@ -14,9 +22,14 @@ export default function App() {
         <BackgroundDecor />
         <main className="relative w-full h-full flex flex-col justify-center items-center">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/about" element={<About />} />
           </Routes>
+          <ToastContainer />
         </main>
       </div>
     </div>
