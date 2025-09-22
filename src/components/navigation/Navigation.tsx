@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import NavButton from '../buttons/NavButton';
-import useNavItems from '../../hooks/useNavitems';
+import useNavItems from '../../hooks/useNavItems';
 
 const appName = 'Manage your leaves';
 
