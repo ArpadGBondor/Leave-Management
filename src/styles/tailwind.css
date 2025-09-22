@@ -25,3 +25,11 @@
   --color-brand-green-800: #166534;
   --color-brand-green-900: #14532d;
 }
+
+@layer utilities {
+  input:-webkit-autofill {
+    @apply bg-brand-green-200 text-brand-purple-900;
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-brand-purple-200) inset;
+    -webkit-text-fill-color: var(--color-brand-green-900);
+  }
+}
