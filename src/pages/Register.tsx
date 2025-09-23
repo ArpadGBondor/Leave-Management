@@ -5,6 +5,7 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import OAuth from '../components/auth/OAuth';
 import Button from '../components/buttons/Button';
+import TextInput from '../components/inputs/TextInput';
 import useAuthStatus from '../hooks/useAuthStatus';
 import { auth, db } from '../firebase.config';
 
@@ -15,6 +16,14 @@ export default function Register() {
     password: '',
     confirmPassword: '',
   });
+  const defaultErrors = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+  const [errors, setErrors] = useState(defaultErrors);
+
   const { loggedIn, checkingStatus } = useAuthStatus();
   const { name, email, password, confirmPassword } = formData;
 
@@ -32,18 +41,65 @@ export default function Register() {
       [e.target.name]: e.target.value,
     }));
 
+  const setError = (field: keyof typeof errors, message: string) =>
+    setErrors((prevState) => ({
+      ...prevState,
+      [field]: message,
+    }));
+
+  const validateRegistration = () => {
+    let valid = true;
+
+    // Name validation
+    if (!name.trim()) {
+      setError('name', 'Please enter your name.');
+      valid = false;
+    } else {
+      setError('name', '');
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      setError('email', 'Please enter your email address.');
+      valid = false;
+    } else if (!emailRegex.test(email)) {
+      setError('email', 'Please enter a valid email address.');
+      valid = false;
+    } else {
+      setError('email', '');
+    }
+
+    // Check password
+    if (!password.trim()) {
+      setError('password', 'Please enter your password.');
+      valid = false;
+    } else if (password.trim().length < 6) {
+      setError('password', 'Password is too short.');
+      valid = false;
+    } else {
+      setError('password', '');
+    }
+
+    if (password !== confirmPassword) {
+      // Check password confirmation
+      setError('confirmPassword', 'Passwords do not match');
+      valid = false;
+    } else {
+      setError('confirmPassword', '');
+    }
+
+    return valid;
+  };
+
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!validateRegistration()) {
       toast.error('Please fill in all fields');
       return;
     }
 
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
     try {
       // Create user with email & password
       const userCredential = await createUserWithEmailAndPassword(
@@ -76,72 +132,48 @@ export default function Register() {
       </h1>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-4 mb-8">
-        <div>
-          <label className="block pb-2 text-brand-green-800" htmlFor="name">
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            className="block w-full bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900 py-2 px-4 rounded-full"
-            placeholder="Enter your name"
-            name="name"
-            value={name}
-            onChange={onChange}
-            autoComplete="name"
-          />
-        </div>
+        <TextInput
+          id="name"
+          label="Name"
+          name="name"
+          value={name}
+          onChange={onChange}
+          placeholder="Enter your full name"
+          error={errors.name}
+        />
 
-        <div>
-          <label className="block pb-2 text-brand-green-800" htmlFor="email">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="block w-full bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900 py-2 px-4 rounded-full"
-            placeholder="Enter your email address"
-            name="email"
-            value={email}
-            onChange={onChange}
-            autoComplete="username"
-          />
-        </div>
+        <TextInput
+          id="email"
+          label="Email address"
+          name="email"
+          type="email"
+          value={email}
+          onChange={onChange}
+          placeholder="Enter your email address"
+          error={errors.email}
+        />
 
-        <div>
-          <label className="block pb-2 text-brand-green-800" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            className="block w-full bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900 py-2 px-4 rounded-full"
-            placeholder="Enter your password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            autoComplete="new-password"
-          />
-        </div>
+        <TextInput
+          id="password"
+          label="Password"
+          name="password"
+          type="password"
+          value={password}
+          onChange={onChange}
+          placeholder="Enter your password"
+          error={errors.password}
+        />
 
-        <div>
-          <label
-            className="block pb-2 text-brand-green-800"
-            htmlFor="passconfirmPasswordword"
-          >
-            Confirm Password
-          </label>
-          <input
-            id="confirmPassword"
-            type="password"
-            className="block w-full bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900 py-2 px-4 rounded-full"
-            placeholder="Confirm your password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={onChange}
-            autoComplete="new-password"
-          />
-        </div>
+        <TextInput
+          id="confirmPassword"
+          label="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={onChange}
+          placeholder="Confirm your password"
+          error={errors.confirmPassword}
+        />
 
         <Button label="Register" />
       </form>
