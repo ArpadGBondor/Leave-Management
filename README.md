@@ -11,3 +11,13 @@ Work in progress...
 - Practise Authentication
 - Practise Database management
 - Practise Serverless backend functions
+
+## Environment variables
+
+- Firebase config
+  - VITE_FIREBASE_CONFIG_API_KEY
+  - VITE_FIREBASE_CONFIG_AUTH_DOMAIN
+  - VITE_FIREBASE_CONFIG_PROJECT_ID
+  - VITE_FIREBASE_CONFIG_STORAGE_BUCKET
+  - VITE_FIREBASE_CONFIG_MESSAGING_SENDER_ID
+  - VITE_FIREBASE_CONFIG_APP_ID

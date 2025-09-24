@@ -25,6 +25,7 @@ function OAuth() {
         await setDoc(doc(db, 'users', user.uid), {
           name: user.displayName,
           email: user.email,
+          photo: user.photoURL,
           timestamp: serverTimestamp(),
         });
       }

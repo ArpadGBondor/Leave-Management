@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import OAuth from '../components/auth/OAuth';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
+import FileInput from '../components/inputs/FileInput';
 import useAuthStatus from '../hooks/useAuthStatus';
 import { auth, db } from '../firebase.config';
 
@@ -15,17 +16,19 @@ export default function Register() {
     email: '',
     password: '',
     confirmPassword: '',
+    photo: '',
   });
   const defaultErrors = {
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
+    photo: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
 
   const { loggedIn, checkingStatus } = useAuthStatus();
-  const { name, email, password, confirmPassword } = formData;
+  const { name, email, password, confirmPassword, photo } = formData;
 
   const navigate = useNavigate();
 
@@ -34,6 +37,12 @@ export default function Register() {
       navigate('/');
     }
   }, [loggedIn, checkingStatus, navigate]);
+
+  const onPhotoChange = (newPhoto: string | null) =>
+    setFormData((prevState) => ({
+      ...prevState,
+      photo: newPhoto ?? '',
+    }));
 
   const onChange = (e: any) =>
     setFormData((prevState) => ({
@@ -89,6 +98,14 @@ export default function Register() {
       setError('confirmPassword', '');
     }
 
+    // Photo validation
+    if (!photo.trim()) {
+      setError('photo', 'Please select a photo.');
+      valid = false;
+    } else {
+      setError('photo', '');
+    }
+
     return valid;
   };
 
@@ -116,6 +133,7 @@ export default function Register() {
       await setDoc(doc(db, 'users', user.uid), {
         name,
         email,
+        photo,
         timestamp: serverTimestamp(),
       });
 
@@ -126,12 +144,18 @@ export default function Register() {
   };
 
   return (
-    <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
-      <h1 className="text-4xl font-bold text-brand-purple-700 mb-10">
+    <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md max-w-lg rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
+      <h1 className="text-4xl font-bold text-brand-purple-700 mb-4">
         Register
       </h1>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-4 mb-8">
+        <FileInput
+          value={photo}
+          onChange={onPhotoChange}
+          error={errors.photo}
+          setError={(msg) => setError('photo', msg)}
+        />
         <TextInput
           id="name"
           label="Name"
@@ -139,6 +163,7 @@ export default function Register() {
           value={name}
           onChange={onChange}
           placeholder="Enter your full name"
+          autoComplete="name"
           error={errors.name}
         />
 
@@ -150,6 +175,7 @@ export default function Register() {
           value={email}
           onChange={onChange}
           placeholder="Enter your email address"
+          autoComplete="email"
           error={errors.email}
         />
 
@@ -161,6 +187,7 @@ export default function Register() {
           value={password}
           onChange={onChange}
           placeholder="Enter your password"
+          autoComplete="new-password"
           error={errors.password}
         />
 
@@ -172,6 +199,7 @@ export default function Register() {
           value={confirmPassword}
           onChange={onChange}
           placeholder="Confirm your password"
+          autoComplete="new-password"
           error={errors.confirmPassword}
         />
 
