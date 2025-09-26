@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react';
 
 interface FileInputProps {
+  id: string;
+  label: string;
+  name: string;
   value: string;
   onChange: (value: string | null) => void;
   error: string;
@@ -8,6 +11,9 @@ interface FileInputProps {
 }
 
 export default function FileInput({
+  id,
+  label,
+  name,
   value,
   onChange,
   error,
@@ -54,13 +60,25 @@ export default function FileInput({
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="flex flex-col items-center">
+      {/* Label */}
+      <label
+        htmlFor={id}
+        className="block text-brand-green-800 text-medium w-full"
+      >
+        {label}
+      </label>
+
       <div className="relative">
         <div
           className={` w-32 h-32 rounded-full border-8  flex items-center justify-center cursor-pointer overflow-hidden ${
             dragOver
-              ? 'bg-brand-green-100 border-brand-green-600'
-              : 'bg-brand-green-200 border-brand-green-700 hover:border-brand-green-600'
+              ? error
+                ? 'bg-red-200 border-red-600 text-red-800'
+                : 'bg-brand-green-100 border-brand-green-600 text-brand-green-800'
+              : error
+              ? 'bg-red-200 border-red-700 hover:border-red-600 text-red-900'
+              : 'bg-brand-green-200 border-brand-green-700 hover:border-brand-green-600 text-brand-green-900'
           }`}
           onClick={handleClick}
           onDragOver={(e) => {
@@ -79,7 +97,7 @@ export default function FileInput({
               />
             </>
           ) : (
-            <div className="text-sm text-gray-500 text-center px-2">
+            <div className="text-sm  text-center px-2">
               <p>Drag & Drop</p>
               <p>or</p>
               <p>Click</p>
@@ -87,6 +105,8 @@ export default function FileInput({
           )}
 
           <input
+            id={id}
+            name={name}
             ref={inputRef}
             type="file"
             accept="image/*"

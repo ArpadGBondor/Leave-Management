@@ -41,7 +41,7 @@ export default function TextInput({
         autoComplete={autoComplete}
         className={`block w-full py-2 px-4 rounded-full border ${
           error
-            ? 'border-red-500 bg-red-50 text-red-900'
+            ? 'border-red-700 hover:border-red-600 bg-red-200 hover:bg-red-100 text-red-900'
             : 'border-transparent bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
         }`}
       />

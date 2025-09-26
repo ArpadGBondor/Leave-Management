@@ -30,11 +30,13 @@ export default function Login() {
     }
   }, [loggedIn, checkingStatus]);
 
-  const onChange = (e: any) =>
+  const onChange = (e: any) => {
+    setError(e.target.name, '');
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -88,7 +90,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
+      <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md rounded-xl border-4 border-brand-green-500 bg-brand-purple-50  overflow-auto">
         <h1 className="text-4xl font-bold text-brand-purple-700 mb-10">
           Login
         </h1>

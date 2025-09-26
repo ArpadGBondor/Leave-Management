@@ -44,11 +44,13 @@ export default function Register() {
       photo: newPhoto ?? '',
     }));
 
-  const onChange = (e: any) =>
+  const onChange = (e: any) => {
+    setError(e.target.name, '');
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -144,18 +146,12 @@ export default function Register() {
   };
 
   return (
-    <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md max-w-lg rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
+    <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md max-w-lg rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto">
       <h1 className="text-4xl font-bold text-brand-purple-700 mb-4">
         Register
       </h1>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-4 mb-8">
-        <FileInput
-          value={photo}
-          onChange={onPhotoChange}
-          error={errors.photo}
-          setError={(msg) => setError('photo', msg)}
-        />
         <TextInput
           id="name"
           label="Name"
@@ -178,30 +174,42 @@ export default function Register() {
           autoComplete="email"
           error={errors.email}
         />
+        <div className="w-full flex flex-col lg:flex-row justify-stretch items-stretch lg:items-start gap-4">
+          <div className="flex flex-col gap-4">
+            <TextInput
+              id="password"
+              label="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={onChange}
+              placeholder="Enter your password"
+              autoComplete="new-password"
+              error={errors.password}
+            />
 
-        <TextInput
-          id="password"
-          label="Password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={onChange}
-          placeholder="Enter your password"
-          autoComplete="new-password"
-          error={errors.password}
-        />
-
-        <TextInput
-          id="confirmPassword"
-          label="Confirm Password"
-          name="confirmPassword"
-          type="password"
-          value={confirmPassword}
-          onChange={onChange}
-          placeholder="Confirm your password"
-          autoComplete="new-password"
-          error={errors.confirmPassword}
-        />
+            <TextInput
+              id="confirmPassword"
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={onChange}
+              placeholder="Confirm your password"
+              autoComplete="new-password"
+              error={errors.confirmPassword}
+            />
+          </div>
+          <FileInput
+            id="photo"
+            label="Profile picture"
+            name="photo"
+            value={photo}
+            onChange={onPhotoChange}
+            error={errors.photo}
+            setError={(msg) => setError('photo', msg)}
+          />
+        </div>
 
         <Button label="Register" />
       </form>
