@@ -1,14 +1,14 @@
-import useAuthStatus from './useAuthStatus';
+import { useUserContext } from '../context/user/useUserContext';
 
 const useNavItems = () => {
-  const { loggedIn, checkingStatus } = useAuthStatus();
+  const { loggedIn, loading: userLoading } = useUserContext();
 
   const navItems: {
     name: string;
     link: string;
   }[] = [];
   navItems.push({ name: 'Home', link: '/' });
-  if (checkingStatus) {
+  if (userLoading) {
     // skip
   } else if (loggedIn) {
     navItems.push({ name: 'Account', link: '/account' });

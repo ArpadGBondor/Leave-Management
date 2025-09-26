@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import OAuth from '../components/auth/OAuth';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import FileInput from '../components/inputs/FileInput';
-import useAuthStatus from '../hooks/useAuthStatus';
-import { auth, db } from '../firebase.config';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -27,16 +24,16 @@ export default function Register() {
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { loggedIn, checkingStatus } = useAuthStatus();
+  const { loggedIn, loading: userLoading, register } = useUserContext();
   const { name, email, password, confirmPassword, photo } = formData;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!checkingStatus && loggedIn) {
+    if (!userLoading && loggedIn) {
       navigate('/');
     }
-  }, [loggedIn, checkingStatus, navigate]);
+  }, [loggedIn, userLoading, navigate]);
 
   const onPhotoChange = (newPhoto: string | null) =>
     setFormData((prevState) => ({
@@ -121,23 +118,7 @@ export default function Register() {
 
     try {
       // Create user with email & password
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      // Optionally set display name
-      await updateProfile(user, { displayName: name });
-
-      // Write user to Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        name,
-        email,
-        photo,
-        timestamp: serverTimestamp(),
-      });
+      await register(email, password, name);
 
       navigate('/');
     } catch (error: any) {

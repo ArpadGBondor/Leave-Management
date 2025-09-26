@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuthStatus from '../../hooks/useAuthStatus';
+import { useUserContext } from '../../context/user/useUserContext';
 import Spinner from '../spinner/Spinner';
 
 const PrivateRoute = () => {
-  const { loggedIn, checkingStatus } = useAuthStatus();
-  if (checkingStatus) return <Spinner />;
+  const { loggedIn, loading: userLoading } = useUserContext();
+  if (userLoading) return <Spinner />;
   return loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 

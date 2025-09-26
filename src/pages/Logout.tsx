@@ -1,22 +1,20 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import useAuthStatus from '../hooks/useAuthStatus';
 import Spinner from '../components/spinner/Spinner';
-import { auth } from '../firebase.config';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function Logout() {
-  const { loggedIn, checkingStatus } = useAuthStatus();
+  const { loggedIn, loading: userLoading, logout } = useUserContext();
 
   const navigate = useNavigate();
 
   const attempted = useRef(false);
 
   useEffect(() => {
-    if (!checkingStatus && !attempted.current) {
+    if (!userLoading && !attempted.current) {
       attempted.current = true;
       if (loggedIn) {
-        signOut(auth)
+        logout()
           .catch((error) => {
             console.error('Sign out error:', error);
           })
@@ -25,7 +23,7 @@ export default function Logout() {
         navigate('/login');
       }
     }
-  }, [navigate, loggedIn, checkingStatus]);
+  }, [navigate, loggedIn, userLoading]);
 
   return (
     <div className="p-8 m-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">

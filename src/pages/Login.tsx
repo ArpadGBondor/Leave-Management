@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import OAuth from '../components/auth/OAuth';
 import Button from '../components/buttons/Button';
-import useAuthStatus from '../hooks/useAuthStatus';
-import { auth } from '../firebase.config';
 import TextInput from '../components/inputs/TextInput';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -19,16 +17,16 @@ export default function Login() {
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { loggedIn, checkingStatus } = useAuthStatus();
+  const { loggedIn, loading: userLoading, login } = useUserContext();
   const { email, password } = formData;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!checkingStatus && loggedIn) {
+    if (!userLoading && loggedIn) {
       navigate('/');
     }
-  }, [loggedIn, checkingStatus]);
+  }, [loggedIn, userLoading]);
 
   const onChange = (e: any) => {
     setError(e.target.name, '');
@@ -82,7 +80,7 @@ export default function Login() {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await login(email, password);
     } catch (error) {
       toast.error('Bad User Credentials');
     }
@@ -104,6 +102,7 @@ export default function Login() {
             value={email}
             onChange={onChange}
             placeholder="Enter your email address"
+            autoComplete="email"
             error={errors.email}
           />
 
@@ -115,6 +114,7 @@ export default function Login() {
             value={password}
             onChange={onChange}
             placeholder="Enter your password"
+            autoComplete="password"
             error={errors.password}
           />
 
