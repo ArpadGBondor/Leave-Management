@@ -1,11 +1,6 @@
 import { toast } from 'react-toastify';
 import Spinner from '../components/spinner/Spinner';
 export default function Home() {
-  const onClick = () => {
-    console.error('Error');
-    toast.error('Error');
-  };
-
   return (
     <div className="p-8 m-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
       <h1 className="text-4xl font-bold text-brand-purple-600">

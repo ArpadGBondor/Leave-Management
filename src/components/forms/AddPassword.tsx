@@ -4,22 +4,20 @@ import Button from '../buttons/Button';
 import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 
-export default function UpdatePassword() {
+export default function AddPassword() {
   const [formData, setFormData] = useState({
-    currentPassword: '',
     password: '',
     confirmPassword: '',
   });
   const defaultErrors = {
-    currentPassword: '',
     password: '',
     confirmPassword: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { updatePassword } = useUserContext();
+  const { addPassword } = useUserContext();
 
-  const { currentPassword, password, confirmPassword } = formData;
+  const { password, confirmPassword } = formData;
 
   const onChange = (e: any) => {
     setError(e.target.name, '');
@@ -37,17 +35,6 @@ export default function UpdatePassword() {
 
   const validateUser = () => {
     let valid = true;
-
-    // Check current password
-    if (!currentPassword.trim()) {
-      setError('currentPassword', 'Please enter your password.');
-      valid = false;
-    } else if (currentPassword.trim().length < 6) {
-      setError('currentPassword', 'Password is too short.');
-      valid = false;
-    } else {
-      setError('currentPassword', '');
-    }
 
     // Check new password
     if (!password.trim()) {
@@ -80,7 +67,7 @@ export default function UpdatePassword() {
     }
 
     try {
-      await updatePassword(currentPassword, password);
+      await addPassword(password);
 
       toast.info('Password updated');
     } catch (error: any) {
@@ -90,18 +77,6 @@ export default function UpdatePassword() {
 
   return (
     <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-4 mb-8">
-      <TextInput
-        id="currentPassword"
-        label="Current password"
-        name="currentPassword"
-        type="password"
-        value={currentPassword}
-        onChange={onChange}
-        placeholder="Enter your current password"
-        autoComplete="password"
-        error={errors.currentPassword}
-      />
-
       <TextInput
         id="password"
         label="New password"
@@ -126,7 +101,7 @@ export default function UpdatePassword() {
         error={errors.confirmPassword}
       />
 
-      <Button label="Update password" />
+      <Button label="Add password" />
     </form>
   );
 }

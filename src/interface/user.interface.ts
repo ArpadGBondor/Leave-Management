@@ -5,5 +5,6 @@ export default interface User {
   name: string;
   email: string;
   photo: string;
-  timestamp: Timestamp;
+  created?: Timestamp;
+  updated?: Timestamp;
 }

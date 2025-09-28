@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Button from '../components/buttons/Button';
-import TextInput from '../components/inputs/TextInput';
-import FileInput from '../components/inputs/FileInput';
 import { useUserContext } from '../context/user/useUserContext';
 import UpdateUser from '../components/forms/UpdateUser';
 import UpdatePassword from '../components/forms/UpdatePassword';
+import AddPassword from '../components/forms/AddPassword';
 
 export default function Profile() {
   const { hasPassword } = useUserContext();
@@ -17,7 +12,7 @@ export default function Profile() {
       </h1>
 
       <UpdateUser />
-      {hasPassword && <UpdatePassword />}
+      {hasPassword ? <UpdatePassword /> : <AddPassword />}
     </div>
   );
 }

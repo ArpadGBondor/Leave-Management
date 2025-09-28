@@ -18,6 +18,7 @@ export interface UserContextValue extends UserState {
     currentPassword: string,
     newPassword: string
   ) => Promise<void>;
+  addPassword: (newPassword: string) => Promise<void>;
 }
 
 export const initialUserState: UserState = {
@@ -35,4 +36,5 @@ export const UserContext = createContext<UserContextValue>({
   updateUser: async () => {},
   loginWithGoogle: async () => {},
   updatePassword: async () => {},
+  addPassword: async () => {},
 });

@@ -10,6 +10,7 @@ import {
   updatePassword as firebaseUpdatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  linkWithCredential,
 } from 'firebase/auth';
 import {
   doc,
@@ -66,7 +67,8 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           name: user.displayName || '',
           email: user.email || '',
           photo: photoBase64,
-          timestamp: Timestamp.now(),
+          created: Timestamp.now(),
+          updated: Timestamp.now(),
         };
 
         await setDoc(ref, userDoc);
@@ -87,7 +89,8 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           name,
           email: cred.user.email || '',
           photo: cred.user.photoURL || '',
-          timestamp: serverTimestamp() as any,
+          created: Timestamp.now(),
+          updated: Timestamp.now(),
         };
 
         await setDoc(doc(db, 'users', cred.user.uid), userDoc);
@@ -103,10 +106,11 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     async (data: Partial<User>) => {
       if (!state.user) return;
 
+      const updatedFields = { ...data, updated: Timestamp.now() };
       const ref = doc(db, 'users', state.user.id);
-      await updateDoc(ref, data);
+      await updateDoc(ref, updatedFields);
 
-      const updatedUser: User = { ...state.user, ...data };
+      const updatedUser: User = { ...state.user, ...updatedFields };
       dispatch({ type: SET_USER, payload: updatedUser });
     },
     [state.user]
@@ -131,6 +135,29 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     },
     []
   );
+
+  const addPassword = useCallback(async (newPassword: string) => {
+    const user = auth.currentUser;
+    if (!user || !user.email) throw new Error('No user logged in');
+
+    try {
+      // Create a new email/password credential for the current user
+      const credential = EmailAuthProvider.credential(user.email, newPassword);
+
+      // Link the credential to the existing SSO account
+      await linkWithCredential(user, credential);
+
+      dispatch({ type: SET_HAS_PASSWORD, payload: true });
+      console.log('Password added successfully!');
+    } catch (err: any) {
+      console.error('Failed to add password', err);
+      if (err.code === 'auth/credential-already-in-use') {
+        throw new Error('This email is already linked to another account.');
+      } else {
+        throw err;
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -173,6 +200,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         logout,
         updateUser,
         updatePassword,
+        addPassword,
       }}
     >
       {children}
