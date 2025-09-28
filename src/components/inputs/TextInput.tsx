@@ -9,6 +9,7 @@ interface TextInputProps {
   placeholder?: string;
   error?: string;
   autoComplete?: string;
+  disabled?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -21,6 +22,7 @@ export default function TextInput({
   placeholder,
   error,
   autoComplete,
+  disabled,
   onChange,
 }: TextInputProps) {
   return (
@@ -39,10 +41,11 @@ export default function TextInput({
         onChange={onChange}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className={`block w-full py-2 px-4 rounded-full border ${
+        disabled={disabled}
+        className={`block w-full py-2 px-4 rounded-full border focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
           error
-            ? 'border-red-700 hover:border-red-600 bg-red-200 hover:bg-red-100 text-red-900'
-            : 'border-transparent bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
+            ? 'focus:ring-red-700 border-red-700 hover:border-red-600 bg-red-200 hover:bg-red-100 text-red-900'
+            : 'focus:ring-brand-green-700 border-brand-green-700 hover:border-brand-green-600 bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
         }`}
       />
 

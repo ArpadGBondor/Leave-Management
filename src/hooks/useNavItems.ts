@@ -11,7 +11,7 @@ const useNavItems = () => {
   if (userLoading) {
     // skip
   } else if (loggedIn) {
-    navItems.push({ name: 'Account', link: '/account' });
+    navItems.push({ name: 'Profile', link: '/profile' });
     navItems.push({ name: 'Logout', link: '/logout' });
   } else {
     navItems.push({ name: 'Login', link: '/login' });

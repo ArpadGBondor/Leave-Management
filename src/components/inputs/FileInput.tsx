@@ -117,7 +117,7 @@ export default function FileInput({
         {value && (
           <button
             type="button"
-            className="absolute top-2 right-2 bg-brand-purple-700 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-brand-purple-600"
+            className="absolute top-1 right-1 bg-brand-purple-700 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold hover:bg-brand-purple-600 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               setError('');

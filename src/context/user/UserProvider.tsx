@@ -7,6 +7,9 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  updatePassword as firebaseUpdatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from 'firebase/auth';
 import {
   doc,
@@ -20,7 +23,13 @@ import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
 import User from '../../interface/user.interface';
-import { SET_LOADING, SET_LOGGED_IN, SET_USER } from '../types';
+import {
+  SET_LOADING,
+  SET_LOGGED_IN,
+  SET_USER,
+  SET_HAS_PASSWORD,
+} from '../types';
+import getBase64FromUrl from '../../utils/getBase64FromUrl';
 
 interface Props {
   children: React.ReactNode;
@@ -43,11 +52,20 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       const snap = await getDoc(ref);
 
       if (!snap.exists()) {
+        // Convert Google photo URL to Base64
+        let photoBase64 = '';
+        if (user.photoURL) {
+          try {
+            photoBase64 = await getBase64FromUrl(user.photoURL);
+          } catch (err) {
+            console.error('Failed to convert photo to base64', err);
+          }
+        }
         const userDoc: User = {
           id: user.uid,
           name: user.displayName || '',
           email: user.email || '',
-          photo: user.photoURL || '',
+          photo: photoBase64,
           timestamp: Timestamp.now(),
         };
 
@@ -94,12 +112,38 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     [state.user]
   );
 
+  const updatePassword = useCallback(
+    async (currentPassword: string, newPassword: string) => {
+      const user = auth.currentUser;
+      if (!user || !user.email) throw new Error('No user logged in');
+
+      // Build credential with current password
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
+
+      // Reauthenticate
+      await reauthenticateWithCredential(user, credential);
+
+      // Now you can update password
+      await firebaseUpdatePassword(user, newPassword);
+    },
+    []
+  );
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       dispatch({ type: SET_LOADING, payload: true });
 
       if (firebaseUser) {
         dispatch({ type: SET_LOGGED_IN, payload: true });
+
+        // Check if account has a password login
+        const hasPassword = firebaseUser.providerData.some(
+          (p) => p.providerId === 'password'
+        );
+        dispatch({ type: SET_HAS_PASSWORD, payload: hasPassword });
 
         const ref = doc(db, 'users', firebaseUser.uid);
         const snap = await getDoc(ref);
@@ -109,6 +153,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         } // else we call SET_USER from register and loginWithGoogle functions
       } else {
         dispatch({ type: SET_LOGGED_IN, payload: false });
+        dispatch({ type: SET_HAS_PASSWORD, payload: false });
         dispatch({ type: SET_USER, payload: null });
       }
 
@@ -127,6 +172,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         register,
         logout,
         updateUser,
+        updatePassword,
       }}
     >
       {children}
