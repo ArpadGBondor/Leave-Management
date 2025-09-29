@@ -23,7 +23,7 @@ import {
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
-import User from '../../interface/user.interface';
+import User, { userTypeOptions } from '../../interface/user.interface';
 import {
   SET_LOADING,
   SET_LOGGED_IN,
@@ -69,6 +69,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           photo: photoBase64,
           created: Timestamp.now(),
           updated: Timestamp.now(),
+          userType: userTypeOptions[0],
         };
 
         await setDoc(ref, userDoc);
@@ -91,6 +92,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           photo: cred.user.photoURL || '',
           created: Timestamp.now(),
           updated: Timestamp.now(),
+          userType: userTypeOptions[0],
         };
 
         await setDoc(doc(db, 'users', cred.user.uid), userDoc);
@@ -106,11 +108,29 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     async (data: Partial<User>) => {
       if (!state.user) return;
 
-      const updatedFields = { ...data, updated: Timestamp.now() };
+      const token = await auth.currentUser?.getIdToken();
+
+      const res = await fetch('/api/auth-set-user-claims', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: state.user.id,
+          userType: data.userType,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to set role');
+
+      const claims = ((await res.json()) as any).claims;
+
+      const updatedFields = { ...data, claims, updated: Timestamp.now() };
       const ref = doc(db, 'users', state.user.id);
       await updateDoc(ref, updatedFields);
 
       const updatedUser: User = { ...state.user, ...updatedFields };
+
       dispatch({ type: SET_USER, payload: updatedUser });
     },
     [state.user]

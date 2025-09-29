@@ -29,3 +29,4 @@ deno.lock
 
 #secret
 .env*
+firebase-adminsdk.json

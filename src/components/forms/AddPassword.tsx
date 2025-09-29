@@ -76,7 +76,11 @@ export default function AddPassword() {
   };
 
   return (
-    <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-4 mb-8">
+    <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-4 w-full">
+      <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+        Add password
+      </h2>
+
       <TextInput
         id="password"
         label="New password"
