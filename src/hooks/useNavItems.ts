@@ -1,24 +1,25 @@
 import { useUserContext } from '../context/user/useUserContext';
+import navItem from '../interface/navItem.interface';
 
 const useNavItems = () => {
   const { loggedIn, loading: userLoading } = useUserContext();
 
-  const navItems: {
-    name: string;
-    link: string;
-  }[] = [];
-  navItems.push({ name: 'Home', link: '/' });
+  const topNavItems: navItem[] = [];
+  const bottomNavItems: navItem[] = [];
+
+  topNavItems.push({ name: 'Home', link: '/' });
+  topNavItems.push({ name: 'About', link: '/about' });
+
   if (userLoading) {
     // skip
   } else if (loggedIn) {
-    navItems.push({ name: 'Profile', link: '/profile' });
-    navItems.push({ name: 'Logout', link: '/logout' });
+    bottomNavItems.push({ name: 'Profile', link: '/profile' });
+    bottomNavItems.push({ name: 'Logout', link: '/logout' });
   } else {
-    navItems.push({ name: 'Login', link: '/login' });
-    navItems.push({ name: 'Register', link: '/register' });
+    bottomNavItems.push({ name: 'Login', link: '/login' });
+    bottomNavItems.push({ name: 'Register', link: '/register' });
   }
-  navItems.push({ name: 'About', link: '/about' });
-  return { navItems };
+  return { topNavItems, bottomNavItems };
 };
 
 export default useNavItems;
