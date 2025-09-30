@@ -5,6 +5,7 @@ import OAuth from '../components/auth/OAuth';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import { useUserContext } from '../context/user/useUserContext';
+import { useLoadingContext } from '../context/loading/useLoadingContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function Login() {
   const [errors, setErrors] = useState(defaultErrors);
 
   const { loggedIn, loading: userLoading, login } = useUserContext();
+  const { startLoading, stopLoading } = useLoadingContext();
   const { email, password } = formData;
 
   const navigate = useNavigate();
@@ -74,15 +76,18 @@ export default function Login() {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!validateLogin()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
+    startLoading('login');
     try {
+      if (!validateLogin()) {
+        toast.error('Please fill in all fields');
+        return;
+      }
+
       await login(email, password);
     } catch (error) {
       toast.error('Bad User Credentials');
+    } finally {
+      stopLoading('login');
     }
   };
 

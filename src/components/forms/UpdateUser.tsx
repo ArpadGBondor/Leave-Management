@@ -6,6 +6,7 @@ import FileInput from '../inputs/FileInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import SelectInput from '../inputs/SelectInput';
 import { UserType, userTypeOptions } from '../../interface/user.interface';
+import { useLoadingContext } from '../../context/loading/useLoadingContext';
 
 export default function UpdateUser() {
   const defaultState: {
@@ -29,6 +30,8 @@ export default function UpdateUser() {
   const [errors, setErrors] = useState(defaultErrors);
 
   const { user, updateUser } = useUserContext();
+  const { startLoading, stopLoading } = useLoadingContext();
+
   const { name, email, photo, userType } = formData;
 
   useEffect(() => {
@@ -99,18 +102,21 @@ export default function UpdateUser() {
   const onSubmitUpdateUser = async (e: any) => {
     e.preventDefault();
 
-    if (!validateUser()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
+    startLoading('update-user');
     try {
+      if (!validateUser()) {
+        toast.error('Please fill in all fields');
+        return;
+      }
+
       // Create user with email & password
       await updateUser({ name, email, photo, userType: userType });
 
       toast.info('Profile details updated');
     } catch (error: any) {
       toast.error(error.message || 'Could not update user');
+    } finally {
+      stopLoading('update-user');
     }
   };
 

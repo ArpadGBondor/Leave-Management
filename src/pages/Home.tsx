@@ -7,7 +7,6 @@ export default function Home() {
         Manage your leaves
       </h1>
       <div className="mt-10 flex flex-col justify-center items-center">
-        <Spinner variant="secondary" />
         <div className="text-brand-green-600">Work in progress...</div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import FileInput from '../components/inputs/FileInput';
 import { useUserContext } from '../context/user/useUserContext';
+import { useLoadingContext } from '../context/loading/useLoadingContext';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -25,6 +26,8 @@ export default function Register() {
   const [errors, setErrors] = useState(defaultErrors);
 
   const { loggedIn, loading: userLoading, register } = useUserContext();
+  const { startLoading, stopLoading } = useLoadingContext();
+
   const { name, email, password, confirmPassword, photo } = formData;
 
   const navigate = useNavigate();
@@ -111,18 +114,21 @@ export default function Register() {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!validateRegistration()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
+    startLoading('register');
     try {
+      if (!validateRegistration()) {
+        toast.error('Please fill in all fields');
+        return;
+      }
+
       // Create user with email & password
       await register(email, password, name);
 
       navigate('/');
     } catch (error: any) {
       toast.error(error.message || 'Could not register user');
+    } finally {
+      stopLoading('register');
     }
   };
 

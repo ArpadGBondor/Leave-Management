@@ -13,10 +13,12 @@ import About from './pages/About';
 import Logout from './pages/Logout';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import LoadingOverlay from './components/loading/LoadingOverlay';
 
 export default function App() {
   return (
-    <div className="h-screen w-full flex flex-col lg:flex-row justify-stretch items-stretch bg-brand-purple-50 bg-no-repeat bg-cover bg-bottom overflow-hidden">
+    <div className="h-screen w-full flex flex-col lg:flex-row justify-stretch items-stretch bg-brand-purple-50 bg-no-repeat bg-cover bg-bottom overflow-hidden relative">
+      <LoadingOverlay />
       <div className="navigation grow-0 shrink-0">
         <Navigation />
       </div>

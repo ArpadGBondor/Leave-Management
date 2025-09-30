@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
+import { useLoadingContext } from '../../context/loading/useLoadingContext';
 
 export default function UpdatePassword() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function UpdatePassword() {
   const [errors, setErrors] = useState(defaultErrors);
 
   const { updatePassword } = useUserContext();
+  const { startLoading, stopLoading } = useLoadingContext();
 
   const { currentPassword, password, confirmPassword } = formData;
 
@@ -74,17 +76,20 @@ export default function UpdatePassword() {
   const onSubmitUpdateUser = async (e: any) => {
     e.preventDefault();
 
-    if (!validateUser()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
+    startLoading('update-password');
     try {
+      if (!validateUser()) {
+        toast.error('Please fill in all fields');
+        return;
+      }
+
       await updatePassword(currentPassword, password);
 
       toast.info('Password updated');
     } catch (error: any) {
       toast.error(error.message || 'Could not update password');
+    } finally {
+      stopLoading('update-password');
     }
   };
 

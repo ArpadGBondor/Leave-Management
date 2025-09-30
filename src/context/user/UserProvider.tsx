@@ -12,14 +12,7 @@ import {
   reauthenticateWithCredential,
   linkWithCredential,
 } from 'firebase/auth';
-import {
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp,
-  updateDoc,
-  Timestamp,
-} from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
@@ -31,6 +24,7 @@ import {
   SET_HAS_PASSWORD,
 } from '../types';
 import getBase64FromUrl from '../../utils/getBase64FromUrl';
+import { useLoadingContext } from '../loading/useLoadingContext';
 
 interface Props {
   children: React.ReactNode;
@@ -38,6 +32,7 @@ interface Props {
 
 const UserProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, initialUserState);
+  const { startLoading, stopLoading } = useLoadingContext();
 
   const login = useCallback(async (email: string, password: string) => {
     await signInWithEmailAndPassword(auth, email, password);
@@ -181,6 +176,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      startLoading('user');
       dispatch({ type: SET_LOADING, payload: true });
 
       if (firebaseUser) {
@@ -205,6 +201,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       }
 
       dispatch({ type: SET_LOADING, payload: false });
+      stopLoading('user');
     });
 
     return unsubscribe;
