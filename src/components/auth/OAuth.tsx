@@ -12,8 +12,12 @@ function OAuth() {
     try {
       await loginWithGoogle();
       navigate('/');
-    } catch (error) {
-      toast.error('Could not autorise with Google.');
+    } catch (error: unknown) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Could not autorise with Google.'
+      );
     }
   };
 

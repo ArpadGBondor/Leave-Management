@@ -72,7 +72,7 @@ export default function AddPassword() {
 
       await addPassword(password);
 
-      toast.info('Password updated');
+      toast.info('Password added');
     } catch (error: any) {
       toast.error(error.message || 'Could not update password');
     } finally {

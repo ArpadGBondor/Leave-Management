@@ -40,58 +40,76 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
   const loginWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    const cred = await signInWithPopup(auth, provider);
 
-    if (user) {
-      const ref = doc(db, 'users', user.uid);
+    if (cred.user) {
+      const ref = doc(db, 'users', cred.user.uid);
       const snap = await getDoc(ref);
 
       if (!snap.exists()) {
         // Convert Google photo URL to Base64
         let photoBase64 = '';
-        if (user.photoURL) {
+        if (cred.user.photoURL) {
           try {
-            photoBase64 = await getBase64FromUrl(user.photoURL);
+            photoBase64 = await getBase64FromUrl(cred.user.photoURL);
           } catch (err) {
             console.error('Failed to convert photo to base64', err);
           }
         }
-        const userDoc: User = {
-          id: user.uid,
-          name: user.displayName || '',
-          email: user.email || '',
-          photo: photoBase64,
-          created: Timestamp.now(),
-          updated: Timestamp.now(),
-          userType: userTypeOptions[0],
-        };
 
-        await setDoc(ref, userDoc);
-        dispatch({ type: SET_USER, payload: userDoc });
+        const token = await cred.user.getIdToken();
+        const createUserResponse = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: cred.user.uid,
+            name: cred.user.displayName,
+            email: cred.user.email,
+            photo: photoBase64,
+            created: Timestamp.now(),
+            updated: Timestamp.now(),
+            userType: userTypeOptions[0],
+          }),
+        });
+        if (!createUserResponse.ok) throw new Error('Failed to save user');
+        const { user } = await createUserResponse.json();
+
+        dispatch({ type: SET_USER, payload: user });
       }
     }
   }, []);
 
   const register = useCallback(
-    async (email: string, password: string, name: string) => {
+    async (email: string, password: string, name: string, photo: string) => {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
 
       if (cred.user) {
         await updateProfile(cred.user, { displayName: name });
 
-        const userDoc: User = {
-          id: cred.user.uid,
-          name,
-          email: cred.user.email || '',
-          photo: cred.user.photoURL || '',
-          created: Timestamp.now(),
-          updated: Timestamp.now(),
-          userType: userTypeOptions[0],
-        };
+        const token = await cred.user.getIdToken();
+        const updateUserResponse = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: cred.user.uid,
+            name,
+            email,
+            photo,
+            created: Timestamp.now(),
+            updated: Timestamp.now(),
+            userType: userTypeOptions[0],
+          }),
+        });
+        if (!updateUserResponse.ok) throw new Error('Failed to save user');
+        const { user } = await updateUserResponse.json();
 
-        await setDoc(doc(db, 'users', cred.user.uid), userDoc);
-        dispatch({ type: SET_USER, payload: userDoc });
+        dispatch({ type: SET_USER, payload: user });
       }
     },
     []
@@ -105,7 +123,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
       const token = await auth.currentUser?.getIdToken();
 
-      const res = await fetch('/api/auth-set-user-claims', {
+      const setClaimsResponse = await fetch('/api/auth-set-user-claims', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,17 +134,26 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           userType: data.userType,
         }),
       });
-      if (!res.ok) throw new Error('Failed to set role');
+      if (!setClaimsResponse.ok) throw new Error('Failed to set role');
+      const { claims } = await setClaimsResponse.json();
 
-      const claims = ((await res.json()) as any).claims;
+      const updateUserResponse = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          id: state.user.id,
+          claims,
+          updated: Timestamp.now(),
+        }),
+      });
+      if (!updateUserResponse.ok) throw new Error('Failed to save user');
+      const { user } = await updateUserResponse.json();
 
-      const updatedFields = { ...data, claims, updated: Timestamp.now() };
-      const ref = doc(db, 'users', state.user.id);
-      await updateDoc(ref, updatedFields);
-
-      const updatedUser: User = { ...state.user, ...updatedFields };
-
-      dispatch({ type: SET_USER, payload: updatedUser });
+      dispatch({ type: SET_USER, payload: user });
     },
     [state.user]
   );

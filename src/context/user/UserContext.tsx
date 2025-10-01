@@ -10,7 +10,12 @@ export interface UserState {
 
 export interface UserContextValue extends UserState {
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    photo: string
+  ) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (data: Partial<User>) => Promise<void>;
   loginWithGoogle: () => Promise<void>;

@@ -122,7 +122,7 @@ export default function Register() {
       }
 
       // Create user with email & password
-      await register(email, password, name);
+      await register(email, password, name, photo);
 
       navigate('/');
     } catch (error: any) {

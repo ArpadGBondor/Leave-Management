@@ -1,40 +1,18 @@
 import { Handler } from '@netlify/functions';
-import * as admin from 'firebase-admin';
+import { auth } from '../../lib/firebase';
+import { verifyBearerToken } from '../../lib/auth';
 
-let app: admin.app.App;
-
-if (!admin.apps.length) {
-  // Parse env var back into object
-  const serviceAccount = JSON.parse(
-    process.env.FIREBASE_SERVICE_ACCOUNT as string
-  );
-
-  app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-} else {
-  app = admin.app();
-}
-
-const handler: Handler = async (event, context) => {
+const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
-    // should only get called when a user is logged in
-    const authHeader = event.headers.authorization;
-    if (!authHeader?.startsWith('Bearer ')) {
-      return { statusCode: 401, body: 'Unauthorized' };
-    }
-
-    const idToken = authHeader.split('Bearer ')[1];
-
-    // Verify token using Firebase Admin
     // const decodedToken =
-    await admin.auth().verifyIdToken(idToken);
+    await verifyBearerToken(event.headers.authorization);
 
-    // // Only allow superAdmin users to update roles
+    // For this demo, let's allow users to test different roles.
+    // Only allow superAdmin users to update roles
     // if (!decodedToken.SUPER_ADIM) {
     //   return { statusCode: 403, body: 'Forbidden' };
     // }
@@ -53,17 +31,21 @@ const handler: Handler = async (event, context) => {
         claims = {};
     }
 
-    await admin.auth().setCustomUserClaims(userId, claims);
+    await auth.setCustomUserClaims(userId, claims);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ success: true, claims }),
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to set user role' }),
+      statusCode: err.message?.startsWith('Unauthorized')
+        ? 401
+        : err.message?.startsWith('Forbidden')
+        ? 403
+        : 500,
+      body: JSON.stringify({ error: err.message || 'Failed to set user role' }),
     };
   }
 };
