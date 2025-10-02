@@ -1,8 +1,11 @@
 import { useUserContext } from '../../context/user/useUserContext';
+import User from '../../interface/user.interface';
 
-export default function ProfileBadge() {
-  const { user } = useUserContext();
+interface ProfileBadgeProps {
+  user: User;
+}
 
+export default function ProfileBadge({ user }: ProfileBadgeProps) {
   if (!user) return <div></div>;
   return (
     <div className="w-full flex flex-row items-center gap-4">

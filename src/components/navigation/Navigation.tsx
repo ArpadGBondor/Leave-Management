@@ -28,7 +28,7 @@ export default function Navbar() {
         <div>
           {user && (
             <>
-              <ProfileBadge />
+              <ProfileBadge user={user} />
               <hr className="my-2" />
             </>
           )}
@@ -79,7 +79,7 @@ export default function Navbar() {
           {user && (
             <>
               <hr className="mt-1 mb-4" />
-              <ProfileBadge />
+              <ProfileBadge user={user} />
             </>
           )}
         </div>

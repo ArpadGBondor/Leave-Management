@@ -14,6 +14,10 @@ import Logout from './pages/Logout';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import LoadingOverlay from './components/loading/LoadingOverlay';
+import Unauthorised from './pages/Unauthorised';
+import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
+import ManageTeam from './pages/ManageTeam';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -26,16 +30,19 @@ export default function App() {
         <BackgroundDecor />
         <main className="relative w-full h-full flex flex-col justify-center items-center">
           <Routes>
-            <Route path="/" element={<PrivateRoute />}>
+            <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="/" element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route element={<PrivateManagerRoute />}>
+              <Route path="/manage-team" element={<ManageTeam />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/about" element={<About />} />
+            <Route path="/unauthorised" element={<Unauthorised />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer />
         </main>

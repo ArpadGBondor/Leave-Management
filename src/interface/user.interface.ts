@@ -4,6 +4,11 @@ export const userTypeOptions = ['Employee', 'Manager', 'Owner'] as const;
 
 export type UserType = (typeof userTypeOptions)[number];
 
+export type UserClaims = {
+  ADMIN?: boolean;
+  SUPER_ADIM?: boolean;
+};
+
 export default interface User {
   id: string;
   name: string;
@@ -12,4 +17,5 @@ export default interface User {
   created?: Timestamp;
   updated?: Timestamp;
   userType: UserType;
+  claims?: UserClaims;
 }
