@@ -3,13 +3,14 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import User, { userTypeOptions } from '../interface/user.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
+import { firebase_collections } from '../../lib/firebase_collections';
 
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const usersCol = collection(db, 'users');
+    const usersCol = collection(db, firebase_collections.USERS);
 
     // Real-time listener
     const unsubscribe = onSnapshot(

@@ -6,7 +6,7 @@ export type UserType = (typeof userTypeOptions)[number];
 
 export type UserClaims = {
   ADMIN?: boolean;
-  SUPER_ADIM?: boolean;
+  SUPER_ADMIN?: boolean;
 };
 
 export default interface User {

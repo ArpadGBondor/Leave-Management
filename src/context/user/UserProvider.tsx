@@ -12,7 +12,7 @@ import {
   reauthenticateWithCredential,
   linkWithCredential,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
@@ -25,6 +25,7 @@ import {
 } from '../types';
 import getBase64FromUrl from '../../utils/getBase64FromUrl';
 import { useLoadingContext } from '../loading/useLoadingContext';
+import { firebase_collections } from '../../../lib/firebase_collections';
 
 interface Props {
   children: React.ReactNode;
@@ -43,7 +44,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     const cred = await signInWithPopup(auth, provider);
 
     if (cred.user) {
-      const ref = doc(db, 'users', cred.user.uid);
+      const ref = doc(db, firebase_collections.USERS, cred.user.uid);
       const snap = await getDoc(ref);
 
       if (!snap.exists()) {
@@ -75,9 +76,9 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           }),
         });
         if (!createUserResponse.ok) throw new Error('Failed to save user');
-        const { user } = await createUserResponse.json();
+        const { doc } = await createUserResponse.json();
 
-        dispatch({ type: SET_USER, payload: user });
+        dispatch({ type: SET_USER, payload: doc });
       }
     }
   }, []);
@@ -107,9 +108,9 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           }),
         });
         if (!updateUserResponse.ok) throw new Error('Failed to save user');
-        const { user } = await updateUserResponse.json();
+        const { doc } = await updateUserResponse.json();
 
-        dispatch({ type: SET_USER, payload: user });
+        dispatch({ type: SET_USER, payload: doc });
       }
     },
     []
@@ -151,9 +152,9 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         }),
       });
       if (!updateUserResponse.ok) throw new Error('Failed to save user');
-      const { user } = await updateUserResponse.json();
+      const { doc } = await updateUserResponse.json();
 
-      dispatch({ type: SET_USER, payload: user });
+      dispatch({ type: SET_USER, payload: doc });
     },
     [state.user]
   );
@@ -215,7 +216,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         );
         dispatch({ type: SET_HAS_PASSWORD, payload: hasPassword });
 
-        const ref = doc(db, 'users', firebaseUser.uid);
+        const ref = doc(db, firebase_collections.USERS, firebaseUser.uid);
         const snap = await getDoc(ref);
 
         if (snap.exists()) {

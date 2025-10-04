@@ -1,6 +1,6 @@
 import { Handler } from '@netlify/functions';
 import { auth } from '../../lib/firebase';
-import { verifyBearerToken } from '../../lib/auth';
+import { verifyBearerToken } from '../../lib/verifyBearerToken';
 
 const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -11,13 +11,46 @@ const handler: Handler = async (event) => {
     // const decodedToken =
     await verifyBearerToken(event.headers.authorization);
 
-    // For this demo, let's allow users to test different roles.
-    // Only allow superAdmin users to update roles
-    // if (!decodedToken.SUPER_ADIM) {
-    //   return { statusCode: 403, body: 'Forbidden' };
-    // }
+    // --- Validate request body ---
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Request body is required' }),
+      };
+    }
 
-    const { userId, userType } = JSON.parse(event.body || '{}');
+    let parsed;
+    try {
+      parsed = JSON.parse(event.body);
+    } catch {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid JSON body' }),
+      };
+    }
+
+    if (!parsed || typeof parsed !== 'object') {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Body must be a JSON object' }),
+      };
+    }
+
+    const { userId, userType } = parsed;
+
+    if (!userId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required field: userId' }),
+      };
+    }
+
+    if (!userType) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required field: userType' }),
+      };
+    }
 
     let claims: Record<string, boolean> = {};
     switch (userType) {
@@ -25,7 +58,7 @@ const handler: Handler = async (event) => {
         claims = { ADMIN: true };
         break;
       case 'Owner':
-        claims = { ADMIN: true, SUPER_ADIM: true };
+        claims = { ADMIN: true, SUPER_ADMIN: true };
         break;
       default:
         claims = {};

@@ -5,10 +5,10 @@ import { createOrUpdateDoc } from '../../lib/handlers/createOrUpdateDoc';
 const handler: Handler = createOrUpdateDoc({
   path: [
     {
-      collection: firebase_collections.USERS,
+      collection: firebase_collections.CONFIG,
       idField: 'id',
-      keepInDoc: true,
     },
   ],
 });
+
 export { handler };
