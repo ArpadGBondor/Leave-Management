@@ -34,16 +34,22 @@ export default function UpdateUser() {
 
   const { name, email, photo, userType } = formData;
 
-  useEffect(() => {
-    if (user)
-      setFormData((prevState) => ({
-        ...prevState,
-        name: user.name,
-        email: user.email,
-        photo: user.photo,
-        userType: user.userType ?? userTypeOptions[0],
-      }));
-  }, [user]);
+  useEffect(
+    () => {
+      if (user)
+        setFormData((prevState) => ({
+          ...prevState,
+          name: user.name,
+          email: user.email,
+          photo: user.photo,
+          userType: user.userType ?? userTypeOptions[0],
+        }));
+    },
+    [
+      /*user - We should not clear unconfirmed changes whenever user document
+      updates in the database */
+    ]
+  );
 
   const onPhotoChange = (newPhoto: string | null) =>
     setFormData((prevState) => ({

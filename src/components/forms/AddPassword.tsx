@@ -35,7 +35,7 @@ export default function AddPassword() {
       [field]: message,
     }));
 
-  const validateUser = () => {
+  const validatePassword = () => {
     let valid = true;
 
     // Check new password
@@ -60,12 +60,12 @@ export default function AddPassword() {
     return valid;
   };
 
-  const onSubmitUpdateUser = async (e: any) => {
+  const onSubmitAddPassword = async (e: any) => {
     e.preventDefault();
 
     startLoading('add-password');
     try {
-      if (!validateUser()) {
+      if (!validatePassword()) {
         toast.error('Please fill in all fields');
         return;
       }
@@ -81,7 +81,7 @@ export default function AddPassword() {
   };
 
   return (
-    <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-4 w-full">
+    <form onSubmit={onSubmitAddPassword} className="flex flex-col gap-4 w-full">
       <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
         Add password
       </h2>

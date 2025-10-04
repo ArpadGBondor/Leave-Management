@@ -8,6 +8,9 @@ const useNavItems = () => {
   const bottomNavItems: navItem[] = [];
 
   topNavItems.push({ name: 'Home', link: '/' });
+  if (loggedIn && user?.claims?.SUPER_ADMIN) {
+    topNavItems.push({ name: 'Manage company', link: '/manage-company' });
+  }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({ name: 'Manage team', link: '/manage-team' });
   }

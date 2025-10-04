@@ -1,6 +1,7 @@
 import React, { useReducer, useMemo } from 'react';
 import { LoadingContext } from './LoadingContext';
 import { loadingReducer, LoadingState } from './LoadingReducer';
+import { LOADING_START, LOADING_STOP } from '../types';
 
 interface LoadingProviderProps {
   children: React.ReactNode;
@@ -12,11 +13,11 @@ const LoadingProvider: React.FC<LoadingProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(loadingReducer, initialState);
 
   const startLoading = (key: string) => {
-    dispatch({ type: 'START', key });
+    dispatch({ type: LOADING_START, key });
   };
 
   const stopLoading = (key: string) => {
-    dispatch({ type: 'STOP', key });
+    dispatch({ type: LOADING_STOP, key });
   };
 
   const isLoading = state.active.size > 0;

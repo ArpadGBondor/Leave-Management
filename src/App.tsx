@@ -18,6 +18,7 @@ import Unauthorised from './pages/Unauthorised';
 import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
 import ManageTeam from './pages/ManageTeam';
 import NotFound from './pages/NotFound';
+import ManageCompany from './pages/ManageCompany';
 
 export default function App() {
   return (
@@ -34,7 +35,12 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
             </Route>
-            <Route element={<PrivateManagerRoute />}>
+            <Route
+              element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
+            >
+              <Route path="/manage-company" element={<ManageCompany />} />
+            </Route>
+            <Route element={<PrivateManagerRoute restrictToClaim="ADMIN" />}>
               <Route path="/manage-team" element={<ManageTeam />} />
             </Route>
             <Route path="/login" element={<Login />} />

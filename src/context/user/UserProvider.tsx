@@ -12,7 +12,7 @@ import {
   reauthenticateWithCredential,
   linkWithCredential,
 } from 'firebase/auth';
-import { doc, getDoc, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
@@ -70,8 +70,6 @@ const UserProvider: React.FC<Props> = ({ children }) => {
             name: cred.user.displayName,
             email: cred.user.email,
             photo: photoBase64,
-            created: Timestamp.now(),
-            updated: Timestamp.now(),
             userType: userTypeOptions[0],
           }),
         });
@@ -102,8 +100,6 @@ const UserProvider: React.FC<Props> = ({ children }) => {
             name,
             email,
             photo,
-            created: Timestamp.now(),
-            updated: Timestamp.now(),
             userType: userTypeOptions[0],
           }),
         });
@@ -148,7 +144,6 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           ...data,
           id: state.user.id,
           claims,
-          updated: Timestamp.now(),
         }),
       });
       if (!updateUserResponse.ok) throw new Error('Failed to save user');
@@ -203,7 +198,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
       startLoading('user');
       dispatch({ type: SET_LOADING, payload: true });
 
@@ -216,23 +211,31 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         );
         dispatch({ type: SET_HAS_PASSWORD, payload: hasPassword });
 
-        const ref = doc(db, firebase_collections.USERS, firebaseUser.uid);
-        const snap = await getDoc(ref);
+        // Listen to Firestore user document for real-time updates
+        const userRef = doc(db, firebase_collections.USERS, firebaseUser.uid);
+        const unsubscribeUserDoc = onSnapshot(userRef, (snap) => {
+          if (snap.exists()) {
+            dispatch({ type: SET_USER, payload: snap.data() as User });
+          } else {
+            // The document might not exist yet (e.g., right after registration)
+            dispatch({ type: SET_USER, payload: null });
+          }
+          dispatch({ type: SET_LOADING, payload: false });
+          stopLoading('user');
+        });
 
-        if (snap.exists()) {
-          dispatch({ type: SET_USER, payload: snap.data() as User });
-        } // else we call SET_USER from register and loginWithGoogle functions
+        // Return this unsubscribe when auth changes
+        return unsubscribeUserDoc;
       } else {
         dispatch({ type: SET_LOGGED_IN, payload: false });
         dispatch({ type: SET_HAS_PASSWORD, payload: false });
         dispatch({ type: SET_USER, payload: null });
+        dispatch({ type: SET_LOADING, payload: false });
+        stopLoading('user');
       }
-
-      dispatch({ type: SET_LOADING, payload: false });
-      stopLoading('user');
     });
 
-    return unsubscribe;
+    return unsubscribeAuth;
   }, []);
 
   return (
