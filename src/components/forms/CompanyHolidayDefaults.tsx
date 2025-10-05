@@ -6,7 +6,7 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import NumberInput from '../inputs/NumberInput';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 
-export default function AddPassword() {
+export default function CompanyHolidayDefaults() {
   const [formData, setFormData] = useState({
     base: 0,
     additional: 0,
@@ -90,17 +90,12 @@ export default function AddPassword() {
       onSubmit={onSubmitHolidayEntitlement}
       className="flex flex-col gap-4 w-full"
     >
-      <h2 className="text-4xl font-bold text-brand-purple-700">
-        Default holiday configuration
-      </h2>
+      <h3 className="text-2xl font-bold text-brand-green-700">
+        Yearly holiday entitlement
+      </h3>
 
-      <p className="mb-4 text-brand-green-800">
-        These settings are default fallback values, in case employees are not
-        configured individually for a certain year.
-      </p>
-
-      <div className="flex flex-col lg:flex-row lg:gap-2 justify-stretch items-end">
-        <div className="mb-2 text-4xl font-bold text-brand-purple-700">
+      <div className="flex flex-col md:flex-row gap-2 justify-stretch items-stretch md:items-end">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
           {'('}
         </div>
         <NumberInput
@@ -112,7 +107,7 @@ export default function AddPassword() {
           placeholder="Number of days"
           error={errors.base}
         />
-        <div className="mb-2 text-4xl font-bold text-brand-purple-700">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
           {'+'}
         </div>
         <NumberInput
@@ -125,10 +120,10 @@ export default function AddPassword() {
           step={1}
           error={errors.additional}
         />
-        <div className="mb-2 text-4xl font-bold text-brand-purple-700">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
           {')'}
         </div>
-        <div className="mb-2 text-4xl font-bold text-brand-purple-700">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
           {'x'}
         </div>
         <NumberInput
@@ -142,7 +137,7 @@ export default function AddPassword() {
           min={0}
           error={errors.multiplier}
         />
-        <div className="mb-2 text-4xl font-bold text-brand-purple-700">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
           {'='}
         </div>
         <NumberInput
