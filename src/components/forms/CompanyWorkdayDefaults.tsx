@@ -135,7 +135,10 @@ export default function CompanyWorkdayDefaults() {
 
       <p className=" text-brand-green-800 text-center">
         Selected <span className="font-bold">{numberOfWorkdays()}</span>{' '}
-        workdays per week
+        workdays per week.
+        <br />
+        Recommended leave entitlement multiplier:{' '}
+        <span className="font-bold">{numberOfWorkdays() / 5}</span>
       </p>
 
       <Button label="Update default workday configuration" />

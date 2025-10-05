@@ -19,6 +19,7 @@ import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
 import ManageTeam from './pages/ManageTeam';
 import NotFound from './pages/NotFound';
 import ManageCompany from './pages/ManageCompany';
+import ManageTeamMember from './pages/ManageTeamMember';
 
 export default function App() {
   return (
@@ -42,6 +43,10 @@ export default function App() {
             </Route>
             <Route element={<PrivateManagerRoute restrictToClaim="ADMIN" />}>
               <Route path="/manage-team" element={<ManageTeam />} />
+              <Route
+                path="/manage-team/:userID"
+                element={<ManageTeamMember />}
+              />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

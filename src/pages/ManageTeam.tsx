@@ -4,6 +4,7 @@ import { db } from '../firebase.config';
 import User, { userTypeOptions } from '../interface/user.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
 import { firebase_collections } from '../../lib/firebase_collections';
+import { Link } from 'react-router-dom';
 
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
@@ -49,21 +50,27 @@ export default function ManageTeam() {
             .filter((user) => user.userType === userTypeOptions[2])
             .map((user) => (
               <div className="p-4 rounded-xl bg-brand-green-700">
-                <ProfileBadge user={user} />
+                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
+                  <ProfileBadge user={user} />
+                </Link>
               </div>
             ))}
           {users
             .filter((user) => user.userType === userTypeOptions[1])
             .map((user) => (
               <div className="p-4 rounded-xl bg-brand-green-700">
-                <ProfileBadge user={user} />
+                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
+                  <ProfileBadge user={user} />
+                </Link>
               </div>
             ))}
           {users
             .filter((user) => user.userType === userTypeOptions[0])
             .map((user) => (
               <div className="p-4 rounded-xl bg-brand-green-700">
-                <ProfileBadge user={user} />
+                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
+                  <ProfileBadge user={user} />
+                </Link>
               </div>
             ))}
         </div>
