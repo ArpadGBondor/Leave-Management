@@ -1,4 +1,7 @@
-# [Leave management](https://arpadgbondor.github.io/Leave-Management/)
+---
+layout: default
+title: Home
+---
 
 - [Project goals](#project-goals)
 - [Highlights](#highlights)
