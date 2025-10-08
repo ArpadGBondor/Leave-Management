@@ -1,4 +1,5 @@
 import CompanyHolidayDefaults from '../components/forms/CompanyHolidayDefaults';
+import CompanyImportBankHolidays from '../components/forms/CompanyImportBankHolidays';
 import CompanyWorkdayDefaults from '../components/forms/CompanyWorkdayDefaults';
 
 export default function ManageCompany() {
@@ -15,6 +16,7 @@ export default function ManageCompany() {
         </p>
         <CompanyHolidayDefaults />
         <CompanyWorkdayDefaults />
+        <CompanyImportBankHolidays />
       </div>
     </div>
   );
