@@ -26,7 +26,7 @@ export default function About() {
         </p>
       </div>
       <div className="flex flex-col items-center">
-        <NavButton label="Back to Home" link="/" />
+        <NavButton label="Back to Home" link="/" icon="FaArrowLeft" />
       </div>
     </div>
   );

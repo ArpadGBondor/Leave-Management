@@ -10,7 +10,7 @@ export default function Unauthorised() {
         You don’t have permission to view this page.
       </p>
       <div className="flex flex-col items-center">
-        <NavButton label="Back to Home" link="/" />
+        <NavButton label="Back to Home" link="/" icon="FaArrowLeft" />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FaTimes, FaBars } from 'react-icons/fa';
 
 type NavbarTogglerProps = {
   isOpen: boolean;
@@ -17,7 +17,7 @@ const NavbarToggler = ({ isOpen, onClick }: NavbarTogglerProps) => {
           isOpen ? 'rotate-360' : 'rotate-0'
         }`}
       >
-        {isOpen ? '✕' : '☰'}
+        {isOpen ? <FaTimes /> : <FaBars />}
       </span>
     </button>
   );

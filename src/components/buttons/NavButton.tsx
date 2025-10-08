@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
+import * as FaIcons from 'react-icons/fa';
 
 type ButtonProps = {
   label: string;
   link: string;
+  icon?: keyof typeof FaIcons;
   variant?: 'primary' | 'secondary';
   onClick?: () => void;
 };
@@ -10,14 +12,15 @@ type ButtonProps = {
 export default function NavButton({
   label,
   link,
+  icon,
   variant = 'primary',
   onClick,
 }: ButtonProps) {
   const location = useLocation();
   const highlight = location.pathname === link;
-
+  const IconComponent = icon ? FaIcons[icon] : null;
   const baseClasses =
-    'w-full flex items-center gap-3 px-4 py-2 rounded-xl transition font-medium';
+    'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition font-medium';
   const variants = {
     primary: `${
       highlight ? 'bg-brand-green-800' : 'bg-brand-green-700'
@@ -33,6 +36,7 @@ export default function NavButton({
         onClick={onClick}
         className={`${baseClasses} ${variants[variant]}`}
       >
+        {IconComponent && <IconComponent />}
         <span>{label}</span>
       </button>
     </Link>

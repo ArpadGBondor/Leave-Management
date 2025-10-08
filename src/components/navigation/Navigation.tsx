@@ -21,7 +21,12 @@ export default function Navbar() {
           <hr className="my-1" />
           <nav className="flex flex-col gap-2">
             {topNavItems.map((item) => (
-              <NavButton key={item.name} label={item.name} link={item.link} />
+              <NavButton
+                key={item.name}
+                label={item.name}
+                link={item.link}
+                icon={item.icon}
+              />
             ))}
           </nav>
         </div>
@@ -34,7 +39,12 @@ export default function Navbar() {
           )}
           <nav className="flex flex-col gap-2">
             {bottomNavItems.map((item) => (
-              <NavButton key={item.name} label={item.name} link={item.link} />
+              <NavButton
+                key={item.name}
+                label={item.name}
+                link={item.link}
+                icon={item.icon}
+              />
             ))}
           </nav>
         </div>
@@ -61,6 +71,7 @@ export default function Navbar() {
                 key={item.name}
                 label={item.name}
                 link={item.link}
+                icon={item.icon}
                 onClick={() => setIsOpen(!isOpen)}
               />
             ))}
@@ -72,6 +83,7 @@ export default function Navbar() {
                 key={item.name}
                 label={item.name}
                 link={item.link}
+                icon={item.icon}
                 onClick={() => setIsOpen(!isOpen)}
               />
             ))}

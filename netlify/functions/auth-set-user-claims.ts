@@ -1,10 +1,11 @@
 import { Handler } from '@netlify/functions';
 import { auth } from '../../lib/firebase';
 import { verifyBearerToken } from '../../lib/verifyBearerToken';
+import { response } from '../../lib/response';
 
 const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return response(405, 'Method Not Allowed');
   }
 
   try {
@@ -13,43 +14,28 @@ const handler: Handler = async (event) => {
 
     // --- Validate request body ---
     if (!event.body) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Request body is required' }),
-      };
+      return response(400, { error: 'Request body is required' });
     }
 
     let parsed;
     try {
       parsed = JSON.parse(event.body);
     } catch {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid JSON body' }),
-      };
+      return response(400, { error: 'Invalid JSON body' });
     }
 
     if (!parsed || typeof parsed !== 'object') {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Body must be a JSON object' }),
-      };
+      return response(400, { error: 'Body must be a JSON object' });
     }
 
     const { userId, userType } = parsed;
 
     if (!userId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required field: userId' }),
-      };
+      return response(400, { error: 'Missing required field: userId' });
     }
 
     if (!userType) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required field: userType' }),
-      };
+      return response(400, { error: 'Missing required field: userType' });
     }
 
     let claims: Record<string, boolean> = {};
@@ -66,20 +52,17 @@ const handler: Handler = async (event) => {
 
     await auth.setCustomUserClaims(userId, claims);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true, claims }),
-    };
+    return response(200, { success: true, claims });
   } catch (err: any) {
     console.error(err);
-    return {
-      statusCode: err.message?.startsWith('Unauthorized')
+    return response(
+      err.message?.startsWith('Unauthorized')
         ? 401
         : err.message?.startsWith('Forbidden')
         ? 403
         : 500,
-      body: JSON.stringify({ error: err.message || 'Failed to set user role' }),
-    };
+      { error: err.message || 'Failed to set user role' }
+    );
   }
 };
 

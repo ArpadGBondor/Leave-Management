@@ -1,20 +1,22 @@
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { auth, db } from '../../firebase.config';
+import { auth } from '../../firebase.config';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { firebase_collections } from '../../../lib/firebase_collections';
-
-type BankHolidayMetadata = Record<string, string[]>;
+import Spinner from '../spinner/Spinner';
+type BankHolidayRegionsAndYears = Record<string, string[]>;
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();
-  const [metadata, setMetadata] = useState<BankHolidayMetadata>({});
+  const [importedRegionsAndYears, setImportedRegionsAndYears] =
+    useState<BankHolidayRegionsAndYears>({});
+  // do not trigger loading overlay while fetching data. The rest of the page
+  // should stay usable while we are fetching available regions and years
+  const [fetchingInProgress, setFetchingInProgress] = useState(false);
 
   // Fetch existing regions & years from Firestore
-  const fetchMetadata = async () => {
-    startLoading('fetch-bank-holidays-metadata');
+  const fetchImportedRegionsAndYears = async () => {
+    setFetchingInProgress(true);
     try {
       const token = await auth.currentUser?.getIdToken();
 
@@ -31,16 +33,16 @@ export default function CompanyImportBankHolidays() {
       }
 
       const { regions } = await response.json();
-      setMetadata(regions);
+      setImportedRegionsAndYears(regions);
     } catch (error: any) {
-      toast.error(error.message || 'Could not import bank holidays');
+      toast.error(error.message || 'Could not load imported regions and years');
     } finally {
-      stopLoading('fetch-bank-holidays-metadata');
+      setFetchingInProgress(false);
     }
   };
 
   useEffect(() => {
-    fetchMetadata();
+    fetchImportedRegionsAndYears();
   }, []);
 
   const onSubmitImportBankHolidays = async (e: any) => {
@@ -70,7 +72,7 @@ export default function CompanyImportBankHolidays() {
       toast.error(error.message || 'Could not import bank holidays');
     } finally {
       stopLoading('import-company-bank-holidays');
-      await fetchMetadata();
+      await fetchImportedRegionsAndYears();
     }
   };
 
@@ -83,9 +85,14 @@ export default function CompanyImportBankHolidays() {
         Imported bank holidays
       </h3>
 
-      {metadata && Object.keys(metadata).length > 0 ? (
+      {fetchingInProgress ? (
+        <div className="flex flex-col items-center ">
+          <Spinner size="xl" />
+        </div>
+      ) : importedRegionsAndYears &&
+        Object.keys(importedRegionsAndYears).length > 0 ? (
         <ul className="bg-brand-purple-100 p-4 rounded-xl mx-auto space-y-3">
-          {Object.entries(metadata).map(([region, years]) => (
+          {Object.entries(importedRegionsAndYears).map(([region, years]) => (
             <li key={region}>
               <h4 className="font-bold text-brand-green-800 capitalize">
                 {region.replaceAll('-', ' ')}
@@ -104,9 +111,7 @@ export default function CompanyImportBankHolidays() {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 italic mt-2">
-          No bank holidays imported yet. {JSON.stringify(metadata)}
-        </p>
+        <p className="text-brand-green-800">No bank holidays imported yet.</p>
       )}
 
       <Button label="Check GOV.UK to import bank holidays" />
