@@ -4,6 +4,7 @@ import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import SwitchButton from '../buttons/SwitchButton';
+import { handleValueChange } from '../../utils/onFormDataChange';
 
 export default function CompanyWorkdayDefaults() {
   const [formData, setFormData] = useState({
@@ -40,13 +41,6 @@ export default function CompanyWorkdayDefaults() {
       saturday,
       sunday,
     ].filter(Boolean).length;
-  };
-
-  const onSwitchButtonChange = (name: string, value: boolean) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
   };
 
   const onSubmitHolidayEntitlement = async (e: any) => {
@@ -93,43 +87,57 @@ export default function CompanyWorkdayDefaults() {
           label="Monday"
           name="monday"
           checked={monday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Tuesday"
           name="tuesday"
           checked={tuesday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Wednesday"
           name="wednesday"
           checked={wednesday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Thursday"
           name="thursday"
           checked={thursday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Friday"
           name="friday"
           checked={friday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Saturday"
           name="saturday"
           checked={saturday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
         <SwitchButton
           label="Sunday"
           name="sunday"
           checked={sunday}
-          onChange={onSwitchButtonChange}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
         />
       </div>
 

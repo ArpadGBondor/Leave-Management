@@ -1,5 +1,6 @@
 import { auth } from '../firebase.config';
 
+export type BankHolidayRegionsAndYears = Record<string, string[]>;
 export default async function fetchImportedBankHolidayRegionsAndYears() {
   const token = await auth.currentUser?.getIdToken();
 

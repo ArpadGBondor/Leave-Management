@@ -7,7 +7,11 @@ import { useUserContext } from '../../context/user/useUserContext';
 import SelectInput from '../inputs/SelectInput';
 import { UserType, userTypeOptions } from '../../interface/user.interface';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { handleInputChange } from '../../utils/onFormDataChange';
+import {
+  handleInputChange,
+  handleValueChange,
+} from '../../utils/onFormDataChange';
+// import { emailValidator } from '../../utils/fieldValidators';
 
 export default function UpdateUser() {
   const defaultState: {
@@ -35,28 +39,16 @@ export default function UpdateUser() {
 
   const { name, email, photo, userType } = formData;
 
-  useEffect(
-    () => {
-      if (user)
-        setFormData((prevState) => ({
-          ...prevState,
-          name: user.name,
-          email: user.email,
-          photo: user.photo,
-          userType: user.userType ?? userTypeOptions[0],
-        }));
-    },
-    [
-      /*user - We should not clear unconfirmed changes whenever user document
-      updates in the database */
-    ]
-  );
-
-  const onPhotoChange = (newPhoto: string | null) =>
-    setFormData((prevState) => ({
-      ...prevState,
-      photo: newPhoto ?? '',
-    }));
+  useEffect(() => {
+    if (user)
+      setFormData((prevState) => ({
+        ...prevState,
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+        userType: user.userType ?? userTypeOptions[0],
+      }));
+  }, []);
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -75,17 +67,10 @@ export default function UpdateUser() {
       setError('name', '');
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.trim()) {
-      setError('email', 'Please enter your email address.');
-      valid = false;
-    } else if (!emailRegex.test(email)) {
-      setError('email', 'Please enter a valid email address.');
-      valid = false;
-    } else {
-      setError('email', '');
-    }
+    // Email validation - field is disabled
+    // let emailValid = emailValidator(email);
+    // valid &&= emailValid.valid;
+    // setError('email', emailValid.message);
 
     // Photo validation
     if (!photo.trim()) {
@@ -152,7 +137,9 @@ export default function UpdateUser() {
         label="Profile picture"
         name="photo"
         value={photo}
-        onChange={onPhotoChange}
+        onChange={(value: string | null) =>
+          handleValueChange('photo', value ?? '', setFormData)
+        }
         error={errors.photo}
         setError={(msg) => setError('photo', msg)}
       />

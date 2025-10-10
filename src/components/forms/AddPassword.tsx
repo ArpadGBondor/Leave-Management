@@ -5,6 +5,7 @@ import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
+import { passwordValidator } from '../../utils/fieldValidators';
 
 export default function AddPassword() {
   const [formData, setFormData] = useState({
@@ -31,19 +32,12 @@ export default function AddPassword() {
   const validatePassword = () => {
     let valid = true;
 
-    // Check new password
-    if (!password.trim()) {
-      setError('password', 'Please enter your password.');
-      valid = false;
-    } else if (password.trim().length < 6) {
-      setError('password', 'Password is too short.');
-      valid = false;
-    } else {
-      setError('password', '');
-    }
+    // Check password
+    let passwordValid = passwordValidator(password);
+    valid &&= passwordValid.valid;
+    setError('password', passwordValid.message);
 
     if (password !== confirmPassword) {
-      // Check password confirmation
       setError('confirmPassword', 'Passwords do not match');
       valid = false;
     } else {

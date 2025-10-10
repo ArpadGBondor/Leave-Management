@@ -46,24 +46,12 @@ export default function CompanyHolidayDefaults() {
       [field]: message,
     }));
 
-  const validateHolidayEntitlement = () => {
-    let valid = true;
-
-    return valid;
-  };
-
   const onSubmitHolidayEntitlement = async (e: any) => {
     e.preventDefault();
 
     startLoading('set-company-holiday-entitlement');
     try {
-      if (!validateHolidayEntitlement()) {
-        toast.error('Please fill in all fields');
-        return;
-      }
-
       await updateHolidayEntitlement({ base, additional, multiplier, total });
-
       toast.info('Default holiday configuration saved');
     } catch (error: any) {
       toast.error(

@@ -5,8 +5,9 @@ import { auth } from '../../firebase.config';
 import { useEffect, useState } from 'react';
 import Spinner from '../spinner/Spinner';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
-import fetchImportedBankHolidayRegionsAndYears from '../../utils/fetchImportedBankHolidayRegionsAndYears';
-type BankHolidayRegionsAndYears = Record<string, string[]>;
+import fetchImportedBankHolidayRegionsAndYears, {
+  BankHolidayRegionsAndYears,
+} from '../../utils/fetchImportedBankHolidayRegionsAndYears';
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();

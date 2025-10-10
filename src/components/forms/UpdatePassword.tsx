@@ -5,6 +5,7 @@ import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
+import { passwordValidator } from '../../utils/fieldValidators';
 
 export default function UpdatePassword() {
   const defaultFormData = {
@@ -31,30 +32,18 @@ export default function UpdatePassword() {
       [field]: message,
     }));
 
-  const validateUser = () => {
+  const validateUpdatePassword = () => {
     let valid = true;
 
-    // Check current password
-    if (!currentPassword.trim()) {
-      setError('currentPassword', 'Please enter your password.');
-      valid = false;
-    } else if (currentPassword.trim().length < 6) {
-      setError('currentPassword', 'Password is too short.');
-      valid = false;
-    } else {
-      setError('currentPassword', '');
-    }
+    // Check currentPassword
+    let currentPasswordValid = passwordValidator(currentPassword);
+    valid &&= currentPasswordValid.valid;
+    setError('currentPassword', currentPasswordValid.message);
 
     // Check new password
-    if (!password.trim()) {
-      setError('password', 'Please enter your password.');
-      valid = false;
-    } else if (password.trim().length < 6) {
-      setError('password', 'Password is too short.');
-      valid = false;
-    } else {
-      setError('password', '');
-    }
+    let passwordValid = passwordValidator(password);
+    valid &&= passwordValid.valid;
+    setError('password', passwordValid.message);
 
     if (password !== confirmPassword) {
       // Check password confirmation
@@ -72,7 +61,7 @@ export default function UpdatePassword() {
 
     startLoading('update-password');
     try {
-      if (!validateUser()) {
+      if (!validateUpdatePassword()) {
         toast.error('Please fill in all fields');
         return;
       }
