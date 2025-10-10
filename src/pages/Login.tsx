@@ -6,6 +6,7 @@ import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import { useUserContext } from '../context/user/useUserContext';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
+import { handleInputChange } from '../utils/onFormDataChange';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -29,14 +30,6 @@ export default function Login() {
       navigate('/');
     }
   }, [loggedIn, userLoading]);
-
-  const onChange = (e: any) => {
-    setError(e.target.name, '');
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -105,7 +98,7 @@ export default function Login() {
             name="email"
             type="email"
             value={email}
-            onChange={onChange}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
             placeholder="Enter your email address"
             autoComplete="email"
             error={errors.email}
@@ -117,7 +110,7 @@ export default function Login() {
             name="password"
             type="password"
             value={password}
-            onChange={onChange}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
             placeholder="Enter your password"
             autoComplete="password"
             error={errors.password}

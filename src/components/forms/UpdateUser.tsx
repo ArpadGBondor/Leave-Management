@@ -7,6 +7,7 @@ import { useUserContext } from '../../context/user/useUserContext';
 import SelectInput from '../inputs/SelectInput';
 import { UserType, userTypeOptions } from '../../interface/user.interface';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
+import { handleInputChange } from '../../utils/onFormDataChange';
 
 export default function UpdateUser() {
   const defaultState: {
@@ -56,14 +57,6 @@ export default function UpdateUser() {
       ...prevState,
       photo: newPhoto ?? '',
     }));
-
-  const onChange = (e: any) => {
-    setError(e.target.name, '');
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -136,7 +129,7 @@ export default function UpdateUser() {
         label="Name"
         name="name"
         value={name}
-        onChange={onChange}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your full name"
         autoComplete="name"
         error={errors.name}
@@ -148,7 +141,7 @@ export default function UpdateUser() {
         name="email"
         type="email"
         value={email}
-        onChange={onChange}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your email address"
         autoComplete="email"
         disabled
@@ -165,12 +158,13 @@ export default function UpdateUser() {
       />
 
       <SelectInput
-        id={'userType'}
-        label={'User type'}
-        name={'userType'}
+        id="userType"
+        label="User type"
+        name="userType"
         value={userType}
         options={userTypeOptions}
-        onChange={onChange}
+        placeholder="-- Select User Type --"
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
       />
 
       <Button label="Update user details" />

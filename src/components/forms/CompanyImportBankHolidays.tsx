@@ -4,6 +4,8 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { auth } from '../../firebase.config';
 import { useEffect, useState } from 'react';
 import Spinner from '../spinner/Spinner';
+import formatBankHolidayName from '../../utils/formatBankHolidayName';
+import fetchImportedBankHolidayRegionsAndYears from '../../utils/fetchImportedBankHolidayRegionsAndYears';
 type BankHolidayRegionsAndYears = Record<string, string[]>;
 
 export default function CompanyImportBankHolidays() {
@@ -18,21 +20,7 @@ export default function CompanyImportBankHolidays() {
   const fetchImportedRegionsAndYears = async () => {
     setFetchingInProgress(true);
     try {
-      const token = await auth.currentUser?.getIdToken();
-
-      const response = await fetch('/api/bank-holiday-collections', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errMsg = await response.text();
-        throw new Error(`Data fetch failed: ${errMsg}`);
-      }
-
-      const { regions } = await response.json();
+      const regions = await fetchImportedBankHolidayRegionsAndYears();
       setImportedRegionsAndYears(regions);
     } catch (error: any) {
       toast.error(error.message || 'Could not load imported regions and years');
@@ -94,8 +82,8 @@ export default function CompanyImportBankHolidays() {
         <ul className="bg-brand-purple-100 p-4 rounded-xl mx-auto space-y-3">
           {Object.entries(importedRegionsAndYears).map(([region, years]) => (
             <li key={region}>
-              <h4 className="font-bold text-brand-green-800 capitalize">
-                {region.replaceAll('-', ' ')}
+              <h4 className="font-bold text-brand-green-800">
+                {formatBankHolidayName(region)}
               </h4>
               <div className="flex flex-wrap gap-2 mt-1">
                 {years.sort().map((year) => (

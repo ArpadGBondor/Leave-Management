@@ -45,3 +45,5 @@ Work in progress...
   - VITE_FIREBASE_CONFIG_APP_ID
 - Firebase admin configuration for backend functions
   - FIREBASE_SERVICE_ACCOUNT - stringified secret key
+- Bank Holidays:
+  - UK_BANK_HOLIDAY_API="https://www.gov.uk/bank-holidays.json"

@@ -6,6 +6,20 @@ import ProfileBadge from '../components/profile/ProfileBadge';
 import { firebase_collections } from '../../lib/firebase_collections';
 import { Link } from 'react-router-dom';
 
+type UserLinkProps = {
+  user: User;
+};
+
+function UserLink({ user }: UserLinkProps) {
+  return (
+    <div className="p-4 rounded-xl bg-brand-green-700 hover:bg-brand-green-600 cursor-pointer">
+      <Link to={`/manage-team/${user.id}`}>
+        <ProfileBadge user={user} />
+      </Link>
+    </div>
+  );
+}
+
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,29 +63,17 @@ export default function ManageTeam() {
           {users
             .filter((user) => user.userType === userTypeOptions[2])
             .map((user) => (
-              <div className="p-4 rounded-xl bg-brand-green-700">
-                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
-                  <ProfileBadge user={user} />
-                </Link>
-              </div>
+              <UserLink user={user} />
             ))}
           {users
             .filter((user) => user.userType === userTypeOptions[1])
             .map((user) => (
-              <div className="p-4 rounded-xl bg-brand-green-700">
-                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
-                  <ProfileBadge user={user} />
-                </Link>
-              </div>
+              <UserLink user={user} />
             ))}
           {users
             .filter((user) => user.userType === userTypeOptions[0])
             .map((user) => (
-              <div className="p-4 rounded-xl bg-brand-green-700">
-                <Link to={`/manage-team/${user.id}`} className="cursor-pointer">
-                  <ProfileBadge user={user} />
-                </Link>
-              </div>
+              <UserLink user={user} />
             ))}
         </div>
       )}

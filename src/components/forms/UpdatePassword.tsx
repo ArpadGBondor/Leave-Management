@@ -4,13 +4,15 @@ import Button from '../buttons/Button';
 import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
+import { handleInputChange } from '../../utils/onFormDataChange';
 
 export default function UpdatePassword() {
-  const [formData, setFormData] = useState({
+  const defaultFormData = {
     currentPassword: '',
     password: '',
     confirmPassword: '',
-  });
+  };
+  const [formData, setFormData] = useState({ ...defaultFormData });
   const defaultErrors = {
     currentPassword: '',
     password: '',
@@ -22,14 +24,6 @@ export default function UpdatePassword() {
   const { startLoading, stopLoading } = useLoadingContext();
 
   const { currentPassword, password, confirmPassword } = formData;
-
-  const onChange = (e: any) => {
-    setError(e.target.name, '');
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -84,8 +78,8 @@ export default function UpdatePassword() {
       }
 
       await updatePassword(currentPassword, password);
-
       toast.info('Password updated');
+      setFormData({ ...defaultFormData });
     } catch (error: any) {
       toast.error(error.message || 'Could not update password');
     } finally {
@@ -104,7 +98,7 @@ export default function UpdatePassword() {
         name="currentPassword"
         type="password"
         value={currentPassword}
-        onChange={onChange}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your current password"
         autoComplete="password"
         error={errors.currentPassword}
@@ -116,7 +110,7 @@ export default function UpdatePassword() {
         name="password"
         type="password"
         value={password}
-        onChange={onChange}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your new password"
         autoComplete="new-password"
         error={errors.password}
@@ -128,7 +122,7 @@ export default function UpdatePassword() {
         name="confirmPassword"
         type="password"
         value={confirmPassword}
-        onChange={onChange}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Confirm your new password"
         autoComplete="new-password"
         error={errors.confirmPassword}

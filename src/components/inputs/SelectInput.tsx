@@ -1,13 +1,18 @@
 import React from 'react';
 
+export interface SelectInputOption {
+  label: string;
+  value: string;
+}
+
 interface SelectInputProps {
   id: string;
   label: string;
   name: string;
   value: string;
-  options: readonly string[]; // or { label: string; value: string }[] if you want
+  options: SelectInputOption[] | readonly string[] | string[];
   error?: string;
-  placeholder?: string; // <-- add placeholder
+  placeholder?: string;
   disabled?: boolean;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -45,21 +50,23 @@ export default function SelectInput({
             : 'focus:ring-brand-green-700 border-brand-green-700 hover:border-brand-green-600 bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
         }`}
       >
-        {placeholder ? (
-          <option value="" disabled hidden>
-            {placeholder}
-          </option>
-        ) : (
+        {placeholder && (
           <option value="" disabled>
-            -- Select {label} --
+            {placeholder}
           </option>
         )}
 
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
+        {options.map((opt) =>
+          typeof opt === 'string' ? (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ) : (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          )
+        )}
       </select>
 
       {/* Error message */}

@@ -7,6 +7,7 @@ import TextInput from '../components/inputs/TextInput';
 import FileInput from '../components/inputs/FileInput';
 import { useUserContext } from '../context/user/useUserContext';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
+import { handleInputChange } from '../utils/onFormDataChange';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -43,14 +44,6 @@ export default function Register() {
       ...prevState,
       photo: newPhoto ?? '',
     }));
-
-  const onChange = (e: any) => {
-    setError(e.target.name, '');
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -144,7 +137,7 @@ export default function Register() {
           label="Name"
           name="name"
           value={name}
-          onChange={onChange}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
           placeholder="Enter your full name"
           autoComplete="name"
           error={errors.name}
@@ -156,7 +149,7 @@ export default function Register() {
           name="email"
           type="email"
           value={email}
-          onChange={onChange}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
           placeholder="Enter your email address"
           autoComplete="email"
           error={errors.email}
@@ -169,7 +162,7 @@ export default function Register() {
               name="password"
               type="password"
               value={password}
-              onChange={onChange}
+              onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="Enter your password"
               autoComplete="new-password"
               error={errors.password}
@@ -181,7 +174,7 @@ export default function Register() {
               name="confirmPassword"
               type="password"
               value={confirmPassword}
-              onChange={onChange}
+              onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="Confirm your password"
               autoComplete="new-password"
               error={errors.confirmPassword}
