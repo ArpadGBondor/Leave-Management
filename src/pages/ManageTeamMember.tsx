@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { firebase_collections } from '../../lib/firebase_collections';
-import { db } from '../firebase.config';
-import { collection, getDocs } from 'firebase/firestore';
 import SelectInput, {
   SelectInputOption,
 } from '../components/inputs/SelectInput';
