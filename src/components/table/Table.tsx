@@ -12,6 +12,7 @@ type TableProps<T> = {
   className?: string;
   rowKey?: keyof T | ((row: T) => string | number); // how to identify rows
   onRowClick?: (row: T) => void;
+  highlightRow?: (row: T) => boolean;
   emptyState?: React.ReactNode;
 };
 
@@ -23,6 +24,7 @@ export default function Table<T extends Record<string, any>>({
   className = '',
   rowKey,
   onRowClick,
+  highlightRow,
   emptyState = <div className="text-center text-brand-green-800">No data</div>,
 }: TableProps<T>) {
   const [sortBy, setSortBy] = useState<SortByType>({
@@ -62,9 +64,11 @@ export default function Table<T extends Record<string, any>>({
 
   return (
     <div className={'w-full ' + className}>
-      <h3 v-if={title} className="text-2xl font-bold text-brand-green-700 mb-2">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="text-2xl font-bold text-brand-green-700 mb-2">
+          {title}
+        </h3>
+      )}
       <div className="overflow-x-auto block">
         <table className="divide-y bg-brand-green-50 divide-brand-green-400 border border-brand-green-400 border-collapse table-auto min-w-full">
           <TableHeader
@@ -88,13 +92,13 @@ export default function Table<T extends Record<string, any>>({
                   pageSize={pageSize}
                   rowKey={rowKey}
                   onRowClick={onRowClick}
+                  highlightRow={highlightRow}
                 />
               ))
             )}
           </tbody>
         </table>
       </div>
-
       <TablePaginationFooter
         sorted={sorted}
         page={page}

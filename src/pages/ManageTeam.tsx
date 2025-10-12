@@ -45,6 +45,18 @@ export default function ManageTeam() {
 
   const columns: TableColumn<User>[] = [
     {
+      header: 'Photo',
+      accessor: 'photo',
+      render: (photo: string) => (
+        <img
+          src={photo}
+          alt="Profile picture"
+          className="w-8 h-8 rounded-full border-2 border-brand-purple-300 block"
+        />
+      ),
+      align: 'center',
+    },
+    {
       header: 'Name',
       accessor: 'name',
       sortable: true,
@@ -56,14 +68,12 @@ export default function ManageTeam() {
       header: 'Created',
       accessor: (row: User) => row.created?.toDate().toLocaleDateString(),
       sortable: true,
-      align: 'center',
       width: 'w-30',
     },
     {
       header: 'Updated',
       accessor: (row: User) => row.updated?.toDate().toLocaleDateString(),
       sortable: true,
-      align: 'center',
       width: 'w-30',
     },
   ];

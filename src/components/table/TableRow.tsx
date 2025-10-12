@@ -8,6 +8,7 @@ type TableRowProps<T> = {
   pageSize: number;
   rowKey?: keyof T | ((row: T) => string | number); // how to identify rows
   onRowClick?: (row: T) => void;
+  highlightRow?: (row: T) => boolean;
 };
 
 export function getValueFromAccessor<T>(
@@ -26,6 +27,7 @@ export default function TableRow<T>({
   pageSize,
   rowKey,
   onRowClick,
+  highlightRow,
 }: TableRowProps<T>) {
   const getRowId = (row: T, idx: number) => {
     if (!rowKey) return idx;
@@ -38,6 +40,10 @@ export default function TableRow<T>({
       key={String(getRowId(row, page * pageSize + rowIndex))}
       className={`hover:bg-brand-green-100 cursor-${
         onRowClick ? 'pointer' : 'auto'
+      } ${
+        highlightRow && highlightRow(row)
+          ? 'bg-brand-purple-50 hover:bg-brand-purple-100 text-brand-purple-600'
+          : 'bg-brand-green-50 hover:bg-brand-green-100 text-brand-green-600'
       }`}
       onClick={() => onRowClick?.(row)}
     >
@@ -47,7 +53,7 @@ export default function TableRow<T>({
         return (
           <td
             key={col.key ?? String(cIdx)}
-            className={`px-4 py-3 text-sm align-top ${
+            className={`px-4 py-3 text-sm align-center ${
               col.align === 'center'
                 ? 'text-center'
                 : col.align === 'right'
