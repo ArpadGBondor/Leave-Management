@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type SwitchButtonProps = {
   label: string;
@@ -15,13 +15,17 @@ export default function SwitchButton({
   variant = 'primary',
   onChange,
 }: SwitchButtonProps) {
-  const [isOn, setIsOn] = useState(checked);
+  const [isOn, setIsOn] = useState(false);
 
   const handleClick = () => {
     const newState = !isOn;
     setIsOn(newState);
     onChange?.(name, newState);
   };
+
+  useEffect(() => {
+    setIsOn(checked);
+  }, [checked]);
 
   const baseClasses =
     'w-full flex items-center justify-center gap-3 px-4 py-2 rounded-xl transition font-medium transform active:scale-95';

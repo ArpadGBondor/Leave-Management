@@ -44,7 +44,7 @@ export default function App() {
             <Route element={<PrivateManagerRoute restrictToClaim="ADMIN" />}>
               <Route path="/manage-team" element={<ManageTeam />} />
               <Route
-                path="/manage-team/:userID"
+                path="/manage-team/:userId"
                 element={<ManageTeamMember />}
               />
             </Route>

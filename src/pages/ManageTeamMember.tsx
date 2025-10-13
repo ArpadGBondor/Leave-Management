@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import SelectInput, {
-  SelectInputOption,
-} from '../components/inputs/SelectInput';
+import { SelectInputOption } from '../components/inputs/SelectInput';
 import formatBankHolidayName from '../utils/formatBankHolidayName';
-import { handleInputChange } from '../utils/onFormDataChange';
 import fetchImportedBankHolidayRegionsAndYears, {
   BankHolidayRegionsAndYears,
 } from '../utils/fetchImportedBankHolidayRegionsAndYears';
@@ -21,10 +18,15 @@ import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/user.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
-import { UserHolidayEntitlement } from '../interface/holidayEntitlement.interface';
+import HolidayEntitlement, {
+  UserHolidayEntitlement,
+} from '../interface/holidayEntitlement.interface';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
+import Button from '../components/buttons/Button';
+import WorkdaysOfTheWeek from '../interface/workdaysOfTheWeek.interface';
+import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
 const noOption = { label: 'None', value: '' };
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
@@ -68,18 +70,11 @@ const columns: TableColumn<UserHolidayEntitlement>[] = [
 ];
 
 export default function ManageTeamMember() {
-  const { userID } = useParams();
-
+  const { userId } = useParams();
   const [bankHolidayOptions, setBankHolidayOptions] = useState([
     noOption,
   ] as SelectInputOption[]);
-
-  const defaultState: {
-    chosenBankHoliday: string;
-  } = {
-    chosenBankHoliday: '',
-  };
-  const [formData, setFormData] = useState(defaultState);
+  const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
@@ -90,7 +85,8 @@ export default function ManageTeamMember() {
   const [selectedForEditing, setSelectedForEditing] =
     useState<UserHolidayEntitlement | null>(null);
 
-  const { chosenBankHoliday } = formData;
+  const [screenPhase, setScreenPhase] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     fetchImportedRegionsAndYears();
@@ -104,15 +100,20 @@ export default function ManageTeamMember() {
         label: formatBankHolidayName(regionCode),
         value: regionCode,
       });
-      setBankHolidayOptions(options);
     }
+    setBankHolidayOptions(options);
+
+    const years: string[] = Array.from(
+      new Set(Object.values(importedRegionsAndYears).flat())
+    ).sort();
+    setAvailableYears(years);
   }, [importedRegionsAndYears]);
 
   useEffect(() => {
-    if (!userID) return;
+    if (!userId) return;
     const configurationRef = collection(
       db,
-      `${firebase_collections.USERS}/${userID}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}`
+      `${firebase_collections.USERS}/${userId}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}`
     );
     startLoading('fetch-configured-years');
     const unsubscribe = onSnapshot(
@@ -133,10 +134,10 @@ export default function ManageTeamMember() {
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [userID]);
+  }, [userId]);
 
   const fetchUserDocument = async () => {
-    const userRef = doc(db, `${firebase_collections.USERS}/${userID}`);
+    const userRef = doc(db, `${firebase_collections.USERS}/${userId}`);
     const userDoc = await getDoc(userRef);
     setUser(userDoc.data() as User);
   };
@@ -154,6 +155,88 @@ export default function ManageTeamMember() {
     }
   };
 
+  const selectRow = (row: UserHolidayEntitlement) => {
+    setSelectedForEditing(row);
+    setIsEditing(true);
+    setScreenPhase(2);
+  };
+
+  const pickNextAvailableYear = (): string => {
+    const current = new Date().getFullYear();
+
+    // 1️⃣ Filter out already configured years
+    const configuredIds = new Set(configuredYears.map((c) => c.id));
+    const candidates = availableYears
+      .filter((y) => !configuredIds.has(y))
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    // 2️⃣ Try to find the next future year
+    const next = candidates.find((y) => y >= current);
+    if (next !== undefined) return String(next);
+
+    // 3️⃣ If no future year, try the most recent past year
+    const prev = [...candidates].reverse().find((y) => y < current);
+    if (prev !== undefined) return String(prev);
+
+    // 4️⃣ If nothing found, fail - Button should be disabled in this case
+    throw new Error("Can't create new configuration.");
+  };
+
+  const addNew = async () => {
+    const id = pickNextAvailableYear(); // next or previous year that is available and not configured yet
+    if (configuredYears.length > 0) {
+      // if there are years configured, take data from the last one
+      let row = configuredYears[0];
+      for (const c of configuredYears) {
+        if (row.id < c.id) row = c;
+      }
+
+      setSelectedForEditing({
+        ...row,
+        id,
+      });
+    } else {
+      const companyHolidayEntitlementSnap = await getDoc(
+        doc(
+          db,
+          `${firebase_collections.CONFIG}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}`
+        )
+      );
+      const companyHolidayEntitlement: HolidayEntitlement =
+        companyHolidayEntitlementSnap.exists()
+          ? (companyHolidayEntitlementSnap.data() as HolidayEntitlement)
+          : { base: 28, additional: 0, multiplier: 1, total: 28 }; // default;
+
+      const companyWorkdaysOfTheWeekSnap = await getDoc(
+        doc(
+          db,
+          `${firebase_collections.CONFIG}/${firebase_collections.WORKDAYS_OF_THE_WEEK}`
+        )
+      );
+      const companyWorkdaysOfTheWeek: WorkdaysOfTheWeek =
+        companyWorkdaysOfTheWeekSnap.exists()
+          ? (companyWorkdaysOfTheWeekSnap.data() as WorkdaysOfTheWeek)
+          : {
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: false,
+              sunday: false,
+            }; // default;
+      setSelectedForEditing({
+        ...companyHolidayEntitlement,
+        ...companyWorkdaysOfTheWeek,
+        bankHolidayRegionId: '', // initialise with no bank holiday region
+        id,
+      });
+    }
+    setIsEditing(false);
+    setScreenPhase(2);
+  };
+
   return (
     <div className="p-4 md:m-8 md:min-w-sm lg:min-w-md rounded-xl border-4 border-brand-green-500 bg-brand-purple-50  overflow-auto  max-w-full space-y-4">
       <div className="flex flex-col justify-stretch items-stretch gap-4 p-4 md:p-8 w-full h-full overflow-auto">
@@ -165,29 +248,47 @@ export default function ManageTeamMember() {
             <ProfileBadge user={user} />
           </div>
         )}
-
-        <Table
-          data={configuredYears}
-          columns={columns}
-          title="Configured years"
-          onRowClick={(row) => setSelectedForEditing(row)}
-          highlightRow={(row) =>
-            selectedForEditing !== null && row.id === selectedForEditing.id
-          }
-        />
-
-        <p className="text-brand-green-800">
-          {'>>>'} Here a form should allow to make changes or create new record{' '}
-          {'<<<'}
-        </p>
-        <SelectInput
-          id="chosenBankHoliday"
-          label="Bank Holidays automatically excluded"
-          name="chosenBankHoliday"
-          value={chosenBankHoliday}
-          options={bankHolidayOptions}
-          onChange={(e) => handleInputChange(e, setFormData)}
-        />
+        {screenPhase === 1 && (
+          <>
+            <Table
+              data={configuredYears}
+              columns={columns}
+              title="Configured years"
+              onRowClick={(row) => selectRow(row)}
+              highlightRow={(row) =>
+                selectedForEditing !== null && row.id === selectedForEditing.id
+              }
+            />
+            <Button
+              label="Add new"
+              onClick={addNew}
+              disabled={availableYears.every((year) =>
+                configuredYears.map((config) => config.id).includes(year)
+              )}
+            />
+          </>
+        )}
+        {screenPhase === 2 && selectedForEditing && (
+          <AddEditUserYearlyConfiguration
+            bankHolidayOptions={bankHolidayOptions}
+            isEditing={isEditing}
+            selectedForEditing={selectedForEditing}
+            yearOptions={availableYears.map(
+              (year): SelectInputOption => ({
+                label: year,
+                value: year,
+                disabled: configuredYears
+                  .map((config) => config.id)
+                  .includes(year),
+              })
+            )}
+            userId={userId!}
+            onBack={() => {
+              setScreenPhase(1);
+              setSelectedForEditing(null);
+            }}
+          />
+        )}
       </div>
     </div>
   );

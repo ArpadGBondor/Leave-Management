@@ -1,0 +1,289 @@
+import { useEffect, useState } from 'react';
+import { UserHolidayEntitlement } from '../../interface/holidayEntitlement.interface';
+import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
+import {
+  handleInputChange,
+  handleValueChange,
+} from '../../utils/onFormDataChange';
+import NumberInput from '../inputs/NumberInput';
+import SwitchButton from '../buttons/SwitchButton';
+import { useLoadingContext } from '../../context/loading/useLoadingContext';
+import { auth } from '../../firebase.config';
+import { toast } from 'react-toastify';
+import Button from '../buttons/Button';
+
+interface AddEditUserYearlyConfigurationProps {
+  bankHolidayOptions: SelectInputOption[];
+  isEditing: boolean;
+  selectedForEditing: UserHolidayEntitlement;
+  yearOptions: SelectInputOption[];
+  userId: string;
+  onBack: () => void;
+}
+
+export default function AddEditUserYearlyConfiguration({
+  bankHolidayOptions,
+  isEditing,
+  selectedForEditing,
+  yearOptions,
+  userId,
+  onBack,
+}: AddEditUserYearlyConfigurationProps) {
+  const [formData, setFormData] = useState<UserHolidayEntitlement>({
+    base: 0,
+    additional: 0,
+    multiplier: 0,
+    total: 0,
+    monday: false,
+    tuesday: false,
+    wednesday: false,
+    thursday: false,
+    friday: false,
+    saturday: false,
+    sunday: false,
+    bankHolidayRegionId: '',
+    id: '',
+  });
+
+  const [errors, setErrors] = useState({
+    base: '',
+    additional: '',
+    multiplier: '',
+    total: '',
+    monday: '',
+    tuesday: '',
+    wednesday: '',
+    thursday: '',
+    friday: '',
+    saturday: '',
+    sunday: '',
+    bankHolidayRegionId: '',
+    id: '',
+  });
+  const { startLoading, stopLoading } = useLoadingContext();
+
+  const {
+    base,
+    additional,
+    multiplier,
+    total,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+    bankHolidayRegionId,
+    id,
+  } = formData;
+
+  useEffect(() => {
+    if (selectedForEditing) setFormData(selectedForEditing);
+  }, [selectedForEditing]);
+
+  const setError = (field: keyof typeof errors, message: string) =>
+    setErrors((prevState) => ({
+      ...prevState,
+      [field]: message,
+    }));
+
+  const numberOfWorkdays = () => {
+    return [
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday,
+    ].filter(Boolean).length;
+  };
+
+  const onSubmitUserYearlyConfiguration = async (e: any) => {
+    e.preventDefault();
+
+    startLoading('update-user-yearly-configuration');
+    try {
+      const token = await auth.currentUser?.getIdToken();
+
+      const response = await fetch('/api/user-yearly-holiday-configuration', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...formData,
+          userId,
+        }),
+      });
+      if (!response.ok) throw new Error('Failed to set config');
+
+      toast.info('Yearly configuration updated');
+      onBack();
+    } catch (error: any) {
+      toast.error(error.message || 'Could not update yearly configuration');
+    } finally {
+      stopLoading('update-user-yearly-configuration');
+    }
+  };
+
+  return (
+    <form
+      onSubmit={onSubmitUserYearlyConfiguration}
+      className="flex flex-col gap-4 w-full"
+    >
+      <h3 className="text-2xl font-bold text-brand-green-700">
+        {isEditing ? 'Edit' : 'Add'} configuration
+      </h3>
+      <SelectInput
+        id="id"
+        label="Configured year"
+        name="id"
+        value={id}
+        options={yearOptions ?? []}
+        disabled={isEditing}
+        onChange={(e) => handleInputChange(e, setFormData)}
+      />
+      <SelectInput
+        id="bankHolidayRegionId"
+        label="Bank Holidays automatically excluded"
+        name="bankHolidayRegionId"
+        value={bankHolidayRegionId}
+        options={bankHolidayOptions}
+        onChange={(e) => handleInputChange(e, setFormData)}
+      />
+      <h3 className="text-2xl font-bold text-brand-green-700">
+        Workdays of the week
+      </h3>
+      <div className="flex flex-col md:flex-row gap-2 justify-stretch items-end">
+        <SwitchButton
+          label="Monday"
+          name="monday"
+          checked={monday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Tuesday"
+          name="tuesday"
+          checked={tuesday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Wednesday"
+          name="wednesday"
+          checked={wednesday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Thursday"
+          name="thursday"
+          checked={thursday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Friday"
+          name="friday"
+          checked={friday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Saturday"
+          name="saturday"
+          checked={saturday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+        <SwitchButton
+          label="Sunday"
+          name="sunday"
+          checked={sunday}
+          onChange={(name, value) =>
+            handleValueChange(name as keyof typeof formData, value, setFormData)
+          }
+        />
+      </div>
+      <p className=" text-brand-green-800 text-center">
+        Selected <span className="font-bold">{numberOfWorkdays()}</span>{' '}
+        workdays per week.
+        <br />
+        Recommended leave entitlement multiplier:{' '}
+        <span className="font-bold">{numberOfWorkdays() / 5}</span>
+      </p>
+      <h3 className="text-2xl font-bold text-brand-green-700">
+        Holiday Entitlement
+      </h3>
+      <div className="flex flex-col md:flex-row gap-2 justify-stretch items-stretch md:items-end">
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+          {'('}
+        </div>
+        <NumberInput
+          id="base"
+          label="Base leave entitlement"
+          name="base"
+          value={base}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          placeholder="Number of days"
+          error={errors.base}
+        />
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+          {'+'}
+        </div>
+        <NumberInput
+          id="additional"
+          label="Additional leave entitlement"
+          name="additional"
+          value={additional}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          placeholder="Number of days"
+          step={1}
+          error={errors.additional}
+        />
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+          {')'}
+        </div>
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+          {'x'}
+        </div>
+        <NumberInput
+          id="multiplier"
+          label="Leave entitlement multiplier"
+          name="multiplier"
+          value={multiplier}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          placeholder="Multiplier"
+          step={0.01}
+          min={0}
+          error={errors.multiplier}
+        />
+        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+          {'='}
+        </div>
+        <NumberInput
+          id="total"
+          label="Total leave entitlement"
+          name="total"
+          value={total}
+          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          placeholder="Number of days"
+          error={errors.base}
+          disabled
+        />
+      </div>
+      <Button label="Save configuration" />
+      <Button type="button" label="Back" onClick={onBack} />
+    </form>
+  );
+}
