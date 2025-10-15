@@ -5,7 +5,7 @@ import TextInput from '../inputs/TextInput';
 import FileInput from '../inputs/FileInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import SelectInput from '../inputs/SelectInput';
-import { UserType, userTypeOptions } from '../../interface/user.interface';
+import { UserType, userTypeOptions } from '../../interface/User.interface';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import {
   handleInputChange,

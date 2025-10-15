@@ -1,5 +1,5 @@
 import { UserState } from './UserContext';
-import User from '../../interface/user.interface';
+import User from '../../interface/User.interface';
 import {
   SET_USER,
   SET_LOADING,

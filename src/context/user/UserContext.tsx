@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import User from '../../interface/user.interface';
+import User from '../../interface/User.interface';
 
 export interface UserState {
   user: User | null;

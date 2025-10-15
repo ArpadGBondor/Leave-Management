@@ -1,5 +1,4 @@
-import { useUserContext } from '../../context/user/useUserContext';
-import User from '../../interface/user.interface';
+import User from '../../interface/User.interface';
 
 interface ProfileBadgeProps {
   user: User;

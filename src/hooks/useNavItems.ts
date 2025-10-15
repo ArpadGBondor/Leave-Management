@@ -1,11 +1,11 @@
 import { useUserContext } from '../context/user/useUserContext';
-import navItem from '../interface/navItem.interface';
+import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
   const { user, loggedIn, loading: userLoading } = useUserContext();
 
-  const topNavItems: navItem[] = [];
-  const bottomNavItems: navItem[] = [];
+  const topNavItems: NavItem[] = [];
+  const bottomNavItems: NavItem[] = [];
 
   topNavItems.push({ name: 'Home', link: '/', icon: 'FaHome' });
   if (loggedIn && user?.claims?.SUPER_ADMIN) {

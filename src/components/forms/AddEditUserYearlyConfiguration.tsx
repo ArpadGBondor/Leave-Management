@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { UserHolidayEntitlement } from '../../interface/holidayEntitlement.interface';
+import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
 import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
 import {
   handleInputChange,

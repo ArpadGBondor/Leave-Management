@@ -1,37 +1,35 @@
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { auth } from '../../firebase.config';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Spinner from '../spinner/Spinner';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
-import fetchImportedBankHolidayRegionsAndYears, {
-  BankHolidayRegionsAndYears,
-} from '../../utils/fetchImportedBankHolidayRegionsAndYears';
+import { useCompanyContext } from '../../context/company/useCompanyContext';
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();
-  const [importedRegionsAndYears, setImportedRegionsAndYears] =
-    useState<BankHolidayRegionsAndYears>({});
   // do not trigger loading overlay while fetching data. The rest of the page
   // should stay usable while we are fetching available regions and years
-  const [fetchingInProgress, setFetchingInProgress] = useState(false);
-
-  // Fetch existing regions & years from Firestore
-  const fetchImportedRegionsAndYears = async () => {
-    setFetchingInProgress(true);
-    try {
-      const regions = await fetchImportedBankHolidayRegionsAndYears();
-      setImportedRegionsAndYears(regions);
-    } catch (error: any) {
-      toast.error(error.message || 'Could not load imported regions and years');
-    } finally {
-      setFetchingInProgress(false);
-    }
-  };
+  const {
+    importBankHolidaysFromGovUK,
+    fetchImportedBankHolidayRegionsAndYears,
+    importedRegionsAndYears,
+    importedRegionsAndYearsLoaded,
+  } = useCompanyContext();
 
   useEffect(() => {
-    fetchImportedRegionsAndYears();
+    startLoading('fetch-imported-bank-holiday-regions-and-years');
+    fetchImportedBankHolidayRegionsAndYears()
+      .catch((error: unknown) =>
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'Could not load imported regions and years'
+        )
+      )
+      .finally(() => {
+        stopLoading('fetch-imported-bank-holiday-regions-and-years');
+      });
   }, []);
 
   const onSubmitImportBankHolidays = async (e: any) => {
@@ -39,29 +37,30 @@ export default function CompanyImportBankHolidays() {
 
     startLoading('import-company-bank-holidays');
     try {
-      const token = await auth.currentUser?.getIdToken();
-
-      const response = await fetch('/api/import-bank-holidays', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errMsg = await response.text();
-        throw new Error(`Import failed: ${errMsg}`);
-      }
-
-      const result = await response.json();
+      const result = await importBankHolidaysFromGovUK();
       toast.success(
         `Imported bank holidays (${result.created} new, ${result.updated} updated, ${result.skipped} skipped)`
       );
-    } catch (error: any) {
-      toast.error(error.message || 'Could not import bank holidays');
+    } catch (error: unknown) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Could not import bank holidays'
+      );
     } finally {
       stopLoading('import-company-bank-holidays');
-      await fetchImportedRegionsAndYears();
+      startLoading('fetch-imported-bank-holiday-regions-and-years');
+      try {
+        await fetchImportedBankHolidayRegionsAndYears(true);
+      } catch (error: unknown) {
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'Could not load imported regions and years'
+        );
+      } finally {
+        stopLoading('fetch-imported-bank-holiday-regions-and-years');
+      }
     }
   };
 
@@ -74,7 +73,7 @@ export default function CompanyImportBankHolidays() {
         Imported bank holidays
       </h3>
 
-      {fetchingInProgress ? (
+      {!importedRegionsAndYearsLoaded ? (
         <div className="flex flex-col items-center ">
           <Spinner size="xl" />
         </div>
