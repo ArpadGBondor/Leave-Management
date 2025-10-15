@@ -22,13 +22,13 @@ export default function Button({
       highlight ? 'bg-brand-green-800' : 'bg-brand-green-700'
     }  text-white`,
     secondary: `${
-      highlight ? 'bg-brand-purple-800' : 'bg-brand-purple-700'
-    }  text-white`,
+      highlight ? 'bg-brand-green-50' : 'bg-brand-green-100'
+    }  text-brand-green-700 border-2 border-brand-green-700`,
   };
 
   const hoverEffect = {
-    primary: 'hover:bg-brand-green-600',
-    secondary: 'hover:bg-brand-purple-600',
+    primary: 'hover:bg-brand-green-600 cursor-pointer',
+    secondary: 'hover:bg-brand-green-200 cursor-pointer',
   };
 
   const disabledClasses = 'opacity-50 cursor-not-allowed pointer-events-none';

@@ -129,6 +129,15 @@ export default function AddEditUserYearlyConfiguration({
     }
   };
 
+  const autoUpdate = (
+    state: UserHolidayEntitlement
+  ): UserHolidayEntitlement => {
+    return {
+      ...state,
+      total: (state.base + state.additional) * state.multiplier,
+    };
+  };
+
   return (
     <form
       onSubmit={onSubmitUserYearlyConfiguration}
@@ -234,7 +243,9 @@ export default function AddEditUserYearlyConfiguration({
           label="Base leave entitlement"
           name="base"
           value={base}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           error={errors.base}
         />
@@ -246,7 +257,9 @@ export default function AddEditUserYearlyConfiguration({
           label="Additional leave entitlement"
           name="additional"
           value={additional}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           step={1}
           error={errors.additional}
@@ -262,7 +275,9 @@ export default function AddEditUserYearlyConfiguration({
           label="Leave entitlement multiplier"
           name="multiplier"
           value={multiplier}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Multiplier"
           step={0.01}
           min={0}
@@ -276,14 +291,23 @@ export default function AddEditUserYearlyConfiguration({
           label="Total leave entitlement"
           name="total"
           value={total}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           error={errors.base}
           disabled
         />
       </div>
-      <Button label="Save configuration" />
-      <Button type="button" label="Back" onClick={onBack} />
+      <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
+        <Button label={isEditing ? 'Save changes' : 'Add configuration'} />
+        <Button
+          type="button"
+          variant="secondary"
+          label="Back"
+          onClick={onBack}
+        />
+      </div>
     </form>
   );
 }

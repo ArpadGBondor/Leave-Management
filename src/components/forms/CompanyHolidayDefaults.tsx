@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
-import TextInput from '../inputs/TextInput';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import NumberInput from '../inputs/NumberInput';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
+import HolidayEntitlement from '../../interface/holidayEntitlement.interface';
 
 export default function CompanyHolidayDefaults() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<HolidayEntitlement>({
     base: 0,
     additional: 0,
     multiplier: 0,
@@ -27,18 +27,13 @@ export default function CompanyHolidayDefaults() {
 
   const { base, additional, multiplier, total } = formData;
 
-  useEffect(
-    () => {
-      if (holidayEntitlement)
-        setFormData((prevState) => ({
-          ...prevState,
-          ...holidayEntitlement,
-        }));
-    },
-    [
-      // holidayEntitlement unsaved changes should not get overwritten
-    ]
-  );
+  useEffect(() => {
+    if (holidayEntitlement)
+      setFormData((prevState) => ({
+        ...prevState,
+        ...holidayEntitlement,
+      }));
+  }, []);
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -62,6 +57,13 @@ export default function CompanyHolidayDefaults() {
     }
   };
 
+  const autoUpdate = (state: HolidayEntitlement): HolidayEntitlement => {
+    return {
+      ...state,
+      total: (state.base + state.additional) * state.multiplier,
+    };
+  };
+
   return (
     <form
       onSubmit={onSubmitHolidayEntitlement}
@@ -80,7 +82,9 @@ export default function CompanyHolidayDefaults() {
           label="Base leave entitlement"
           name="base"
           value={base}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           error={errors.base}
         />
@@ -92,7 +96,9 @@ export default function CompanyHolidayDefaults() {
           label="Additional leave entitlement"
           name="additional"
           value={additional}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           step={1}
           error={errors.additional}
@@ -108,7 +114,9 @@ export default function CompanyHolidayDefaults() {
           label="Leave entitlement multiplier"
           name="multiplier"
           value={multiplier}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Multiplier"
           step={0.01}
           min={0}
@@ -122,7 +130,9 @@ export default function CompanyHolidayDefaults() {
           label="Total leave entitlement"
           name="total"
           value={total}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
+          onChange={(e) =>
+            handleInputChange(e, setFormData, setError, autoUpdate)
+          }
           placeholder="Number of days"
           error={errors.base}
           disabled

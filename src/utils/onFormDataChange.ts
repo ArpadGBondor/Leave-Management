@@ -3,21 +3,37 @@ export function handleInputChange<T>(
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   >,
   setFormData: React.Dispatch<React.SetStateAction<T>>,
-  setError?: (field: keyof T, value: string) => void
+  setError?: (field: keyof T, value: string) => void,
+  autoUpdate?: (state: T) => T
 ) {
-  const { name, value } = e.target;
-  handleValueChange(name as keyof T, value, setFormData, setError);
+  const { name, value, type } = e.target;
+  let parsedValue: any = value;
+  if (type === 'number') {
+    parsedValue = value === '' ? '' : Number(value);
+  }
+  handleValueChange(
+    name as keyof T,
+    parsedValue,
+    setFormData,
+    setError,
+    autoUpdate
+  );
 }
 
 export function handleValueChange<T, V>(
   name: keyof T,
   value: V,
   setFormData: React.Dispatch<React.SetStateAction<T>>,
-  setError?: (field: keyof T, value: string) => void
+  setError?: (field: keyof T, value: string) => void,
+  autoUpdate?: (state: T) => T
 ) {
   setError && setError(name as keyof T, '');
-  setFormData((prevState) => ({
-    ...prevState,
-    [name]: value,
-  }));
+  setFormData((prevState) => {
+    let state: T = {
+      ...prevState,
+      [name]: value,
+    };
+    if (autoUpdate) state = autoUpdate(state);
+    return state;
+  });
 }
