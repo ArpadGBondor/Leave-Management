@@ -8,8 +8,6 @@ import { useCompanyContext } from '../../context/company/useCompanyContext';
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();
-  // do not trigger loading overlay while fetching data. The rest of the page
-  // should stay usable while we are fetching available regions and years
   const {
     importBankHolidaysFromGovUK,
     fetchImportedBankHolidayRegionsAndYears,
