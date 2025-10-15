@@ -19,7 +19,8 @@ export const createOrUpdateDoc =
         throw new Error('Forbidden');
       }
 
-      const body = JSON.parse(event.body || '{}');
+      // remove created field from request body
+      const { created, ...body } = JSON.parse(event.body || '{}');
 
       const ref = buildRef(body, path);
       const clean = cleanBody(body, path);
