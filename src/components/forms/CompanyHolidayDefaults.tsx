@@ -5,7 +5,7 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import NumberInput from '../inputs/NumberInput';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import HolidayEntitlement from '../../interface/holidayEntitlement.interface';
+import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 
 export default function CompanyHolidayDefaults() {
   const [formData, setFormData] = useState<HolidayEntitlement>({

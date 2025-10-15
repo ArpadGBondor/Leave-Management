@@ -16,7 +16,7 @@ import { doc, getDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
-import User, { userTypeOptions } from '../../interface/user.interface';
+import User, { userTypeOptions } from '../../interface/User.interface';
 import {
   SET_LOADING,
   SET_LOGGED_IN,

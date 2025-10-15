@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.config';
-import User, { userTypeOptions } from '../interface/user.interface';
-import ProfileBadge from '../components/profile/ProfileBadge';
+import User, { userTypeOptions } from '../interface/User.interface';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
-
-type UserLinkProps = {
-  user: User;
-};
 
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
@@ -20,7 +15,6 @@ export default function ManageTeam() {
   useEffect(() => {
     const usersCol = collection(db, firebase_collections.USERS);
 
-    // Real-time listener
     const unsubscribe = onSnapshot(
       usersCol,
       (snapshot) => {
@@ -37,7 +31,6 @@ export default function ManageTeam() {
       }
     );
 
-    // Cleanup on unmount
     return () => unsubscribe();
   }, []);
 

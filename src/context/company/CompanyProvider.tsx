@@ -1,13 +1,20 @@
 import React, { useReducer, useCallback, useEffect } from 'react';
 import { CompanyContext } from './CompanyContext';
 import { loadingReducer, CompanyState } from './CompanyReducer';
-import HolidayEntitlement from '../../interface/holidayEntitlement.interface';
+import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import { useUserContext } from '../user/useUserContext';
 import { auth, db } from '../../firebase.config';
-import { SET_HOLIDAY_ENTITLEMENT, SET_WORKDAYS_OF_THE_WEEK } from '../types';
+import {
+  SET_HOLIDAY_ENTITLEMENT,
+  SET_WORKDAYS_OF_THE_WEEK,
+  SET_REGIONS_AND_YEARS,
+  SET_REGIONS_AND_YEARS_LOADED,
+} from '../types';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
-import WorkdaysOfTheWeek from '../../interface/workdaysOfTheWeek.interface';
+import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
+import ImportBankHolidayResponse from '../../interface/ImportBankHolidayResponse.interface';
+import BankHolidayRegionsAndYears from '../../interface/BankHolidayRegionsAndYears.interface';
 
 interface CompanyProviderProps {
   children: React.ReactNode;
@@ -29,6 +36,8 @@ const initialState: CompanyState = {
     saturday: false,
     sunday: false,
   },
+  importedRegionsAndYears: {},
+  importedRegionsAndYearsLoaded: false,
 };
 
 const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
@@ -87,6 +96,54 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
     [user]
   );
 
+  const importBankHolidaysFromGovUK =
+    useCallback(async (): Promise<ImportBankHolidayResponse> => {
+      if (!user) throw new Error(`User not logged in`);
+      const token = await auth.currentUser?.getIdToken();
+
+      const response = await fetch('/api/import-bank-holidays', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errMsg = await response.text();
+        throw new Error(`Import failed: ${errMsg}`);
+      }
+
+      const result = await response.json();
+      return result;
+    }, [user]);
+
+  const fetchImportedBankHolidayRegionsAndYears = useCallback(
+    async (refetch?: boolean): Promise<BankHolidayRegionsAndYears> => {
+      if (!refetch && state.importedRegionsAndYearsLoaded)
+        return state.importedRegionsAndYears;
+      if (!user) throw new Error(`User not logged in`);
+      const token = await auth.currentUser?.getIdToken();
+
+      const response = await fetch('/api/bank-holiday-collections', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errMsg = await response.text();
+        throw new Error(`Data fetch failed: ${errMsg}`);
+      }
+
+      const { regions } = await response.json();
+      dispatch({ type: SET_REGIONS_AND_YEARS, payload: regions });
+      dispatch({ type: SET_REGIONS_AND_YEARS_LOADED, payload: true });
+      return regions;
+    },
+    [user, state.importedRegionsAndYears, state.importedRegionsAndYearsLoaded]
+  );
+
   useEffect(() => {
     const holidayEntitlementRef = doc(
       db,
@@ -133,6 +190,8 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
         ...state,
         updateHolidayEntitlement,
         updateWorkdaysOfTheWeek,
+        importBankHolidaysFromGovUK,
+        fetchImportedBankHolidayRegionsAndYears,
       }}
     >
       {children}

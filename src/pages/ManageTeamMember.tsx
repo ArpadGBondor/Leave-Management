@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { SelectInputOption } from '../components/inputs/SelectInput';
 import formatBankHolidayName from '../utils/formatBankHolidayName';
-import fetchImportedBankHolidayRegionsAndYears, {
-  BankHolidayRegionsAndYears,
-} from '../utils/fetchImportedBankHolidayRegionsAndYears';
 import { toast } from 'react-toastify';
 import {
   collection,
@@ -16,17 +13,18 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
-import User from '../interface/user.interface';
+import User from '../interface/User.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
-import HolidayEntitlement, {
-  UserHolidayEntitlement,
-} from '../interface/holidayEntitlement.interface';
+import UserHolidayEntitlement from '../interface/UserHolidayEntitlement.interface';
+import HolidayEntitlement from '../interface/HolidayEntitlement.interface';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import Button from '../components/buttons/Button';
-import WorkdaysOfTheWeek from '../interface/workdaysOfTheWeek.interface';
+import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
 import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
+import { useCompanyContext } from '../context/company/useCompanyContext';
+
 const noOption = { label: 'None', value: '' };
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
@@ -48,21 +46,6 @@ const columns: TableColumn<UserHolidayEntitlement>[] = [
     ),
   },
   {
-    header: 'Base Holiday Entitlement',
-    accessor: 'base',
-    width: 'max-w-32',
-  },
-  {
-    header: 'Additional Holiday Entitlement',
-    accessor: 'additional',
-    width: 'max-w-32',
-  },
-  {
-    header: 'Holiday Entitlement Multiplier',
-    accessor: 'multiplier',
-    width: 'max-w-32',
-  },
-  {
     header: 'Total Holiday Entitlement',
     accessor: 'total',
     width: 'max-w-32',
@@ -79,17 +62,28 @@ export default function ManageTeamMember() {
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
   >([]);
-  const [importedRegionsAndYears, setImportedRegionsAndYears] =
-    useState<BankHolidayRegionsAndYears>({});
   const { startLoading, stopLoading } = useLoadingContext();
   const [selectedForEditing, setSelectedForEditing] =
     useState<UserHolidayEntitlement | null>(null);
 
   const [screenPhase, setScreenPhase] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
+  const { fetchImportedBankHolidayRegionsAndYears, importedRegionsAndYears } =
+    useCompanyContext();
 
   useEffect(() => {
-    fetchImportedRegionsAndYears();
+    startLoading('fetch-imported-bank-holiday-regions-and-years');
+    fetchImportedBankHolidayRegionsAndYears()
+      .catch((error: unknown) =>
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'Could not load imported regions and years'
+        )
+      )
+      .finally(() => {
+        stopLoading('fetch-imported-bank-holiday-regions-and-years');
+      });
     fetchUserDocument();
   }, []);
 
@@ -142,19 +136,6 @@ export default function ManageTeamMember() {
     setUser(userDoc.data() as User);
   };
 
-  // Fetch existing regions & years from Firestore
-  const fetchImportedRegionsAndYears = async () => {
-    startLoading('fetch-imported-bank-holiday-regions-and-years');
-    try {
-      const regions = await fetchImportedBankHolidayRegionsAndYears();
-      setImportedRegionsAndYears(regions);
-    } catch (error: any) {
-      toast.error(error.message || 'Could not load imported regions and years');
-    } finally {
-      stopLoading('fetch-imported-bank-holiday-regions-and-years');
-    }
-  };
-
   const selectRow = (row: UserHolidayEntitlement) => {
     setSelectedForEditing(row);
     setIsEditing(true);
@@ -164,22 +145,22 @@ export default function ManageTeamMember() {
   const pickNextAvailableYear = (): string => {
     const current = new Date().getFullYear();
 
-    // 1️⃣ Filter out already configured years
+    // Filter out already configured years
     const configuredIds = new Set(configuredYears.map((c) => c.id));
     const candidates = availableYears
       .filter((y) => !configuredIds.has(y))
       .map(Number)
       .sort((a, b) => a - b);
 
-    // 2️⃣ Try to find the next future year
+    // Try to find the next future year
     const next = candidates.find((y) => y >= current);
     if (next !== undefined) return String(next);
 
-    // 3️⃣ If no future year, try the most recent past year
+    // If no future year, try the most recent past year
     const prev = [...candidates].reverse().find((y) => y < current);
     if (prev !== undefined) return String(prev);
 
-    // 4️⃣ If nothing found, fail - Button should be disabled in this case
+    // If nothing found, fail - Button should be disabled in this case
     throw new Error("Can't create new configuration.");
   };
 
