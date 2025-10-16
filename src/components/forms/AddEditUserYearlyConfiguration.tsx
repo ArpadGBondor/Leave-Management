@@ -5,12 +5,12 @@ import {
   handleInputChange,
   handleValueChange,
 } from '../../utils/onFormDataChange';
-import NumberInput from '../inputs/NumberInput';
 import SwitchButton from '../buttons/SwitchButton';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { auth } from '../../firebase.config';
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
+import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
 
 interface AddEditUserYearlyConfigurationProps {
   bankHolidayOptions: SelectInputOption[];
@@ -45,7 +45,9 @@ export default function AddEditUserYearlyConfiguration({
     id: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<
+    Record<keyof UserHolidayEntitlement, string>
+  >({
     base: '',
     additional: '',
     multiplier: '',
@@ -127,15 +129,6 @@ export default function AddEditUserYearlyConfiguration({
     } finally {
       stopLoading('update-user-yearly-configuration');
     }
-  };
-
-  const autoUpdate = (
-    state: UserHolidayEntitlement
-  ): UserHolidayEntitlement => {
-    return {
-      ...state,
-      total: (state.base + state.additional) * state.multiplier,
-    };
   };
 
   return (
@@ -234,71 +227,12 @@ export default function AddEditUserYearlyConfiguration({
       <h3 className="text-2xl font-bold text-brand-green-700">
         Holiday Entitlement
       </h3>
-      <div className="flex flex-col md:flex-row gap-2 justify-stretch items-stretch md:items-end">
-        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
-          {'('}
-        </div>
-        <NumberInput
-          id="base"
-          label="Base leave entitlement"
-          name="base"
-          value={base}
-          onChange={(e) =>
-            handleInputChange(e, setFormData, setError, autoUpdate)
-          }
-          placeholder="Number of days"
-          error={errors.base}
-        />
-        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
-          {'+'}
-        </div>
-        <NumberInput
-          id="additional"
-          label="Additional leave entitlement"
-          name="additional"
-          value={additional}
-          onChange={(e) =>
-            handleInputChange(e, setFormData, setError, autoUpdate)
-          }
-          placeholder="Number of days"
-          step={1}
-          error={errors.additional}
-        />
-        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
-          {')'}
-        </div>
-        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
-          {'x'}
-        </div>
-        <NumberInput
-          id="multiplier"
-          label="Leave entitlement multiplier"
-          name="multiplier"
-          value={multiplier}
-          onChange={(e) =>
-            handleInputChange(e, setFormData, setError, autoUpdate)
-          }
-          placeholder="Multiplier"
-          step={0.01}
-          min={0}
-          error={errors.multiplier}
-        />
-        <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
-          {'='}
-        </div>
-        <NumberInput
-          id="total"
-          label="Total leave entitlement"
-          name="total"
-          value={total}
-          onChange={(e) =>
-            handleInputChange(e, setFormData, setError, autoUpdate)
-          }
-          placeholder="Number of days"
-          error={errors.base}
-          disabled
-        />
-      </div>
+      <HolidayCalculationInputs
+        formData={formData}
+        setFormData={setFormData}
+        errors={errors}
+        setError={setError}
+      />
       <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
         <Button label={isEditing ? 'Save changes' : 'Add configuration'} />
         <Button
