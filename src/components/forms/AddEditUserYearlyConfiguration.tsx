@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
 import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
-import {
-  handleInputChange,
-  handleValueChange,
-} from '../../utils/onFormDataChange';
-import SwitchButton from '../buttons/SwitchButton';
+import { handleInputChange } from '../../utils/onFormDataChange';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { auth } from '../../firebase.config';
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
+import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
 
 interface AddEditUserYearlyConfigurationProps {
   bankHolidayOptions: SelectInputOption[];
@@ -159,64 +156,7 @@ export default function AddEditUserYearlyConfiguration({
       <h3 className="text-2xl font-bold text-brand-green-700">
         Workdays of the week
       </h3>
-      <div className="flex flex-col md:flex-row gap-2 justify-stretch items-end">
-        <SwitchButton
-          label="Monday"
-          name="monday"
-          checked={monday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Tuesday"
-          name="tuesday"
-          checked={tuesday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Wednesday"
-          name="wednesday"
-          checked={wednesday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Thursday"
-          name="thursday"
-          checked={thursday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Friday"
-          name="friday"
-          checked={friday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Saturday"
-          name="saturday"
-          checked={saturday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-        <SwitchButton
-          label="Sunday"
-          name="sunday"
-          checked={sunday}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
-      </div>
+      <WorkdaysOfTheWeekInputs formData={formData} setFormData={setFormData} />
       <p className=" text-brand-green-800 text-center">
         Selected <span className="font-bold">{numberOfWorkdays()}</span>{' '}
         workdays per week.
