@@ -18,8 +18,6 @@ export default function HolidayCalculationInputs<
   errors,
   setError,
 }: HolidayCalculationInputsProps<T1, T2>) {
-  // how do I tell that formdata is extended from type HolidayEntitlement and
-  // these fields are quaranteed to exist?
   const { base, additional, multiplier, total } = formData;
 
   const autoUpdate = (state: T1): T1 => {
