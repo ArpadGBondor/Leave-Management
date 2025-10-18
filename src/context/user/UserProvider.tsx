@@ -116,9 +116,9 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
   const updateUser = useCallback(
     async (data: Partial<User>) => {
-      if (!state.user) return;
-
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const setClaimsResponse = await fetch('/api/auth-set-user-claims', {
         method: 'POST',

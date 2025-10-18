@@ -104,7 +104,9 @@ export default function AddEditUserYearlyConfiguration({
 
     startLoading('update-user-yearly-configuration');
     try {
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const response = await fetch('/api/user-yearly-holiday-configuration', {
         method: isEditing ? 'PUT' : 'POST',
