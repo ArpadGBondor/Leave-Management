@@ -46,9 +46,9 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
   const updateHolidayEntitlement = useCallback(
     async (data: HolidayEntitlement) => {
-      if (!user) return;
-
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const setHolidayEntitlementResponse = await fetch('/api/config', {
         method: 'POST',
@@ -72,9 +72,9 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
   const updateWorkdaysOfTheWeek = useCallback(
     async (data: WorkdaysOfTheWeek) => {
-      if (!user) return;
-
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const setWorkdaysOfTheWeekResponse = await fetch('/api/config', {
         method: 'POST',
@@ -98,8 +98,9 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
   const importBankHolidaysFromGovUK =
     useCallback(async (): Promise<ImportBankHolidayResponse> => {
-      if (!user) throw new Error(`User not logged in`);
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const response = await fetch('/api/import-bank-holidays', {
         method: 'POST',
@@ -121,8 +122,9 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
     async (refetch?: boolean): Promise<BankHolidayRegionsAndYears> => {
       if (!refetch && state.importedRegionsAndYearsLoaded)
         return state.importedRegionsAndYears;
-      if (!user) throw new Error(`User not logged in`);
-      const token = await auth.currentUser?.getIdToken();
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
 
       const response = await fetch('/api/bank-holiday-collections', {
         method: 'GET',
