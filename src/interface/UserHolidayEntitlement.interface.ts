@@ -6,4 +6,5 @@ export default interface UserHolidayEntitlement
     WorkdaysOfTheWeek {
   id: string; // year
   bankHolidayRegionId: string;
+  numberOfBankHolidays: number;
 }

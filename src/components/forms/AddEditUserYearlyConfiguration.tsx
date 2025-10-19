@@ -3,11 +3,13 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { auth } from '../../firebase.config';
+import { auth, db } from '../../firebase.config';
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { firebase_collections } from '../../../lib/firebase_collections';
 
 interface AddEditUserYearlyConfigurationProps {
   bankHolidayOptions: SelectInputOption[];
@@ -40,6 +42,7 @@ export default function AddEditUserYearlyConfiguration({
     sunday: false,
     bankHolidayRegionId: '',
     id: '',
+    numberOfBankHolidays: 0,
   });
 
   const [errors, setErrors] = useState<
@@ -58,6 +61,7 @@ export default function AddEditUserYearlyConfiguration({
     sunday: '',
     bankHolidayRegionId: '',
     id: '',
+    numberOfBankHolidays: '',
   });
   const { startLoading, stopLoading } = useLoadingContext();
 
@@ -75,11 +79,40 @@ export default function AddEditUserYearlyConfiguration({
     sunday,
     bankHolidayRegionId,
     id,
+    numberOfBankHolidays,
   } = formData;
 
   useEffect(() => {
     if (selectedForEditing) setFormData(selectedForEditing);
   }, [selectedForEditing]);
+
+  useEffect(() => {
+    if (!id || !bankHolidayRegionId) {
+      setFormData((prevState) => ({
+        ...prevState,
+        numberOfBankHolidays: 0,
+      }));
+      return;
+    }
+    const bankHolidayRef = collection(
+      db,
+      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegionId}/${
+        id /*year*/
+      }`
+    );
+    const numberOfBankHolidaysUnsubscribe = onSnapshot(
+      bankHolidayRef,
+      (snapshot) => {
+        const numberOfBankHolidays: number = snapshot.docs.length;
+        setFormData((prevState) => ({
+          ...prevState,
+          numberOfBankHolidays,
+        }));
+      }
+    );
+
+    return () => numberOfBankHolidaysUnsubscribe();
+  }, [bankHolidayRegionId, id]);
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -155,6 +188,12 @@ export default function AddEditUserYearlyConfiguration({
         options={bankHolidayOptions}
         onChange={(e) => handleInputChange(e, setFormData)}
       />
+      {numberOfBankHolidays > 0 && (
+        <p className=" text-brand-green-800 text-center">
+          Number of bank holiday days in selected year and region:{' '}
+          <span className="font-bold">{numberOfBankHolidays}</span>
+        </p>
+      )}
       <h3 className="text-2xl font-bold text-brand-green-700">
         Workdays of the week
       </h3>
