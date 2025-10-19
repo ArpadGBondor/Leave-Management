@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { SelectInputOption } from '../components/inputs/SelectInput';
 import formatBankHolidayName from '../utils/formatBankHolidayName';
-import { toast } from 'react-toastify';
 import {
   collection,
   doc,
@@ -57,7 +56,6 @@ export default function ManageTeamMember() {
   const [bankHolidayOptions, setBankHolidayOptions] = useState([
     noOption,
   ] as SelectInputOption[]);
-  const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
@@ -68,40 +66,22 @@ export default function ManageTeamMember() {
 
   const [screenPhase, setScreenPhase] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
-  const { fetchImportedBankHolidayRegionsAndYears, importedRegionsAndYears } =
-    useCompanyContext();
+  const { importedYears, importedRegions } = useCompanyContext();
 
   useEffect(() => {
-    startLoading('fetch-imported-bank-holiday-regions-and-years');
-    fetchImportedBankHolidayRegionsAndYears()
-      .catch((error: unknown) =>
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : 'Could not load imported regions and years'
-        )
-      )
-      .finally(() => {
-        stopLoading('fetch-imported-bank-holiday-regions-and-years');
-      });
     fetchUserDocument();
   }, []);
 
   useEffect(() => {
     const options: SelectInputOption[] = [noOption];
-    for (const regionCode in importedRegionsAndYears) {
+    for (const region of importedRegions) {
       options.push({
-        label: formatBankHolidayName(regionCode),
-        value: regionCode,
+        label: formatBankHolidayName(region),
+        value: region,
       });
     }
     setBankHolidayOptions(options);
-
-    const years: string[] = Array.from(
-      new Set(Object.values(importedRegionsAndYears).flat())
-    ).sort();
-    setAvailableYears(years);
-  }, [importedRegionsAndYears]);
+  }, [importedRegions]);
 
   useEffect(() => {
     if (!userId) return;
@@ -147,7 +127,7 @@ export default function ManageTeamMember() {
 
     // Filter out already configured years
     const configuredIds = new Set(configuredYears.map((c) => c.id));
-    const candidates = availableYears
+    const candidates = importedYears
       .filter((y) => !configuredIds.has(y))
       .map(Number)
       .sort((a, b) => a - b);
@@ -243,7 +223,7 @@ export default function ManageTeamMember() {
             <Button
               label="Add new"
               onClick={addNew}
-              disabled={availableYears.every((year) =>
+              disabled={importedYears.every((year) =>
                 configuredYears.map((config) => config.id).includes(year)
               )}
             />
@@ -254,7 +234,7 @@ export default function ManageTeamMember() {
             bankHolidayOptions={bankHolidayOptions}
             isEditing={isEditing}
             selectedForEditing={selectedForEditing}
-            yearOptions={availableYears.map(
+            yearOptions={importedYears.map(
               (year): SelectInputOption => ({
                 label: year,
                 value: year,

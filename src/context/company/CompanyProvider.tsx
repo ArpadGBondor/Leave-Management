@@ -7,14 +7,13 @@ import { auth, db } from '../../firebase.config';
 import {
   SET_HOLIDAY_ENTITLEMENT,
   SET_WORKDAYS_OF_THE_WEEK,
-  SET_REGIONS_AND_YEARS,
-  SET_REGIONS_AND_YEARS_LOADED,
+  SET_IMPORTED_REGIONS,
+  SET_IMPORTED_YEARS,
 } from '../types';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import ImportBankHolidayResponse from '../../interface/ImportBankHolidayResponse.interface';
-import BankHolidayRegionsAndYears from '../../interface/BankHolidayRegionsAndYears.interface';
 
 interface CompanyProviderProps {
   children: React.ReactNode;
@@ -36,8 +35,8 @@ const initialState: CompanyState = {
     saturday: false,
     sunday: false,
   },
-  importedRegionsAndYears: {},
-  importedRegionsAndYearsLoaded: false,
+  importedRegions: [],
+  importedYears: [],
 };
 
 const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
@@ -118,34 +117,6 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       return result;
     }, [user]);
 
-  const fetchImportedBankHolidayRegionsAndYears = useCallback(
-    async (refetch?: boolean): Promise<BankHolidayRegionsAndYears> => {
-      if (!refetch && state.importedRegionsAndYearsLoaded)
-        return state.importedRegionsAndYears;
-      const currentUser = auth.currentUser;
-      if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
-
-      const response = await fetch('/api/bank-holiday-collections', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errMsg = await response.text();
-        throw new Error(`Data fetch failed: ${errMsg}`);
-      }
-
-      const { regions } = await response.json();
-      dispatch({ type: SET_REGIONS_AND_YEARS, payload: regions });
-      dispatch({ type: SET_REGIONS_AND_YEARS_LOADED, payload: true });
-      return regions;
-    },
-    [user, state.importedRegionsAndYears, state.importedRegionsAndYearsLoaded]
-  );
-
   useEffect(() => {
     const holidayEntitlementRef = doc(
       db,
@@ -180,9 +151,32 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       }
     });
 
+    const regionsRef = collection(db, firebase_collections.BANK_HOLIDAYS);
+    const importedRegionsUnsubscribe = onSnapshot(regionsRef, (snapshot) => {
+      const regions: string[] = snapshot.docs.map((doc) => doc.id);
+      dispatch({
+        type: SET_IMPORTED_REGIONS,
+        payload: regions.sort(),
+      });
+    });
+
+    const yearsRef = collection(
+      db,
+      firebase_collections.BANK_HOLIDAY_IMPORTED_YEARS
+    );
+    const importedYearsUnsubscribe = onSnapshot(yearsRef, (snapshot) => {
+      const years: string[] = snapshot.docs.map((doc) => doc.id);
+      dispatch({
+        type: SET_IMPORTED_YEARS,
+        payload: years.sort(),
+      });
+    });
+
     return () => {
       holidayEntitlementUnsubscribe();
       workdaysUnsubscribe();
+      importedRegionsUnsubscribe();
+      importedYearsUnsubscribe();
     };
   }, []);
 
@@ -193,7 +187,6 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
         updateHolidayEntitlement,
         updateWorkdaysOfTheWeek,
         importBankHolidaysFromGovUK,
-        fetchImportedBankHolidayRegionsAndYears,
       }}
     >
       {children}
