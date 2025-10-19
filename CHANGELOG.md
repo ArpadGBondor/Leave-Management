@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.3...v1.2.4) (2025-10-19)
+
+
+### Bug Fixes
+
+* add DELETE functionality to backend functions ([603fa9d](https://github.com/ArpadGBondor/Leave-Management/commit/603fa9d8349846890befa7f5a47f81cc4a4afc1a))
+
 ## [1.2.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.2...v1.2.3) (2025-10-19)
 
 
