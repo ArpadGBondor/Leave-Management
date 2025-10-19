@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.6...v1.2.7) (2025-10-19)
+
+
+### Bug Fixes
+
+* add Back button to Manage Team Member page ([72b6b47](https://github.com/ArpadGBondor/Leave-Management/commit/72b6b473803b08d67ec96d09e1a1a2f0b9dfaae0))
+
 ## [1.2.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.5...v1.2.6) (2025-10-19)
 
 
