@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.2...v1.2.3) (2025-10-19)
+
+
+### Bug Fixes
+
+* store number of bank holiday days under user's yearly configuration. Show number on screen to help cofiguring user's yearly holiday entitlement ([f77694e](https://github.com/ArpadGBondor/Leave-Management/commit/f77694ef83ca35a2bdf7b2ba7e3a8bdc4e19d729))
+
 ## [1.2.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.1...v1.2.2) (2025-10-19)
 
 
