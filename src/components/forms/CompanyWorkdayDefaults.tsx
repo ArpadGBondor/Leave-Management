@@ -1,11 +1,11 @@
+import { forwardRef, useImperativeHandle } from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
 
-export default function CompanyWorkdayDefaults() {
+const CompanyWorkdayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState({
     monday: true,
     tuesday: true,
@@ -42,8 +42,13 @@ export default function CompanyWorkdayDefaults() {
     ].filter(Boolean).length;
   };
 
+  // Allow parent to trigger submit
+  useImperativeHandle(ref, () => ({
+    submit: onSubmitHolidayEntitlement,
+  }));
+
   const onSubmitHolidayEntitlement = async (e: any) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     startLoading('set-company-workdays-of-the-week');
     try {
@@ -90,8 +95,7 @@ export default function CompanyWorkdayDefaults() {
         Recommended leave entitlement multiplier:{' '}
         <span className="font-bold">{numberOfWorkdays() / 5}</span>
       </p>
-
-      <Button label="Update default workday configuration" />
     </form>
   );
-}
+});
+export default CompanyWorkdayDefaults;

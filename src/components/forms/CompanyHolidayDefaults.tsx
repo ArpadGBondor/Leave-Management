@@ -1,12 +1,12 @@
+import { forwardRef, useImperativeHandle } from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
 
-export default function CompanyHolidayDefaults() {
+const CompanyHolidayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<HolidayEntitlement>({
     base: 0,
     additional: 0,
@@ -41,8 +41,13 @@ export default function CompanyHolidayDefaults() {
       [field]: message,
     }));
 
+  // Allow parent to trigger submit
+  useImperativeHandle(ref, () => ({
+    submit: onSubmitHolidayEntitlement,
+  }));
+
   const onSubmitHolidayEntitlement = async (e: any) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     startLoading('set-company-holiday-entitlement');
     try {
@@ -72,8 +77,7 @@ export default function CompanyHolidayDefaults() {
         errors={errors}
         setError={setError}
       />
-
-      <Button label="Update default holiday configuration" />
     </form>
   );
-}
+});
+export default CompanyHolidayDefaults;
