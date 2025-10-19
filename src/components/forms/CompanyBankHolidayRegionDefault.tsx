@@ -1,12 +1,12 @@
+import { forwardRef, useImperativeHandle } from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import BankHolidayRegion from '../../interface/BankHolidayRegion.interface';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 
-export default function CompanyBankHolidayRegionDefault() {
+const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<BankHolidayRegion>({
     bankHolidayRegionId: '',
     numberOfBankHolidays: 0,
@@ -25,8 +25,13 @@ export default function CompanyBankHolidayRegionDefault() {
       }));
   }, []);
 
+  // Allow parent to trigger submit
+  useImperativeHandle(ref, () => ({
+    submit: onSubmitBankHolidayRegion,
+  }));
+
   const onSubmitBankHolidayRegion = async (e: any) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     startLoading('set-company-bank-holiday-region');
     try {
@@ -68,8 +73,7 @@ export default function CompanyBankHolidayRegionDefault() {
         setFormData={setFormData}
         year={currentYear()}
       />
-
-      <Button label="Update default bank holiday region" />
     </form>
   );
-}
+});
+export default CompanyBankHolidayRegionDefault;
