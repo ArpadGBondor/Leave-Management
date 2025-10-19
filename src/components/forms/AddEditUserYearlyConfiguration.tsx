@@ -163,6 +163,35 @@ export default function AddEditUserYearlyConfiguration({
     }
   };
 
+  const onDelete = async () => {
+    startLoading('delete-user-yearly-configuration');
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const response = await fetch('/api/user-yearly-holiday-configuration', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id,
+          userId,
+        }),
+      });
+      if (!response.ok) throw new Error('Failed to delete config');
+
+      toast.info('Yearly configuration deleted');
+      onBack();
+    } catch (error: any) {
+      toast.error(error.message || 'Could not delete yearly configuration');
+    } finally {
+      stopLoading('delete-user-yearly-configuration');
+    }
+  };
+
   return (
     <form
       onSubmit={onSubmitUserYearlyConfiguration}
@@ -222,6 +251,14 @@ export default function AddEditUserYearlyConfiguration({
           label="Back"
           onClick={onBack}
         />
+        {isEditing && (
+          <Button
+            type="button"
+            variant="danger"
+            label="Delete"
+            onClick={onDelete}
+          />
+        )}
       </div>
     </form>
   );

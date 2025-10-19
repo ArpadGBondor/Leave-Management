@@ -23,7 +23,7 @@ Work in progress...
     firebase, so the app can quickly access data
   - Netlify backend functions can use firebase-admin to securely modify data in
     the database
-    - Database handler functions are generated through the createOrUpdateDoc
+    - Database handler functions are generated through the createUpdateOrDeleteDoc
       function in the `libs/handlers` directory. Using HandlerConfigOptions, I
       can generate handler functions that can update documents of a collection
       in the root of the database, or of a subcollection in another document.

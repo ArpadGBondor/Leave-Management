@@ -1,6 +1,6 @@
 type ButtonProps = {
   label: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   highlight?: boolean;
   disabled?: boolean;
   onClick?: () => void;
@@ -24,11 +24,15 @@ export default function Button({
     secondary: `${
       highlight ? 'bg-brand-green-50' : 'bg-brand-green-100'
     }  text-brand-green-700 border-2 border-brand-green-700`,
+    danger: `${
+      highlight ? 'bg-brand-purple-800' : 'bg-brand-purple-700'
+    }  text-white`,
   };
 
   const hoverEffect = {
     primary: 'hover:bg-brand-green-600 cursor-pointer',
     secondary: 'hover:bg-brand-green-200 cursor-pointer',
+    danger: 'hover:bg-brand-purple-600 cursor-pointer',
   };
 
   const disabledClasses = 'opacity-50 cursor-not-allowed pointer-events-none';
