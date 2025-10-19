@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.1...v1.2.2) (2025-10-19)
+
+
+### Bug Fixes
+
+* skip double running Github Pages deployment ([06ceb2e](https://github.com/ArpadGBondor/Leave-Management/commit/06ceb2e3b67f32d468a331e29de44bdfa7aadc1f))
+
 ## [1.2.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.0...v1.2.1) (2025-10-19)
 
 
