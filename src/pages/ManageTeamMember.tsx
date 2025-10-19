@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectInputOption } from '../components/inputs/SelectInput';
 import formatBankHolidayName from '../utils/formatBankHolidayName';
 import {
@@ -73,6 +73,7 @@ export default function ManageTeamMember() {
     holidayEntitlement,
     workdaysOfTheWeek,
   } = useCompanyContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserDocument();
@@ -208,13 +209,21 @@ export default function ManageTeamMember() {
                 selectedForEditing !== null && row.id === selectedForEditing.id
               }
             />
-            <Button
-              label="Add new"
-              onClick={addNew}
-              disabled={importedYears.every((year) =>
-                configuredYears.map((config) => config.id).includes(year)
-              )}
-            />
+            <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
+              <Button
+                label="Add new year"
+                onClick={addNew}
+                disabled={importedYears.every((year) =>
+                  configuredYears.map((config) => config.id).includes(year)
+                )}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                label="Back"
+                onClick={() => navigate('/manage-team')}
+              />
+            </div>
           </>
         )}
         {screenPhase === 2 && selectedForEditing && (
