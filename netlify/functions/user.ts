@@ -1,8 +1,8 @@
 import { Handler } from '@netlify/functions';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { createOrUpdateDoc } from '../../lib/handlers/createOrUpdateDoc';
+import { createUpdateOrDeleteDoc } from '../../lib/handlers/createUpdateOrDeleteDoc';
 
-const handler: Handler = createOrUpdateDoc({
+const handler: Handler = createUpdateOrDeleteDoc({
   path: [
     {
       collection: firebase_collections.USERS,

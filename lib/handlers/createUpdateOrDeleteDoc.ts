@@ -6,10 +6,14 @@ import { buildRef } from '../cleanRef';
 import { cleanBody } from '../cleanBody';
 import * as admin from 'firebase-admin';
 
-export const createOrUpdateDoc =
+export const createUpdateOrDeleteDoc =
   ({ path, restrictToClaim }: HandlerConfigOptions): Handler =>
   async (event) => {
-    if (event.httpMethod !== 'POST' && event.httpMethod !== 'PUT') {
+    const isCreate = event.httpMethod === 'POST';
+    const isUpdate = event.httpMethod === 'PUT';
+    const isDelete = event.httpMethod === 'DELETE';
+
+    if (!isCreate && !isUpdate && !isDelete) {
       return response(405, 'Method Not Allowed');
     }
 
@@ -23,9 +27,19 @@ export const createOrUpdateDoc =
       const { created, ...body } = JSON.parse(event.body || '{}');
 
       const ref = buildRef(body, path);
+
+      if (isDelete) {
+        // Delete document
+        await ref.delete();
+        return response(200, {
+          success: true,
+          message: 'Document deleted successfully',
+        });
+      }
+
       const clean = cleanBody(body, path);
 
-      if (event.httpMethod === 'POST') {
+      if (isCreate) {
         await ref.set(
           {
             ...clean,
@@ -34,7 +48,7 @@ export const createOrUpdateDoc =
           },
           { merge: false }
         );
-      } else {
+      } else if (isUpdate) {
         await ref.update({
           ...clean,
           updated: admin.firestore.FieldValue.serverTimestamp(),
@@ -56,7 +70,17 @@ export const createOrUpdateDoc =
             ? 403
             : 500,
           {
-            error: err.message || 'Failed to create or update document',
+            error:
+              err.message ||
+              `Failed to ${
+                isCreate
+                  ? 'create'
+                  : isUpdate
+                  ? 'update'
+                  : isDelete
+                  ? 'delete'
+                  : 'process'
+              } document.`,
           }
         );
       return response(500, 'Unknown server error');
