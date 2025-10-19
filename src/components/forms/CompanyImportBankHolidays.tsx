@@ -1,34 +1,13 @@
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { useEffect } from 'react';
-import Spinner from '../spinner/Spinner';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();
-  const {
-    importBankHolidaysFromGovUK,
-    fetchImportedBankHolidayRegionsAndYears,
-    importedRegionsAndYears,
-    importedRegionsAndYearsLoaded,
-  } = useCompanyContext();
-
-  useEffect(() => {
-    startLoading('fetch-imported-bank-holiday-regions-and-years');
-    fetchImportedBankHolidayRegionsAndYears()
-      .catch((error: unknown) =>
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : 'Could not load imported regions and years'
-        )
-      )
-      .finally(() => {
-        stopLoading('fetch-imported-bank-holiday-regions-and-years');
-      });
-  }, []);
+  const { importBankHolidaysFromGovUK, importedRegions, importedYears } =
+    useCompanyContext();
 
   const onSubmitImportBankHolidays = async (e: any) => {
     e.preventDefault();
@@ -47,18 +26,6 @@ export default function CompanyImportBankHolidays() {
       );
     } finally {
       stopLoading('import-company-bank-holidays');
-      startLoading('fetch-imported-bank-holiday-regions-and-years');
-      try {
-        await fetchImportedBankHolidayRegionsAndYears(true);
-      } catch (error: unknown) {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : 'Could not load imported regions and years'
-        );
-      } finally {
-        stopLoading('fetch-imported-bank-holiday-regions-and-years');
-      }
     }
   };
 
@@ -67,35 +34,33 @@ export default function CompanyImportBankHolidays() {
       onSubmit={onSubmitImportBankHolidays}
       className="flex flex-col gap-4 w-full"
     >
-      <h3 className="text-2xl font-bold text-brand-green-700">
-        Imported bank holidays
-      </h3>
+      <h3 className="text-2xl font-bold text-brand-green-700">Bank holidays</h3>
 
-      {!importedRegionsAndYearsLoaded ? (
-        <div className="flex flex-col items-center ">
-          <Spinner size="xl" />
-        </div>
-      ) : importedRegionsAndYears &&
-        Object.keys(importedRegionsAndYears).length > 0 ? (
-        <ul className="bg-brand-purple-100 p-4 rounded-xl mx-auto space-y-3">
-          {Object.entries(importedRegionsAndYears).map(([region, years]) => (
-            <li key={region}>
-              <h4 className="font-bold text-brand-green-800">
+      {importedRegions.length > 0 && importedYears.length > 0 ? (
+        <div className="space-y-2">
+          <h4 className="font-bold text-brand-green-800">Imported regions</h4>
+          <ul className="flex flex-wrap gap-2 mt-1">
+            {importedRegions.map((region) => (
+              <li
+                key={region}
+                className="bg-brand-green-100 border border-brand-green-400 rounded-md px-2 py-1 text-sm text-brand-green-700 font-bold"
+              >
                 {formatBankHolidayName(region)}
-              </h4>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {years.sort().map((year) => (
-                  <span
-                    key={year}
-                    className="bg-brand-green-100 border border-brand-green-400 rounded-md px-2 py-1 text-sm text-brand-green-700"
-                  >
-                    {year}
-                  </span>
-                ))}
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+          <h4 className="font-bold text-brand-green-800">Imported years</h4>
+          <ul className="flex flex-wrap gap-2 mt-1">
+            {importedYears.map((year) => (
+              <li
+                key={year}
+                className="bg-brand-green-100 border border-brand-green-400 rounded-md px-2 py-1 text-sm text-brand-green-700 font-bold"
+              >
+                {year}
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
         <p className="text-brand-green-800">No bank holidays imported yet.</p>
       )}

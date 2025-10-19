@@ -1,28 +1,24 @@
-import BankHolidayRegionsAndYears from '../../interface/BankHolidayRegionsAndYears.interface';
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import {
   SET_HOLIDAY_ENTITLEMENT,
-  SET_REGIONS_AND_YEARS,
-  SET_REGIONS_AND_YEARS_LOADED,
+  SET_IMPORTED_REGIONS,
+  SET_IMPORTED_YEARS,
   SET_WORKDAYS_OF_THE_WEEK,
 } from '../types';
 
 export type CompanyState = {
   holidayEntitlement: HolidayEntitlement;
   workdaysOfTheWeek: WorkdaysOfTheWeek;
-  importedRegionsAndYears: BankHolidayRegionsAndYears;
-  importedRegionsAndYearsLoaded: boolean;
+  importedRegions: string[];
+  importedYears: string[];
 };
 
 export type CompanyAction =
   | { type: typeof SET_HOLIDAY_ENTITLEMENT; payload: HolidayEntitlement }
   | { type: typeof SET_WORKDAYS_OF_THE_WEEK; payload: WorkdaysOfTheWeek }
-  | {
-      type: typeof SET_REGIONS_AND_YEARS;
-      payload: BankHolidayRegionsAndYears;
-    }
-  | { type: typeof SET_REGIONS_AND_YEARS_LOADED; payload: boolean };
+  | { type: typeof SET_IMPORTED_REGIONS; payload: string[] }
+  | { type: typeof SET_IMPORTED_YEARS; payload: string[] };
 
 export const loadingReducer = (
   state: CompanyState,
@@ -33,10 +29,10 @@ export const loadingReducer = (
       return { ...state, holidayEntitlement: action.payload };
     case SET_WORKDAYS_OF_THE_WEEK:
       return { ...state, workdaysOfTheWeek: action.payload };
-    case SET_REGIONS_AND_YEARS:
-      return { ...state, importedRegionsAndYears: action.payload };
-    case SET_REGIONS_AND_YEARS_LOADED:
-      return { ...state, importedRegionsAndYearsLoaded: action.payload };
+    case SET_IMPORTED_REGIONS:
+      return { ...state, importedRegions: action.payload };
+    case SET_IMPORTED_YEARS:
+      return { ...state, importedYears: action.payload };
     default:
       return state;
   }

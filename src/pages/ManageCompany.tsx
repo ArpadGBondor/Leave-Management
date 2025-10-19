@@ -14,9 +14,9 @@ export default function ManageCompany() {
           These are default fallback values, in case employees are not
           configured individually for a certain year.
         </p>
-        <CompanyHolidayDefaults />
-        <CompanyWorkdayDefaults />
         <CompanyImportBankHolidays />
+        <CompanyWorkdayDefaults />
+        <CompanyHolidayDefaults />
       </div>
     </div>
   );
