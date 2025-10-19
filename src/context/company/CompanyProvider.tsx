@@ -9,11 +9,13 @@ import {
   SET_WORKDAYS_OF_THE_WEEK,
   SET_IMPORTED_REGIONS,
   SET_IMPORTED_YEARS,
+  SET_BANK_HOLIDAY_REGION,
 } from '../types';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import ImportBankHolidayResponse from '../../interface/ImportBankHolidayResponse.interface';
+import BankHolidayRegion from '../../interface/BankHolidayRegion.interface';
 
 interface CompanyProviderProps {
   children: React.ReactNode;
@@ -34,6 +36,10 @@ const initialState: CompanyState = {
     friday: true,
     saturday: false,
     sunday: false,
+  },
+  bankHolidayRegion: {
+    bankHolidayRegionId: '',
+    numberOfBankHolidays: 0,
   },
   importedRegions: [],
   importedYears: [],
@@ -95,6 +101,32 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
     [user]
   );
 
+  const updateBankHolidayRegion = useCallback(
+    async (data: BankHolidayRegion) => {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const setWorkdaysOfTheWeekResponse = await fetch('/api/config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          id: firebase_collections.BANK_HOLIDAY_REGION,
+        }),
+      });
+      if (!setWorkdaysOfTheWeekResponse.ok)
+        throw new Error('Failed to set config');
+      const { doc } = await setWorkdaysOfTheWeekResponse.json();
+
+      dispatch({ type: SET_BANK_HOLIDAY_REGION, payload: doc });
+    },
+    [user]
+  );
+
   const importBankHolidaysFromGovUK =
     useCallback(async (): Promise<ImportBankHolidayResponse> => {
       const currentUser = auth.currentUser;
@@ -151,6 +183,24 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       }
     });
 
+    const bankHolidayRegionRef = doc(
+      db,
+      firebase_collections.CONFIG,
+      firebase_collections.BANK_HOLIDAY_REGION
+    );
+
+    const bankHolidayRegionUnsubscribe = onSnapshot(
+      bankHolidayRegionRef,
+      (snap) => {
+        if (snap.exists()) {
+          dispatch({
+            type: SET_BANK_HOLIDAY_REGION,
+            payload: snap.data() as BankHolidayRegion,
+          });
+        }
+      }
+    );
+
     const regionsRef = collection(db, firebase_collections.BANK_HOLIDAYS);
     const importedRegionsUnsubscribe = onSnapshot(regionsRef, (snapshot) => {
       const regions: string[] = snapshot.docs.map((doc) => doc.id);
@@ -175,6 +225,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
     return () => {
       holidayEntitlementUnsubscribe();
       workdaysUnsubscribe();
+      bankHolidayRegionUnsubscribe();
       importedRegionsUnsubscribe();
       importedYearsUnsubscribe();
     };
@@ -186,6 +237,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
         ...state,
         updateHolidayEntitlement,
         updateWorkdaysOfTheWeek,
+        updateBankHolidayRegion,
         importBankHolidaysFromGovUK,
       }}
     >

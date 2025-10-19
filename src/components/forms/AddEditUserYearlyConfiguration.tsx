@@ -10,9 +10,9 @@ import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs'
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
+import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 
 interface AddEditUserYearlyConfigurationProps {
-  bankHolidayOptions: SelectInputOption[];
   isEditing: boolean;
   selectedForEditing: UserHolidayEntitlement;
   yearOptions: SelectInputOption[];
@@ -21,7 +21,6 @@ interface AddEditUserYearlyConfigurationProps {
 }
 
 export default function AddEditUserYearlyConfiguration({
-  bankHolidayOptions,
   isEditing,
   selectedForEditing,
   yearOptions,
@@ -209,20 +208,11 @@ export default function AddEditUserYearlyConfiguration({
         disabled={isEditing}
         onChange={(e) => handleInputChange(e, setFormData)}
       />
-      <SelectInput
-        id="bankHolidayRegionId"
-        label="Bank Holidays automatically excluded"
-        name="bankHolidayRegionId"
-        value={bankHolidayRegionId}
-        options={bankHolidayOptions}
-        onChange={(e) => handleInputChange(e, setFormData)}
+      <BankHolidayRegionDropdown
+        formData={formData}
+        setFormData={setFormData}
+        year={id}
       />
-      {numberOfBankHolidays > 0 && (
-        <p className=" text-brand-green-800 text-center">
-          Number of bank holiday days in selected year and region:{' '}
-          <span className="font-bold">{numberOfBankHolidays}</span>
-        </p>
-      )}
       <h3 className="text-2xl font-bold text-brand-green-700">
         Workdays of the week
       </h3>
