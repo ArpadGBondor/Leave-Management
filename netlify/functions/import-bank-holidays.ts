@@ -23,6 +23,8 @@ const handler: Handler = async (event) => {
       updated = 0,
       skipped = 0;
 
+    const importedYears: Set<string> = new Set([]);
+
     for (const [region, details] of Object.entries(bankHolidayData)) {
       const regionRef = db
         .collection(firebase_collections.BANK_HOLIDAYS)
@@ -35,6 +37,8 @@ const handler: Handler = async (event) => {
         const docId = event.date;
         const docRef = yearRef.doc(docId);
         const snapshot = await docRef.get();
+
+        importedYears.add(year);
 
         const newData: BankHolidayEvent = {
           title: event.title,
@@ -59,6 +63,16 @@ const handler: Handler = async (event) => {
             skipped++;
           }
         }
+      }
+    }
+
+    for (const year of importedYears) {
+      const yearRef = db
+        .collection(firebase_collections.BANK_HOLIDAY_IMPORTED_YEARS)
+        .doc(year);
+      const snap = await yearRef.get();
+      if (!snap.exists) {
+        await yearRef.set({});
       }
     }
 
