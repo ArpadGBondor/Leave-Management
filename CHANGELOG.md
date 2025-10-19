@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.4...v1.2.5) (2025-10-19)
+
+
+### Bug Fixes
+
+* add default bank holiday region selection to Manage Company page, add default region to Company Context, use default company settings when creating new yearly configuration ([88c3ad6](https://github.com/ArpadGBondor/Leave-Management/commit/88c3ad6d6b8d16a3c11dece8c12abd4a8c4c2bcd))
+
 ## [1.2.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.3...v1.2.4) (2025-10-19)
 
 
