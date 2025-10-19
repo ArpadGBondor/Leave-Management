@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.5...v1.2.6) (2025-10-19)
+
+
+### Bug Fixes
+
+* set consistent design for disabled input fields ([a6c833f](https://github.com/ArpadGBondor/Leave-Management/commit/a6c833f266bd13d19797b0fcfe392a6046503221))
+
 ## [1.2.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.4...v1.2.5) (2025-10-19)
 
 
