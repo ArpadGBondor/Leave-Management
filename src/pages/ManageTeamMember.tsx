@@ -45,6 +45,11 @@ const columns: TableColumn<UserHolidayEntitlement>[] = [
     ),
   },
   {
+    header: 'Number of Bank Holidays',
+    accessor: 'numberOfBankHolidays',
+    width: 'max-w-32',
+  },
+  {
     header: 'Total Holiday Entitlement',
     accessor: 'total',
     width: 'max-w-32',
@@ -192,6 +197,7 @@ export default function ManageTeamMember() {
         ...companyWorkdaysOfTheWeek,
         bankHolidayRegionId: '', // initialise with no bank holiday region
         id,
+        numberOfBankHolidays: 0,
       });
     }
     setIsEditing(false);
