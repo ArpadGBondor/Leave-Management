@@ -1,3 +1,4 @@
+import CompanyBankHolidayRegionDefault from '../components/forms/CompanyBankHolidayRegionDefault';
 import CompanyHolidayDefaults from '../components/forms/CompanyHolidayDefaults';
 import CompanyImportBankHolidays from '../components/forms/CompanyImportBankHolidays';
 import CompanyWorkdayDefaults from '../components/forms/CompanyWorkdayDefaults';
@@ -16,6 +17,7 @@ export default function ManageCompany() {
         </p>
         <CompanyImportBankHolidays />
         <CompanyWorkdayDefaults />
+        <CompanyBankHolidayRegionDefault />
         <CompanyHolidayDefaults />
       </div>
     </div>

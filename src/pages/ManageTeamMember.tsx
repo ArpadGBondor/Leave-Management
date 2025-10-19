@@ -23,8 +23,7 @@ import Button from '../components/buttons/Button';
 import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
 import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
 import { useCompanyContext } from '../context/company/useCompanyContext';
-
-const noOption = { label: 'None', value: '' };
+import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -58,9 +57,6 @@ const columns: TableColumn<UserHolidayEntitlement>[] = [
 
 export default function ManageTeamMember() {
   const { userId } = useParams();
-  const [bankHolidayOptions, setBankHolidayOptions] = useState([
-    noOption,
-  ] as SelectInputOption[]);
   const [user, setUser] = useState<User | null>(null);
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
@@ -71,22 +67,16 @@ export default function ManageTeamMember() {
 
   const [screenPhase, setScreenPhase] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
-  const { importedYears, importedRegions } = useCompanyContext();
+  const {
+    importedYears,
+    bankHolidayRegion,
+    holidayEntitlement,
+    workdaysOfTheWeek,
+  } = useCompanyContext();
 
   useEffect(() => {
     fetchUserDocument();
   }, []);
-
-  useEffect(() => {
-    const options: SelectInputOption[] = [noOption];
-    for (const region of importedRegions) {
-      options.push({
-        label: formatBankHolidayName(region),
-        value: region,
-      });
-    }
-    setBankHolidayOptions(options);
-  }, [importedRegions]);
 
   useEffect(() => {
     if (!userId) return;
@@ -163,41 +153,33 @@ export default function ManageTeamMember() {
         id,
       });
     } else {
-      const companyHolidayEntitlementSnap = await getDoc(
-        doc(
-          db,
-          `${firebase_collections.CONFIG}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}`
-        )
-      );
       const companyHolidayEntitlement: HolidayEntitlement =
-        companyHolidayEntitlementSnap.exists()
-          ? (companyHolidayEntitlementSnap.data() as HolidayEntitlement)
-          : { base: 28, additional: 0, multiplier: 1, total: 28 }; // default;
+        holidayEntitlement ?? {
+          base: 28,
+          additional: 0,
+          multiplier: 1,
+          total: 28,
+        }; // default;
 
-      const companyWorkdaysOfTheWeekSnap = await getDoc(
-        doc(
-          db,
-          `${firebase_collections.CONFIG}/${firebase_collections.WORKDAYS_OF_THE_WEEK}`
-        )
-      );
-      const companyWorkdaysOfTheWeek: WorkdaysOfTheWeek =
-        companyWorkdaysOfTheWeekSnap.exists()
-          ? (companyWorkdaysOfTheWeekSnap.data() as WorkdaysOfTheWeek)
-          : {
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: false,
-              sunday: false,
-            }; // default;
+      const companyWorkdaysOfTheWeek: WorkdaysOfTheWeek = workdaysOfTheWeek ?? {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: false,
+        sunday: false,
+      }; // default;
+
+      const companyBankHolidayRegion: BankHolidayRegion = bankHolidayRegion ?? {
+        bankHolidayRegionId: '', // initialise with no bank holiday region
+        numberOfBankHolidays: 0,
+      };
       setSelectedForEditing({
         ...companyHolidayEntitlement,
         ...companyWorkdaysOfTheWeek,
-        bankHolidayRegionId: '', // initialise with no bank holiday region
+        ...companyBankHolidayRegion,
         id,
-        numberOfBankHolidays: 0,
       });
     }
     setIsEditing(false);
@@ -237,7 +219,6 @@ export default function ManageTeamMember() {
         )}
         {screenPhase === 2 && selectedForEditing && (
           <AddEditUserYearlyConfiguration
-            bankHolidayOptions={bankHolidayOptions}
             isEditing={isEditing}
             selectedForEditing={selectedForEditing}
             yearOptions={importedYears.map(
