@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.7...v1.2.8) (2025-10-19)
+
+
+### Bug Fixes
+
+* submit all company configurations forms at once ([4648a18](https://github.com/ArpadGBondor/Leave-Management/commit/4648a1873676ecee4cca14a8085ba9ce1d199612))
+
 ## [1.2.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.6...v1.2.7) (2025-10-19)
 
 
