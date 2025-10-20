@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.9...v1.2.10) (2025-10-20)
+
+
+### Bug Fixes
+
+* allow user type change on Manage Team Member page ([b37200c](https://github.com/ArpadGBondor/Leave-Management/commit/b37200ccf692399d15acffc09a2263cbb7552a8f))
+
 ## [1.2.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.8...v1.2.9) (2025-10-20)
 
 
