@@ -1,0 +1,12 @@
+export default function Requests() {
+  return (
+    <div className="p-8 m-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto">
+      <h1 className="text-4xl font-bold text-brand-purple-600">
+        Leave requests
+      </h1>
+      <div className="mt-10 flex flex-col justify-center items-center">
+        <div className="text-brand-green-600">Work in progress...</div>
+      </div>
+    </div>
+  );
+}

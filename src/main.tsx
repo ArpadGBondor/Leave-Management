@@ -7,6 +7,7 @@ import App from './App.js';
 import UserProvider from './context/user/UserProvider';
 import LoadingProvider from './context/loading/LoadingProvider';
 import CompanyProvider from './context/company/CompanyProvider';
+import RequestsProvider from './context/requests/RequestsProvider';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root') as HTMLElement).render(
       <LoadingProvider>
         <UserProvider>
           <CompanyProvider>
-            <App />
+            <RequestsProvider>
+              <App />
+            </RequestsProvider>
           </CompanyProvider>
         </UserProvider>
       </LoadingProvider>

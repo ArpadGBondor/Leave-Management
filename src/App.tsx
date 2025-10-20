@@ -8,6 +8,7 @@ import Navigation from './components/navigation/Navigation';
 import PrivateRoute from './components/auth/PrivateRoute';
 
 import Home from './pages/Home';
+import Requests from './pages/Requests';
 import Login from './pages/Login';
 import About from './pages/About';
 import Logout from './pages/Logout';
@@ -35,6 +36,7 @@ export default function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/requests" element={<Requests />} />
             </Route>
             <Route
               element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
