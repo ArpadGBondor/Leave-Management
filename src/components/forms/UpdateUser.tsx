@@ -88,14 +88,17 @@ export default function UpdateUser() {
 
     startLoading('update-user');
     try {
+      if (!user) {
+        toast.error("There's no logged in user to update");
+        return;
+      }
+
       if (!validateUser()) {
         toast.error('Please fill in all fields');
         return;
       }
 
-      // Create user with email & password
-      await updateUser({ name, email, photo, userType: userType });
-
+      await updateUser({ name, email, photo, userType, id: user.id });
       toast.info('Profile details updated');
     } catch (error: any) {
       toast.error(error.message || 'Could not update user');
