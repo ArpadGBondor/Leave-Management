@@ -1,8 +1,10 @@
+import { useRequestsContext } from '../context/requests/useRequestsContext';
 import { useUserContext } from '../context/user/useUserContext';
 import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
   const { user, loggedIn, loading: userLoading } = useUserContext();
+  const { requestCount } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
   const bottomNavItems: NavItem[] = [];
@@ -20,6 +22,13 @@ const useNavItems = () => {
       name: 'Manage team',
       link: '/manage-team',
       icon: 'FaUsers',
+    });
+  }
+  if (loggedIn) {
+    topNavItems.push({
+      name: `Requests (${requestCount})`,
+      link: '/requests',
+      icon: 'FaPaperPlane',
     });
   }
   topNavItems.push({ name: 'About', link: '/about', icon: 'FaInfoCircle' });
