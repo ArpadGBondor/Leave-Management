@@ -1,3 +1,10 @@
+## [1.2.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.8...v1.2.9) (2025-10-20)
+
+
+### Bug Fixes
+
+* add requests page to app ([9583e1b](https://github.com/ArpadGBondor/Leave-Management/commit/9583e1b37d34dddc227cba61d812be629bbed195))
+
 ## [1.2.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.7...v1.2.8) (2025-10-19)
 
 
