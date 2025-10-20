@@ -6,7 +6,6 @@ import {
   collection,
   doc,
   DocumentData,
-  getDoc,
   onSnapshot,
   QuerySnapshot,
 } from 'firebase/firestore';
@@ -24,6 +23,7 @@ import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
 import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
 import { useCompanyContext } from '../context/company/useCompanyContext';
 import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
+import UpdateTeamMemberUserType from '../components/forms/UpdateTeamMemberUserType';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -61,6 +61,7 @@ export default function ManageTeamMember() {
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
   >([]);
+  const [editUserType, setEditUserType] = useState<boolean>(false);
   const { startLoading, stopLoading } = useLoadingContext();
   const [selectedForEditing, setSelectedForEditing] =
     useState<UserHolidayEntitlement | null>(null);
@@ -76,17 +77,14 @@ export default function ManageTeamMember() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserDocument();
-  }, []);
-
-  useEffect(() => {
     if (!userId) return;
+
+    startLoading('fetch-configured-years');
     const configurationRef = collection(
       db,
       `${firebase_collections.USERS}/${userId}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}`
     );
-    startLoading('fetch-configured-years');
-    const unsubscribe = onSnapshot(
+    const configurationUnsubscribe = onSnapshot(
       configurationRef,
       (snapshot: QuerySnapshot<DocumentData>) => {
         const data: UserHolidayEntitlement[] = snapshot.docs.map((doc) => ({
@@ -102,15 +100,30 @@ export default function ManageTeamMember() {
       }
     );
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [userId]);
-
-  const fetchUserDocument = async () => {
+    startLoading('fetch-user');
     const userRef = doc(db, `${firebase_collections.USERS}/${userId}`);
-    const userDoc = await getDoc(userRef);
-    setUser(userDoc.data() as User);
-  };
+    const userUnsubscribe = onSnapshot(
+      userRef,
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          setUser(null);
+        } else {
+          setUser(snapshot.data() as User);
+        }
+        stopLoading('fetch-user');
+      },
+      (err) => {
+        console.error('Error subscribing to user:', err);
+        stopLoading('fetch-user');
+      }
+    );
+
+    // Cleanup subscription on unmount
+    return () => {
+      configurationUnsubscribe();
+      userUnsubscribe();
+    };
+  }, [userId]);
 
   const selectRow = (row: UserHolidayEntitlement) => {
     setSelectedForEditing(row);
@@ -194,9 +207,29 @@ export default function ManageTeamMember() {
           Manage Team Member
         </h2>
         {user && (
-          <div className="bg-brand-green-600 p-4 rounded-xl">
-            <ProfileBadge user={user} />
-          </div>
+          <>
+            <div className="bg-brand-green-600 p-4 rounded-xl flex flex-col md:flex-row gap-4 justify-between items-center">
+              <ProfileBadge user={user} />
+              <div className="w-full md:w-1/2">
+                {!editUserType && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    label="Edit user type"
+                    onClick={() => setEditUserType(true)}
+                  />
+                )}
+              </div>
+            </div>
+            {user && editUserType && (
+              <UpdateTeamMemberUserType
+                user={user}
+                onBack={() => {
+                  setEditUserType(false);
+                }}
+              />
+            )}
+          </>
         )}
         {screenPhase === 1 && (
           <>

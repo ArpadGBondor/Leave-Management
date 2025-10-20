@@ -17,7 +17,7 @@ export interface UserContextValue extends UserState {
     photo: string
   ) => Promise<void>;
   logout: () => Promise<void>;
-  updateUser: (data: Partial<User>) => Promise<void>;
+  updateUser: (data: { id: string } & Partial<User>) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   updatePassword: (
     currentPassword: string,

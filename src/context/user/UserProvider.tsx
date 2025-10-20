@@ -114,8 +114,13 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
   const logout = () => signOut(auth);
 
+  /**
+   * id always needs to be passed, this way the
+   * function can update any user, not just the
+   * currently logged in one.
+   */
   const updateUser = useCallback(
-    async (data: Partial<User>) => {
+    async (data: { id: string } & Partial<User>) => {
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -127,7 +132,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          userId: state.user.id,
+          userId: data.id,
           userType: data.userType,
         }),
       });
@@ -142,14 +147,16 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         },
         body: JSON.stringify({
           ...data,
-          id: state.user.id,
+          id: data.id,
           claims,
         }),
       });
       if (!updateUserResponse.ok) throw new Error('Failed to save user');
       const { doc } = await updateUserResponse.json();
-
-      dispatch({ type: SET_USER, payload: doc });
+      // Only update state if logged in user got updated
+      if (data.id === state?.user?.id) {
+        dispatch({ type: SET_USER, payload: doc });
+      }
     },
     [state.user]
   );
