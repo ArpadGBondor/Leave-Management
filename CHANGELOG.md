@@ -1,3 +1,10 @@
+## [1.2.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.11...v1.2.12) (2025-10-21)
+
+
+### Bug Fixes
+
+* add right to be forgotten ([4295702](https://github.com/ArpadGBondor/Leave-Management/commit/4295702c6a67af0cc8e4ad57bdaf655a1b384b9a))
+
 ## [1.2.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.10...v1.2.11) (2025-10-21)
 
 
