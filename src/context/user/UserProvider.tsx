@@ -158,7 +158,37 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         dispatch({ type: SET_USER, payload: doc });
       }
     },
-    [state.user]
+    [state?.user, auth.currentUser]
+  );
+
+  /**
+   * id always needs to be passed, this way the
+   * function can delete any user, not just the
+   * currently logged in one.
+   */
+  const deleteUser = useCallback(
+    async (data: { id: string }) => {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const updateUserResponse = await fetch('/api/user', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: data.id,
+        }),
+      });
+      if (!updateUserResponse.ok) throw new Error('Failed to delete user');
+      // Log out if current user got deleted
+      if (data.id === state?.user?.id) {
+        await signOut(auth);
+      }
+    },
+    [state?.user, auth.currentUser]
   );
 
   const updatePassword = useCallback(
@@ -178,31 +208,37 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       // Now you can update password
       await firebaseUpdatePassword(user, newPassword);
     },
-    []
+    [auth.currentUser]
   );
 
-  const addPassword = useCallback(async (newPassword: string) => {
-    const user = auth.currentUser;
-    if (!user || !user.email) throw new Error('No user logged in');
+  const addPassword = useCallback(
+    async (newPassword: string) => {
+      const user = auth.currentUser;
+      if (!user || !user.email) throw new Error('No user logged in');
 
-    try {
-      // Create a new email/password credential for the current user
-      const credential = EmailAuthProvider.credential(user.email, newPassword);
+      try {
+        // Create a new email/password credential for the current user
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          newPassword
+        );
 
-      // Link the credential to the existing SSO account
-      await linkWithCredential(user, credential);
+        // Link the credential to the existing SSO account
+        await linkWithCredential(user, credential);
 
-      dispatch({ type: SET_HAS_PASSWORD, payload: true });
-      console.log('Password added successfully!');
-    } catch (err: any) {
-      console.error('Failed to add password', err);
-      if (err.code === 'auth/credential-already-in-use') {
-        throw new Error('This email is already linked to another account.');
-      } else {
-        throw err;
+        dispatch({ type: SET_HAS_PASSWORD, payload: true });
+        console.log('Password added successfully!');
+      } catch (err: any) {
+        console.error('Failed to add password', err);
+        if (err.code === 'auth/credential-already-in-use') {
+          throw new Error('This email is already linked to another account.');
+        } else {
+          throw err;
+        }
       }
-    }
-  }, []);
+    },
+    [auth.currentUser]
+  );
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -254,6 +290,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         register,
         logout,
         updateUser,
+        deleteUser,
         updatePassword,
         addPassword,
       }}

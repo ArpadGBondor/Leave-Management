@@ -1,4 +1,5 @@
 import { FirebaseCollections } from './firebase_collections';
+import { HandlerResponse } from '@netlify/functions';
 
 export type CollectionConfig = {
   collection: FirebaseCollections; // collection name
@@ -9,6 +10,9 @@ export type CollectionConfig = {
 export type HandlerConfigOptions = {
   path: CollectionConfig[]; // sequence of collections/subcollections
   restrictToClaim?: 'ADMIN' | 'SUPER_ADMIN';
+  deleteAction?: (
+    ref: FirebaseFirestore.DocumentReference
+  ) => Promise<HandlerResponse>;
 };
 
 // imported bankholiday data from GOV

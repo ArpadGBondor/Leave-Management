@@ -18,6 +18,7 @@ export interface UserContextValue extends UserState {
   ) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (data: { id: string } & Partial<User>) => Promise<void>;
+  deleteUser: (data: { id: string }) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   updatePassword: (
     currentPassword: string,
@@ -39,6 +40,7 @@ export const UserContext = createContext<UserContextValue>({
   register: async () => {},
   logout: async () => {},
   updateUser: async () => {},
+  deleteUser: async () => {},
   loginWithGoogle: async () => {},
   updatePassword: async () => {},
   addPassword: async () => {},
