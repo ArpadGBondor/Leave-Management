@@ -1,7 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { verifyBearerToken } from '../../lib/verifyBearerToken';
 import { db } from '../../lib/firebase';
-import { response } from '../../lib/response';
+import { errorResponse, response } from '../../lib/response';
 import { BankHolidayData, BankHolidayEvent } from '../../lib/types';
 import { firebase_collections } from '../../lib/firebase_collections';
 
@@ -78,15 +78,7 @@ const handler: Handler = async (event) => {
 
     return response(200, { success: true, created, updated, skipped });
   } catch (err: any) {
-    console.error(err);
-    return response(
-      err.message?.startsWith('Unauthorized')
-        ? 401
-        : err.message?.startsWith('Forbidden')
-        ? 403
-        : 500,
-      { error: err.message || 'Failed to set user role' }
-    );
+    return errorResponse(err, 'process');
   }
 };
 

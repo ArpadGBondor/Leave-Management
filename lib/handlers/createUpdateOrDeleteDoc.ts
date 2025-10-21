@@ -1,14 +1,14 @@
-import { Handler } from '@netlify/functions';
+import { Handler, HandlerResponse } from '@netlify/functions';
 import { verifyBearerToken } from '../verifyBearerToken';
-import { response } from '../response';
+import { errorResponse, response } from '../response';
 import { HandlerConfigOptions } from '../types';
 import { buildRef } from '../cleanRef';
 import { cleanBody } from '../cleanBody';
 import * as admin from 'firebase-admin';
 
 export const createUpdateOrDeleteDoc =
-  ({ path, restrictToClaim }: HandlerConfigOptions): Handler =>
-  async (event) => {
+  ({ path, restrictToClaim, deleteAction }: HandlerConfigOptions): Handler =>
+  async (event): Promise<HandlerResponse> => {
     const isCreate = event.httpMethod === 'POST';
     const isUpdate = event.httpMethod === 'PUT';
     const isDelete = event.httpMethod === 'DELETE';
@@ -29,12 +29,16 @@ export const createUpdateOrDeleteDoc =
       const ref = buildRef(body, path);
 
       if (isDelete) {
-        // Delete document
-        await ref.delete();
-        return response(200, {
-          success: true,
-          message: 'Document deleted successfully',
-        });
+        if (deleteAction) {
+          return deleteAction(ref);
+        } else {
+          // Delete document
+          await ref.delete();
+          return response(200, {
+            success: true,
+            message: 'Document deleted successfully',
+          });
+        }
       }
 
       const clean = cleanBody(body, path);
@@ -59,30 +63,15 @@ export const createUpdateOrDeleteDoc =
 
       return response(200, { success: true, doc });
     } catch (err: unknown) {
-      console.error(err);
-      if (err instanceof Error)
-        return response(
-          err.message?.startsWith('Bad request')
-            ? 400
-            : err.message?.startsWith('Unauthorized')
-            ? 401
-            : err.message?.startsWith('Forbidden')
-            ? 403
-            : 500,
-          {
-            error:
-              err.message ||
-              `Failed to ${
-                isCreate
-                  ? 'create'
-                  : isUpdate
-                  ? 'update'
-                  : isDelete
-                  ? 'delete'
-                  : 'process'
-              } document.`,
-          }
-        );
-      return response(500, 'Unknown server error');
+      return errorResponse(
+        err,
+        isCreate
+          ? 'create'
+          : isUpdate
+          ? 'update'
+          : isDelete
+          ? 'delete'
+          : 'process'
+      );
     }
   };

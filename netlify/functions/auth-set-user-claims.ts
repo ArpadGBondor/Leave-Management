@@ -1,7 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { auth } from '../../lib/firebase';
 import { verifyBearerToken } from '../../lib/verifyBearerToken';
-import { response } from '../../lib/response';
+import { errorResponse, response } from '../../lib/response';
 
 const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -54,15 +54,7 @@ const handler: Handler = async (event) => {
 
     return response(200, { success: true, claims });
   } catch (err: any) {
-    console.error(err);
-    return response(
-      err.message?.startsWith('Unauthorized')
-        ? 401
-        : err.message?.startsWith('Forbidden')
-        ? 403
-        : 500,
-      { error: err.message || 'Failed to set user role' }
-    );
+    return errorResponse(err, 'process');
   }
 };
 
