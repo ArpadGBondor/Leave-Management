@@ -1,3 +1,11 @@
+## [1.2.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.10...v1.2.11) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove extra notifications ([2c65cdc](https://github.com/ArpadGBondor/Leave-Management/commit/2c65cdc5f32eaf77842011b2762f92f011c0b00f))
+* skip updating company settings if they haven't changed ([0e737d8](https://github.com/ArpadGBondor/Leave-Management/commit/0e737d89095db35277452f0caf5bc3d0a1b603f2))
+
 ## [1.2.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.9...v1.2.10) (2025-10-20)
 
 
