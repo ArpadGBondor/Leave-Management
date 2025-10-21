@@ -54,15 +54,11 @@ const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
         bankHolidayRegionId,
         numberOfBankHolidays,
       });
-      toast.info('Default bank holiday region saved');
       return formResponse('submitted', 'Default bank holiday region saved');
     } catch (error: any) {
-      toast.error(
-        error.message || 'Could not update default bank holiday region'
-      );
       return formResponse(
         'error',
-        'Could not update default bank holiday region'
+        error.message || 'Could not update default bank holiday region'
       );
     } finally {
       stopLoading('set-company-bank-holiday-region');

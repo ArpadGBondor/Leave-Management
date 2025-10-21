@@ -81,15 +81,11 @@ const CompanyWorkdayDefaults = forwardRef((props, ref) => {
         sunday,
       });
 
-      toast.info('Default workdays of the week saved');
       return formResponse('submitted', 'Default workdays of the week saved');
     } catch (error: any) {
-      toast.error(
-        error.message || 'Could not update default workdays of the week'
-      );
       return formResponse(
         'error',
-        'Could not update default workdays of the week'
+        error.message || 'Could not update default workdays of the week'
       );
     } finally {
       stopLoading('set-company-workdays-of-the-week');

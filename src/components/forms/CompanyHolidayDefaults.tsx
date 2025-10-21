@@ -68,15 +68,11 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
     startLoading('set-company-holiday-entitlement');
     try {
       await updateHolidayEntitlement({ base, additional, multiplier, total });
-      toast.info('Default holiday entitlement saved');
       return formResponse('submitted', 'Default holiday entitlement saved');
     } catch (error: any) {
-      toast.error(
-        error.message || 'Could not update default holiday entitlement'
-      );
       return formResponse(
         'error',
-        'Could not update default holiday entitlement'
+        error.message || 'Could not update default holiday entitlement'
       );
     } finally {
       stopLoading('set-company-holiday-entitlement');

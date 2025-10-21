@@ -28,11 +28,13 @@ export default function ManageCompany() {
       ]);
       const errors = responses.filter((res) => res?.error);
       if (errors.length > 0) {
-        // If there are errors, report errors
         errors.forEach((res) => res && toast.error(res.message));
       } else {
-        // One notification is enough otherwise
-        toast.info('Updated default company configuration');
+        if (responses.some((res) => res?.submitted)) {
+          toast.info('Updated default company configuration');
+        } else {
+          toast.info('No update needed');
+        }
       }
     } finally {
       stopLoading('submit-company-configs');
