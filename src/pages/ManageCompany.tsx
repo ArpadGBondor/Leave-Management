@@ -4,20 +4,39 @@ import CompanyBankHolidayRegionDefault from '../components/forms/CompanyBankHoli
 import CompanyHolidayDefaults from '../components/forms/CompanyHolidayDefaults';
 import CompanyImportBankHolidays from '../components/forms/CompanyImportBankHolidays';
 import CompanyWorkdayDefaults from '../components/forms/CompanyWorkdayDefaults';
+import { toast } from 'react-toastify';
+import { useLoadingContext } from '../context/loading/useLoadingContext';
+import SubmitFormResponse from '../interface/SubmitFormResponse.interface';
 
 type FormRef = {
-  submit: () => void;
+  submit: () => Promise<SubmitFormResponse>;
 };
 
 export default function ManageCompany() {
   const workdayRef = useRef<FormRef | null>(null);
   const regionRef = useRef<FormRef | null>(null);
   const holidayRef = useRef<FormRef | null>(null);
+  const { startLoading, stopLoading } = useLoadingContext();
 
-  const handleSubmitAll = () => {
-    workdayRef.current?.submit();
-    regionRef.current?.submit();
-    holidayRef.current?.submit();
+  const handleSubmitAll = async () => {
+    startLoading('submit-company-configs');
+    try {
+      const responses = await Promise.all([
+        workdayRef.current?.submit(),
+        regionRef.current?.submit(),
+        holidayRef.current?.submit(),
+      ]);
+      const errors = responses.filter((res) => res?.error);
+      if (errors.length > 0) {
+        // If there are errors, report errors
+        errors.forEach((res) => res && toast.error(res.message));
+      } else {
+        // One notification is enough otherwise
+        toast.info('Updated default company configuration');
+      }
+    } finally {
+      stopLoading('submit-company-configs');
+    }
   };
 
   return (

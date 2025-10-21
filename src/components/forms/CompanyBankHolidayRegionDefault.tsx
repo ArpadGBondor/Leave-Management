@@ -5,6 +5,9 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import BankHolidayRegion from '../../interface/BankHolidayRegion.interface';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
+import SubmitFormResponse, {
+  formResponse,
+} from '../../interface/SubmitFormResponse.interface';
 
 const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<BankHolidayRegion>({
@@ -30,8 +33,20 @@ const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
     submit: onSubmitBankHolidayRegion,
   }));
 
-  const onSubmitBankHolidayRegion = async (e: any) => {
+  const onSubmitBankHolidayRegion = async (
+    e: any
+  ): Promise<SubmitFormResponse> => {
     e?.preventDefault();
+
+    if (
+      bankHolidayRegion.bankHolidayRegionId === bankHolidayRegionId &&
+      bankHolidayRegion.numberOfBankHolidays === numberOfBankHolidays
+    ) {
+      return formResponse(
+        'skipped',
+        "Default bank holiday region haven't changed"
+      );
+    }
 
     startLoading('set-company-bank-holiday-region');
     try {
@@ -40,9 +55,14 @@ const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
         numberOfBankHolidays,
       });
       toast.info('Default bank holiday region saved');
+      return formResponse('submitted', 'Default bank holiday region saved');
     } catch (error: any) {
       toast.error(
         error.message || 'Could not update default bank holiday region'
+      );
+      return formResponse(
+        'error',
+        'Could not update default bank holiday region'
       );
     } finally {
       stopLoading('set-company-bank-holiday-region');

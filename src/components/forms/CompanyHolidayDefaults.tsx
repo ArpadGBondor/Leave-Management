@@ -5,6 +5,9 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
+import SubmitFormResponse, {
+  formResponse,
+} from '../../interface/SubmitFormResponse.interface';
 
 const CompanyHolidayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<HolidayEntitlement>({
@@ -46,16 +49,34 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
     submit: onSubmitHolidayEntitlement,
   }));
 
-  const onSubmitHolidayEntitlement = async (e: any) => {
+  const onSubmitHolidayEntitlement = async (
+    e: any
+  ): Promise<SubmitFormResponse> => {
     e?.preventDefault();
 
+    if (
+      holidayEntitlement.base === base &&
+      holidayEntitlement.additional === additional &&
+      holidayEntitlement.multiplier === multiplier &&
+      holidayEntitlement.total === total
+    ) {
+      return formResponse(
+        'skipped',
+        "Default holiday entitlement haven't changed"
+      );
+    }
     startLoading('set-company-holiday-entitlement');
     try {
       await updateHolidayEntitlement({ base, additional, multiplier, total });
-      toast.info('Default holiday configuration saved');
+      toast.info('Default holiday entitlement saved');
+      return formResponse('submitted', 'Default holiday entitlement saved');
     } catch (error: any) {
       toast.error(
-        error.message || 'Could not update default holiday configuration'
+        error.message || 'Could not update default holiday entitlement'
+      );
+      return formResponse(
+        'error',
+        'Could not update default holiday entitlement'
       );
     } finally {
       stopLoading('set-company-holiday-entitlement');

@@ -4,6 +4,9 @@ import { toast } from 'react-toastify';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
+import SubmitFormResponse, {
+  formResponse,
+} from '../../interface/SubmitFormResponse.interface';
 
 const CompanyWorkdayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState({
@@ -47,9 +50,25 @@ const CompanyWorkdayDefaults = forwardRef((props, ref) => {
     submit: onSubmitHolidayEntitlement,
   }));
 
-  const onSubmitHolidayEntitlement = async (e: any) => {
+  const onSubmitHolidayEntitlement = async (
+    e: any
+  ): Promise<SubmitFormResponse> => {
     e?.preventDefault();
 
+    if (
+      workdaysOfTheWeek.monday === monday &&
+      workdaysOfTheWeek.tuesday === tuesday &&
+      workdaysOfTheWeek.wednesday === wednesday &&
+      workdaysOfTheWeek.thursday === thursday &&
+      workdaysOfTheWeek.friday === friday &&
+      workdaysOfTheWeek.saturday === saturday &&
+      workdaysOfTheWeek.sunday === sunday
+    ) {
+      return formResponse(
+        'skipped',
+        "Default workdays of the week haven't changed"
+      );
+    }
     startLoading('set-company-workdays-of-the-week');
     try {
       await updateWorkdaysOfTheWeek({
@@ -62,10 +81,15 @@ const CompanyWorkdayDefaults = forwardRef((props, ref) => {
         sunday,
       });
 
-      toast.info('Default workday configuration saved');
+      toast.info('Default workdays of the week saved');
+      return formResponse('submitted', 'Default workdays of the week saved');
     } catch (error: any) {
       toast.error(
-        error.message || 'Could not update default workday configuration'
+        error.message || 'Could not update default workdays of the week'
+      );
+      return formResponse(
+        'error',
+        'Could not update default workdays of the week'
       );
     } finally {
       stopLoading('set-company-workdays-of-the-week');
