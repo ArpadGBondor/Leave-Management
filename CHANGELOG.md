@@ -1,3 +1,10 @@
+## [1.2.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.12...v1.2.13) (2025-10-23)
+
+
+### Bug Fixes
+
+* add backend function documentation ([0e56b08](https://github.com/ArpadGBondor/Leave-Management/commit/0e56b089be2c5329f184981cab7cde618de9b96f))
+
 ## [1.2.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.11...v1.2.12) (2025-10-21)
 
 
