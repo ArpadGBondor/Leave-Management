@@ -1,3 +1,10 @@
+## [1.2.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.15...v1.2.16) (2025-10-24)
+
+
+### Bug Fixes
+
+* add table of contents links ([aba9c6e](https://github.com/ArpadGBondor/Leave-Management/commit/aba9c6ecf12140e9a39f237031df65d4912f532e))
+
 ## [1.2.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.14...v1.2.15) (2025-10-24)
 
 
