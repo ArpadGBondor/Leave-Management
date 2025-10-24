@@ -1,3 +1,10 @@
+## [1.2.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.13...v1.2.14) (2025-10-24)
+
+
+### Bug Fixes
+
+* update documentation ([fbdda2a](https://github.com/ArpadGBondor/Leave-Management/commit/fbdda2ab18d0a2a970a75df330dd815b0bb6bad3))
+
 ## [1.2.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.12...v1.2.13) (2025-10-23)
 
 
