@@ -1,7 +1,9 @@
 # [Leave management](https://arpadgbondor.github.io/Leave-Management/)
 
 - [Project goals](#project-goals)
+- [Overview](#overview)
 - [Highlights](#highlights)
+- [Pages](#pages)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
@@ -21,6 +23,16 @@ Work in progress...
 - Practise Authentication
 - Practise Database management
 - Practise Serverless backend functions
+
+## Overview
+
+Overview
+
+The Leave Management a demo web application that allows users to register, manage leave requests, and configure company-wide holiday policies. It demonstrates a typical employee leave workflow, including authentication, user roles, and entitlement management.
+
+- Note:
+
+  This is a demo application. In a production environment, user management and permissions would be tightly controlled by the company’s management or system administrators.
 
 ## Highlights
 
@@ -44,6 +56,92 @@ Work in progress...
 
   - Access Control
     All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
+
+## Pages
+
+### Home (WIP)
+
+### About (WIP)
+
+### Register
+
+- Users can register by:
+
+  - Filling out the registration form (name, email, password, and profile picture), or
+
+  - Using Google Single Sign-On (SSO).
+
+- Registration is open to everyone for demo purposes.
+
+- In a production system, only Management should be able to add or remove users.
+
+### Login
+
+- Users can log in using:
+
+  - Email + Password, or
+
+  - Google SSO.
+
+### Logout
+
+- Users can sign out by navigating to the Logout page.
+
+- This clears their active session and returns them to the login page.
+
+### Profile
+
+- Users can:
+
+  - Change their name, profile image, and user type.
+
+  - (For demo purposes) promote themselves to Manager roles to explore restricted features.
+
+- SSO users can set a password on their Firebase Authentication record to enable email + password login in the future.
+
+  - Known Issue: When logging in with Google SSO for the first time, Firebase may remove any previously stored password.
+
+  - This feature allows users to restore email login access if that occurs.
+
+- Right to be Forgotten:
+  - Users can delete their own accounts.
+    This feature ensures that testers can remove their data from the system at any time.
+
+### Manage Company
+
+- Restricted to: Owners only.
+
+- This section allows configuration of company-level settings with minimal setup required.
+
+- Features:
+
+  - Define default yearly holiday entitlements.
+
+  - Set up fallback values used when team or user-specific configurations are missing.
+
+  - Import UK bank holidays directly from GOV.UK data files.
+
+- Preloaded data includes UK bank holidays for 2024–2027.
+
+### Manage Team
+
+- Restricted to: Managers and Owners.
+
+- Managers and Owners can:
+
+  - Modify user roles (including promoting users).
+
+    - For demo purposes, promotion restrictions are not enforced.
+
+  - Configure individual users’:
+
+    - Yearly holiday entitlement
+
+    - Work schedule
+
+    - Bank holiday region
+
+### Requests (WIP)
 
 ## Serverless Backend Functions
 
