@@ -49,27 +49,41 @@ Work in progress...
 
 ### /api/auth-set-user-claims (POST)
 
-- Headers
+- Description:
 
-  - Authorization: Bearer token
-    - The token must belong to an authorised user.
-  - Content-Type: application/json
+  - This endpoint updates a user’s Firebase Authentication custom claims based
+    on their userType:
+    - Manager
+      - { ADMIN: true }
+    - Owner
+      - { ADMIN: true, SUPER_ADMIN: true }
+    - (any other value)
+      - Removes all existing custom claims
 
-- Body:
+- Request
 
-  - `userId` (string)
+  - Method: POST
+  - Headers
 
-    - Firebase Authentication user UID to modify.
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
 
-  - `userType` (string)
+  - Body:
 
-    - 'Manager' user type sets ADMIN claim in Firebase Authentication
+    - `userId` (string)
 
-    - 'Owner' user type sets ADMIN and SUPER_ADMIN claims in Firebase
-      Authentication
+      - Firebase Authentication user UID to modify.
 
-    - any other user type removes existing claims from Firebase
-      Authentication
+    - `userType` (string)
+
+      - 'Manager' user type sets ADMIN claim in Firebase Authentication
+
+      - 'Owner' user type sets ADMIN and SUPER_ADMIN claims in Firebase
+        Authentication
+
+      - any other user type removes existing claims from Firebase
+        Authentication
 
 - Response 200 OK:
 
@@ -84,26 +98,8 @@ Work in progress...
 
 ### /api/import-bank-holidays (POST)
 
-- Headers
-
-  - Authorization: Bearer token
-    - The token must belong to an authorised user.
-  - Content-Type: application/json
-
-- Body: (none required)
-
-- Response 200 OK:
-
-  - {"success": true, "created": 10, "updated": 3, "skipped": 45 }
-
-- Error responses:
-
-  - 400 Bad request: {"error": "Bad request: ..."}
-  - 401 Unauthorised: {"error": "Unauthorised"}
-  - 403 Forbidden: {"error": "Forbidden"}
-  - 500 Internal Server Error: {"error": "Unknown server error"}
-
 - Description:
+
   - This endpoint retrieves the latest UK bank holiday data from the URL
     specified in the environment variable UK_BANK_HOLIDAY_API.
   - It then synchronizes this data into Firestore, ensuring that:
@@ -116,25 +112,20 @@ Work in progress...
   - A record of imported years is stored in the `bank_holiday_imported_years`
     collection to track which years have been processed.
 
-### /api/config (POST|PUT|DELETE)
+- Request:
 
-- Headers
+  - Method: POST
+  - Headers
 
-  - Authorization: Bearer token
-    - The token must belong to an authorised user.
-  - Content-Type: application/json
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
 
-- Body:
-
-  - `id` (string): Document ID in firestore
-
-  - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
-
-  - other fields: configuration data to store
+  - Body: (none required)
 
 - Response 200 OK:
 
-  - { "success": true, "doc": { ... stored fields ... } }
+  - {"success": true, "created": 10, "updated": 3, "skipped": 45 }
 
 - Error responses:
 
@@ -143,25 +134,29 @@ Work in progress...
   - 403 Forbidden: {"error": "Forbidden"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
+### /api/config (POST|PUT|DELETE)
+
 - Description:
+
   - Manages documents in the `config` collection in Firestore.
   - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
 
-### /api/users (POST|PUT|DELETE)
+- Request
 
-- Headers
+  - Method: POST | PUT | DELETE
+  - Headers
 
-  - Authorization: Bearer token
-    - The token must belong to an authorised user.
-  - Content-Type: application/json
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
 
-- Body:
+  - Body:
 
-  - `id` (string): Firebase Auth user UID (used as document ID).
+    - `id` (string): Document ID in firestore
 
-  - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
 
-  - other fields: user data to store (e.g.: name, email, ...)
+    - other fields: configuration data to store
 
 - Response 200 OK:
 
@@ -173,6 +168,8 @@ Work in progress...
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/users (POST|PUT|DELETE)
 
 - Description:
   - Manages documents in the `users` collection in Firestore.
@@ -183,24 +180,22 @@ Work in progress...
     - The corresponding Firebase Authentication account
       (auth.deleteUser(userId)) is removed.
     - The user’s Firestore document and all subcollections are recursively deleted (db.recursiveDelete(ref)).
+- Request:
 
-### /api/user-yearly-holiday-configuration (POST|PUT|DELETE)
+  - Method: POST | PUT | DELETE
+  - Headers
 
-- Headers
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
 
-  - Authorization: Bearer token
-    - The token must belong to an authorised user.
-  - Content-Type: application/json
+  - Body:
 
-- Body:
+    - `id` (string): Firebase Auth user UID (used as document ID).
 
-  - `userId` (string): identifies the user (from the parent Firestore document),
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
 
-  - `id` (string:) typically represents the year (e.g., "2025").
-
-  - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
-
-  - other fields: configuration data to store
+    - other fields: user data to store (e.g.: name, email, ...)
 
 - Response 200 OK:
 
@@ -213,9 +208,42 @@ Work in progress...
   - 403 Forbidden: {"error": "Forbidden"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
+### /api/user-yearly-holiday-configuration (POST|PUT|DELETE)
+
 - Description:
+
   - Manages documents in the `holiday_entitlement` subcollection of user documents in Firestore.
   - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
+
+- Request:
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `userId` (string): identifies the user (from the parent Firestore document),
+
+    - `id` (string:) typically represents the year (e.g., "2025").
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: configuration data to store
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ## Environment variables
 
