@@ -1,3 +1,10 @@
+## [1.2.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.14...v1.2.15) (2025-10-24)
+
+
+### Bug Fixes
+
+* add Pages documentation ([0c9b607](https://github.com/ArpadGBondor/Leave-Management/commit/0c9b6079942f28b080103a09b472fd1ffdf31b75))
+
 ## [1.2.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.13...v1.2.14) (2025-10-24)
 
 
