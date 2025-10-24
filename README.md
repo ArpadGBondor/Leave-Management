@@ -38,14 +38,11 @@ The Leave Management a demo web application that allows users to register, manag
 
 - Database Management
 
-  - Firestore Access Rules
-    Firebase Firestore rules are configured to allow the web application to read collections directly from Firebase, enabling fast and efficient data access.
+  - Firebase Firestore rules are configured to allow the web application to read collections directly from Firebase, enabling fast and efficient data access.
 
-  - Secure Data Modification via Netlify Functions
-    Netlify backend functions leverage the firebase-admin SDK to securely update, create, or delete data in the Firestore database.
+  - Netlify backend functions leverage the firebase-admin SDK to securely update, create, or delete data in the Firestore database.
 
-  - Dynamic Database Handlers
-    Database handler functions are automatically generated using the createUpdateOrDeleteDoc utility located in the libs/handlers directory.
+  - Database handler functions are automatically generated using the createUpdateOrDeleteDoc utility located in the libs/handlers directory.
     Using HandlerConfigOptions, these functions can be configured to:
 
     - Update documents in a top-level collection or within a subcollection of another document.
@@ -54,8 +51,7 @@ The Leave Management a demo web application that allows users to register, manag
 
     - Control whether these fields are included or excluded from the written Firestore document.
 
-  - Access Control
-    All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
+  - All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
 
 ## Pages
 
