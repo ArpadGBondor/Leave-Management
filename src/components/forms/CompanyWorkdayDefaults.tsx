@@ -1,15 +1,15 @@
 import { forwardRef, useImperativeHandle } from 'react';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
 import SubmitFormResponse, {
   formResponse,
 } from '../../interface/SubmitFormResponse.interface';
+import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 
 const CompanyWorkdayDefaults = forwardRef((props, ref) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<WorkdaysOfTheWeek>({
     monday: true,
     tuesday: true,
     wednesday: true,
