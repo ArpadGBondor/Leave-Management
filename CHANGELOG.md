@@ -1,3 +1,10 @@
+## [1.2.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.18...v1.2.19) (2025-10-25)
+
+
+### Bug Fixes
+
+* allow to set deductions after multiplier applied ([3794179](https://github.com/ArpadGBondor/Leave-Management/commit/379417974e79b2cdcdc5563c9da3f0860cea3b82))
+
 ## [1.2.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.17...v1.2.18) (2025-10-25)
 
 
