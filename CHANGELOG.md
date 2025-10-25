@@ -1,3 +1,10 @@
+## [1.2.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.19...v1.2.20) (2025-10-25)
+
+
+### Bug Fixes
+
+* add calendar to home page ([cc93015](https://github.com/ArpadGBondor/Leave-Management/commit/cc93015659b21ae4417f68d02c0c964017e765f2))
+
 ## [1.2.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.18...v1.2.19) (2025-10-25)
 
 
