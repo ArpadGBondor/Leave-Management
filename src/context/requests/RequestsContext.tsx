@@ -1,8 +1,11 @@
 import { createContext } from 'react';
 
-export interface RequestsContextType {
-  requestCount: number;
-}
+export type RequestsState = {
+  ownRequestCount: number;
+  managableRequestCount: number;
+};
+
+export interface RequestsContextType extends RequestsState {}
 
 export const RequestsContext = createContext<RequestsContextType | undefined>(
   undefined
