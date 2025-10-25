@@ -11,16 +11,18 @@ import SubmitFormResponse, {
 
 const CompanyHolidayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<HolidayEntitlement>({
-    base: 0,
-    additional: 0,
-    multiplier: 0,
-    total: 0,
+    holidayEntitlementBase: 0,
+    holidayEntitlementAdditional: 0,
+    holidayEntitlementMultiplier: 0,
+    holidayEntitlementDeduction: 0,
+    holidayEntitlementTotal: 0,
   });
   const defaultErrors = {
-    base: '',
-    additional: '',
-    multiplier: '',
-    total: '', // this is probably not needed
+    holidayEntitlementBase: '',
+    holidayEntitlementAdditional: '',
+    holidayEntitlementMultiplier: '',
+    holidayEntitlementDeduction: '',
+    holidayEntitlementTotal: '', // this is probably not needed
   };
   const [errors, setErrors] =
     useState<Record<keyof HolidayEntitlement, string>>(defaultErrors);
@@ -28,7 +30,13 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
   const { startLoading, stopLoading } = useLoadingContext();
   const { updateHolidayEntitlement, holidayEntitlement } = useCompanyContext();
 
-  const { base, additional, multiplier, total } = formData;
+  const {
+    holidayEntitlementBase,
+    holidayEntitlementAdditional,
+    holidayEntitlementMultiplier,
+    holidayEntitlementDeduction,
+    holidayEntitlementTotal,
+  } = formData;
 
   useEffect(() => {
     if (holidayEntitlement)
@@ -55,10 +63,14 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
     e?.preventDefault();
 
     if (
-      holidayEntitlement.base === base &&
-      holidayEntitlement.additional === additional &&
-      holidayEntitlement.multiplier === multiplier &&
-      holidayEntitlement.total === total
+      holidayEntitlement.holidayEntitlementBase === holidayEntitlementBase &&
+      holidayEntitlement.holidayEntitlementAdditional ===
+        holidayEntitlementAdditional &&
+      holidayEntitlement.holidayEntitlementMultiplier ===
+        holidayEntitlementMultiplier &&
+      holidayEntitlement.holidayEntitlementDeduction ===
+        holidayEntitlementDeduction &&
+      holidayEntitlement.holidayEntitlementTotal === holidayEntitlementTotal
     ) {
       return formResponse(
         'skipped',
@@ -67,7 +79,13 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
     }
     startLoading('set-company-holiday-entitlement');
     try {
-      await updateHolidayEntitlement({ base, additional, multiplier, total });
+      await updateHolidayEntitlement({
+        holidayEntitlementBase,
+        holidayEntitlementAdditional,
+        holidayEntitlementMultiplier,
+        holidayEntitlementDeduction,
+        holidayEntitlementTotal,
+      });
       return formResponse('submitted', 'Default holiday entitlement saved');
     } catch (error: any) {
       return formResponse(

@@ -18,12 +18,21 @@ export default function HolidayCalculationInputs<
   errors,
   setError,
 }: HolidayCalculationInputsProps<T1, T2>) {
-  const { base, additional, multiplier, total } = formData;
+  const {
+    holidayEntitlementBase,
+    holidayEntitlementAdditional,
+    holidayEntitlementMultiplier,
+    holidayEntitlementDeduction,
+    holidayEntitlementTotal,
+  } = formData;
 
   const autoUpdate = (state: T1): T1 => {
     return {
       ...state,
-      total: (state.base + state.additional) * state.multiplier,
+      holidayEntitlementTotal:
+        (state.holidayEntitlementBase + state.holidayEntitlementAdditional) *
+          state.holidayEntitlementMultiplier -
+        state.holidayEntitlementDeduction,
     };
   };
 
@@ -33,30 +42,30 @@ export default function HolidayCalculationInputs<
         {'('}
       </div>
       <NumberInput
-        id="base"
+        id="holidayEntitlementBase"
         label="Base leave entitlement"
-        name="base"
-        value={base}
+        name="holidayEntitlementBase"
+        value={holidayEntitlementBase}
         onChange={(e) =>
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
-        error={errors.base}
+        error={errors.holidayEntitlementBase}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
         {'+'}
       </div>
       <NumberInput
-        id="additional"
+        id="holidayEntitlementAdditional"
         label="Additional leave entitlement"
-        name="additional"
-        value={additional}
+        name="holidayEntitlementAdditional"
+        value={holidayEntitlementAdditional}
         onChange={(e) =>
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
         step={1}
-        error={errors.additional}
+        error={errors.holidayEntitlementAdditional}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
         {')'}
@@ -65,31 +74,46 @@ export default function HolidayCalculationInputs<
         {'x'}
       </div>
       <NumberInput
-        id="multiplier"
+        id="holidayEntitlementMultiplier"
         label="Leave entitlement multiplier"
-        name="multiplier"
-        value={multiplier}
+        name="holidayEntitlementMultiplier"
+        value={holidayEntitlementMultiplier}
         onChange={(e) =>
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Multiplier"
         step={0.01}
         min={0}
-        error={errors.multiplier}
+        error={errors.holidayEntitlementMultiplier}
+      />
+      <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
+        {'-'}
+      </div>
+      <NumberInput
+        id="holidayEntitlementDeduction"
+        label="Deducted leave entitlement"
+        name="holidayEntitlementDeduction"
+        value={holidayEntitlementDeduction}
+        onChange={(e) =>
+          handleInputChange(e, setFormData, setError, autoUpdate)
+        }
+        placeholder="Number of days"
+        step={1}
+        error={errors.holidayEntitlementDeduction}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
         {'='}
       </div>
       <NumberInput
-        id="total"
+        id="holidayEntitlementTotal"
         label="Total leave entitlement"
-        name="total"
-        value={total}
+        name="holidayEntitlementTotal"
+        value={holidayEntitlementTotal}
         onChange={(e) =>
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
-        error={errors.base}
+        error={errors.holidayEntitlementTotal}
         disabled
       />
     </div>

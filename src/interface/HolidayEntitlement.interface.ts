@@ -1,6 +1,7 @@
 export default interface HolidayEntitlement {
-  base: number;
-  additional: number;
-  multiplier: number;
-  total: number;
+  holidayEntitlementBase: number;
+  holidayEntitlementAdditional: number; // Contractual additions
+  holidayEntitlementMultiplier: number; // Part Time Factor * Service Factor
+  holidayEntitlementDeduction: number; // Public Holidays
+  holidayEntitlementTotal: number;
 }

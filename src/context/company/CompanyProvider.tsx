@@ -23,10 +23,11 @@ interface CompanyProviderProps {
 
 const initialState: CompanyState = {
   holidayEntitlement: {
-    base: 28,
-    additional: 0,
-    multiplier: 1,
-    total: 28,
+    holidayEntitlementBase: 28,
+    holidayEntitlementAdditional: 0,
+    holidayEntitlementMultiplier: 1,
+    holidayEntitlementDeduction: 0,
+    holidayEntitlementTotal: 28,
   },
   workdaysOfTheWeek: {
     monday: true,
