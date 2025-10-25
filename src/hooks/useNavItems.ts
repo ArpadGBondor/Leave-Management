@@ -4,7 +4,7 @@ import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
   const { user, loggedIn, loading: userLoading } = useUserContext();
-  const { requestCount } = useRequestsContext();
+  const { ownRequestCount, managableRequestCount } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
   const bottomNavItems: NavItem[] = [];
@@ -24,9 +24,16 @@ const useNavItems = () => {
       icon: 'FaUsers',
     });
   }
+  if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
+      name: `Manage requests  (${managableRequestCount})`,
+      link: '/manage-requests',
+      icon: 'FaClipboardCheck',
+    });
+  }
   if (loggedIn) {
     topNavItems.push({
-      name: `Requests (${requestCount})`,
+      name: `Requests (${ownRequestCount})`,
       link: '/requests',
       icon: 'FaPaperPlane',
     });

@@ -21,6 +21,7 @@ import ManageTeam from './pages/ManageTeam';
 import NotFound from './pages/NotFound';
 import ManageCompany from './pages/ManageCompany';
 import ManageTeamMember from './pages/ManageTeamMember';
+import ManageRequests from './pages/ManageRequests';
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
                 path="/manage-team/:userId"
                 element={<ManageTeamMember />}
               />
+              <Route path="/manage-requests" element={<ManageRequests />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
