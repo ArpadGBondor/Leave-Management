@@ -1,3 +1,10 @@
+## [1.2.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.17...v1.2.18) (2025-10-25)
+
+
+### Bug Fixes
+
+* add manage requests route, page, nav-item, and subscribe to managable requests counter ([2ac50b1](https://github.com/ArpadGBondor/Leave-Management/commit/2ac50b1b4a027c6a4e23e9c99d98041cf14e41e3))
+
 ## [1.2.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.16...v1.2.17) (2025-10-25)
 
 
