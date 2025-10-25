@@ -1,3 +1,10 @@
+## [1.2.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.16...v1.2.17) (2025-10-25)
+
+
+### Bug Fixes
+
+* move key property to the root element of the loop ([009e6c5](https://github.com/ArpadGBondor/Leave-Management/commit/009e6c57fab90b1b8bbf63aca98eef59c61d5988))
+
 ## [1.2.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.15...v1.2.16) (2025-10-24)
 
 
