@@ -62,6 +62,12 @@ export default function Table<T extends Record<string, any>>({
     return sorted.slice(start, start + pageSize);
   }, [sorted, page, pageSize]);
 
+  const getRowId = (row: T, idx: number) => {
+    if (!rowKey) return idx;
+    if (typeof rowKey === 'function') return rowKey(row);
+    return (row as any)[rowKey];
+  };
+
   return (
     <div className={'w-full ' + className}>
       {title && (
@@ -85,12 +91,9 @@ export default function Table<T extends Record<string, any>>({
             ) : (
               pageData.map((row, rowIndex) => (
                 <TableRow
+                  key={String(getRowId(row, page * pageSize + rowIndex))}
                   row={row}
-                  rowIndex={rowIndex}
-                  page={page}
                   columns={columns}
-                  pageSize={pageSize}
-                  rowKey={rowKey}
                   onRowClick={onRowClick}
                   highlightRow={highlightRow}
                 />
