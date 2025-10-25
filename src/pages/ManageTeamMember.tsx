@@ -50,7 +50,7 @@ const columns: TableColumn<UserHolidayEntitlement>[] = [
   },
   {
     header: 'Total Holiday Entitlement',
-    accessor: 'total',
+    accessor: 'holidayEntitlementTotal',
     width: 'max-w-32',
   },
 ];
@@ -169,10 +169,11 @@ export default function ManageTeamMember() {
     } else {
       const companyHolidayEntitlement: HolidayEntitlement =
         holidayEntitlement ?? {
-          base: 28,
-          additional: 0,
-          multiplier: 1,
-          total: 28,
+          holidayEntitlementBase: 28,
+          holidayEntitlementAdditional: 0,
+          holidayEntitlementMultiplier: 1,
+          holidayEntitlementDeduction: 0,
+          holidayEntitlementTotal: 28,
         }; // default;
 
       const companyWorkdaysOfTheWeek: WorkdaysOfTheWeek = workdaysOfTheWeek ?? {

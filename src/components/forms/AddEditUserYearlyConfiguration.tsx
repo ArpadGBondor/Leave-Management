@@ -28,10 +28,11 @@ export default function AddEditUserYearlyConfiguration({
   onBack,
 }: AddEditUserYearlyConfigurationProps) {
   const [formData, setFormData] = useState<UserHolidayEntitlement>({
-    base: 0,
-    additional: 0,
-    multiplier: 0,
-    total: 0,
+    holidayEntitlementBase: 0,
+    holidayEntitlementAdditional: 0,
+    holidayEntitlementMultiplier: 0,
+    holidayEntitlementDeduction: 0,
+    holidayEntitlementTotal: 0,
     monday: false,
     tuesday: false,
     wednesday: false,
@@ -47,10 +48,11 @@ export default function AddEditUserYearlyConfiguration({
   const [errors, setErrors] = useState<
     Record<keyof UserHolidayEntitlement, string>
   >({
-    base: '',
-    additional: '',
-    multiplier: '',
-    total: '',
+    holidayEntitlementBase: '',
+    holidayEntitlementAdditional: '',
+    holidayEntitlementMultiplier: '',
+    holidayEntitlementTotal: '',
+    holidayEntitlementDeduction: '',
     monday: '',
     tuesday: '',
     wednesday: '',
@@ -65,10 +67,6 @@ export default function AddEditUserYearlyConfiguration({
   const { startLoading, stopLoading } = useLoadingContext();
 
   const {
-    base,
-    additional,
-    multiplier,
-    total,
     monday,
     tuesday,
     wednesday,
@@ -78,7 +76,6 @@ export default function AddEditUserYearlyConfiguration({
     sunday,
     bankHolidayRegionId,
     id,
-    numberOfBankHolidays,
   } = formData;
 
   useEffect(() => {
