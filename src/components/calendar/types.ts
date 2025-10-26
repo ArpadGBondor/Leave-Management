@@ -9,9 +9,9 @@ export const CALENDAR_STATUS_CONFIG: Record<
   CalendarStatus,
   { label: string; color: string }
 > = {
-  workday: { label: 'Workday', color: 'bg-brand-purple-100' },
-  dayOff: { label: 'Day Off', color: 'bg-blue-100' },
+  workday: { label: 'Workday', color: 'bg-brand-purple-200' },
+  dayOff: { label: 'Day Off', color: 'bg-blue-200' },
   bankHoliday: { label: 'Bank Holiday', color: 'bg-red-200' },
-  requested: { label: 'Requested', color: 'bg-yellow-100' },
-  approved: { label: 'Approved', color: 'bg-green-100' },
+  requested: { label: 'Requested', color: 'bg-yellow-200' },
+  approved: { label: 'Approved', color: 'bg-brand-green-300' },
 };

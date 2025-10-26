@@ -13,9 +13,14 @@ export default function CalendarDays({ currentMonth }: CalendarDaysProps) {
   }
 
   return (
-    <div className="grid grid-cols-7 text-center text-brand-purple-600 font-medium">
+    <div className="grid grid-cols-7 gap-1">
       {weekDays.map((day) => (
-        <div key={day.toISOString()}>{format(day, 'EEE')}</div>
+        <div
+          className="sm:p-1 bg-brand-green-600 rounded-lg sm:rounded-xl text-center text-brand-green-100 sm:font-medium"
+          key={day.toISOString()}
+        >
+          {format(day, 'EEE')}
+        </div>
       ))}
     </div>
   );

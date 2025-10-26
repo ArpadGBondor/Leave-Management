@@ -22,8 +22,8 @@ export default function CalendarHeader({
   prevYear,
 }: CalendarHeaderProps) {
   return (
-    <div className="flex justify-between items-center gap-4 mb-2 text-brand-purple-600">
-      <div className="flex flex-row">
+    <div className="flex justify-between items-center gap-4 mb-2 sm:mb-4 text-brand-purple-600">
+      <div className="flex flex-col-reverse sm:flex-row gap-1">
         <button
           onClick={prevYear}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"
@@ -37,10 +37,10 @@ export default function CalendarHeader({
           <FaAngleLeft />
         </button>
       </div>
-      <h2 className="text-2xl font-semibold ">
+      <h2 className="text-2xl font-semibold  text-center">
         {format(currentMonth, 'MMMM yyyy')}
       </h2>
-      <div className="flex flex-row">
+      <div className="flex flex-col sm:flex-row gap-1">
         <button
           onClick={nextMonth}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"

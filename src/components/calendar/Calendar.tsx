@@ -28,7 +28,7 @@ export default function Calendar({
   const prevYear = () => setCurrentMonth(subYears(currentMonth, 1));
 
   return (
-    <div className="min-h-[520px] flex flex-col justify-start items-stretch w-full max-w-2xl mx-auto">
+    <div className="bg-brand-green-100 border border-brand-green-600 rounded-xl p-4 flex flex-col justify-start items-stretch w-full max-w-2xl mx-auto overflow-hidden">
       <CalendarHeader
         currentMonth={currentMonth}
         nextMonth={nextMonth}

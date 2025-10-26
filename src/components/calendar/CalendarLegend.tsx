@@ -2,7 +2,7 @@ import { CALENDAR_STATUS_CONFIG } from './types';
 
 export default function renderLegend() {
   return (
-    <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
+    <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm text-brand-purple-600">
       {Object.entries(CALENDAR_STATUS_CONFIG).map(([key, { color, label }]) => (
         <div key={key} className="flex items-center gap-2">
           <div

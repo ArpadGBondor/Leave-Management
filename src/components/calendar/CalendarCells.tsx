@@ -9,7 +9,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
-import { CALENDAR_STATUS_CONFIG, CalendarStatus } from './types';
+import { CALENDAR_STATUS_CONFIG } from './types';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import { Leave } from '../../interface/Leave.interface';
 
@@ -93,7 +93,7 @@ export default function CalendarCells({
   }
 
   return (
-    <div className="flex-grow mt-3 space-y-1">
+    <div className="flex-grow mt-1 space-y-1 min-h-[310px]  sm:min-h-[405px]">
       {weeks.map((weekDates) => (
         <div
           key={weekDates[0].toISOString()}
@@ -103,11 +103,11 @@ export default function CalendarCells({
             const bgColor = getDayColor(dayDate);
             const textColor = isSameMonth(dayDate, monthStart)
               ? 'text-brand-green-600'
-              : 'text-brand-green-400';
+              : 'text-brand-green-600 opacity-50';
             return (
               <div
                 key={dayDate.toISOString()}
-                className={`h-16 border border-brand-green-600 rounded-lg flex items-center justify-center ${bgColor} ${textColor}`}
+                className={`h-12 sm:h-16 border border-brand-green-600 rounded-lg sm:rounded-lg flex items-center justify-center ${bgColor} ${textColor}`}
               >
                 <span className="text-sm font-bold">
                   {format(dayDate, 'd')}
