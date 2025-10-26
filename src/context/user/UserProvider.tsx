@@ -11,6 +11,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   linkWithCredential,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { doc, getDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
@@ -240,6 +241,10 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     [auth.currentUser]
   );
 
+  const forgotPassword = useCallback(async (email: string) => {
+    await sendPasswordResetEmail(auth, email);
+  }, []);
+
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
       startLoading('user');
@@ -293,6 +298,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         deleteUser,
         updatePassword,
         addPassword,
+        forgotPassword,
       }}
     >
       {children}

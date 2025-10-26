@@ -22,6 +22,7 @@ import NotFound from './pages/NotFound';
 import ManageCompany from './pages/ManageCompany';
 import ManageTeamMember from './pages/ManageTeamMember';
 import ManageRequests from './pages/ManageRequests';
+import ForgotPassword from './pages/ForgotPassword';
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/about" element={<About />} />
             <Route path="/unauthorised" element={<Unauthorised />} />
