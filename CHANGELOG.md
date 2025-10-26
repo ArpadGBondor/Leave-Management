@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.0...v1.3.1) (2025-10-26)
+
+
+### Bug Fixes
+
+* typo ([866b898](https://github.com/ArpadGBondor/Leave-Management/commit/866b898d741fe066fed2d4a78823e7bfd9a06d26))
+
 # [1.3.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.20...v1.3.0) (2025-10-26)
 
 
