@@ -107,7 +107,7 @@ export default function CalendarCells({
             return (
               <div
                 key={dayDate.toISOString()}
-                className={`h-12 sm:h-16 border border-brand-green-600 rounded-lg sm:rounded-lg flex items-center justify-center ${bgColor} ${textColor}`}
+                className={`h-12 sm:h-16 border border-brand-green-600 rounded-lg sm:rounded-xl flex items-center justify-center ${bgColor} ${textColor}`}
               >
                 <span className="text-sm font-bold">
                   {format(dayDate, 'd')}
