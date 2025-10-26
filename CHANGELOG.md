@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.20...v1.3.0) (2025-10-26)
+
+
+### Features
+
+* Calendar ([9eb9e33](https://github.com/ArpadGBondor/Leave-Management/commit/9eb9e335f2be001d7bba831dd17f46fdd11ddfdf))
+
 ## [1.2.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.2.19...v1.2.20) (2025-10-25)
 
 
