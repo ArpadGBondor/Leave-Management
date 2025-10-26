@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.1...v1.3.2) (2025-10-26)
+
+
+### Bug Fixes
+
+* add forgot password feature ([a598bd7](https://github.com/ArpadGBondor/Leave-Management/commit/a598bd79bb694ea9901df817a3dbc5683a33cf80))
+
 ## [1.3.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.0...v1.3.1) (2025-10-26)
 
 
