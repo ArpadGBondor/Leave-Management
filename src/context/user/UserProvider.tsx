@@ -13,7 +13,13 @@ import {
   linkWithCredential,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { doc, getDoc, onSnapshot, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  Timestamp,
+} from 'firebase/firestore';
 import { auth, db } from '../../firebase.config';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
@@ -23,6 +29,7 @@ import {
   SET_LOGGED_IN,
   SET_USER,
   SET_HAS_PASSWORD,
+  SET_USER_COUNT,
 } from '../types';
 import getBase64FromUrl from '../../utils/getBase64FromUrl';
 import { useLoadingContext } from '../loading/useLoadingContext';
@@ -283,7 +290,16 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       }
     });
 
-    return unsubscribeAuth;
+    const usersRef = collection(db, firebase_collections.USERS);
+    const unsubscribeUsers = onSnapshot(usersRef, (snap) => {
+      const userCount = snap.docs.length;
+      dispatch({ type: SET_USER_COUNT, payload: userCount });
+    });
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribeUsers();
+    };
   }, []);
 
   return (

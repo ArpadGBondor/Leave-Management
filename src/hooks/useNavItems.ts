@@ -3,7 +3,7 @@ import { useUserContext } from '../context/user/useUserContext';
 import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
-  const { user, loggedIn, loading: userLoading } = useUserContext();
+  const { user, userCount, loggedIn, loading: userLoading } = useUserContext();
   const { ownRequestCount, managableRequestCount } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
@@ -19,7 +19,7 @@ const useNavItems = () => {
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
-      name: 'Manage team',
+      name: `Manage team (${userCount})`,
       link: '/manage-team',
       icon: 'FaUsers',
     });

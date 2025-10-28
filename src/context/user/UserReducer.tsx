@@ -5,10 +5,12 @@ import {
   SET_LOADING,
   SET_LOGGED_IN,
   SET_HAS_PASSWORD,
+  SET_USER_COUNT,
 } from '../types';
 
 export type UserAction =
   | { type: typeof SET_USER; payload: User | null }
+  | { type: typeof SET_USER_COUNT; payload: number }
   | { type: typeof SET_LOADING; payload: boolean }
   | { type: typeof SET_HAS_PASSWORD; payload: boolean }
   | { type: typeof SET_LOGGED_IN; payload: boolean };
@@ -20,6 +22,8 @@ export const UserReducer = (
   switch (action.type) {
     case SET_USER:
       return { ...state, user: action.payload };
+    case SET_USER_COUNT:
+      return { ...state, userCount: action.payload };
     case SET_LOADING:
       return { ...state, loading: action.payload };
     case SET_HAS_PASSWORD:

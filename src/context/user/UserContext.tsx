@@ -6,6 +6,7 @@ export interface UserState {
   loading: boolean;
   loggedIn: boolean;
   hasPassword: boolean;
+  userCount: number;
 }
 
 export interface UserContextValue extends UserState {
@@ -33,6 +34,7 @@ export const initialUserState: UserState = {
   loading: true,
   loggedIn: false,
   hasPassword: false,
+  userCount: 0,
 };
 
 export const UserContext = createContext<UserContextValue>({
