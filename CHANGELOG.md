@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.2...v1.3.3) (2025-10-28)
+
+
+### Bug Fixes
+
+* show user count on Manage Team nav item ([f3d7d1b](https://github.com/ArpadGBondor/Leave-Management/commit/f3d7d1b02e4862af51535e6eb204992e41aa9f03))
+
 ## [1.3.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.1...v1.3.2) (2025-10-26)
 
 
