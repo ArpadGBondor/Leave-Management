@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.3...v1.3.4) (2025-10-28)
+
+
+### Bug Fixes
+
+* mask email addresses on Manage Team page ([3e002db](https://github.com/ArpadGBondor/Leave-Management/commit/3e002db629c782180a279c6c4cfe23b1651cf9ba))
+
 ## [1.3.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.2...v1.3.3) (2025-10-28)
 
 
