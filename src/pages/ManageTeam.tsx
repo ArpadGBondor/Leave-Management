@@ -6,6 +6,7 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import { useNavigate } from 'react-router-dom';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
+import { maskEmail } from '../utils/maskEmail';
 
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
@@ -56,7 +57,13 @@ export default function ManageTeam() {
       render: (name: string) => <strong>{name}</strong>,
       width: 'min-w-48',
     },
-    { header: 'Email', accessor: 'email', sortable: true, width: 'min-w-48' },
+    {
+      header: 'Email',
+      accessor: 'email',
+      render: (email) => maskEmail(email),
+      sortable: true,
+      width: 'min-w-48',
+    },
     {
       header: 'Created',
       accessor: (row: User) => row.created?.toDate().toLocaleDateString(),
