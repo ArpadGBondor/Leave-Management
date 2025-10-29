@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.4...v1.3.5) (2025-10-29)
+
+
+### Bug Fixes
+
+* Number of bankholiday days should only count days when team member is scheduled to work. ([02d60e2](https://github.com/ArpadGBondor/Leave-Management/commit/02d60e2fc733004271ec8893517582aeb1a557c3))
+
 ## [1.3.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.3...v1.3.4) (2025-10-28)
 
 
