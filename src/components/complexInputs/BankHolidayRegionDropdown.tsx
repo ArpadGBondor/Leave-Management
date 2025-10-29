@@ -6,16 +6,23 @@ import { handleInputChange } from '../../utils/onFormDataChange';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { firebase_collections } from '../../../lib/firebase_collections';
+import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 
 interface BankHolidayRegionDropdownProps<T> {
   formData: T;
+  workdaysOfTheWeek?: WorkdaysOfTheWeek;
   setFormData: React.Dispatch<React.SetStateAction<T>>;
   year: string;
 }
 
 export default function BankHolidayRegionDropdown<
   T extends { bankHolidayRegionId: string; numberOfBankHolidays: number }
->({ formData, setFormData, year }: BankHolidayRegionDropdownProps<T>) {
+>({
+  formData,
+  workdaysOfTheWeek,
+  setFormData,
+  year,
+}: BankHolidayRegionDropdownProps<T>) {
   const noOption = { label: 'None', value: '' };
 
   const [bankHolidayOptions, setBankHolidayOptions] = useState([
@@ -25,6 +32,17 @@ export default function BankHolidayRegionDropdown<
   const { importedRegions } = useCompanyContext();
 
   const { bankHolidayRegionId } = formData;
+
+  const { monday, tuesday, wednesday, thursday, friday, saturday, sunday } =
+    workdaysOfTheWeek ?? {
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: false,
+      sunday: false,
+    };
 
   useEffect(() => {
     const options: SelectInputOption[] = [noOption];
@@ -52,7 +70,37 @@ export default function BankHolidayRegionDropdown<
     const numberOfBankHolidaysUnsubscribe = onSnapshot(
       bankHolidayRef,
       (snapshot) => {
-        const numberOfBankHolidays: number = snapshot.docs.length;
+        let numberOfBankHolidays: number = 0;
+
+        for (const doc of snapshot.docs) {
+          const date = new Date(doc.id);
+          const day = date.getDay();
+          switch (day) {
+            case 0:
+              if (sunday) ++numberOfBankHolidays;
+              break;
+            case 1:
+              if (monday) ++numberOfBankHolidays;
+              break;
+            case 2:
+              if (tuesday) ++numberOfBankHolidays;
+              break;
+            case 3:
+              if (wednesday) ++numberOfBankHolidays;
+              break;
+            case 4:
+              if (thursday) ++numberOfBankHolidays;
+              break;
+            case 5:
+              if (friday) ++numberOfBankHolidays;
+              break;
+            case 6:
+              if (saturday) ++numberOfBankHolidays;
+              break;
+            default:
+              break;
+          }
+        }
         setFormData((prevState) => ({
           ...prevState,
           numberOfBankHolidays,
@@ -61,7 +109,17 @@ export default function BankHolidayRegionDropdown<
     );
 
     return () => numberOfBankHolidaysUnsubscribe();
-  }, [bankHolidayRegionId, year]);
+  }, [
+    bankHolidayRegionId,
+    year,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  ]);
 
   return (
     <>
@@ -73,11 +131,19 @@ export default function BankHolidayRegionDropdown<
         options={bankHolidayOptions}
         onChange={(e) => handleInputChange(e, setFormData)}
       />
-      {formData.numberOfBankHolidays > 0 && (
+      {workdaysOfTheWeek ? (
         <p className=" text-brand-green-800 text-center">
-          Number of bank holiday days in {year}:{' '}
+          Number of bank holiday days when team member is scheduled to work in{' '}
+          {year}:{' '}
           <span className="font-bold">{formData.numberOfBankHolidays}</span>
         </p>
+      ) : (
+        formData.numberOfBankHolidays > 0 && (
+          <p className=" text-brand-green-800 text-center">
+            Number of bank holiday days in {year}:{' '}
+            <span className="font-bold">{formData.numberOfBankHolidays}</span>
+          </p>
+        )
       )}
     </>
   );
