@@ -207,6 +207,7 @@ export default function AddEditUserYearlyConfiguration({
       />
       <BankHolidayRegionDropdown
         formData={formData}
+        workdaysOfTheWeek={formData}
         setFormData={setFormData}
         year={id}
       />
