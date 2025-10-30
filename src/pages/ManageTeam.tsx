@@ -62,7 +62,7 @@ export default function ManageTeam() {
       accessor: 'email',
       render: (email) => maskEmail(email),
       sortable: true,
-      width: 'min-w-48',
+      width: 'min-w-32',
     },
     {
       header: 'Created',
