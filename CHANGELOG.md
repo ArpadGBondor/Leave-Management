@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.5...v1.3.6) (2025-10-30)
+
+
+### Bug Fixes
+
+* show requests table on Manage Requests and Requests pages ([777f00d](https://github.com/ArpadGBondor/Leave-Management/commit/777f00d4c46786ace60f3606c4814bfac657b440))
+
 ## [1.3.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.4...v1.3.5) (2025-10-29)
 
 
