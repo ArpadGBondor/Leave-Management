@@ -1,3 +1,10 @@
+## [1.3.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.6...v1.3.7) (2025-10-31)
+
+
+### Bug Fixes
+
+* nav menu item should stay highlighted while a subpath is open in the browser ([f87ed1f](https://github.com/ArpadGBondor/Leave-Management/commit/f87ed1fba37e98c8a6d92c217519645e0302860c))
+
 ## [1.3.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.5...v1.3.6) (2025-10-30)
 
 
