@@ -1,3 +1,10 @@
+## [1.3.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.7...v1.3.8) (2025-10-31)
+
+
+### Bug Fixes
+
+* allow users to set employment start and end date ([114d6ac](https://github.com/ArpadGBondor/Leave-Management/commit/114d6acf2d08126ca705ee85b5476decc0c2186c))
+
 ## [1.3.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.6...v1.3.7) (2025-10-31)
 
 
