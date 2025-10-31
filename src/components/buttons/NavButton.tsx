@@ -17,7 +17,10 @@ export default function NavButton({
   onClick,
 }: ButtonProps) {
   const location = useLocation();
-  const highlight = location.pathname === link;
+  const highlight =
+    location.pathname === link ||
+    (link !== '/' && // I don't want Home button to always stay highlighted
+      location.pathname.startsWith(link));
   const IconComponent = icon ? FaIcons[icon] : null;
   const baseClasses =
     'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition font-medium';
