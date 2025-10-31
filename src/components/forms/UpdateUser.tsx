@@ -11,7 +11,7 @@ import {
   handleInputChange,
   handleValueChange,
 } from '../../utils/onFormDataChange';
-// import { emailValidator } from '../../utils/fieldValidators';
+import DateInput from '../inputs/DateInput';
 
 export default function UpdateUser() {
   const defaultState: {
@@ -19,11 +19,15 @@ export default function UpdateUser() {
     email: string;
     photo: string;
     userType: UserType;
+    serviceStartDate: string;
+    serviceEndDate: string;
   } = {
     name: '',
     email: '',
     photo: '',
     userType: userTypeOptions[0],
+    serviceStartDate: '',
+    serviceEndDate: '',
   };
   const [formData, setFormData] = useState(defaultState);
   const defaultErrors = {
@@ -31,13 +35,16 @@ export default function UpdateUser() {
     email: '',
     photo: '',
     userType: '',
+    serviceStartDate: '',
+    serviceEndDate: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
 
   const { user, updateUser } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
 
-  const { name, email, photo, userType } = formData;
+  const { name, email, photo, userType, serviceStartDate, serviceEndDate } =
+    formData;
 
   useEffect(() => {
     if (user)
@@ -47,6 +54,8 @@ export default function UpdateUser() {
         email: user.email,
         photo: user.photo,
         userType: user.userType ?? userTypeOptions[0],
+        serviceStartDate: user.serviceStartDate,
+        serviceEndDate: user.serviceEndDate,
       }));
   }, []);
 
@@ -67,17 +76,23 @@ export default function UpdateUser() {
       setError('name', '');
     }
 
-    // Email validation - field is disabled
-    // let emailValid = emailValidator(email);
-    // valid &&= emailValid.valid;
-    // setError('email', emailValid.message);
-
     // Photo validation
     if (!photo.trim()) {
       setError('photo', 'Please select a photo.');
       valid = false;
     } else {
       setError('photo', '');
+    }
+
+    if (
+      serviceStartDate &&
+      serviceEndDate &&
+      new Date(serviceStartDate) > new Date(serviceEndDate)
+    ) {
+      setError('serviceEndDate', 'Employment cannot end before start date.');
+      valid = false;
+    } else {
+      setError('serviceEndDate', '');
     }
 
     return valid;
@@ -98,7 +113,15 @@ export default function UpdateUser() {
         return;
       }
 
-      await updateUser({ name, email, photo, userType, id: user.id });
+      await updateUser({
+        name,
+        email,
+        photo,
+        userType,
+        id: user.id,
+        serviceStartDate,
+        serviceEndDate,
+      });
       toast.info('Profile details updated');
     } catch (error: any) {
       toast.error(error.message || 'Could not update user');
@@ -135,6 +158,27 @@ export default function UpdateUser() {
         disabled
         error={errors.email}
       />
+
+      <DateInput
+        id="serviceStartDate"
+        label="Employment start date"
+        name="serviceStartDate"
+        value={serviceStartDate}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
+        placeholder="YYYY-MM-DD"
+        error={errors.serviceStartDate}
+      />
+
+      <DateInput
+        id="serviceEndDate"
+        label="Employment end date"
+        name="serviceEndDate"
+        value={serviceEndDate}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
+        placeholder="YYYY-MM-DD"
+        error={errors.serviceEndDate}
+      />
+
       <FileInput
         id="photo"
         label="Profile picture"

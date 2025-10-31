@@ -3,7 +3,8 @@ export type CalendarStatus =
   | 'dayOff'
   | 'bankHoliday'
   | 'requested'
-  | 'approved';
+  | 'approved'
+  | 'notEmployed';
 
 export const CALENDAR_STATUS_CONFIG: Record<
   CalendarStatus,
@@ -14,4 +15,5 @@ export const CALENDAR_STATUS_CONFIG: Record<
   bankHoliday: { label: 'Bank Holiday', color: 'bg-red-200' },
   requested: { label: 'Requested', color: 'bg-yellow-200' },
   approved: { label: 'Approved', color: 'bg-brand-green-300' },
+  notEmployed: { label: 'Not Employed', color: 'bg-gray-200' },
 };

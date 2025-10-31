@@ -19,6 +19,8 @@ export interface CalendarCellsProps {
   bankHolidays: Leave[];
   requests: Leave[];
   approved: Leave[];
+  serviceStartDate?: Date;
+  serviceEndDate?: Date;
 }
 
 export default function CalendarCells({
@@ -27,6 +29,8 @@ export default function CalendarCells({
   bankHolidays,
   requests,
   approved,
+  serviceStartDate,
+  serviceEndDate,
 }: CalendarCellsProps) {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
@@ -34,6 +38,17 @@ export default function CalendarCells({
   const endDate = endOfWeek(monthEnd, { weekStartsOn: 1 });
 
   let day = startDate;
+
+  function notEmployed(date: Date) {
+    return (
+      (serviceStartDate &&
+        !isSameDay(date, serviceStartDate) &&
+        serviceStartDate > date) ||
+      (serviceEndDate &&
+        !isSameDay(date, serviceEndDate) &&
+        serviceEndDate < date)
+    );
+  }
 
   function isWorkday(date: Date): boolean {
     const dayIndex = date.getDay(); // 0=Sun, 1=Mon, ...
@@ -73,6 +88,7 @@ export default function CalendarCells({
   }
 
   const getDayColor = (date: Date): string => {
+    if (notEmployed(date)) return CALENDAR_STATUS_CONFIG.notEmployed.color;
     if (!isWorkday(date)) return CALENDAR_STATUS_CONFIG.dayOff.color;
     if (isBankHoliday(date)) return CALENDAR_STATUS_CONFIG.bankHoliday.color;
     if (isRequested(date)) return CALENDAR_STATUS_CONFIG.requested.color;
