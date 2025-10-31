@@ -67,6 +67,7 @@ export default function ManageTeamMember() {
     useState<UserHolidayEntitlement | null>(null);
 
   const [screenPhase, setScreenPhase] = useState(1);
+  const [employmentYears, setEmploymentYears] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const {
     importedYears,
@@ -75,6 +76,20 @@ export default function ManageTeamMember() {
     workdaysOfTheWeek,
   } = useCompanyContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setEmploymentYears(
+      importedYears.filter((year) => {
+        // Show already configured years to avoid errors
+        if (configuredYears.some(({ id }) => id === year)) return true;
+        if (user?.serviceStartDate && user?.serviceStartDate.slice(0, 4) > year)
+          return false;
+        if (user?.serviceEndDate && user?.serviceEndDate.slice(0, 4) < year)
+          return false;
+        return true;
+      })
+    );
+  }, [importedYears, user?.serviceEndDate, user?.serviceStartDate]);
 
   useEffect(() => {
     if (!userId) return;
@@ -136,7 +151,7 @@ export default function ManageTeamMember() {
 
     // Filter out already configured years
     const configuredIds = new Set(configuredYears.map((c) => c.id));
-    const candidates = importedYears
+    const candidates = employmentYears
       .filter((y) => !configuredIds.has(y))
       .map(Number)
       .sort((a, b) => a - b);
@@ -247,7 +262,7 @@ export default function ManageTeamMember() {
               <Button
                 label="Add new year"
                 onClick={addNew}
-                disabled={importedYears.every((year) =>
+                disabled={employmentYears.every((year) =>
                   configuredYears.map((config) => config.id).includes(year)
                 )}
               />
@@ -264,7 +279,7 @@ export default function ManageTeamMember() {
           <AddEditUserYearlyConfiguration
             isEditing={isEditing}
             selectedForEditing={selectedForEditing}
-            yearOptions={importedYears.map(
+            yearOptions={employmentYears.map(
               (year): SelectInputOption => ({
                 label: year,
                 value: year,

@@ -13,6 +13,8 @@ export interface CalendarProps {
   bankHolidays: Leave[];
   requests: Leave[];
   approved: Leave[];
+  serviceStartDate?: Date;
+  serviceEndDate?: Date;
 }
 export default function Calendar({
   currentMonth,
@@ -21,6 +23,8 @@ export default function Calendar({
   bankHolidays,
   requests,
   approved,
+  serviceStartDate,
+  serviceEndDate,
 }: CalendarProps) {
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -43,6 +47,8 @@ export default function Calendar({
         bankHolidays={bankHolidays}
         requests={requests}
         approved={approved}
+        serviceStartDate={serviceStartDate}
+        serviceEndDate={serviceEndDate}
       />
       <CalendarLegend />
     </div>

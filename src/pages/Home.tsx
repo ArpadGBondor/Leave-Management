@@ -110,6 +110,14 @@ export default function Home() {
           bankHolidays={bankHolidays}
           approved={approved}
           requests={requested}
+          serviceStartDate={
+            user?.serviceStartDate
+              ? new Date(user?.serviceStartDate)
+              : undefined
+          }
+          serviceEndDate={
+            user?.serviceEndDate ? new Date(user?.serviceEndDate) : undefined
+          }
         />
       </div>
     </div>

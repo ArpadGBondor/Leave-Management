@@ -18,4 +18,6 @@ export default interface User {
   updated?: Timestamp;
   userType: UserType;
   claims?: UserClaims;
+  serviceStartDate: string; // YYYY-MM-DD
+  serviceEndDate: string; // YYYY-MM-DD
 }
