@@ -59,8 +59,8 @@ export default function Navbar() {
       {/* Mobile Menu Drawer */}
 
       <div
-        className={`lg:hidden fixed top-13 left-0 w-full bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl overflow-hidden transform transition-all duration-500 ease-in-out ${
-          isOpen ? 'max-h-[500px] p-4 pt-0' : 'max-h-0 p-0 pointer-events-none'
+        className={`lg:hidden fixed top-13 left-0 p-4 pt-0 w-full bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+          isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
         <hr className="my-1" />
