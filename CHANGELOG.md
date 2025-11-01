@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.8...v1.3.9) (2025-11-01)
+
+
+### Bug Fixes
+
+* replace background decor with background image ([0135042](https://github.com/ArpadGBondor/Leave-Management/commit/0135042596203a18fc4391d92b8b69b0edcf0e11))
+
 ## [1.3.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.7...v1.3.8) (2025-10-31)
 
 
