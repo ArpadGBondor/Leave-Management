@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import BackgroundDecor from './components/decoration/BackgroundDecor';
+// import BackgroundDecor from './components/decoration/BackgroundDecor';
 import Navigation from './components/navigation/Navigation';
 import PrivateRoute from './components/auth/PrivateRoute';
 
@@ -31,8 +31,13 @@ export default function App() {
       <div className="navigation grow-0 shrink-0">
         <Navigation />
       </div>
-      <div className="w-full h-full overflow-hidden relative">
-        <BackgroundDecor />
+      <div className="w-full h-full overflow-hidden relative bg-[url('/images/background.jpg')] bg-cover bg-center h-screen">
+        {/* 
+          <BackgroundDecor /> 
+          Replaced by single image, because this decoration was overwhelming to process for mobile devices.
+          I still want to keep the code of the component, because this has sentimental value to me as the 
+          initial and core component of the application.
+        */}
         <main className="relative w-full h-full flex flex-col justify-center items-center">
           <Routes>
             <Route element={<PrivateRoute />}>
