@@ -23,6 +23,7 @@ import ManageCompany from './pages/ManageCompany';
 import ManageTeamMember from './pages/ManageTeamMember';
 import ManageRequests from './pages/ManageRequests';
 import ForgotPassword from './pages/ForgotPassword';
+import RequestAddEdit from './pages/RequestAddEdit';
 
 export default function App() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/requests" element={<Requests />} />
+              <Route path="/requests/:requestId" element={<RequestAddEdit />} />
             </Route>
             <Route
               element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
