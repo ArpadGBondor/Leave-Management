@@ -7,7 +7,14 @@ import { useUserContext } from '../context/user/useUserContext';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import { firebase_collections } from '../../lib/firebase_collections';
 import { db } from '../firebase.config';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  Unsubscribe,
+  where,
+} from 'firebase/firestore';
 import { useCompanyContext } from '../context/company/useCompanyContext';
 import UserHolidayEntitlement from '../interface/UserHolidayEntitlement.interface';
 
@@ -17,7 +24,9 @@ export default function Home() {
   const [bankHolidays, setBankHolidays] = useState<Leave[]>([
     { from: new Date('2025-12-25'), to: new Date('2025-12-26') },
   ]);
-
+  const [requested, setRequested] = useState<Leave[]>([
+    { from: new Date('2025-10-30'), to: new Date('2025-11-02') },
+  ]);
   const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
     {
       monday: true,
@@ -37,6 +46,30 @@ export default function Home() {
     bankHolidayRegion: companyBankHolidayRegion,
   } = useCompanyContext();
   const currentYear = format(currentMonth, 'yyyy');
+
+  useEffect(() => {
+    if (!user?.id) return;
+    startLoading('fetch-own-requests');
+    const requestsRef = collection(db, firebase_collections.REQUESTS);
+    const ownRequestQuery = query(
+      requestsRef,
+      where('requestedById', '==', user.id)
+    ); // only this user's requests
+
+    const ownRequestsUnsubscribe: Unsubscribe = onSnapshot(
+      ownRequestQuery,
+      (snapshot) => {
+        const requested: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          requested.push({ from: new Date(data.from), to: new Date(data.to) });
+        }
+        setRequested(requested);
+        stopLoading('fetch-own-requests');
+      }
+    );
+    return () => ownRequestsUnsubscribe();
+  }, [user]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -90,9 +123,6 @@ export default function Home() {
     return () => bankHolidaysUnsubscribe();
   }, [bankHolidayRegion, currentYear]);
 
-  const requested: Leave[] = [
-    { from: new Date('2025-10-30'), to: new Date('2025-11-02') },
-  ];
   const approved: Leave[] = [
     { from: new Date('2025-11-05'), to: new Date('2025-11-07') },
   ];
