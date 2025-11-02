@@ -1,3 +1,10 @@
+## [1.3.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.9...v1.3.10) (2025-11-02)
+
+
+### Bug Fixes
+
+* add new page to allow submitting requests ([e0e56cb](https://github.com/ArpadGBondor/Leave-Management/commit/e0e56cb3689707c48245f57e67a00f5fcd3cd4d3))
+
 ## [1.3.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.8...v1.3.9) (2025-11-01)
 
 
