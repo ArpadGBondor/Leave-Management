@@ -1,3 +1,10 @@
+## [1.3.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.12...v1.3.13) (2025-11-02)
+
+
+### Bug Fixes
+
+* on yearly user configuration only count back holidays within user's employment ([4ee40bd](https://github.com/ArpadGBondor/Leave-Management/commit/4ee40bd8547f8f880f6c1dd40ca4560669d74811))
+
 ## [1.3.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.11...v1.3.12) (2025-11-02)
 
 
