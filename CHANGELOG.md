@@ -1,3 +1,10 @@
+## [1.3.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.11...v1.3.12) (2025-11-02)
+
+
+### Bug Fixes
+
+* show requested leaves in Calendar ([f81ca73](https://github.com/ArpadGBondor/Leave-Management/commit/f81ca7398840f533b80b924f66e050232c450847))
+
 ## [1.3.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.10...v1.3.11) (2025-11-02)
 
 
