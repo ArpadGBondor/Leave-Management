@@ -13,6 +13,7 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import { db } from '../firebase.config';
 import { useUserContext } from '../context/user/useUserContext';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/buttons/Button';
 
 export default function Requests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -52,14 +53,12 @@ export default function Requests() {
       header: 'From',
       accessor: 'from',
       sortable: true,
-      render: (from: Timestamp) => from.toDate().toLocaleDateString(),
       width: 'min-w-48',
     },
     {
       header: 'To',
       accessor: 'to',
       sortable: true,
-      render: (to: Timestamp) => to.toDate().toLocaleDateString(),
       width: 'min-w-48',
     },
     {
@@ -98,8 +97,9 @@ export default function Requests() {
         data={requests}
         columns={columns}
         title="Your leave requests"
-        onRowClick={(request) => navigate(`/manage-requests/${request.id}`)}
+        onRowClick={(request) => navigate(`/requests/${request.id}`)}
       />
+      <Button label="New request" onClick={() => navigate(`/requests/new`)} />
     </div>
   );
 }

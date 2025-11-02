@@ -45,14 +45,12 @@ export default function ManageRequests() {
       header: 'From',
       accessor: 'from',
       sortable: true,
-      render: (from: Timestamp) => from.toDate().toLocaleDateString(),
       width: 'min-w-48',
     },
     {
       header: 'To',
       accessor: 'to',
       sortable: true,
-      render: (to: Timestamp) => to.toDate().toLocaleDateString(),
       width: 'min-w-48',
     },
     {

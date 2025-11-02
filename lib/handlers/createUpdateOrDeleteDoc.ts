@@ -2,7 +2,7 @@ import { Handler, HandlerResponse } from '@netlify/functions';
 import { verifyBearerToken } from '../verifyBearerToken';
 import { errorResponse, response } from '../response';
 import { HandlerConfigOptions } from '../types';
-import { buildRef } from '../cleanRef';
+import { buildRef } from '../buildRef';
 import { cleanBody } from '../cleanBody';
 import * as admin from 'firebase-admin';
 
@@ -26,7 +26,7 @@ export const createUpdateOrDeleteDoc =
       // remove created field from request body
       const { created, ...body } = JSON.parse(event.body || '{}');
 
-      const ref = buildRef(body, path);
+      const ref = buildRef(body, path, isCreate);
 
       if (isDelete) {
         if (deleteAction) {
