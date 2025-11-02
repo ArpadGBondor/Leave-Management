@@ -289,6 +289,7 @@ export default function ManageTeamMember() {
               })
             )}
             userId={userId!}
+            user={user!}
             onBack={() => {
               setScreenPhase(1);
               setSelectedForEditing(null);

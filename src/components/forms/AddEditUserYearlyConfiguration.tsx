@@ -11,12 +11,14 @@ import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
+import User from '../../interface/User.interface';
 
 interface AddEditUserYearlyConfigurationProps {
   isEditing: boolean;
   selectedForEditing: UserHolidayEntitlement;
   yearOptions: SelectInputOption[];
   userId: string;
+  user: User;
   onBack: () => void;
 }
 
@@ -25,6 +27,7 @@ export default function AddEditUserYearlyConfiguration({
   selectedForEditing,
   yearOptions,
   userId,
+  user,
   onBack,
 }: AddEditUserYearlyConfigurationProps) {
   const [formData, setFormData] = useState<UserHolidayEntitlement>({
@@ -81,34 +84,6 @@ export default function AddEditUserYearlyConfiguration({
   useEffect(() => {
     if (selectedForEditing) setFormData(selectedForEditing);
   }, [selectedForEditing]);
-
-  useEffect(() => {
-    if (!id || !bankHolidayRegionId) {
-      setFormData((prevState) => ({
-        ...prevState,
-        numberOfBankHolidays: 0,
-      }));
-      return;
-    }
-    const bankHolidayRef = collection(
-      db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegionId}/${
-        id /*year*/
-      }`
-    );
-    const numberOfBankHolidaysUnsubscribe = onSnapshot(
-      bankHolidayRef,
-      (snapshot) => {
-        const numberOfBankHolidays: number = snapshot.docs.length;
-        setFormData((prevState) => ({
-          ...prevState,
-          numberOfBankHolidays,
-        }));
-      }
-    );
-
-    return () => numberOfBankHolidaysUnsubscribe();
-  }, [bankHolidayRegionId, id]);
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -210,6 +185,12 @@ export default function AddEditUserYearlyConfiguration({
         workdaysOfTheWeek={formData}
         setFormData={setFormData}
         year={id}
+        employmentStart={
+          user.serviceStartDate ? new Date(user.serviceStartDate) : undefined
+        }
+        employmentEnd={
+          user.serviceEndDate ? new Date(user.serviceEndDate) : undefined
+        }
       />
       <h3 className="text-2xl font-bold text-brand-green-700">
         Workdays of the week

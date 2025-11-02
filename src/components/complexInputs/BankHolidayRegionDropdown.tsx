@@ -13,6 +13,8 @@ interface BankHolidayRegionDropdownProps<T> {
   workdaysOfTheWeek?: WorkdaysOfTheWeek;
   setFormData: React.Dispatch<React.SetStateAction<T>>;
   year: string;
+  employmentStart?: Date;
+  employmentEnd?: Date;
 }
 
 export default function BankHolidayRegionDropdown<
@@ -22,6 +24,8 @@ export default function BankHolidayRegionDropdown<
   workdaysOfTheWeek,
   setFormData,
   year,
+  employmentStart,
+  employmentEnd,
 }: BankHolidayRegionDropdownProps<T>) {
   const noOption = { label: 'None', value: '' };
 
@@ -74,6 +78,9 @@ export default function BankHolidayRegionDropdown<
 
         for (const doc of snapshot.docs) {
           const date = new Date(doc.id);
+          // Do not count days outside of employment
+          if (employmentStart && date < employmentStart) continue;
+          if (employmentEnd && date > employmentEnd) continue;
           const day = date.getDay();
           switch (day) {
             case 0:
