@@ -100,25 +100,48 @@ export default function RequestAddEditForm({
   const validateRequest = () => {
     let valid = true;
 
+    const employmentStart = user?.serviceStartDate
+      ? new Date(user?.serviceStartDate)
+      : null;
+    const employmentEnd = user?.serviceEndDate
+      ? new Date(user?.serviceEndDate)
+      : null;
+
     // From validation
     if (!from.trim()) {
       setError('from', 'Please Please enter start date.');
       valid = false;
     } else {
-      setError('from', '');
+      const fromDate = new Date(from);
+      if (employmentStart && employmentStart > fromDate) {
+        setError('from', `Leave cannot start before ${user?.serviceStartDate}`);
+        valid = false;
+      } else if (employmentEnd && employmentEnd < fromDate) {
+        setError('from', `Leave cannot start after ${user?.serviceEndDate}`);
+        valid = false;
+      } else {
+        setError('from', '');
+      }
     }
 
     // From validation
     if (!to.trim()) {
       setError('to', 'Please Please enter end date.');
       valid = false;
-    } else {
-      setError('to', '');
-    }
-
-    if (valid && new Date(from) >= new Date(to)) {
+    } else if (new Date(from) >= new Date(to)) {
       setError('to', 'Leave end date should be later than start date.');
       valid = false;
+    } else {
+      const toDate = new Date(to);
+      if (employmentStart && employmentStart > toDate) {
+        setError('to', `Leave cannot end before ${user?.serviceStartDate}`);
+        valid = false;
+      } else if (employmentEnd && employmentEnd < toDate) {
+        setError('to', `Leave cannot end after ${user?.serviceEndDate}`);
+        valid = false;
+      } else {
+        setError('to', '');
+      }
     }
 
     return valid;
