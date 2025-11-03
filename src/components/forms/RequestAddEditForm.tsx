@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import { db } from '../../firebase.config';
 import { useUserContext } from '../../context/user/useUserContext';
@@ -18,6 +18,14 @@ import DateInput from '../inputs/DateInput';
 import TextInput from '../inputs/TextInput';
 import { useRequestsContext } from '../../context/requests/useRequestsContext';
 import { useNavigate } from 'react-router-dom';
+import { Leave } from '../../interface/Leave.interface';
+import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
+import { useCompanyContext } from '../../context/company/useCompanyContext';
+import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
+import isDateInRanges from '../../utils/isDateInRanges';
+import isWorkday from '../../utils/isWorkday';
+import { addDays } from 'date-fns';
+import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -53,6 +61,24 @@ export default function RequestAddEditForm({
     description: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
+  const [loadedYear, setLoadedYear] = useState<string>('');
+  const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
+  const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
+    {
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: false,
+      sunday: false,
+    }
+  );
+  const {
+    workdaysOfTheWeek: companyWorkdaysOfTheWeek,
+    bankHolidayRegion: companyBankHolidayRegion,
+  } = useCompanyContext();
+
   const { startLoading, stopLoading } = useLoadingContext();
   const { createRequest, updateRequest } = useRequestsContext();
   const navigate = useNavigate();
@@ -87,6 +113,17 @@ export default function RequestAddEditForm({
       });
   }, [requestId]);
 
+  useEffect(() => {
+    if (validateRequest()) {
+      recalculateNumberOfWorkdays();
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        numberOfWorkdays: 0,
+      }));
+    }
+  }, [formData.from, formData.to]);
+
   const isEdit = Boolean(requestId !== 'new');
 
   const { id, from, to, numberOfWorkdays, requestType, description } = formData;
@@ -96,6 +133,85 @@ export default function RequestAddEditForm({
       ...prevState,
       [field]: message,
     }));
+
+  const recalculateNumberOfWorkdays = async () => {
+    const year = formData.from.slice(0, 4);
+    // If we did not reload year, take values from state
+    let _workdaysOfTheWeek = workdaysOfTheWeek;
+    let _bankHolidays = bankHolidays;
+    if (year !== loadedYear) {
+      // if we reload year, return freshly loaded values from function
+      const { workdaysOfTheWeek, bankHolidays } = await loadYear(year);
+      _workdaysOfTheWeek = workdaysOfTheWeek;
+      _bankHolidays = bankHolidays;
+    }
+
+    let numberOfWorkdays = 0;
+    const startDate = new Date(from);
+    const endDate = new Date(to);
+
+    let day = startDate;
+
+    while (day <= endDate) {
+      if (
+        !isDateInRanges(day, _bankHolidays) &&
+        isWorkday(day, _workdaysOfTheWeek)
+      )
+        ++numberOfWorkdays;
+      day = addDays(day, 1);
+    }
+
+    setFormData((prevState) => ({
+      ...prevState,
+      numberOfWorkdays,
+    }));
+  };
+
+  const loadYear = async (year: string) => {
+    // fetch configuration
+    const configRef = doc(
+      db,
+      `${firebase_collections.USERS}/${user!.id}/${
+        firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION
+      }/${year}`
+    );
+    const configSnap = await getDoc(configRef);
+    let bankHolidayRegion = companyBankHolidayRegion.bankHolidayRegionId;
+    let workdaysOfTheWeek = companyWorkdaysOfTheWeek;
+    if (configSnap.exists()) {
+      const data = configSnap.data() as UserHolidayEntitlement;
+      workdaysOfTheWeek = {
+        monday: data.monday,
+        tuesday: data.tuesday,
+        wednesday: data.wednesday,
+        thursday: data.thursday,
+        friday: data.friday,
+        saturday: data.saturday,
+        sunday: data.sunday,
+      };
+      bankHolidayRegion = data.bankHolidayRegionId;
+    }
+
+    setWorkdaysOfTheWeek(workdaysOfTheWeek);
+
+    // fetch bank holidays
+    const bankHolidayRef = collection(
+      db,
+      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegion}/${year}`
+    );
+    const bankHolidaySnap = await getDocs(bankHolidayRef);
+    const bankHolidays: Leave[] = [];
+    for (const doc of bankHolidaySnap.docs) {
+      const data = doc.data();
+      const date = new Date(data.date);
+      bankHolidays.push({ from: date, to: date });
+    }
+    setBankHolidays(bankHolidays);
+
+    setLoadedYear(year);
+
+    return { workdaysOfTheWeek, bankHolidays };
+  };
 
   const validateRequest = () => {
     let valid = true;
@@ -141,6 +257,18 @@ export default function RequestAddEditForm({
         valid = false;
       } else {
         setError('to', '');
+      }
+    }
+
+    if (valid) {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+      if (toDate.getFullYear() !== fromDate.getFullYear()) {
+        setError(
+          'to',
+          'Your start and end dates span multiple years. Please create a separate request for each year.'
+        );
+        valid = false;
       }
     }
 
@@ -249,6 +377,12 @@ export default function RequestAddEditForm({
             error={errors.to}
           />
         </div>
+
+        {numberOfWorkdays > 0 && (
+          <p className="text-brand-green-800">
+            Number of workdays: {numberOfWorkdays}
+          </p>
+        )}
 
         <TextInput
           id="description"
