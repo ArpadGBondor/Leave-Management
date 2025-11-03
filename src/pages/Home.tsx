@@ -21,12 +21,8 @@ import UserHolidayEntitlement from '../interface/UserHolidayEntitlement.interfac
 export default function Home() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [bankHolidayRegion, setBankHolidayRegion] = useState('');
-  const [bankHolidays, setBankHolidays] = useState<Leave[]>([
-    { from: new Date('2025-12-25'), to: new Date('2025-12-26') },
-  ]);
-  const [requested, setRequested] = useState<Leave[]>([
-    { from: new Date('2025-10-30'), to: new Date('2025-11-02') },
-  ]);
+  const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
+  const [requested, setRequested] = useState<Leave[]>([]);
   const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
     {
       monday: true,

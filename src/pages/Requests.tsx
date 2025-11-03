@@ -62,6 +62,12 @@ export default function Requests() {
       width: 'min-w-48',
     },
     {
+      header: 'Number of workdays',
+      accessor: 'numberOfWorkdays',
+      sortable: true,
+      width: 'min-w-24',
+    },
+    {
       header: 'Request Type',
       accessor: 'requestType',
       sortable: true,
@@ -74,14 +80,7 @@ export default function Requests() {
       width: 'min-w-64',
     },
     {
-      header: 'Created',
-      accessor: 'created',
-      sortable: true,
-      render: (created: Timestamp) => created.toDate().toLocaleDateString(),
-      width: 'min-w-48',
-    },
-    {
-      header: 'Updated',
+      header: 'Last updated',
       accessor: 'updated',
       sortable: true,
       render: (updated: Timestamp) => updated.toDate().toLocaleDateString(),
