@@ -22,7 +22,7 @@ import { Leave } from '../../interface/Leave.interface';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
-import isDateInRanges from '../../utils/isDateinranges';
+import isDateInRanges from '../../utils/isDateInRanges';
 import isWorkday from '../../utils/isWorkday';
 import { addDays } from 'date-fns';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';

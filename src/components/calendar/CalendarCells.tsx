@@ -12,7 +12,7 @@ import { CALENDAR_STATUS_CONFIG } from './types';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import { Leave } from '../../interface/Leave.interface';
 import isWorkday from '../../utils/isWorkday';
-import isDateInRanges from '../../utils/isDateinranges';
+import isDateInRanges from '../../utils/isDateInRanges';
 
 export interface CalendarCellsProps {
   currentMonth: Date;
