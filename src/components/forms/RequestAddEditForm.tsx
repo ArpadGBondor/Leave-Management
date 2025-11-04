@@ -25,7 +25,6 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import isDateInRanges from '../../utils/isDateInRanges';
 import isWorkday from '../../utils/isWorkday';
 import { addDays } from 'date-fns';
-import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -80,7 +79,7 @@ export default function RequestAddEditForm({
   } = useCompanyContext();
 
   const { startLoading, stopLoading } = useLoadingContext();
-  const { createRequest, updateRequest } = useRequestsContext();
+  const { createRequest, updateRequest, deleteRequest } = useRequestsContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,7 +123,7 @@ export default function RequestAddEditForm({
     }
   }, [formData.from, formData.to]);
 
-  const isEdit = Boolean(requestId !== 'new');
+  const isEditing = Boolean(requestId !== 'new');
 
   const { id, from, to, numberOfWorkdays, requestType, description } = formData;
 
@@ -290,7 +289,7 @@ export default function RequestAddEditForm({
         return;
       }
 
-      if (isEdit) {
+      if (isEditing) {
         await updateRequest({
           id,
           requestType,
@@ -310,7 +309,7 @@ export default function RequestAddEditForm({
       }
 
       // Call function to update or edit request -> Add 2 functions to Request Provider
-      if (isEdit) {
+      if (isEditing) {
         toast.info('Request details updated');
       } else {
         toast.info('Request created');
@@ -318,10 +317,23 @@ export default function RequestAddEditForm({
       navigate('/requests');
     } catch (error: any) {
       toast.error(
-        error.message || `Could not ${isEdit ? 'update' : 'create'} request`
+        error.message || `Could not ${isEditing ? 'update' : 'create'} request`
       );
     } finally {
       stopLoading('add-edit-request');
+    }
+  };
+
+  const onDelete = () => {
+    startLoading('delete-request');
+    try {
+      deleteRequest({ id: requestId! });
+      toast.info('Request deleted');
+      navigate('/requests');
+    } catch (error: any) {
+      toast.error(error.message || `Could not delete request`);
+    } finally {
+      stopLoading('delete-request');
     }
   };
 
@@ -339,12 +351,9 @@ export default function RequestAddEditForm({
   return (
     <>
       <h2 className="text-4xl font-bold text-brand-purple-700">
-        {isEdit ? 'Edit request' : 'Add request'}
+        {isEditing ? 'Edit request' : 'Add request'}
       </h2>
-      <form
-        onSubmit={onSubmitUpdateRequest}
-        className="flex flex-col gap-4 mb-8"
-      >
+      <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
         <p className="text-brand-green-800">Requested by: {user?.name}</p>
         <SelectInput
           id="requestType"
@@ -394,7 +403,23 @@ export default function RequestAddEditForm({
           error={errors.description}
         />
 
-        <Button label="Submit request" />
+        <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
+          <Button label={isEditing ? 'Save changes' : 'Submit request'} />
+          <Button
+            type="button"
+            variant="secondary"
+            label={isEditing ? 'Discard changes' : 'Cancel'}
+            onClick={() => navigate('/requests')}
+          />
+          {isEditing && (
+            <Button
+              type="button"
+              variant="danger"
+              label="Delete request"
+              onClick={onDelete}
+            />
+          )}
+        </div>
       </form>
     </>
   );

@@ -38,7 +38,6 @@ export default function ManageRequests() {
       header: 'Requested By',
       accessor: 'requestedByName',
       sortable: true,
-      align: 'center',
       width: 'min-w-48',
     },
     {

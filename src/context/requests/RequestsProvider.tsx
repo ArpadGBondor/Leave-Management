@@ -96,6 +96,25 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     [user, auth.currentUser]
   );
 
+  const deleteRequest = useCallback(
+    async (data: { id: string }) => {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const createRequestResponse = await fetch('/api/requests', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: data.id }),
+      });
+      if (!createRequestResponse.ok) throw new Error('Failed to set role');
+    },
+    [auth.currentUser]
+  );
+
   useEffect(() => {
     if (!user) return;
     const requestsRef = collection(db, firebase_collections.REQUESTS);
@@ -144,6 +163,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         ...state,
         createRequest,
         updateRequest,
+        deleteRequest,
       }}
     >
       {children}
