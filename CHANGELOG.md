@@ -1,3 +1,10 @@
+## [1.3.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.14...v1.3.15) (2025-11-04)
+
+
+### Bug Fixes
+
+* add feature to delete own request ([edbdd8f](https://github.com/ArpadGBondor/Leave-Management/commit/edbdd8f402087e45a660249bef8a4e200f648496))
+
 ## [1.3.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.13...v1.3.14) (2025-11-04)
 
 
