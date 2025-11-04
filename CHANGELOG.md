@@ -1,3 +1,11 @@
+## [1.3.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.13...v1.3.14) (2025-11-04)
+
+
+### Bug Fixes
+
+* calculate number of workdays ([e6c1f93](https://github.com/ArpadGBondor/Leave-Management/commit/e6c1f93a1247414265e7e0a02c76c14a3529e2c8))
+* typo ([bcf9a7d](https://github.com/ArpadGBondor/Leave-Management/commit/bcf9a7d9d01483bacd02de126a2508546e2821bb))
+
 ## [1.3.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.12...v1.3.13) (2025-11-02)
 
 
