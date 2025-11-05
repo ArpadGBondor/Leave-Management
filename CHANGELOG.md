@@ -1,3 +1,10 @@
+## [1.3.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.15...v1.3.16) (2025-11-05)
+
+
+### Bug Fixes
+
+* add background preload and description meta tag ([f6fec6a](https://github.com/ArpadGBondor/Leave-Management/commit/f6fec6af310422f23acd7675d3a1bad4c4e93250))
+
 ## [1.3.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.14...v1.3.15) (2025-11-04)
 
 
