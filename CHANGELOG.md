@@ -1,3 +1,11 @@
+## [1.3.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.17...v1.3.18) (2025-11-06)
+
+
+### Bug Fixes
+
+* install terser ([48f02bf](https://github.com/ArpadGBondor/Leave-Management/commit/48f02bf7ebb302c5d3871576ca2850ff40f23fc7))
+* lazy load pages, minify build, reduce imported icon bundle ([13a504e](https://github.com/ArpadGBondor/Leave-Management/commit/13a504e5aea435f928a18fb0e2b5f334245fab7f))
+
 ## [1.3.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.16...v1.3.17) (2025-11-06)
 
 
