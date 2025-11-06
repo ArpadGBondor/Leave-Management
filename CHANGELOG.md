@@ -1,3 +1,10 @@
+## [1.3.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.16...v1.3.17) (2025-11-06)
+
+
+### Bug Fixes
+
+* improve nav menu buttons and accessibility ([811fa6c](https://github.com/ArpadGBondor/Leave-Management/commit/811fa6c6398778b618be0987156705e0515c2e9e))
+
 ## [1.3.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.15...v1.3.16) (2025-11-05)
 
 
