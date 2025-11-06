@@ -4,7 +4,7 @@ import {
   FaAngleRight,
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
-} from 'react-icons/fa';
+} from '../../icons/fa';
 
 export interface CalendarHeaderProps {
   currentMonth: Date;
