@@ -39,6 +39,7 @@
     "globals": "^16.4.0",
     "netlify-cli": "^23.6.0",
     "semantic-release": "^24.2.9",
+    "terser": "^5.44.1",
     "vite": "^7.1.6",
     "vite-plugin-svgr": "^4.5.0"
   }
