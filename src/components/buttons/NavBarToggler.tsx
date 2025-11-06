@@ -1,4 +1,4 @@
-import { FaTimes, FaBars } from 'react-icons/fa';
+import { FaTimes, FaBars } from '../../icons/fa';
 
 type NavbarTogglerProps = {
   isOpen: boolean;

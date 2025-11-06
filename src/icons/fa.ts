@@ -1,0 +1,38 @@
+// let's import a selection of icons, so we can reduce bundle size
+import {
+  FaTimes,
+  FaBars,
+  FaBriefcase,
+  FaHome,
+  FaUsers,
+  FaClipboardCheck,
+  FaPaperPlane,
+  FaInfoCircle,
+  FaUser,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaUserPlus,
+  FaAngleLeft,
+  FaAngleRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+} from 'react-icons/fa';
+
+export {
+  FaTimes,
+  FaBars,
+  FaBriefcase,
+  FaHome,
+  FaUsers,
+  FaClipboardCheck,
+  FaPaperPlane,
+  FaInfoCircle,
+  FaUser,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaUserPlus,
+  FaAngleLeft,
+  FaAngleRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+};

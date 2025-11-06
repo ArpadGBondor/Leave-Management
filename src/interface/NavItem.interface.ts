@@ -1,4 +1,4 @@
-import * as FaIcons from 'react-icons/fa';
+import type * as FaIcons from '../icons/fa';
 
 export default interface NavItem {
   name: string;

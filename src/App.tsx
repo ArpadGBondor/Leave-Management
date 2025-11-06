@@ -1,29 +1,30 @@
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // import BackgroundDecor from './components/decoration/BackgroundDecor';
 import Navigation from './components/navigation/Navigation';
 import PrivateRoute from './components/auth/PrivateRoute';
-
-import Home from './pages/Home';
-import Requests from './pages/Requests';
-import Login from './pages/Login';
-import About from './pages/About';
-import Logout from './pages/Logout';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import LoadingOverlay from './components/loading/LoadingOverlay';
-import Unauthorised from './pages/Unauthorised';
 import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
-import ManageTeam from './pages/ManageTeam';
-import NotFound from './pages/NotFound';
-import ManageCompany from './pages/ManageCompany';
-import ManageTeamMember from './pages/ManageTeamMember';
-import ManageRequests from './pages/ManageRequests';
-import ForgotPassword from './pages/ForgotPassword';
-import RequestAddEdit from './pages/RequestAddEdit';
+import LoadingOverlay from './components/loading/LoadingOverlay';
+import Spinner from './components/spinner/Spinner';
+
+const Home = lazy(() => import('./pages/Home'));
+const Requests = lazy(() => import('./pages/Requests'));
+const Login = lazy(() => import('./pages/Login'));
+const About = lazy(() => import('./pages/About'));
+const Logout = lazy(() => import('./pages/Logout'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Unauthorised = lazy(() => import('./pages/Unauthorised'));
+const ManageCompany = lazy(() => import('./pages/ManageCompany'));
+const ManageTeam = lazy(() => import('./pages/ManageTeam'));
+const ManageTeamMember = lazy(() => import('./pages/ManageTeamMember'));
+const ManageRequests = lazy(() => import('./pages/ManageRequests'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const RequestAddEdit = lazy(() => import('./pages/RequestAddEdit'));
 
 export default function App() {
   return (
@@ -40,34 +41,39 @@ export default function App() {
           initial and core component of the application.
         */}
         <main className="relative w-full h-full flex flex-col justify-center items-center">
-          <Routes>
-            <Route element={<PrivateRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/requests" element={<Requests />} />
-              <Route path="/requests/:requestId" element={<RequestAddEdit />} />
-            </Route>
-            <Route
-              element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
-            >
-              <Route path="/manage-company" element={<ManageCompany />} />
-            </Route>
-            <Route element={<PrivateManagerRoute restrictToClaim="ADMIN" />}>
-              <Route path="/manage-team" element={<ManageTeam />} />
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route element={<PrivateRoute />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/requests" element={<Requests />} />
+                <Route
+                  path="/requests/:requestId"
+                  element={<RequestAddEdit />}
+                />
+              </Route>
               <Route
-                path="/manage-team/:userId"
-                element={<ManageTeamMember />}
-              />
-              <Route path="/manage-requests" element={<ManageRequests />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/unauthorised" element={<Unauthorised />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+                element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
+              >
+                <Route path="/manage-company" element={<ManageCompany />} />
+              </Route>
+              <Route element={<PrivateManagerRoute restrictToClaim="ADMIN" />}>
+                <Route path="/manage-team" element={<ManageTeam />} />
+                <Route
+                  path="/manage-team/:userId"
+                  element={<ManageTeamMember />}
+                />
+                <Route path="/manage-requests" element={<ManageRequests />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/unauthorised" element={<Unauthorised />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <ToastContainer />
         </main>
       </div>

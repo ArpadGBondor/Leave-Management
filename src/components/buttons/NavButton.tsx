@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import * as FaIcons from 'react-icons/fa';
+import * as FaIcons from '../../icons/fa';
 
 type ButtonProps = {
   label: string;
