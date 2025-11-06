@@ -34,14 +34,13 @@ export default function NavButton({
   };
 
   return (
-    <Link to={link}>
-      <button
-        onClick={onClick}
-        className={`${baseClasses} ${variants[variant]}`}
-      >
-        {IconComponent && <IconComponent />}
-        <span>{label}</span>
-      </button>
+    <Link
+      to={link}
+      onClick={onClick}
+      className={`${baseClasses} ${variants[variant]}`}
+    >
+      {IconComponent && <IconComponent />}
+      <span>{label}</span>
     </Link>
   );
 }

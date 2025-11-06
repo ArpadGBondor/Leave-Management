@@ -27,12 +27,14 @@ export default function CalendarHeader({
         <button
           onClick={prevYear}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"
+          aria-label="Previous year"
         >
           <FaAngleDoubleLeft />
         </button>
         <button
           onClick={prevMonth}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"
+          aria-label="Previous month"
         >
           <FaAngleLeft />
         </button>
@@ -44,12 +46,14 @@ export default function CalendarHeader({
         <button
           onClick={nextMonth}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"
+          aria-label="Next month"
         >
           <FaAngleRight />
         </button>
         <button
           onClick={nextYear}
           className="p-2 rounded-full hover:bg-brand-purple-200 transition cursor-pointer"
+          aria-label="Next year"
         >
           <FaAngleDoubleRight />
         </button>
