@@ -1,3 +1,10 @@
+## [1.3.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.18...v1.3.19) (2025-11-07)
+
+
+### Bug Fixes
+
+* improve Request Add/Edit date field error layout ([ae0c8ae](https://github.com/ArpadGBondor/Leave-Management/commit/ae0c8aec305dc3effe79b262f10e7f7dd4275191))
+
 ## [1.3.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.17...v1.3.18) (2025-11-06)
 
 
