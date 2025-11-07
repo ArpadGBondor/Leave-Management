@@ -366,25 +366,28 @@ export default function RequestAddEditForm({
         />
 
         <div className="flex flex-col md:flex-row gap-4">
-          <DateInput
-            id="from"
-            label="Leave start date"
-            name="from"
-            value={from}
-            onChange={(e) => handleInputChange(e, setFormData, setError)}
-            placeholder="YYYY-MM-DD"
-            error={errors.from}
-          />
-
-          <DateInput
-            id="to"
-            label="Leave end date"
-            name="to"
-            value={to}
-            onChange={(e) => handleInputChange(e, setFormData, setError)}
-            placeholder="YYYY-MM-DD"
-            error={errors.to}
-          />
+          <div className="flex-1">
+            <DateInput
+              id="from"
+              label="Leave start date"
+              name="from"
+              value={from}
+              onChange={(e) => handleInputChange(e, setFormData, setError)}
+              placeholder="YYYY-MM-DD"
+              error={errors.from}
+            />
+          </div>
+          <div className="flex-1">
+            <DateInput
+              id="to"
+              label="Leave end date"
+              name="to"
+              value={to}
+              onChange={(e) => handleInputChange(e, setFormData, setError)}
+              placeholder="YYYY-MM-DD"
+              error={errors.to}
+            />
+          </div>
         </div>
 
         {numberOfWorkdays > 0 && (

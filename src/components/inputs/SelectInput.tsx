@@ -77,7 +77,9 @@ export default function SelectInput({
 
       {/* Error message */}
       {error && (
-        <span className="text-sm text-red-600 font-medium">{error}</span>
+        <div className="text-sm text-red-600 font-medium text-wrap">
+          {error}
+        </div>
       )}
     </div>
   );

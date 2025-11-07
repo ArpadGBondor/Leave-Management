@@ -45,6 +45,7 @@ export default function DateInput({
 
       {/* Date Picker */}
       <DatePicker
+        oneTap
         id={id}
         name={name}
         value={value ? new Date(value) : null}
@@ -68,9 +69,7 @@ export default function DateInput({
       />
 
       {/* Error message */}
-      {error && (
-        <span className="text-sm text-red-600 font-medium">{error}</span>
-      )}
+      {error && <div className="text-sm text-red-600 font-medium">{error}</div>}
     </div>
   );
 }
