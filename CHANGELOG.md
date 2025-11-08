@@ -1,3 +1,10 @@
+## [1.3.21](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.20...v1.3.21) (2025-11-08)
+
+
+### Bug Fixes
+
+* bump package.json version number ([47cb43a](https://github.com/ArpadGBondor/Leave-Management/commit/47cb43ab9828bc956af84e7c226acc6ce2c1c476))
+
 ## [1.3.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.19...v1.3.20) (2025-11-08)
 
 
