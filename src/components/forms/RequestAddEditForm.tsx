@@ -25,6 +25,7 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import isDateInRanges from '../../utils/isDateInRanges';
 import isWorkday from '../../utils/isWorkday';
 import { addDays } from 'date-fns';
+import TextAreaInput from '../inputs/TextAreaInput';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -396,7 +397,7 @@ export default function RequestAddEditForm({
           </p>
         )}
 
-        <TextInput
+        <TextAreaInput
           id="description"
           label="Additional information"
           name="description"
