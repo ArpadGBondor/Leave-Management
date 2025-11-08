@@ -1,3 +1,10 @@
+## [1.3.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.19...v1.3.20) (2025-11-08)
+
+
+### Bug Fixes
+
+* add missing icon, add multi-line input ([3c15cf5](https://github.com/ArpadGBondor/Leave-Management/commit/3c15cf5d87f07308489f3281899f69db85fd297b))
+
 ## [1.3.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.18...v1.3.19) (2025-11-07)
 
 
