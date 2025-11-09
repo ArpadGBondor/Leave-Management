@@ -1,3 +1,10 @@
+## [1.3.23](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.22...v1.3.23) (2025-11-09)
+
+
+### Bug Fixes
+
+* allow managers to set employment start and employment end dates for all team members ([df66791](https://github.com/ArpadGBondor/Leave-Management/commit/df667911d285a5a61fe64b25a3ebad0f7d9911f7))
+
 ## [1.3.22](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.21...v1.3.22) (2025-11-09)
 
 
