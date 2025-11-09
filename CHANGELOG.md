@@ -1,3 +1,10 @@
+## [1.3.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.23...v1.3.24) (2025-11-09)
+
+
+### Bug Fixes
+
+* Add suggestion to holiday entitlement multiplier based on Employment start and end date ([7b059b0](https://github.com/ArpadGBondor/Leave-Management/commit/7b059b05d313a1c388820dd7d488fb62d81fe77c))
+
 ## [1.3.23](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.22...v1.3.23) (2025-11-09)
 
 
