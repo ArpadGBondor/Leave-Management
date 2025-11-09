@@ -23,7 +23,7 @@ import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
 import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
 import { useCompanyContext } from '../context/company/useCompanyContext';
 import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
-import UpdateTeamMemberUserType from '../components/forms/UpdateTeamMemberUserType';
+import TeamMemberUserDetailsUpdate from '../components/forms/TeamMemberUserDetailsUpdate';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -61,7 +61,7 @@ export default function ManageTeamMember() {
   const [configuredYears, setConfiguredYears] = useState<
     UserHolidayEntitlement[]
   >([]);
-  const [editUserType, setEditUserType] = useState<boolean>(false);
+  const [editUserDetails, setEditUserDetails] = useState<boolean>(false);
   const { startLoading, stopLoading } = useLoadingContext();
   const [selectedForEditing, setSelectedForEditing] =
     useState<UserHolidayEntitlement | null>(null);
@@ -227,21 +227,21 @@ export default function ManageTeamMember() {
             <div className="bg-brand-green-600 p-4 rounded-xl flex flex-col md:flex-row gap-4 justify-between items-center">
               <ProfileBadge user={user} />
               <div className="w-full md:w-1/2">
-                {!editUserType && (
+                {!editUserDetails && (
                   <Button
                     type="button"
                     variant="secondary"
-                    label="Edit user type"
-                    onClick={() => setEditUserType(true)}
+                    label="Update Details"
+                    onClick={() => setEditUserDetails(true)}
                   />
                 )}
               </div>
             </div>
-            {user && editUserType && (
-              <UpdateTeamMemberUserType
+            {user && editUserDetails && (
+              <TeamMemberUserDetailsUpdate
                 user={user}
                 onBack={() => {
-                  setEditUserType(false);
+                  setEditUserDetails(false);
                 }}
               />
             )}
