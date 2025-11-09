@@ -17,6 +17,7 @@ import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
   FaArrowLeft,
+  FaRegTimesCircle,
 } from 'react-icons/fa';
 
 export {
@@ -37,4 +38,5 @@ export {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
   FaArrowLeft,
+  FaRegTimesCircle,
 };
