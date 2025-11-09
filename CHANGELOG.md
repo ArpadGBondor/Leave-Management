@@ -1,3 +1,10 @@
+## [1.3.22](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.21...v1.3.22) (2025-11-09)
+
+
+### Bug Fixes
+
+* use native date-picker instead of extra package ([17c0a4c](https://github.com/ArpadGBondor/Leave-Management/commit/17c0a4c0b9378bbb4f93b6179821ce0a5abbdbd2))
+
 ## [1.3.21](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.20...v1.3.21) (2025-11-08)
 
 
