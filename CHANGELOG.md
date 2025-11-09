@@ -1,3 +1,10 @@
+## [1.3.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.24...v1.3.25) (2025-11-09)
+
+
+### Bug Fixes
+
+* add robots.txt ([bfd22d1](https://github.com/ArpadGBondor/Leave-Management/commit/bfd22d166711ed217993ab9bbc99296c9be61ff3))
+
 ## [1.3.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.23...v1.3.24) (2025-11-09)
 
 
