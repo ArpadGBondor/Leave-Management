@@ -20,7 +20,7 @@ import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import Button from '../components/buttons/Button';
 import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
-import AddEditUserYearlyConfiguration from '../components/forms/AddEditUserYearlyConfiguration';
+import UserYearlyConfigurationAddEdit from '../components/forms/UserYearlyConfigurationAddEdit';
 import { useCompanyContext } from '../context/company/useCompanyContext';
 import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
 import TeamMemberUserDetailsUpdate from '../components/forms/TeamMemberUserDetailsUpdate';
@@ -276,7 +276,7 @@ export default function ManageTeamMember() {
           </>
         )}
         {screenPhase === 2 && selectedForEditing && (
-          <AddEditUserYearlyConfiguration
+          <UserYearlyConfigurationAddEdit
             isEditing={isEditing}
             selectedForEditing={selectedForEditing}
             yearOptions={employmentYears.map(

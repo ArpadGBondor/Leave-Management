@@ -12,8 +12,9 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 import User from '../../interface/User.interface';
+import LeaveEntitlementMultiplierRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementMultiplierRecommendation';
 
-interface AddEditUserYearlyConfigurationProps {
+interface UserYearlyConfigurationAddEditProps {
   isEditing: boolean;
   selectedForEditing: UserHolidayEntitlement;
   yearOptions: SelectInputOption[];
@@ -22,14 +23,14 @@ interface AddEditUserYearlyConfigurationProps {
   onBack: () => void;
 }
 
-export default function AddEditUserYearlyConfiguration({
+export default function UserYearlyConfigurationAddEdit({
   isEditing,
   selectedForEditing,
   yearOptions,
   userId,
   user,
   onBack,
-}: AddEditUserYearlyConfigurationProps) {
+}: UserYearlyConfigurationAddEditProps) {
   const [formData, setFormData] = useState<UserHolidayEntitlement>({
     holidayEntitlementBase: 0,
     holidayEntitlementAdditional: 0,
@@ -69,17 +70,7 @@ export default function AddEditUserYearlyConfiguration({
   });
   const { startLoading, stopLoading } = useLoadingContext();
 
-  const {
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-    sunday,
-    bankHolidayRegionId,
-    id,
-  } = formData;
+  const { id } = formData;
 
   useEffect(() => {
     if (selectedForEditing) setFormData(selectedForEditing);
@@ -90,18 +81,6 @@ export default function AddEditUserYearlyConfiguration({
       ...prevState,
       [field]: message,
     }));
-
-  const numberOfWorkdays = () => {
-    return [
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
-    ].filter(Boolean).length;
-  };
 
   const onSubmitUserYearlyConfiguration = async (e: any) => {
     e.preventDefault();
@@ -196,16 +175,14 @@ export default function AddEditUserYearlyConfiguration({
         Workdays of the week
       </h3>
       <WorkdaysOfTheWeekInputs formData={formData} setFormData={setFormData} />
-      <p className=" text-brand-green-800 text-center">
-        Selected <span className="font-bold">{numberOfWorkdays()}</span>{' '}
-        workdays per week.
-        <br />
-        Recommended leave entitlement multiplier:{' '}
-        <span className="font-bold">{numberOfWorkdays() / 5}</span>
-      </p>
       <h3 className="text-2xl font-bold text-brand-green-700">
         Holiday Entitlement
       </h3>
+      <LeaveEntitlementMultiplierRecommendation
+        user={user}
+        formData={formData}
+        year={id}
+      />
       <HolidayCalculationInputs
         formData={formData}
         setFormData={setFormData}

@@ -26,6 +26,7 @@ import isDateInRanges from '../../utils/isDateInRanges';
 import isWorkday from '../../utils/isWorkday';
 import { addDays } from 'date-fns';
 import TextAreaInput from '../inputs/TextAreaInput';
+import countWorkdays from '../../utils/countWorkdays';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -146,20 +147,15 @@ export default function RequestAddEditForm({
       _bankHolidays = bankHolidays;
     }
 
-    let numberOfWorkdays = 0;
     const startDate = new Date(from);
     const endDate = new Date(to);
 
-    let day = startDate;
-
-    while (day <= endDate) {
-      if (
-        !isDateInRanges(day, _bankHolidays) &&
-        isWorkday(day, _workdaysOfTheWeek)
-      )
-        ++numberOfWorkdays;
-      day = addDays(day, 1);
-    }
+    let numberOfWorkdays = countWorkdays(
+      startDate,
+      endDate,
+      _bankHolidays,
+      _workdaysOfTheWeek
+    );
 
     setFormData((prevState) => ({
       ...prevState,
