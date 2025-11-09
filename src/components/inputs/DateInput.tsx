@@ -1,7 +1,6 @@
+import React, { useRef } from 'react';
 import { format } from 'date-fns';
-import React from 'react';
-import { DatePicker } from 'rsuite';
-import 'rsuite/dist/rsuite-no-reset.min.css';
+import { FaRegTimesCircle } from '../../icons/fa';
 
 interface DateInputProps {
   id: string;
@@ -24,15 +23,22 @@ export default function DateInput({
   disabled,
   onChange,
 }: DateInputProps) {
-  const handleChange = (date: Date | null) => {
-    // Mimic a standard input change event
-    const syntheticEvent = {
-      target: {
-        name,
-        value: date ? format(date, 'yyyy-MM-dd') : '',
-      },
-    } as unknown as React.ChangeEvent<HTMLInputElement>;
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
+  const handleDisplayClick = () => {
+    if (!disabled) hiddenInputRef.current?.showPicker?.();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    onChange(e);
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const syntheticEvent = {
+      target: { name, value: '' },
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
     onChange(syntheticEvent);
   };
 
@@ -42,31 +48,53 @@ export default function DateInput({
       <label htmlFor={id} className="block text-brand-green-800 text-medium">
         {label}
       </label>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={handleDisplayClick}
+          className={`relative flex flex-row justify-between items-center w-full rounded-full border px-4 py-2 cursor-pointer select-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2
+          ${
+            disabled
+              ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed'
+              : error
+              ? 'focus:ring-red-700 border-red-700 hover:border-red-600 bg-red-200 hover:bg-red-100 text-red-900'
+              : 'focus:ring-brand-green-700 border-brand-green-700 hover:border-brand-green-600 bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
+          }`}
+        >
+          {/* Display value or placeholder */}
+          <span className={`flex-1 text-left ${!value ? 'text-gray-500' : ''}`}>
+            {value
+              ? format(new Date(value), 'yyyy-MM-dd')
+              : placeholder || 'Select a date'}
+          </span>
 
-      {/* Date Picker */}
-      <DatePicker
-        oneTap
-        id={id}
-        name={name}
-        value={value ? new Date(value) : null}
-        onChange={handleChange}
-        placeholder={placeholder || 'Select a date'}
-        disabled={disabled}
-        format="yyyy-MM-dd"
-        editable={false}
-        className={`w-full rounded-full border ${
-          disabled
-            ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed pointer-events-none'
-            : error
-            ? 'border-red-700 hover:border-red-600 bg-red-200 hover:bg-red-100 text-red-900'
-            : 'border-brand-green-700 hover:border-brand-green-600 bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
-        }`}
-        style={{
-          padding: '0.5rem 1rem',
-          borderRadius: '9999px',
-          width: '100%',
-        }}
-      />
+          {/* Hidden native date input */}
+          <input
+            ref={hiddenInputRef}
+            id={id}
+            name={name}
+            type="date"
+            value={value || ''}
+            onChange={handleChange}
+            disabled={disabled}
+            tabIndex={-1}
+            className="absolute inset-0 opacity-0 pointer-events-none"
+          />
+        </button>
+
+        {/* Clear button */}
+        {!disabled && value && (
+          <button
+            type="button"
+            aria-label="Clear date"
+            onClick={handleClear}
+            className="ring-offset-brand-purple-50 focus:outline-none focus:ring-red-700 focus:ring-2 focus:ring-offset-2  hover:text-red-700 rounded-full text-xl"
+          >
+            <FaRegTimesCircle />
+          </button>
+        )}
+      </div>
 
       {/* Error message */}
       {error && <div className="text-sm text-red-600 font-medium">{error}</div>}
