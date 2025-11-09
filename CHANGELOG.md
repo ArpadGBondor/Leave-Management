@@ -1,3 +1,10 @@
+## [1.3.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.25...v1.3.26) (2025-11-09)
+
+
+### Bug Fixes
+
+* verify domain with google ([e70daf1](https://github.com/ArpadGBondor/Leave-Management/commit/e70daf1bc4cce1f8047938e295a4439c1ae94a04))
+
 ## [1.3.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.24...v1.3.25) (2025-11-09)
 
 
