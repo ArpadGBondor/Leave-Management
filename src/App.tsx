@@ -25,6 +25,9 @@ const ManageRequests = lazy(() => import('./pages/ManageRequests'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const RequestAddEdit = lazy(() => import('./pages/RequestAddEdit'));
+const ManageRequestApproveReject = lazy(
+  () => import('./pages/ManageRequestApproveReject')
+);
 
 export default function App() {
   return (
@@ -64,6 +67,10 @@ export default function App() {
                   element={<ManageTeamMember />}
                 />
                 <Route path="/manage-requests" element={<ManageRequests />} />
+                <Route
+                  path="/manage-requests/:requestId"
+                  element={<ManageRequestApproveReject />}
+                />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

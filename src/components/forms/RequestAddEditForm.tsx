@@ -26,10 +26,12 @@ import RadioInput from '../inputs/RadioInput';
 
 interface RequestAddEditFormProps {
   requestId?: string;
+  disabled?: boolean;
 }
 
 export default function RequestAddEditForm({
   requestId,
+  disabled,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
   const { user } = useUserContext();
@@ -40,6 +42,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: number;
     requestType: LeaveRequestType;
     description: string;
+    requestedByName: string;
   } = {
     id: 'new',
     from: '',
@@ -47,6 +50,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: 0,
     requestType: leaveRequestTypeOptions[0],
     description: '',
+    requestedByName: '',
   };
   const [formData, setFormData] = useState({ ...defaultRequest });
   const defaultErrors = {
@@ -56,6 +60,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: '',
     requestType: '',
     description: '',
+    requestedByName: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
   const [loadedYear, setLoadedYear] = useState<string>('');
@@ -91,7 +96,7 @@ export default function RequestAddEditForm({
         if (!snap.exists()) return setFormError("Can't find request.");
 
         const doc = snap.data();
-        if (doc.requestedById !== user.id)
+        if (!disabled && doc.requestedById !== user.id)
           return setFormError(
             'This request does not belong to the currently logged in user.'
           );
@@ -103,6 +108,7 @@ export default function RequestAddEditForm({
           numberOfWorkdays: doc.numberOfWorkdays,
           requestType: doc.requestType,
           description: doc.description,
+          requestedByName: doc.requestedByName,
         });
       })
       .finally(() => {
@@ -123,7 +129,15 @@ export default function RequestAddEditForm({
 
   const isEditing = Boolean(requestId !== 'new');
 
-  const { id, from, to, numberOfWorkdays, requestType, description } = formData;
+  const {
+    id,
+    from,
+    to,
+    numberOfWorkdays,
+    requestType,
+    description,
+    requestedByName,
+  } = formData;
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -277,6 +291,8 @@ export default function RequestAddEditForm({
   const onSubmitUpdateRequest = async (e: any) => {
     e.preventDefault();
 
+    if (disabled) return;
+
     startLoading('add-edit-request');
     try {
       if (!user) {
@@ -354,7 +370,9 @@ export default function RequestAddEditForm({
         {isEditing ? 'Edit request' : 'Add request'}
       </h2>
       <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
-        <p className="text-brand-green-800">Requested by: {user?.name}</p>
+        <p className="text-brand-green-800">
+          Requested by: {requestedByName || user?.name}
+        </p>
         <RadioInput
           id="requestType"
           label="Leave type"
@@ -362,6 +380,7 @@ export default function RequestAddEditForm({
           value={requestType}
           options={leaveRequestTypeOptions}
           onChange={(e) => handleInputChange(e, setFormData)}
+          disabled={disabled}
         />
 
         <div className="flex flex-col md:flex-row gap-4">
@@ -374,6 +393,7 @@ export default function RequestAddEditForm({
               onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="DD-MM-YYYY"
               error={errors.from}
+              disabled={disabled}
             />
           </div>
           <div className="flex-1">
@@ -385,6 +405,7 @@ export default function RequestAddEditForm({
               onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="DD-MM-YYYY"
               error={errors.to}
+              disabled={disabled}
             />
           </div>
         </div>
@@ -403,25 +424,28 @@ export default function RequestAddEditForm({
           onChange={(e) => handleInputChange(e, setFormData, setError)}
           placeholder="You can share any additional information about your leave here."
           error={errors.description}
+          disabled={disabled}
         />
 
-        <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
-          <Button label={isEditing ? 'Save changes' : 'Submit request'} />
-          <Button
-            type="button"
-            variant="secondary"
-            label={isEditing ? 'Discard changes' : 'Cancel'}
-            onClick={() => navigate('/requests')}
-          />
-          {isEditing && (
+        {!disabled && (
+          <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
+            <Button label={isEditing ? 'Save changes' : 'Submit request'} />
             <Button
               type="button"
-              variant="danger"
-              label="Delete request"
-              onClick={onDelete}
+              variant="secondary"
+              label={isEditing ? 'Discard changes' : 'Cancel'}
+              onClick={() => navigate('/requests')}
             />
-          )}
-        </div>
+            {isEditing && (
+              <Button
+                type="button"
+                variant="danger"
+                label="Delete request"
+                onClick={onDelete}
+              />
+            )}
+          </div>
+        )}
       </form>
     </>
   );
