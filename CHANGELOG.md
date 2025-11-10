@@ -1,3 +1,10 @@
+## [1.3.29](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.28...v1.3.29) (2025-11-10)
+
+
+### Bug Fixes
+
+* add radio input ([5b753a3](https://github.com/ArpadGBondor/Leave-Management/commit/5b753a3ddcd62ce87b4476e72af3133062e15d74))
+
 ## [1.3.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.27...v1.3.28) (2025-11-10)
 
 
