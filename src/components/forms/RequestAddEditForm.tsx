@@ -13,20 +13,16 @@ import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import SelectInput from '../inputs/SelectInput';
 import DateInput from '../inputs/DateInput';
-import TextInput from '../inputs/TextInput';
 import { useRequestsContext } from '../../context/requests/useRequestsContext';
 import { useNavigate } from 'react-router-dom';
 import { Leave } from '../../interface/Leave.interface';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
-import isDateInRanges from '../../utils/isDateInRanges';
-import isWorkday from '../../utils/isWorkday';
-import { addDays } from 'date-fns';
 import TextAreaInput from '../inputs/TextAreaInput';
 import countWorkdays from '../../utils/countWorkdays';
+import RadioInput from '../inputs/RadioInput';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -352,13 +348,12 @@ export default function RequestAddEditForm({
       </h2>
       <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
         <p className="text-brand-green-800">Requested by: {user?.name}</p>
-        <SelectInput
+        <RadioInput
           id="requestType"
           label="Leave type"
           name="requestType"
           value={requestType}
           options={leaveRequestTypeOptions}
-          placeholder="-- Select Request Type --"
           onChange={(e) => handleInputChange(e, setFormData)}
         />
 
