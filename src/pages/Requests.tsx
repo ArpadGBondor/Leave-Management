@@ -14,6 +14,7 @@ import { db } from '../firebase.config';
 import { useUserContext } from '../context/user/useUserContext';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
+import { format } from 'date-fns';
 
 export default function Requests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -50,15 +51,16 @@ export default function Requests() {
 
   const columns: TableColumn<LeaveRequest>[] = [
     {
-      header: 'From',
-      accessor: 'from',
+      header: 'Requested Dates',
+      accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
       sortable: true,
-      width: 'min-w-48',
-    },
-    {
-      header: 'To',
-      accessor: 'to',
-      sortable: true,
+      render: (from: Date, row: LeaveRequest) =>
+        row.from === row.to
+          ? `${format(from, 'dd-MM-yyyy')}`
+          : `${format(from, 'dd-MM-yyyy')} - ${format(
+              new Date(row.to),
+              'dd-MM-yyyy'
+            )}`,
       width: 'min-w-48',
     },
     {
@@ -81,10 +83,10 @@ export default function Requests() {
     },
     {
       header: 'Last updated',
-      accessor: 'updated',
+      accessor: (row) => row.updated?.toDate(),
       sortable: true,
-      render: (updated: Timestamp) => updated.toDate().toLocaleDateString(),
-      width: 'min-w-48',
+      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
+      width: 'min-w-24',
     },
   ];
 

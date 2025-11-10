@@ -30,7 +30,6 @@ export default function DateInput({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     onChange(e);
   };
 
@@ -65,7 +64,7 @@ export default function DateInput({
           {/* Display value or placeholder */}
           <span className={`flex-1 text-left ${!value ? 'text-gray-500' : ''}`}>
             {value
-              ? format(new Date(value), 'yyyy-MM-dd')
+              ? format(new Date(value), 'dd-MM-yyyy')
               : placeholder || 'Select a date'}
           </span>
 

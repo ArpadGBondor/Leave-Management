@@ -165,7 +165,7 @@ export default function UpdateUser() {
         name="serviceStartDate"
         value={serviceStartDate}
         onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="YYYY-MM-DD"
+        placeholder="DD-MM-YYYY"
         error={errors.serviceStartDate}
       />
 
@@ -175,7 +175,7 @@ export default function UpdateUser() {
         name="serviceEndDate"
         value={serviceEndDate}
         onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="YYYY-MM-DD"
+        placeholder="DD-MM-YYYY"
         error={errors.serviceEndDate}
       />
 
