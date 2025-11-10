@@ -1,3 +1,10 @@
+## [1.3.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.26...v1.3.27) (2025-11-10)
+
+
+### Bug Fixes
+
+* display date format dd-mm-yyyy within the app consistently ([c75042d](https://github.com/ArpadGBondor/Leave-Management/commit/c75042d92eb5ac2a68a044f5853777eb5014772d))
+
 ## [1.3.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.25...v1.3.26) (2025-11-09)
 
 
