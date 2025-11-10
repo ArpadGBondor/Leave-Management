@@ -1,3 +1,10 @@
+## [1.3.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.31...v1.3.32) (2025-11-10)
+
+
+### Bug Fixes
+
+* show user's calendar under request details ([64f2f3d](https://github.com/ArpadGBondor/Leave-Management/commit/64f2f3d5c985972bc52793044f832ab07ba6e35a))
+
 ## [1.3.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.30...v1.3.31) (2025-11-10)
 
 
