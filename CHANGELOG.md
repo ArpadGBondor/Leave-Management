@@ -1,3 +1,10 @@
+## [1.3.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.30...v1.3.31) (2025-11-10)
+
+
+### Bug Fixes
+
+* add Manage Request Approve/Reject page ([7fead94](https://github.com/ArpadGBondor/Leave-Management/commit/7fead9426b76a2ae6c085a4dcf22dd9c0d07bbcd))
+
 ## [1.3.30](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.29...v1.3.30) (2025-11-10)
 
 
