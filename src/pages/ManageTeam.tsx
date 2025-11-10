@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import { maskEmail } from '../utils/maskEmail';
+import { format } from 'date-fns';
 
 export default function ManageTeam() {
   const [users, setUsers] = useState<User[]>([]);
@@ -66,15 +67,17 @@ export default function ManageTeam() {
     },
     {
       header: 'Created',
-      accessor: (row: User) => row.created?.toDate().toLocaleDateString(),
+      accessor: (row) => row.created?.toDate(),
       sortable: true,
-      width: 'w-30',
+      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
+      width: 'min-w-24',
     },
     {
       header: 'Updated',
-      accessor: (row: User) => row.updated?.toDate().toLocaleDateString(),
+      accessor: (row) => row.updated?.toDate(),
       sortable: true,
-      width: 'w-30',
+      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
+      width: 'min-w-24',
     },
   ];
 
