@@ -1,3 +1,10 @@
+## [1.3.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.27...v1.3.28) (2025-11-10)
+
+
+### Bug Fixes
+
+* use dd-mnm-yyyy format on manage team table ([f35964c](https://github.com/ArpadGBondor/Leave-Management/commit/f35964c6b0625a54971e9dc2c965338f683b82d9))
+
 ## [1.3.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.26...v1.3.27) (2025-11-10)
 
 
