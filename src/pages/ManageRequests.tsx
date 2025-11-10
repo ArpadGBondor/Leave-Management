@@ -6,6 +6,7 @@ import { collection, onSnapshot, Timestamp } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
 import { db } from '../firebase.config';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 export default function ManageRequests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -41,15 +42,16 @@ export default function ManageRequests() {
       width: 'min-w-48',
     },
     {
-      header: 'From',
-      accessor: 'from',
+      header: 'Requested Dates',
+      accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
       sortable: true,
-      width: 'min-w-48',
-    },
-    {
-      header: 'To',
-      accessor: 'to',
-      sortable: true,
+      render: (from: Date, row: LeaveRequest) =>
+        row.from === row.to
+          ? `${format(from, 'dd-MM-yyyy')}`
+          : `${format(from, 'dd-MM-yyyy')} - ${format(
+              new Date(row.to),
+              'dd-MM-yyyy'
+            )}`,
       width: 'min-w-48',
     },
     {
@@ -66,17 +68,17 @@ export default function ManageRequests() {
     },
     {
       header: 'Created',
-      accessor: 'created',
+      accessor: (row) => row.created?.toDate(),
       sortable: true,
-      render: (created: Timestamp) => created.toDate().toLocaleDateString(),
-      width: 'min-w-48',
+      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
+      width: 'min-w-24',
     },
     {
-      header: 'Updated',
-      accessor: 'updated',
+      header: 'Last updated',
+      accessor: (row) => row.updated?.toDate(),
       sortable: true,
-      render: (updated: Timestamp) => updated.toDate().toLocaleDateString(),
-      width: 'min-w-48',
+      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
+      width: 'min-w-24',
     },
   ];
 

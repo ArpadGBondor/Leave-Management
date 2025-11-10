@@ -124,7 +124,7 @@ export default function TeamMemberUserDetailsUpdate({
                 name="serviceStartDate"
                 value={serviceStartDate}
                 onChange={(e) => handleInputChange(e, setFormData, setError)}
-                placeholder="YYYY-MM-DD"
+                placeholder="DD-MM-YYYY"
                 error={errors.serviceStartDate}
               />
             </div>
@@ -135,7 +135,7 @@ export default function TeamMemberUserDetailsUpdate({
                 name="serviceEndDate"
                 value={serviceEndDate}
                 onChange={(e) => handleInputChange(e, setFormData, setError)}
-                placeholder="YYYY-MM-DD"
+                placeholder="DD-MM-YYYY"
                 error={errors.serviceEndDate}
               />
             </div>

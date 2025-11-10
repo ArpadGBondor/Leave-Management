@@ -240,7 +240,7 @@ export default function RequestAddEditForm({
     if (!to.trim()) {
       setError('to', 'Please Please enter end date.');
       valid = false;
-    } else if (new Date(from) >= new Date(to)) {
+    } else if (new Date(from) > new Date(to)) {
       setError('to', 'Leave end date should be later than start date.');
       valid = false;
     } else {
@@ -370,7 +370,7 @@ export default function RequestAddEditForm({
               name="from"
               value={from}
               onChange={(e) => handleInputChange(e, setFormData, setError)}
-              placeholder="YYYY-MM-DD"
+              placeholder="DD-MM-YYYY"
               error={errors.from}
             />
           </div>
@@ -381,7 +381,7 @@ export default function RequestAddEditForm({
               name="to"
               value={to}
               onChange={(e) => handleInputChange(e, setFormData, setError)}
-              placeholder="YYYY-MM-DD"
+              placeholder="DD-MM-YYYY"
               error={errors.to}
             />
           </div>
