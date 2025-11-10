@@ -4,6 +4,7 @@ import { firebase_collections } from '../../../lib/firebase_collections';
 import { db } from '../../firebase.config';
 import { useUserContext } from '../../context/user/useUserContext';
 import {
+  LeaveRequest,
   LeaveRequestType,
   leaveRequestTypeOptions,
 } from '../../interface/LeaveRequest.interface';
@@ -27,11 +28,13 @@ import RadioInput from '../inputs/RadioInput';
 interface RequestAddEditFormProps {
   requestId?: string;
   disabled?: boolean;
+  setRequest?: React.Dispatch<React.SetStateAction<LeaveRequest | null>>;
 }
 
 export default function RequestAddEditForm({
   requestId,
   disabled,
+  setRequest,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
   const { user } = useUserContext();
@@ -95,11 +98,16 @@ export default function RequestAddEditForm({
       .then((snap) => {
         if (!snap.exists()) return setFormError("Can't find request.");
 
-        const doc = snap.data();
+        const doc = snap.data() as LeaveRequest;
         if (!disabled && doc.requestedById !== user.id)
           return setFormError(
             'This request does not belong to the currently logged in user.'
           );
+
+        // set request in parent component's state
+        if (setRequest) {
+          setRequest(doc);
+        }
 
         return setFormData({
           id: requestId,
@@ -367,7 +375,11 @@ export default function RequestAddEditForm({
   return (
     <>
       <h2 className="text-4xl font-bold text-brand-purple-700">
-        {isEditing ? 'Edit request' : 'Add request'}
+        {disabled
+          ? 'Request details'
+          : isEditing
+          ? 'Edit request'
+          : 'Add request'}
       </h2>
       <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
         <p className="text-brand-green-800">
