@@ -49,7 +49,9 @@ export default function RadioInput({
               className={` px-2 flex items-center gap-2 rounded-full cursor-pointer transition-colors
                 ${
                   disabled || optDisabled
-                    ? 'text-gray-500 cursor-not-allowed pointer-events-none'
+                    ? `cursor-not-allowed pointer-events-none ${
+                        isSelected ? 'text-brand-purple-800' : 'text-gray-500'
+                      }`
                     : error
                     ? 'text-red-800 hover:underline'
                     : isSelected
