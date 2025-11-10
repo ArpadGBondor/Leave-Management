@@ -119,7 +119,7 @@ export default function RequestAddEditForm({
         numberOfWorkdays: 0,
       }));
     }
-  }, [formData.from, formData.to]);
+  }, [formData.from, formData.to, formData.requestType]);
 
   const isEditing = Boolean(requestId !== 'new');
 
@@ -143,20 +143,27 @@ export default function RequestAddEditForm({
       _bankHolidays = bankHolidays;
     }
 
-    const startDate = new Date(from);
-    const endDate = new Date(to);
+    if (requestType === leaveRequestTypeOptions[0]) {
+      const startDate = new Date(from);
+      const endDate = new Date(to);
 
-    let numberOfWorkdays = countWorkdays(
-      startDate,
-      endDate,
-      _bankHolidays,
-      _workdaysOfTheWeek
-    );
+      let numberOfWorkdays = countWorkdays(
+        startDate,
+        endDate,
+        _bankHolidays,
+        _workdaysOfTheWeek
+      );
 
-    setFormData((prevState) => ({
-      ...prevState,
-      numberOfWorkdays,
-    }));
+      setFormData((prevState) => ({
+        ...prevState,
+        numberOfWorkdays,
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        numberOfWorkdays: 0,
+      }));
+    }
   };
 
   const loadYear = async (year: string) => {
