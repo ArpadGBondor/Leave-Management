@@ -3,7 +3,7 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useUserContext } from '../../context/user/useUserContext';
 import Button from '../buttons/Button';
 
-export default function DeleteUser() {
+export default function UserDelete() {
   const { user, deleteUser } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
 

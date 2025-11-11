@@ -13,7 +13,7 @@ import {
 } from '../../utils/onFormDataChange';
 import DateInput from '../inputs/DateInput';
 
-export default function UpdateUser() {
+export default function UserUpdate() {
   const defaultState: {
     name: string;
     email: string;
