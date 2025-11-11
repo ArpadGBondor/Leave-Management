@@ -1,3 +1,10 @@
+## [1.3.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.32...v1.3.33) (2025-11-11)
+
+
+### Bug Fixes
+
+* rename components ([9fb0309](https://github.com/ArpadGBondor/Leave-Management/commit/9fb03093c7d5a454a2ee0eab4a55286460887fdd))
+
 ## [1.3.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.31...v1.3.32) (2025-11-10)
 
 
