@@ -12,7 +12,7 @@ import {
 } from '../../utils/onFormDataChange';
 import { emailValidator, passwordValidator } from '../../utils/fieldValidators';
 
-export default function RegisterForm() {
+export default function UserRegister() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',

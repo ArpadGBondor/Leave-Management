@@ -1,27 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TextInput from '../inputs/TextInput';
 import Button from '../buttons/Button';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { emailValidator, passwordValidator } from '../../utils/fieldValidators';
+import { emailValidator } from '../../utils/fieldValidators';
 
-export default function LoginForm() {
+export default function PasswordReset() {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
   });
   const defaultErrors = {
     email: '',
-    password: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { loggedIn, loading: userLoading, login } = useUserContext();
+  const { loggedIn, loading: userLoading, forgotPassword } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
-  const { email, password } = formData;
+  const { email } = formData;
 
   const navigate = useNavigate();
 
@@ -37,7 +35,7 @@ export default function LoginForm() {
       [field]: message,
     }));
 
-  const validateLogin = () => {
+  const validateEmail = () => {
     let valid = true;
 
     // Email validation
@@ -45,34 +43,31 @@ export default function LoginForm() {
     valid &&= emailValid.valid;
     setError('email', emailValid.message);
 
-    // Check password
-    let passwordValid = passwordValidator(password);
-    valid &&= passwordValid.valid;
-    setError('password', passwordValid.message);
-
     return valid;
   };
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    startLoading('login');
+    startLoading('send-password-reset-email');
     try {
-      if (!validateLogin()) {
+      if (!validateEmail()) {
         toast.error('Please fill in all fields');
         return;
       }
 
-      await login(email, password);
+      await forgotPassword(email);
+      toast.info('Password reset email sent');
+      navigate('/login');
     } catch (error) {
-      toast.error('Bad User Credentials');
+      toast.error("Couldn't send email");
     } finally {
-      stopLoading('login');
+      stopLoading('send-password-reset-email');
     }
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4 mb-8">
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <TextInput
         id="email"
         label="Email address"
@@ -85,28 +80,7 @@ export default function LoginForm() {
         error={errors.email}
       />
 
-      <TextInput
-        id="password"
-        label="Password"
-        name="password"
-        type="password"
-        value={password}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Enter your password"
-        autoComplete="password"
-        error={errors.password}
-      />
-
-      <Button label="Sign In" />
-
-      <div className="text-center">
-        <Link
-          to="/forgot-password"
-          className="text-brand-purple-600 hover:text-brand-purple-800 underline cursor-pointer"
-        >
-          Forgot your password?
-        </Link>
-      </div>
+      <Button label="Send password reset email" />
     </form>
   );
 }

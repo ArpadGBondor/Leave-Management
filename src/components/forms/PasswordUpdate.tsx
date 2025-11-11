@@ -7,21 +7,24 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import { passwordValidator } from '../../utils/fieldValidators';
 
-export default function AddPassword() {
-  const [formData, setFormData] = useState({
+export default function PasswordUpdate() {
+  const defaultFormData = {
+    currentPassword: '',
     password: '',
     confirmPassword: '',
-  });
+  };
+  const [formData, setFormData] = useState({ ...defaultFormData });
   const defaultErrors = {
+    currentPassword: '',
     password: '',
     confirmPassword: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { addPassword } = useUserContext();
+  const { updatePassword } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
 
-  const { password, confirmPassword } = formData;
+  const { currentPassword, password, confirmPassword } = formData;
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
@@ -29,15 +32,21 @@ export default function AddPassword() {
       [field]: message,
     }));
 
-  const validatePassword = () => {
+  const validateUpdatePassword = () => {
     let valid = true;
 
-    // Check password
+    // Check currentPassword
+    let currentPasswordValid = passwordValidator(currentPassword);
+    valid &&= currentPasswordValid.valid;
+    setError('currentPassword', currentPasswordValid.message);
+
+    // Check new password
     let passwordValid = passwordValidator(password);
     valid &&= passwordValid.valid;
     setError('password', passwordValid.message);
 
     if (password !== confirmPassword) {
+      // Check password confirmation
       setError('confirmPassword', 'Passwords do not match');
       valid = false;
     } else {
@@ -47,31 +56,45 @@ export default function AddPassword() {
     return valid;
   };
 
-  const onSubmitAddPassword = async (e: any) => {
+  const onSubmitUpdatePassword = async (e: any) => {
     e.preventDefault();
 
-    startLoading('add-password');
+    startLoading('update-password');
     try {
-      if (!validatePassword()) {
+      if (!validateUpdatePassword()) {
         toast.error('Please fill in all fields');
         return;
       }
 
-      await addPassword(password);
-
-      toast.info('Password added');
+      await updatePassword(currentPassword, password);
+      toast.info('Password updated');
+      setFormData({ ...defaultFormData });
     } catch (error: any) {
       toast.error(error.message || 'Could not update password');
     } finally {
-      stopLoading('add-password');
+      stopLoading('update-password');
     }
   };
 
   return (
-    <form onSubmit={onSubmitAddPassword} className="flex flex-col gap-4 w-full">
+    <form
+      onSubmit={onSubmitUpdatePassword}
+      className="flex flex-col gap-4 w-full"
+    >
       <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
-        Add password
+        Update password
       </h2>
+      <TextInput
+        id="currentPassword"
+        label="Current password"
+        name="currentPassword"
+        type="password"
+        value={currentPassword}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
+        placeholder="Enter your current password"
+        autoComplete="password"
+        error={errors.currentPassword}
+      />
 
       <TextInput
         id="password"
@@ -97,7 +120,7 @@ export default function AddPassword() {
         error={errors.confirmPassword}
       />
 
-      <Button label="Add password" />
+      <Button label="Update password" />
     </form>
   );
 }

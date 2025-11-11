@@ -1,4 +1,4 @@
-import ForgotPasswordForm from '../components/forms/ForgotPasswordForm';
+import PasswordReset from '../components/forms/PasswordReset';
 
 export default function ForgotPassword() {
   return (
@@ -7,7 +7,7 @@ export default function ForgotPassword() {
         <h2 className="text-4xl font-bold text-brand-purple-700">
           Forgot Password
         </h2>
-        <ForgotPasswordForm />
+        <PasswordReset />
       </div>
     </div>
   );
