@@ -100,7 +100,10 @@ export default function Requests() {
         title="Your leave requests"
         onRowClick={(request) => navigate(`/requests/${request.id}`)}
       />
-      <Button label="New request" onClick={() => navigate(`/requests/new`)} />
+      <Button
+        label="New leave request"
+        onClick={() => navigate(`/requests/new`)}
+      />
     </div>
   );
 }

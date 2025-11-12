@@ -378,13 +378,18 @@ export default function RequestAddEditForm({
         {disabled
           ? 'Request details'
           : isEditing
-          ? 'Edit request'
-          : 'Add request'}
+          ? 'Change your request'
+          : 'New leave request'}
       </h2>
       <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
-        <p className="text-brand-green-800">
-          Requested by: {requestedByName || user?.name}
-        </p>
+        {disabled && (
+          <p className="text-brand-green-800">
+            Requested by:{' '}
+            <span className="font-medium ">
+              {requestedByName || user?.name}
+            </span>
+          </p>
+        )}
         <RadioInput
           id="requestType"
           label="Leave type"
@@ -441,7 +446,7 @@ export default function RequestAddEditForm({
 
         {!disabled && (
           <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
-            <Button label={isEditing ? 'Save changes' : 'Submit request'} />
+            <Button label={isEditing ? 'Submit changes' : 'Submit request'} />
             <Button
               type="button"
               variant="secondary"

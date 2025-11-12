@@ -15,6 +15,7 @@ export interface CalendarProps {
   approved: Leave[];
   serviceStartDate?: Date;
   serviceEndDate?: Date;
+  className?: string;
 }
 export default function Calendar({
   currentMonth,
@@ -25,6 +26,7 @@ export default function Calendar({
   approved,
   serviceStartDate,
   serviceEndDate,
+  className,
 }: CalendarProps) {
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -32,7 +34,9 @@ export default function Calendar({
   const prevYear = () => setCurrentMonth(subYears(currentMonth, 1));
 
   return (
-    <div className="bg-brand-green-100 border border-brand-green-600 rounded-xl p-4 flex flex-col justify-start items-stretch w-full max-w-2xl mx-auto overflow-hidden">
+    <div
+      className={`bg-brand-green-100 border border-brand-green-600 rounded-xl p-4 flex flex-col justify-start items-stretch w-full max-w-2xl mx-auto overflow-hidden ${className}`}
+    >
       <CalendarHeader
         currentMonth={currentMonth}
         nextMonth={nextMonth}
