@@ -33,16 +33,19 @@ export default function ManageRequestApproveReject() {
   }, [request?.requestedById]);
 
   return (
-    <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
+    <div className="p-4 md:p-8 md:min-w-xl rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
       <RequestAddEditForm
         requestId={requestId}
         disabled
         setRequest={setRequest}
       />
-      <h3 className="text-2xl font-bold text-brand-green-700">
-        User's calendar
-      </h3>
-      {user && <UserCalendar user={user} initialDate={request?.from} />}
+      {user && (
+        <UserCalendar
+          className="mt-8"
+          user={user}
+          initialDate={request?.from}
+        />
+      )}
     </div>
   );
 }

@@ -21,9 +21,14 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 interface UserCalendarProps {
   user: User;
   initialDate?: string;
+  className?: string;
 }
 
-export default function UserCalendar({ user, initialDate }: UserCalendarProps) {
+export default function UserCalendar({
+  user,
+  initialDate,
+  className,
+}: UserCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(
     initialDate ? new Date(initialDate) : new Date()
   );
@@ -142,6 +147,7 @@ export default function UserCalendar({ user, initialDate }: UserCalendarProps) {
       serviceEndDate={
         user?.serviceEndDate ? new Date(user?.serviceEndDate) : undefined
       }
+      className={className}
     />
   );
 }
