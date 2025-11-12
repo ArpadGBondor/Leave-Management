@@ -61,7 +61,7 @@ export default function ManageRequests() {
       width: 'min-w-32',
     },
     {
-      header: 'Description',
+      header: 'Additional information',
       accessor: 'description',
       sortable: true,
       width: 'max-w-48 md:max-w-64',

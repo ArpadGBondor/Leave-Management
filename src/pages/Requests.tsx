@@ -76,7 +76,7 @@ export default function Requests() {
       width: 'min-w-32',
     },
     {
-      header: 'Description',
+      header: 'Additional information',
       accessor: 'description',
       sortable: true,
       width: 'min-w-64',
