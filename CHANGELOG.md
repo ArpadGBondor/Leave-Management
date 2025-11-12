@@ -1,3 +1,10 @@
+## [1.3.36](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.35...v1.3.36) (2025-11-12)
+
+
+### Bug Fixes
+
+* rename column ([c9acd5c](https://github.com/ArpadGBondor/Leave-Management/commit/c9acd5c7aa866d32cdd37c5c21b612315264a8c8))
+
 ## [1.3.35](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.34...v1.3.35) (2025-11-12)
 
 
