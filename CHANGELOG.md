@@ -1,3 +1,10 @@
+## [1.3.35](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.34...v1.3.35) (2025-11-12)
+
+
+### Bug Fixes
+
+* clamp descriptions ([ace0114](https://github.com/ArpadGBondor/Leave-Management/commit/ace0114eb2ab4e2d658a2ba0141a53840d916afd))
+
 ## [1.3.34](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.33...v1.3.34) (2025-11-12)
 
 
