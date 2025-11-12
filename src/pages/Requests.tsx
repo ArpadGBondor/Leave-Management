@@ -82,11 +82,11 @@ export default function Requests() {
       width: 'min-w-64',
     },
     {
-      header: 'Last updated',
+      header: 'Updated',
       accessor: (row) => row.updated?.toDate(),
       sortable: true,
       render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-24',
+      width: 'min-w-28',
     },
   ];
 

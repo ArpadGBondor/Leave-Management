@@ -64,21 +64,24 @@ export default function ManageRequests() {
       header: 'Description',
       accessor: 'description',
       sortable: true,
-      width: 'min-w-64',
+      width: 'max-w-48 md:max-w-64',
+      render: (description: string) => (
+        <div className="line-clamp-1">{description}</div>
+      ),
     },
     {
       header: 'Created',
       accessor: (row) => row.created?.toDate(),
       sortable: true,
       render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
-      width: 'min-w-24',
+      width: 'min-w-28',
     },
     {
-      header: 'Last updated',
+      header: 'Updated',
       accessor: (row) => row.updated?.toDate(),
       sortable: true,
       render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-24',
+      width: 'min-w-28',
     },
   ];
 
