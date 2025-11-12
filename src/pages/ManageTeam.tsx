@@ -70,14 +70,14 @@ export default function ManageTeam() {
       accessor: (row) => row.created?.toDate(),
       sortable: true,
       render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
-      width: 'min-w-24',
+      width: 'min-w-28',
     },
     {
       header: 'Updated',
       accessor: (row) => row.updated?.toDate(),
       sortable: true,
       render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-24',
+      width: 'min-w-28',
     },
   ];
 
