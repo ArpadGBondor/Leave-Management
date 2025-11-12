@@ -1,3 +1,10 @@
+## [1.3.34](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.33...v1.3.34) (2025-11-12)
+
+
+### Bug Fixes
+
+* change layout and copies ([ca5ffbe](https://github.com/ArpadGBondor/Leave-Management/commit/ca5ffbe61d3abe5db15b991db1bb5a88c746544c))
+
 ## [1.3.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.32...v1.3.33) (2025-11-11)
 
 
