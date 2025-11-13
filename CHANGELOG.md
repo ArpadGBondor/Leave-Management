@@ -1,3 +1,12 @@
+## [1.3.38](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.37...v1.3.38) (2025-11-13)
+
+
+### Bug Fixes
+
+* allow managers to view every employee's calendar ([df5677a](https://github.com/ArpadGBondor/Leave-Management/commit/df5677a9b18ed55df8961fff4692d08a2344dcfd))
+* delete requests when user gets deleted ([1a0737a](https://github.com/ArpadGBondor/Leave-Management/commit/1a0737aa90439a6dcf7c65d4fd02760aa0d7984b))
+* typo ([fb22f76](https://github.com/ArpadGBondor/Leave-Management/commit/fb22f76fb506b17be7a164b86c0a917ff79af899))
+
 ## [1.3.37](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.36...v1.3.37) (2025-11-13)
 
 
