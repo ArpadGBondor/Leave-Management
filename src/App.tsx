@@ -9,6 +9,8 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
 import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
+import Calendars from './pages/Calendars';
+import CalendarOfUser from './pages/CalendarOfUser';
 
 const Home = lazy(() => import('./pages/Home'));
 const Requests = lazy(() => import('./pages/Requests'));
@@ -66,6 +68,8 @@ export default function App() {
                   path="/manage-team/:userId"
                   element={<ManageTeamMember />}
                 />
+                <Route path="/calendars" element={<Calendars />} />
+                <Route path="/calendars/:userId" element={<CalendarOfUser />} />
                 <Route path="/manage-requests" element={<ManageRequests />} />
                 <Route
                   path="/manage-requests/:requestId"

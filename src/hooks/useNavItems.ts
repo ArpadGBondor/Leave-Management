@@ -26,6 +26,13 @@ const useNavItems = () => {
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
+      name: `Calendars (${userCount})`,
+      link: '/calendars',
+      icon: 'FaCalendarAlt',
+    });
+  }
+  if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
       name: `Manage requests  (${managableRequestCount})`,
       link: '/manage-requests',
       icon: 'FaClipboardCheck',

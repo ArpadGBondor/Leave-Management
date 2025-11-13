@@ -3,6 +3,7 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import { createUpdateOrDeleteDoc } from '../../lib/handlers/createUpdateOrDeleteDoc';
 import { errorResponse, response } from '../../lib/response';
 import { auth, db } from '../../lib/firebase';
+import deleteResultsInBatches from '../../lib/deleteResultsInBatches';
 
 const handler: Handler = createUpdateOrDeleteDoc({
   path: [
@@ -20,7 +21,11 @@ const handler: Handler = createUpdateOrDeleteDoc({
       // Delete document and subcollections too
       await db.recursiveDelete(ref);
       // Delete requests
-
+      const snap = await db
+        .collection(firebase_collections.REQUESTS)
+        .where('requestedById', '==', userId)
+        .get();
+      await deleteResultsInBatches(snap);
       // Delete booked holidays
 
       return response(200, {
