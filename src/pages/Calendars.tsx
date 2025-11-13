@@ -1,4 +1,4 @@
-import UserPicker from '../components/userPicker/userPicker';
+import UserPicker from '../components/userPicker/UserPicker';
 import { useNavigate } from 'react-router-dom';
 
 export default function Calendars() {
