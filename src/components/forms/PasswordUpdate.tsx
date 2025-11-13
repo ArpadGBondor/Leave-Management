@@ -21,7 +21,7 @@ export default function PasswordUpdate() {
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { updatePassword } = useUserContext();
+  const { updatePassword, user } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
 
   const { currentPassword, password, confirmPassword } = formData;
@@ -77,50 +77,64 @@ export default function PasswordUpdate() {
   };
 
   return (
-    <form
-      onSubmit={onSubmitUpdatePassword}
-      className="flex flex-col gap-4 w-full"
-    >
-      <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
-        Update password
-      </h2>
-      <TextInput
-        id="currentPassword"
-        label="Current password"
-        name="currentPassword"
-        type="password"
-        value={currentPassword}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Enter your current password"
-        autoComplete="password"
-        error={errors.currentPassword}
-      />
+    <>
+      {user && (
+        <form
+          onSubmit={onSubmitUpdatePassword}
+          className="flex flex-col gap-4 w-full"
+        >
+          {/* Hidden field have to be at the beginnins of the form to make the warning go away */}
+          <TextInput
+            id="username" // email ID already exist on UserUpdate form use username instead
+            label="Email address"
+            name="username"
+            value={user.email}
+            onChange={() => {}}
+            autoComplete="username"
+            hidden
+          />
+          <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+            Update password
+          </h2>
+          <TextInput
+            id="currentPassword"
+            label="Current password"
+            name="currentPassword"
+            type="password"
+            value={currentPassword}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="Enter your current password"
+            autoComplete="password"
+            error={errors.currentPassword}
+          />
 
-      <TextInput
-        id="password"
-        label="New password"
-        name="password"
-        type="password"
-        value={password}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Enter your new password"
-        autoComplete="new-password"
-        error={errors.password}
-      />
+          <TextInput
+            id="password"
+            label="New password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="Enter your new password"
+            autoComplete="new-password"
+            error={errors.password}
+          />
 
-      <TextInput
-        id="confirmPassword"
-        label="Confirm new password"
-        name="confirmPassword"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Confirm your new password"
-        autoComplete="new-password"
-        error={errors.confirmPassword}
-      />
+          <TextInput
+            id="confirmPassword"
+            label="Confirm new password"
+            name="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="Confirm your new password"
+            autoComplete="new-password"
+            error={errors.confirmPassword}
+          />
 
-      <Button label="Update password" />
-    </form>
+          <Button label="Update password" />
+        </form>
+      )}
+    </>
   );
 }
