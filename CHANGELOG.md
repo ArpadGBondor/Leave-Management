@@ -1,3 +1,10 @@
+## [1.3.37](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.36...v1.3.37) (2025-11-13)
+
+
+### Bug Fixes
+
+* add hidden username input to make Chrome warning go away ([8e1255e](https://github.com/ArpadGBondor/Leave-Management/commit/8e1255e47153954fc5d97b18060f876ae3bb17bf))
+
 ## [1.3.36](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.35...v1.3.36) (2025-11-12)
 
 
