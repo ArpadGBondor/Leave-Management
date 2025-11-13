@@ -10,6 +10,7 @@ interface TextInputProps {
   error?: string;
   autoComplete?: string;
   disabled?: boolean;
+  hidden?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -23,10 +24,11 @@ export default function TextInput({
   error,
   autoComplete,
   disabled,
+  hidden,
   onChange,
 }: TextInputProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={`flex flex-col gap-1 ${hidden ? 'hidden' : ''}`}>
       {/* Label */}
       <label htmlFor={id} className="block text-brand-green-800 text-medium">
         {label}
@@ -42,6 +44,7 @@ export default function TextInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         disabled={disabled}
+        hidden={hidden}
         className={`block w-full py-2 px-4 rounded-full border focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
           disabled
             ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed pointer-events-none'

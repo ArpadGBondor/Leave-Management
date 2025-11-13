@@ -129,7 +129,7 @@ export default function UserRegister() {
         value={email}
         onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your email address"
-        autoComplete="email"
+        autoComplete="username"
         error={errors.email}
       />
       <div className="w-full flex flex-col lg:flex-row justify-stretch items-stretch lg:items-start gap-4">

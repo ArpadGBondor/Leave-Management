@@ -81,7 +81,7 @@ export default function UserLogin() {
         value={email}
         onChange={(e) => handleInputChange(e, setFormData, setError)}
         placeholder="Enter your email address"
-        autoComplete="email"
+        autoComplete="username"
         error={errors.email}
       />
 

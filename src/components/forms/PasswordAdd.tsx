@@ -18,7 +18,7 @@ export default function PasswordAdd() {
   };
   const [errors, setErrors] = useState(defaultErrors);
 
-  const { addPassword } = useUserContext();
+  const { addPassword, user } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
 
   const { password, confirmPassword } = formData;
@@ -68,36 +68,54 @@ export default function PasswordAdd() {
   };
 
   return (
-    <form onSubmit={onSubmitAddPassword} className="flex flex-col gap-4 w-full">
-      <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
-        Add password
-      </h2>
+    <>
+      {user && (
+        <form
+          onSubmit={onSubmitAddPassword}
+          className="flex flex-col gap-4 w-full"
+        >
+          {/* Hidden field have to be at the beginnins of the form to make the warning go away */}
+          <TextInput
+            id="username"
+            label="Email address"
+            name="username"
+            value={user.email}
+            onChange={() => {}}
+            autoComplete="username"
+            hidden
+          />
 
-      <TextInput
-        id="password"
-        label="New password"
-        name="password"
-        type="password"
-        value={password}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Enter your new password"
-        autoComplete="new-password"
-        error={errors.password}
-      />
+          <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+            Add password
+          </h2>
 
-      <TextInput
-        id="confirmPassword"
-        label="Confirm new password"
-        name="confirmPassword"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => handleInputChange(e, setFormData, setError)}
-        placeholder="Confirm your new password"
-        autoComplete="new-password"
-        error={errors.confirmPassword}
-      />
+          <TextInput
+            id="password"
+            label="New password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="Enter your new password"
+            autoComplete="new-password"
+            error={errors.password}
+          />
 
-      <Button label="Add password" />
-    </form>
+          <TextInput
+            id="confirmPassword"
+            label="Confirm new password"
+            name="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="Confirm your new password"
+            autoComplete="new-password"
+            error={errors.confirmPassword}
+          />
+
+          <Button label="Add password" />
+        </form>
+      )}
+    </>
   );
 }
