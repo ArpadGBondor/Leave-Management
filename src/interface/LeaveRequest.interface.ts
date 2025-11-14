@@ -13,6 +13,7 @@ export interface LeaveRequest {
   description: string;
   created?: Timestamp;
   updated?: Timestamp;
+  year: string; // store year separately for indexing
 }
 
 export const leaveRequestTypeOptions = ['Annual Leave', 'Other Leave'] as const;

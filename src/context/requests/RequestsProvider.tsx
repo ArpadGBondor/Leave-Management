@@ -56,6 +56,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         numberOfWorkdays,
         requestType,
         description,
+        year: from.slice(0, 4),
       };
       const createRequestResponse = await fetch('/api/requests', {
         method: 'POST',
@@ -86,7 +87,10 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...data }),
+        body: JSON.stringify({
+          ...data,
+          ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+        }),
       });
       if (!createRequestResponse.ok) throw new Error('Failed to set role');
       const { doc } = await createRequestResponse.json();
