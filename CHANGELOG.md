@@ -1,3 +1,10 @@
+## [1.3.39](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.38...v1.3.39) (2025-11-14)
+
+
+### Bug Fixes
+
+* update request form state management ([7d02941](https://github.com/ArpadGBondor/Leave-Management/commit/7d0294195bfa897ad4c9cebf1f911c225b12066a))
+
 ## [1.3.38](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.37...v1.3.38) (2025-11-13)
 
 
