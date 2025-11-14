@@ -88,6 +88,18 @@ export default function RequestAddEditForm({
   const { createRequest, updateRequest, deleteRequest } = useRequestsContext();
   const navigate = useNavigate();
 
+  const {
+    id,
+    from,
+    to,
+    numberOfWorkdays,
+    requestType,
+    description,
+    requestedByName,
+  } = formData;
+
+  const isEditing = Boolean(requestId !== 'new');
+
   useEffect(() => {
     if (!requestId) return setFormError("Can't find request.");
     if (!user?.id) return setFormError("Can't find logged in user.");
@@ -95,7 +107,7 @@ export default function RequestAddEditForm({
     startLoading('fetch-request-details');
     const ref = doc(db, firebase_collections.REQUESTS, requestId);
     getDoc(ref)
-      .then((snap) => {
+      .then(async (snap) => {
         if (!snap.exists()) return setFormError("Can't find request.");
 
         const doc = snap.data() as LeaveRequest;
@@ -107,6 +119,15 @@ export default function RequestAddEditForm({
         // set request in parent component's state
         if (setRequest) {
           setRequest(doc);
+        }
+
+        // no need to load year when just viewing
+        if (isEditing) {
+          const year = doc.from.slice(0, 4);
+          // start loading year before ending loading state to prevend loader flickering
+          startLoading('load-year');
+          await loadYear(year);
+          stopLoading('load-year');
         }
 
         return setFormData({
@@ -122,58 +143,37 @@ export default function RequestAddEditForm({
       .finally(() => {
         stopLoading('fetch-request-details');
       });
-  }, [requestId]);
+  }, [requestId, isEditing]);
 
   useEffect(() => {
-    if (validateRequest()) {
-      recalculateNumberOfWorkdays();
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        numberOfWorkdays: 0,
-      }));
+    // no need to load year when just viewing
+    if (!isEditing) return;
+    if (from) {
+      const year = from.slice(0, 4);
+      if (year !== loadedYear) {
+        startLoading('load-year');
+        loadYear(year).finally(() => stopLoading('load-year'));
+      }
     }
-  }, [formData.from, formData.to, formData.requestType]);
+  }, [from, isEditing]);
 
-  const isEditing = Boolean(requestId !== 'new');
-
-  const {
-    id,
-    from,
-    to,
-    numberOfWorkdays,
-    requestType,
-    description,
-    requestedByName,
-  } = formData;
-
-  const setError = (field: keyof typeof errors, message: string) =>
-    setErrors((prevState) => ({
-      ...prevState,
-      [field]: message,
-    }));
-
-  const recalculateNumberOfWorkdays = async () => {
-    const year = formData.from.slice(0, 4);
-    // If we did not reload year, take values from state
-    let _workdaysOfTheWeek = workdaysOfTheWeek;
-    let _bankHolidays = bankHolidays;
-    if (year !== loadedYear) {
-      // if we reload year, return freshly loaded values from function
-      const { workdaysOfTheWeek, bankHolidays } = await loadYear(year);
-      _workdaysOfTheWeek = workdaysOfTheWeek;
-      _bankHolidays = bankHolidays;
-    }
-
-    if (requestType === leaveRequestTypeOptions[0]) {
+  useEffect(() => {
+    // No need to update when just viewing
+    if (!isEditing) return;
+    if (
+      requestType === leaveRequestTypeOptions[0] &&
+      from &&
+      to &&
+      validateRequest()
+    ) {
       const startDate = new Date(from);
       const endDate = new Date(to);
 
       let numberOfWorkdays = countWorkdays(
         startDate,
         endDate,
-        _bankHolidays,
-        _workdaysOfTheWeek
+        bankHolidays,
+        workdaysOfTheWeek
       );
 
       setFormData((prevState) => ({
@@ -186,7 +186,7 @@ export default function RequestAddEditForm({
         numberOfWorkdays: 0,
       }));
     }
-  };
+  }, [isEditing, from, to, requestType, bankHolidays, workdaysOfTheWeek]);
 
   const loadYear = async (year: string) => {
     // fetch configuration
@@ -233,6 +233,12 @@ export default function RequestAddEditForm({
 
     return { workdaysOfTheWeek, bankHolidays };
   };
+
+  const setError = (field: keyof typeof errors, message: string) =>
+    setErrors((prevState) => ({
+      ...prevState,
+      [field]: message,
+    }));
 
   const validateRequest = () => {
     let valid = true;
