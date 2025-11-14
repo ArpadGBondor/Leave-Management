@@ -3,8 +3,11 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  isAfter,
+  isBefore,
   isSameDay,
   isSameMonth,
+  isSameYear,
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
@@ -16,7 +19,9 @@ import isDateInRanges from '../../utils/isDateInRanges';
 
 export interface CalendarCellsProps {
   currentMonth: Date;
-  workdaysOfTheWeek: WorkdaysOfTheWeek;
+  previousYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
+  currentYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
+  nextYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
   bankHolidays: Leave[];
   requests: Leave[];
   approved: Leave[];
@@ -26,7 +31,9 @@ export interface CalendarCellsProps {
 
 export default function CalendarCells({
   currentMonth,
-  workdaysOfTheWeek,
+  previousYearWorkdaysOfTheWeek,
+  currentYearWorkdaysOfTheWeek,
+  nextYearWorkdaysOfTheWeek,
   bankHolidays,
   requests,
   approved,
@@ -63,7 +70,25 @@ export default function CalendarCells({
 
   const getDayColor = (date: Date): string => {
     if (notEmployed(date)) return CALENDAR_STATUS_CONFIG.notEmployed.color;
-    if (!isWorkday(date, workdaysOfTheWeek))
+    // Previous year day off
+    if (
+      !isSameYear(currentMonth, date) &&
+      isAfter(currentMonth, date) &&
+      !isWorkday(date, previousYearWorkdaysOfTheWeek)
+    )
+      return CALENDAR_STATUS_CONFIG.dayOff.color;
+    // Current year day off
+    if (
+      isSameYear(currentMonth, date) &&
+      !isWorkday(date, currentYearWorkdaysOfTheWeek)
+    )
+      return CALENDAR_STATUS_CONFIG.dayOff.color;
+    // Next year day off
+    if (
+      !isSameYear(currentMonth, date) &&
+      isBefore(currentMonth, date) &&
+      !isWorkday(date, nextYearWorkdaysOfTheWeek)
+    )
       return CALENDAR_STATUS_CONFIG.dayOff.color;
     if (isBankHoliday(date)) return CALENDAR_STATUS_CONFIG.bankHoliday.color;
     if (isRequested(date)) return CALENDAR_STATUS_CONFIG.requested.color;

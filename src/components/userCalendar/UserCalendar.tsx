@@ -24,6 +24,16 @@ interface UserCalendarProps {
   className?: string;
 }
 
+const defaultWorkdaysOfTheWeek = {
+  monday: true,
+  tuesday: true,
+  wednesday: true,
+  thursday: true,
+  friday: true,
+  saturday: false,
+  sunday: false,
+};
+
 export default function UserCalendar({
   user,
   initialDate,
@@ -32,20 +42,35 @@ export default function UserCalendar({
   const [currentMonth, setCurrentMonth] = useState(
     initialDate ? new Date(initialDate) : new Date()
   );
-  const [bankHolidayRegion, setBankHolidayRegion] = useState('');
-  const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
+  /**
+   * User's calendar gives a few days peek into previous and next year,
+   * so calendar needs to load previous and next year's bank holiday region,
+   * bank holidays, workdays of the week, and approved leaves too.
+   */
+
+  const [previousYearBankHolidayRegion, setPreviousYearBankHolidayRegion] =
+    useState('');
+  const [currentYearBankHolidayRegion, setCurrentYearBankHolidayRegion] =
+    useState('');
+  const [nextYearBankHolidayRegion, setNextYearBankHolidayRegion] =
+    useState('');
+
+  const [previousYearBankHolidays, setPreviousYearBankHolidays] = useState<
+    Leave[]
+  >([]);
+  const [currentYearBankHolidays, setCurrentYearBankHolidays] = useState<
+    Leave[]
+  >([]);
+  const [nextYearBankHolidays, setNextYearBankHolidays] = useState<Leave[]>([]);
+
   const [requested, setRequested] = useState<Leave[]>([]);
-  const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
-    {
-      monday: true,
-      tuesday: true,
-      wednesday: true,
-      thursday: true,
-      friday: true,
-      saturday: false,
-      sunday: false,
-    }
-  );
+
+  const [previousYearWorkdaysOfTheWeek, setPreviousYearWorkdaysOfTheWeek] =
+    useState<WorkdaysOfTheWeek>({ ...defaultWorkdaysOfTheWeek });
+  const [currentYearWorkdaysOfTheWeek, setCurrentYearWorkdaysOfTheWeek] =
+    useState<WorkdaysOfTheWeek>({ ...defaultWorkdaysOfTheWeek });
+  const [nextYearWorkdaysOfTheWeek, setNextYearWorkdaysOfTheWeek] =
+    useState<WorkdaysOfTheWeek>({ ...defaultWorkdaysOfTheWeek });
   const { startLoading, stopLoading } = useLoadingContext();
   const {
     workdaysOfTheWeek: companyWorkdaysOfTheWeek,
@@ -83,62 +108,210 @@ export default function UserCalendar({
 
   useEffect(() => {
     if (!user?.id) return;
-
-    startLoading('fetch-configured-years');
-    const configurationRef = doc(
+    if (!currentYear) return;
+    const year = parseInt(currentYear);
+    startLoading('fetch-previous-year-configured-years');
+    startLoading('fetch-current-year-configured-years');
+    startLoading('fetch-next-year-configured-years');
+    const previousYearConfigurationRef = doc(
       db,
-      `${firebase_collections.USERS}/${user.id}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}/${currentYear}`
+      `${firebase_collections.USERS}/${user.id}/${
+        firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION
+      }/${year - 1}`
     );
-    const configurationUnsubscribe = onSnapshot(configurationRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data() as UserHolidayEntitlement;
-        setWorkdaysOfTheWeek({
-          monday: data.monday,
-          tuesday: data.tuesday,
-          wednesday: data.wednesday,
-          thursday: data.thursday,
-          friday: data.friday,
-          saturday: data.saturday,
-          sunday: data.sunday,
-        });
-        setBankHolidayRegion(data.bankHolidayRegionId);
-      } else {
-        setWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
-        setBankHolidayRegion(companyBankHolidayRegion.bankHolidayRegionId);
+    const previousYearConfigurationUnsubscribe = onSnapshot(
+      previousYearConfigurationRef,
+      (snap) => {
+        if (snap.exists()) {
+          const data = snap.data() as UserHolidayEntitlement;
+          setPreviousYearWorkdaysOfTheWeek({
+            monday: data.monday,
+            tuesday: data.tuesday,
+            wednesday: data.wednesday,
+            thursday: data.thursday,
+            friday: data.friday,
+            saturday: data.saturday,
+            sunday: data.sunday,
+          });
+          setPreviousYearBankHolidayRegion(data.bankHolidayRegionId);
+        } else {
+          setPreviousYearWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
+          setPreviousYearBankHolidayRegion(
+            companyBankHolidayRegion.bankHolidayRegionId
+          );
+        }
+        stopLoading('fetch-previous-year-configured-years');
       }
-      stopLoading('fetch-configured-years');
-    });
+    );
+    const currentYearConfigurationRef = doc(
+      db,
+      `${firebase_collections.USERS}/${user.id}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}/${year}`
+    );
+    const currentYearConfigurationUnsubscribe = onSnapshot(
+      currentYearConfigurationRef,
+      (snap) => {
+        if (snap.exists()) {
+          const data = snap.data() as UserHolidayEntitlement;
+          setCurrentYearWorkdaysOfTheWeek({
+            monday: data.monday,
+            tuesday: data.tuesday,
+            wednesday: data.wednesday,
+            thursday: data.thursday,
+            friday: data.friday,
+            saturday: data.saturday,
+            sunday: data.sunday,
+          });
+          setCurrentYearBankHolidayRegion(data.bankHolidayRegionId);
+        } else {
+          setCurrentYearWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
+          setCurrentYearBankHolidayRegion(
+            companyBankHolidayRegion.bankHolidayRegionId
+          );
+        }
+        stopLoading('fetch-current-year-configured-years');
+      }
+    );
+    const nextYearConfigurationRef = doc(
+      db,
+      `${firebase_collections.USERS}/${user.id}/${
+        firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION
+      }/${year + 1}`
+    );
+    const nextYearConfigurationUnsubscribe = onSnapshot(
+      nextYearConfigurationRef,
+      (snap) => {
+        if (snap.exists()) {
+          const data = snap.data() as UserHolidayEntitlement;
+          setNextYearWorkdaysOfTheWeek({
+            monday: data.monday,
+            tuesday: data.tuesday,
+            wednesday: data.wednesday,
+            thursday: data.thursday,
+            friday: data.friday,
+            saturday: data.saturday,
+            sunday: data.sunday,
+          });
+          setNextYearBankHolidayRegion(data.bankHolidayRegionId);
+        } else {
+          setNextYearWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
+          setNextYearBankHolidayRegion(
+            companyBankHolidayRegion.bankHolidayRegionId
+          );
+        }
+        stopLoading('fetch-next-year-configured-years');
+      }
+    );
     return () => {
-      configurationUnsubscribe();
+      previousYearConfigurationUnsubscribe();
+      currentYearConfigurationUnsubscribe();
+      nextYearConfigurationUnsubscribe();
     };
   }, [user?.id, currentYear]);
 
   useEffect(() => {
-    if (!bankHolidayRegion) return;
-    startLoading('fetch-bank-holidays');
-    const bankHolidayRef = collection(
+    if (!previousYearBankHolidayRegion) return;
+    if (!currentYear) return;
+    // Need to load previous and next year too
+    const year = parseInt(currentYear);
+    startLoading('fetch-previous-year-bank-holidays');
+    const previousYearBankHolidayRef = collection(
       db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegion}/${currentYear}`
+      `/${
+        firebase_collections.BANK_HOLIDAYS
+      }/${previousYearBankHolidayRegion}/${year - 1}`
     );
-    const bankHolidaysUnsubscribe = onSnapshot(bankHolidayRef, (snapshot) => {
-      const leaves: Leave[] = [];
-      for (const doc of snapshot.docs) {
-        const data = doc.data();
-        const date = new Date(data.date);
-        leaves.push({ from: date, to: date });
+
+    const previousYearBankHolidaysUnsubscribe = onSnapshot(
+      previousYearBankHolidayRef,
+      (snapshot) => {
+        const leaves: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          const date = new Date(data.date);
+          leaves.push({ from: date, to: date });
+        }
+        setPreviousYearBankHolidays(leaves);
+        stopLoading('fetch-previous-year-bank-holidays');
       }
-      setBankHolidays(leaves);
-      stopLoading('fetch-bank-holidays');
-    });
-    return () => bankHolidaysUnsubscribe();
-  }, [bankHolidayRegion, currentYear]);
+    );
+    return () => {
+      previousYearBankHolidaysUnsubscribe();
+    };
+  }, [previousYearBankHolidayRegion, currentYear]);
+
+  useEffect(() => {
+    if (!currentYearBankHolidayRegion) return;
+    if (!currentYear) return;
+    // Need to load previous and next year too
+    const year = parseInt(currentYear);
+    startLoading('fetch-current-year-bank-holidays');
+    const currentYearBankHolidayRef = collection(
+      db,
+      `/${firebase_collections.BANK_HOLIDAYS}/${currentYearBankHolidayRegion}/${year}`
+    );
+
+    const currentYearBankHolidaysUnsubscribe = onSnapshot(
+      currentYearBankHolidayRef,
+      (snapshot) => {
+        const leaves: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          const date = new Date(data.date);
+          leaves.push({ from: date, to: date });
+        }
+        setCurrentYearBankHolidays(leaves);
+        stopLoading('fetch-current-year-bank-holidays');
+      }
+    );
+    return () => {
+      currentYearBankHolidaysUnsubscribe();
+    };
+  }, [currentYearBankHolidayRegion, currentYear]);
+
+  useEffect(() => {
+    if (!nextYearBankHolidayRegion) return;
+    if (!currentYear) return;
+    // Need to load previous and next year too
+    const year = parseInt(currentYear);
+    startLoading('fetch-next-year-bank-holidays');
+
+    const nextYearBankHolidayRef = collection(
+      db,
+      `/${firebase_collections.BANK_HOLIDAYS}/${nextYearBankHolidayRegion}/${
+        year + 1
+      }`
+    );
+
+    const nextYearBankHolidaysUnsubscribe = onSnapshot(
+      nextYearBankHolidayRef,
+      (snapshot) => {
+        const leaves: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          const date = new Date(data.date);
+          leaves.push({ from: date, to: date });
+        }
+        setNextYearBankHolidays(leaves);
+        stopLoading('fetch-next-year-bank-holidays');
+      }
+    );
+    return () => {
+      nextYearBankHolidaysUnsubscribe();
+    };
+  }, [nextYearBankHolidayRegion, currentYear]);
 
   return (
     <Calendar
       currentMonth={currentMonth}
       setCurrentMonth={setCurrentMonth}
-      workdaysOfTheWeek={workdaysOfTheWeek}
-      bankHolidays={bankHolidays}
+      previousYearWorkdaysOfTheWeek={previousYearWorkdaysOfTheWeek}
+      currentYearWorkdaysOfTheWeek={currentYearWorkdaysOfTheWeek}
+      nextYearWorkdaysOfTheWeek={nextYearWorkdaysOfTheWeek}
+      bankHolidays={[
+        ...previousYearBankHolidays,
+        ...currentYearBankHolidays,
+        ...nextYearBankHolidays,
+      ]}
       approved={approved}
       requests={requested}
       serviceStartDate={
