@@ -1,3 +1,10 @@
+## [1.3.41](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.40...v1.3.41) (2025-11-14)
+
+
+### Bug Fixes
+
+* show next and previous year part of calendar correctly ([e2d0a0b](https://github.com/ArpadGBondor/Leave-Management/commit/e2d0a0b2f992e091e3ce5fbf0af8dc826a861347))
+
 ## [1.3.40](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.39...v1.3.40) (2025-11-14)
 
 
