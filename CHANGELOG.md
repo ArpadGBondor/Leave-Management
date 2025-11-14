@@ -1,3 +1,10 @@
+## [1.3.40](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.39...v1.3.40) (2025-11-14)
+
+
+### Bug Fixes
+
+* store year of request for indexing ([4c973e6](https://github.com/ArpadGBondor/Leave-Management/commit/4c973e691ce95e84058074f7d066d18c8f206a5d))
+
 ## [1.3.39](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.38...v1.3.39) (2025-11-14)
 
 
