@@ -9,7 +9,9 @@ import { Leave } from '../../interface/Leave.interface';
 export interface CalendarProps {
   currentMonth: Date;
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
-  workdaysOfTheWeek: WorkdaysOfTheWeek;
+  previousYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
+  currentYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
+  nextYearWorkdaysOfTheWeek: WorkdaysOfTheWeek;
   bankHolidays: Leave[];
   requests: Leave[];
   approved: Leave[];
@@ -20,7 +22,9 @@ export interface CalendarProps {
 export default function Calendar({
   currentMonth,
   setCurrentMonth,
-  workdaysOfTheWeek,
+  previousYearWorkdaysOfTheWeek,
+  currentYearWorkdaysOfTheWeek,
+  nextYearWorkdaysOfTheWeek,
   bankHolidays,
   requests,
   approved,
@@ -47,7 +51,9 @@ export default function Calendar({
       <CalendarDays currentMonth={currentMonth} />
       <CalendarCells
         currentMonth={currentMonth}
-        workdaysOfTheWeek={workdaysOfTheWeek}
+        previousYearWorkdaysOfTheWeek={previousYearWorkdaysOfTheWeek}
+        currentYearWorkdaysOfTheWeek={currentYearWorkdaysOfTheWeek}
+        nextYearWorkdaysOfTheWeek={nextYearWorkdaysOfTheWeek}
         bankHolidays={bankHolidays}
         requests={requests}
         approved={approved}
