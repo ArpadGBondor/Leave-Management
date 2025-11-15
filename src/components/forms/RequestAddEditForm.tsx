@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  Unsubscribe,
+  where,
+} from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import { db } from '../../firebase.config';
 import { useUserContext } from '../../context/user/useUserContext';
@@ -24,6 +33,7 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import TextAreaInput from '../inputs/TextAreaInput';
 import countWorkdays from '../../utils/countWorkdays';
 import RadioInput from '../inputs/RadioInput';
+import isDateInRanges from '../../utils/isDateInRanges';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -67,6 +77,7 @@ export default function RequestAddEditForm({
   };
   const [errors, setErrors] = useState(defaultErrors);
   const [loadedYear, setLoadedYear] = useState<string>('');
+  const [requestsOfTheUser, setRequestsOfTheUser] = useState<Leave[]>([]);
   const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
   const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
     {
@@ -122,7 +133,7 @@ export default function RequestAddEditForm({
         }
 
         // no need to load year when just viewing
-        if (isEditing) {
+        if (!disabled) {
           const year = doc.from.slice(0, 4);
           // start loading year before ending loading state to prevend loader flickering
           startLoading('load-year');
@@ -143,11 +154,39 @@ export default function RequestAddEditForm({
       .finally(() => {
         stopLoading('fetch-request-details');
       });
-  }, [requestId, isEditing]);
+  }, [requestId, disabled]);
+
+  useEffect(() => {
+    if (disabled) return;
+    if (!user?.id) return;
+    startLoading('load-users-own-requests');
+    const ownRequestQuery = query(
+      collection(db, firebase_collections.REQUESTS),
+      where('requestedById', '==', user.id)
+    );
+    const ownRequestsUnsubscribe: Unsubscribe = onSnapshot(
+      ownRequestQuery,
+      (snapshot) => {
+        const requests: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const request = doc.data() as LeaveRequest;
+          requests.push({
+            from: new Date(request.from),
+            to: new Date(request.to),
+            id: request.id,
+          });
+        }
+        setRequestsOfTheUser(requests);
+        stopLoading('load-users-own-requests');
+      }
+    );
+
+    return () => ownRequestsUnsubscribe();
+  }, [disabled, user?.id]);
 
   useEffect(() => {
     // no need to load year when just viewing
-    if (!isEditing) return;
+    if (disabled) return;
     if (from) {
       const year = from.slice(0, 4);
       if (year !== loadedYear) {
@@ -155,11 +194,11 @@ export default function RequestAddEditForm({
         loadYear(year).finally(() => stopLoading('load-year'));
       }
     }
-  }, [from, isEditing]);
+  }, [from, disabled]);
 
   useEffect(() => {
     // No need to update when just viewing
-    if (!isEditing) return;
+    if (disabled) return;
     if (
       requestType === leaveRequestTypeOptions[0] &&
       from &&
@@ -186,7 +225,7 @@ export default function RequestAddEditForm({
         numberOfWorkdays: 0,
       }));
     }
-  }, [isEditing, from, to, requestType, bankHolidays, workdaysOfTheWeek]);
+  }, [disabled, from, to, requestType, bankHolidays, workdaysOfTheWeek]);
 
   const loadYear = async (year: string) => {
     // fetch configuration
@@ -296,6 +335,31 @@ export default function RequestAddEditForm({
           'Your start and end dates span multiple years. Please create a separate request for each year.'
         );
         valid = false;
+      }
+
+      // Check for conflicting requests
+      const otherRequests = requestsOfTheUser.filter(
+        // Do not compare the request with itself
+        (request) => requestId !== request.id
+      );
+
+      if (valid && isDateInRanges(fromDate, otherRequests)) {
+        setError('from', 'Your start date conflicts with another request.');
+        valid = false;
+      }
+      if (valid && isDateInRanges(toDate, otherRequests)) {
+        setError('to', 'Your end date conflicts with another request.');
+        valid = false;
+      }
+
+      for (const request of otherRequests) {
+        if (valid && fromDate < request.from && request.to < toDate) {
+          setError(
+            'to',
+            'Your requested leave interval conflicts with another request.'
+          );
+          valid = false;
+        }
       }
     }
 
