@@ -1,3 +1,10 @@
+## [1.3.42](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.41...v1.3.42) (2025-11-15)
+
+
+### Bug Fixes
+
+* prevent conflicting requests ([e966dc7](https://github.com/ArpadGBondor/Leave-Management/commit/e966dc712e053417cebf11acb7dce665b6375cda))
+
 ## [1.3.41](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.40...v1.3.41) (2025-11-14)
 
 
