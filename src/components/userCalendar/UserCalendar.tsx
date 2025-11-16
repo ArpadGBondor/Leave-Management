@@ -17,6 +17,7 @@ import {
 import { db } from '../../firebase.config';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
+import { LeaveRequest } from '../../interface/LeaveRequest.interface';
 
 interface UserCalendarProps {
   user: User;
@@ -63,6 +64,16 @@ export default function UserCalendar({
   >([]);
   const [nextYearBankHolidays, setNextYearBankHolidays] = useState<Leave[]>([]);
 
+  const [previousYearApprovedLeaves, setPreviousYearApprovedLeaves] = useState<
+    Leave[]
+  >([]);
+  const [currentYearApprovedLeaves, setCurrentYearApprovedLeaves] = useState<
+    Leave[]
+  >([]);
+  const [nextYearApprovedLeaves, setNextYearApprovedLeaves] = useState<Leave[]>(
+    []
+  );
+
   const [requested, setRequested] = useState<Leave[]>([]);
 
   const [previousYearWorkdaysOfTheWeek, setPreviousYearWorkdaysOfTheWeek] =
@@ -77,10 +88,6 @@ export default function UserCalendar({
     bankHolidayRegion: companyBankHolidayRegion,
   } = useCompanyContext();
   const currentYear = format(currentMonth, 'yyyy');
-
-  const approved: Leave[] = [
-    { from: new Date('2025-12-05'), to: new Date('2025-12-17') },
-  ];
 
   useEffect(() => {
     if (!user?.id) return;
@@ -105,6 +112,83 @@ export default function UserCalendar({
     );
     return () => ownRequestsUnsubscribe();
   }, [user]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    if (!currentYear) return;
+    const year = parseInt(currentYear);
+    startLoading('fetch-previous-year-approved-leaves');
+    startLoading('fetch-current-year-approved-leaves');
+    startLoading('fetch-next-year-approved-leaves');
+    const previousYearApprovedLeavesRef = query(
+      collection(db, `${firebase_collections.APPROVED_LEAVES}`),
+      where('requestedById', '==', user.id),
+      where('year', '==', `${year - 1}`)
+    );
+    const previousYearApprovedLeavesUnsubscribe = onSnapshot(
+      previousYearApprovedLeavesRef,
+      (snapshot) => {
+        const requests: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const request = doc.data() as LeaveRequest;
+          requests.push({
+            from: new Date(request.from),
+            to: new Date(request.to),
+            id: request.id,
+          });
+        }
+        setPreviousYearApprovedLeaves(requests);
+        stopLoading('fetch-previous-year-approved-leaves');
+      }
+    );
+    const currentYearApprovedLeavesRef = query(
+      collection(db, `${firebase_collections.APPROVED_LEAVES}`),
+      where('requestedById', '==', user.id),
+      where('year', '==', `${year}`)
+    );
+    const currentYearApprovedLeavesUnsubscribe = onSnapshot(
+      currentYearApprovedLeavesRef,
+      (snapshot) => {
+        const requests: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const request = doc.data() as LeaveRequest;
+          requests.push({
+            from: new Date(request.from),
+            to: new Date(request.to),
+            id: request.id,
+          });
+        }
+        setCurrentYearApprovedLeaves(requests);
+        stopLoading('fetch-current-year-approved-leaves');
+      }
+    );
+    const nextYearApprovedLeavesRef = query(
+      collection(db, `${firebase_collections.APPROVED_LEAVES}`),
+      where('requestedById', '==', user.id),
+      where('year', '==', `${year + 1}`)
+    );
+    const nextYearApprovedLeavesUnsubscribe = onSnapshot(
+      nextYearApprovedLeavesRef,
+      (snapshot) => {
+        const requests: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const request = doc.data() as LeaveRequest;
+          requests.push({
+            from: new Date(request.from),
+            to: new Date(request.to),
+            id: request.id,
+          });
+        }
+        setNextYearApprovedLeaves(requests);
+        stopLoading('fetch-next-year-approved-leaves');
+      }
+    );
+    return () => {
+      previousYearApprovedLeavesUnsubscribe();
+      currentYearApprovedLeavesUnsubscribe();
+      nextYearApprovedLeavesUnsubscribe();
+    };
+  }, [user?.id, currentYear]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -312,7 +396,11 @@ export default function UserCalendar({
         ...currentYearBankHolidays,
         ...nextYearBankHolidays,
       ]}
-      approved={approved}
+      approved={[
+        ...previousYearApprovedLeaves,
+        ...currentYearApprovedLeaves,
+        ...nextYearApprovedLeaves,
+      ]}
       requests={requested}
       serviceStartDate={
         user?.serviceStartDate ? new Date(user?.serviceStartDate) : undefined
