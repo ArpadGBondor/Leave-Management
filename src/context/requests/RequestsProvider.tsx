@@ -66,7 +66,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         },
         body: JSON.stringify(data),
       });
-      if (!createRequestResponse.ok) throw new Error('Failed to set role');
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to create request');
       const { doc } = await createRequestResponse.json();
 
       return doc;
@@ -92,7 +93,66 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           ...(data.from ? { year: data.from.slice(0, 4) } : {}),
         }),
       });
-      if (!createRequestResponse.ok) throw new Error('Failed to set role');
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to update request');
+      const { doc } = await createRequestResponse.json();
+
+      return doc;
+    },
+    [user, auth.currentUser]
+  );
+
+  const approveRequest = useCallback(
+    async (data: { id: string } & Partial<LeaveRequest>) => {
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const createRequestResponse = await fetch('/api/request-approve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+          approvedById: user.id,
+          approvedByName: user.name,
+        }),
+      });
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to approve request');
+      const { doc } = await createRequestResponse.json();
+
+      return doc;
+    },
+    [user, auth.currentUser]
+  );
+
+  const rejectRequest = useCallback(
+    async (data: { id: string } & Partial<LeaveRequest>) => {
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const createRequestResponse = await fetch('/api/request-reject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+          approvedById: user.id,
+          approvedByName: user.name,
+        }),
+      });
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to reject request');
       const { doc } = await createRequestResponse.json();
 
       return doc;
@@ -114,7 +174,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         },
         body: JSON.stringify({ id: data.id }),
       });
-      if (!createRequestResponse.ok) throw new Error('Failed to set role');
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to delete request');
     },
     [auth.currentUser]
   );
@@ -167,6 +228,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         ...state,
         createRequest,
         updateRequest,
+        approveRequest,
+        rejectRequest,
         deleteRequest,
       }}
     >

@@ -7,6 +7,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
 import UserCalendar from '../components/userCalendar/UserCalendar';
+import RequestApproveReject from '../components/forms/RequestApproveReject';
 
 export default function ManageRequestApproveReject() {
   const { requestId } = useParams();
@@ -39,6 +40,7 @@ export default function ManageRequestApproveReject() {
         disabled
         setRequest={setRequest}
       />
+      {request && <RequestApproveReject request={request} />}
       {user && (
         <UserCalendar
           className="mt-8"

@@ -1,10 +1,18 @@
 import { Handler, HandlerResponse } from '@netlify/functions';
 import { verifyBearerToken } from '../verifyBearerToken';
 import { errorResponse, response } from '../response';
-import { HandlerConfigOptions } from '../types';
+import { CollectionConfig } from '../types';
 import { buildRef } from '../buildRef';
 import { cleanBody } from '../cleanBody';
 import * as admin from 'firebase-admin';
+
+export type HandlerConfigOptions = {
+  path: CollectionConfig[]; // sequence of collections/subcollections
+  restrictToClaim?: 'ADMIN' | 'SUPER_ADMIN';
+  deleteAction?: (
+    ref: FirebaseFirestore.DocumentReference
+  ) => Promise<HandlerResponse>;
+};
 
 export const createUpdateOrDeleteDoc =
   ({ path, restrictToClaim, deleteAction }: HandlerConfigOptions): Handler =>

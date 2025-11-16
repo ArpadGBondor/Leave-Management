@@ -7,6 +7,8 @@ export const firebase_collections = {
   BANK_HOLIDAY_IMPORTED_YEARS: 'bank_holiday_imported_years',
   CONFIG: 'config',
   REQUESTS: 'requests',
+  APPROVED_LEAVES: 'approved-leaves',
+  REJECTED_LEAVES: 'rejected-leaves',
 } as const;
 
 export type FirebaseCollections =
