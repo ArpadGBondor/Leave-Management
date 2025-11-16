@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.1...v1.4.2) (2025-11-16)
+
+
+### Bug Fixes
+
+* prevent requests conflicting with approved requests ([40e978a](https://github.com/ArpadGBondor/Leave-Management/commit/40e978aacf06582afc2433c9c5e194de3974a431))
+
 ## [1.4.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.0...v1.4.1) (2025-11-16)
 
 
