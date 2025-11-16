@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.42...v1.4.0) (2025-11-16)
+
+
+### Features
+
+* allow managers to approve or reject leaves ([aac2594](https://github.com/ArpadGBondor/Leave-Management/commit/aac259497669234e7a95169b3f958ba0bd4ad959))
+
 ## [1.3.42](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.41...v1.3.42) (2025-11-15)
 
 
