@@ -78,6 +78,9 @@ export default function RequestAddEditForm({
   const [errors, setErrors] = useState(defaultErrors);
   const [loadedYear, setLoadedYear] = useState<string>('');
   const [requestsOfTheUser, setRequestsOfTheUser] = useState<Leave[]>([]);
+  const [approvedLeavesOfTheUser, setApprovedLeavesOfTheUser] = useState<
+    Leave[]
+  >([]);
   const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
   const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
     {
@@ -183,6 +186,36 @@ export default function RequestAddEditForm({
 
     return () => ownRequestsUnsubscribe();
   }, [disabled, user?.id]);
+
+  useEffect(() => {
+    if (disabled) return;
+    if (!user?.id) return;
+    if (!loadedYear) return;
+    startLoading('load-users-approved-leaves');
+    const approvedLeavesQuery = query(
+      collection(db, firebase_collections.APPROVED_LEAVES),
+      where('requestedById', '==', user.id),
+      where('year', '==', loadedYear)
+    );
+    const approvedLeavesUnsubscribe: Unsubscribe = onSnapshot(
+      approvedLeavesQuery,
+      (snapshot) => {
+        const requests: Leave[] = [];
+        for (const doc of snapshot.docs) {
+          const request = doc.data() as LeaveRequest;
+          requests.push({
+            from: new Date(request.from),
+            to: new Date(request.to),
+            id: request.id,
+          });
+        }
+        setApprovedLeavesOfTheUser(requests);
+        stopLoading('load-users-approved-leaves');
+      }
+    );
+
+    return () => approvedLeavesUnsubscribe();
+  }, [disabled, user?.id, loadedYear]);
 
   useEffect(() => {
     // no need to load year when just viewing
@@ -357,6 +390,31 @@ export default function RequestAddEditForm({
           setError(
             'to',
             'Your requested leave interval conflicts with another request.'
+          );
+          valid = false;
+        }
+      }
+
+      // Check for conflicting requests
+      const otherApprovedLeaves = approvedLeavesOfTheUser.filter(
+        // Do not compare the request with itself
+        (request) => requestId !== request.id
+      );
+
+      if (valid && isDateInRanges(fromDate, otherApprovedLeaves)) {
+        setError('from', 'Your start date conflicts with an approved leave.');
+        valid = false;
+      }
+      if (valid && isDateInRanges(toDate, otherApprovedLeaves)) {
+        setError('to', 'Your end date conflicts with an approved leave.');
+        valid = false;
+      }
+
+      for (const request of otherApprovedLeaves) {
+        if (valid && fromDate < request.from && request.to < toDate) {
+          setError(
+            'to',
+            'Your requested leave interval conflicts with an approved leave.'
           );
           valid = false;
         }
