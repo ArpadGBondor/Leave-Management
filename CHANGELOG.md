@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.0...v1.4.1) (2025-11-16)
+
+
+### Bug Fixes
+
+* show approved leaves in user calendar ([5669f90](https://github.com/ArpadGBondor/Leave-Management/commit/5669f90d1e0632912449b45b6d630933e5a02367))
+
 # [1.4.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.3.42...v1.4.0) (2025-11-16)
 
 
