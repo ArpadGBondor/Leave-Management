@@ -7,14 +7,6 @@ export type CollectionConfig = {
   keepInDoc?: boolean; // if true, field is kept in document; default = false
 };
 
-export type HandlerConfigOptions = {
-  path: CollectionConfig[]; // sequence of collections/subcollections
-  restrictToClaim?: 'ADMIN' | 'SUPER_ADMIN';
-  deleteAction?: (
-    ref: FirebaseFirestore.DocumentReference
-  ) => Promise<HandlerResponse>;
-};
-
 // imported bankholiday data from GOV
 export type BankHolidayEvent = {
   title: string;

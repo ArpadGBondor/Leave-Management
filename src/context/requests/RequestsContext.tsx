@@ -20,6 +20,12 @@ export interface RequestsContextType extends RequestsState {
   updateRequest: (
     data: { id: string } & Partial<LeaveRequest>
   ) => Promise<void>;
+  approveRequest: (
+    data: { id: string } & Partial<LeaveRequest>
+  ) => Promise<void>;
+  rejectRequest: (
+    data: { id: string } & Partial<LeaveRequest>
+  ) => Promise<void>;
   deleteRequest: (data: { id: string }) => Promise<void>;
 }
 
