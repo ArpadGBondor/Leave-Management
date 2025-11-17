@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.2...v1.4.3) (2025-11-17)
+
+
+### Bug Fixes
+
+* update number of bank holidays when employment start or end date shanges ([a33b042](https://github.com/ArpadGBondor/Leave-Management/commit/a33b04292ae27e9881497b7a2d58efd7b6fc210c))
+
 ## [1.4.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.1...v1.4.2) (2025-11-16)
 
 
