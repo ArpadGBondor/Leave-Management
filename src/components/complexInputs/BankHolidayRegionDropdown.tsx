@@ -119,6 +119,8 @@ export default function BankHolidayRegionDropdown<
   }, [
     bankHolidayRegionId,
     year,
+    employmentStart,
+    employmentEnd,
     monday,
     tuesday,
     wednesday,
