@@ -19,6 +19,9 @@
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
   - [/api/users (POST|PUT|DELETE)](#apiusers-postputdelete)
   - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
+  - [/api/requests (POST|PUT|DELETE)](#apirequests-postputdelete)
+  - [/api/request-approve (POST)](#apirequest-approve-post)
+  - [/api/request-reject (POST)](#apirequest-reject-post)
 - [Environment variables](#environment-variables)
 
 Work in progress...
@@ -336,6 +339,108 @@ The Leave Management a demo web application that allows users to register, manag
     - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
 
     - other fields: configuration data to store
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/requests (POST|PUT|DELETE)
+
+- Description:
+  - Manages documents in the `requests` collection in Firestore.
+  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
+
+- Request:
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: POST/PUT requests write/overwrite all passed fields on the document.
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/request-approve (POST)
+
+- Description:
+  - Moves documents from `requests` collection to `approved-leaves` collection.
+  - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
+  - This endpoint is restricted to olny serve ADMIN users.
+
+- Request:
+
+  - Method: POST
+  - Headers
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `updated` (timestamp) field is automatically updated by function
+
+    - other fields: all passed fields will overwrite the fields of the source document.
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/request-reject (POST)
+
+- Description:
+  - Moves documents from `requests` collection to `rejected-leaves` collection.
+  - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
+  - This endpoint is restricted to olny serve ADMIN users.
+
+- Request:
+
+  - Method: POST
+  - Headers
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `updated` (timestamp) field is automatically updated by function
+
+    - other fields: all passed fields will overwrite the fields of the source document.
 
 - Response 200 OK:
 
