@@ -21,7 +21,7 @@ export const createMoveHandler = ({
   return async (event) => {
     try {
       if (event.httpMethod !== 'POST') {
-        return response(405, 'Method Not Allowed');
+        throw new Error('Method not allowed');
       }
 
       const decodedToken = await verifyBearerToken(event.headers.authorization);
@@ -38,7 +38,7 @@ export const createMoveHandler = ({
       const sourceSnap = await sourceRef.get();
 
       if (!sourceSnap.exists) {
-        return response(404, 'Source document not found');
+        throw new Error('Not found: Source document not found');
       }
 
       const data = sourceSnap.data() as Record<string, any>;

@@ -21,6 +21,10 @@ export const errorResponse = (
         ? 401
         : err.message?.startsWith('Forbidden')
         ? 403
+        : err.message?.startsWith('Not found')
+        ? 404
+        : err.message?.startsWith('Method not allowed')
+        ? 405
         : 500,
       {
         error:

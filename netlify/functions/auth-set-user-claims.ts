@@ -4,38 +4,38 @@ import { verifyBearerToken } from '../../lib/verifyBearerToken';
 import { errorResponse, response } from '../../lib/response';
 
 const handler: Handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return response(405, 'Method Not Allowed');
-  }
-
   try {
+    if (event.httpMethod !== 'POST') {
+      throw new Error('Method not allowed');
+    }
+
     // const decodedToken =
     await verifyBearerToken(event.headers.authorization);
 
     // --- Validate request body ---
     if (!event.body) {
-      return response(400, { error: 'Request body is required' });
+      throw new Error('Bad request: Request body is required');
     }
 
     let parsed;
     try {
       parsed = JSON.parse(event.body);
     } catch {
-      return response(400, { error: 'Invalid JSON body' });
+      throw new Error('Bad request: Invalid JSON body');
     }
 
     if (!parsed || typeof parsed !== 'object') {
-      return response(400, { error: 'Body must be a JSON object' });
+      throw new Error('Bad request: Body must be a JSON object');
     }
 
     const { userId, userType } = parsed;
 
     if (!userId) {
-      return response(400, { error: 'Missing required field: userId' });
+      throw new Error('Bad request: Missing required field: userId');
     }
 
     if (!userType) {
-      return response(400, { error: 'Missing required field: userType' });
+      throw new Error('Bad request: Missing required field: userType');
     }
 
     let claims: Record<string, boolean> = {};

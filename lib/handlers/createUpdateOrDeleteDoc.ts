@@ -21,11 +21,11 @@ export const createUpdateOrDeleteDoc =
     const isUpdate = event.httpMethod === 'PUT';
     const isDelete = event.httpMethod === 'DELETE';
 
-    if (!isCreate && !isUpdate && !isDelete) {
-      return response(405, 'Method Not Allowed');
-    }
-
     try {
+      if (!isCreate && !isUpdate && !isDelete) {
+        throw new Error('Method not allowed');
+      }
+
       const decodedToken = await verifyBearerToken(event.headers.authorization);
       if (restrictToClaim && !decodedToken[restrictToClaim]) {
         throw new Error('Forbidden');
