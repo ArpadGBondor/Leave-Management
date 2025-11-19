@@ -200,6 +200,7 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/import-bank-holidays (POST)
@@ -238,6 +239,7 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/config (POST|PUT|DELETE)
@@ -273,6 +275,7 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/users (POST|PUT|DELETE)
@@ -312,6 +315,7 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/user-yearly-holiday-configuration (POST|PUT|DELETE)
@@ -349,11 +353,13 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/requests (POST|PUT|DELETE)
 
 - Description:
+
   - Manages documents in the `requests` collection in Firestore.
   - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
 
@@ -383,11 +389,13 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/request-approve (POST)
 
 - Description:
+
   - Moves documents from `requests` collection to `approved-leaves` collection.
   - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
   - This endpoint is restricted to olny serve ADMIN users.
@@ -396,6 +404,7 @@ The Leave Management a demo web application that allows users to register, manag
 
   - Method: POST
   - Headers
+
     - Authorization: Bearer token
       - The token must belong to an authorised user.
     - Content-Type: application/json
@@ -417,11 +426,14 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 404 Not found: {"error": "Not found: ..."}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/request-reject (POST)
 
 - Description:
+
   - Moves documents from `requests` collection to `rejected-leaves` collection.
   - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
   - This endpoint is restricted to olny serve ADMIN users.
@@ -430,6 +442,7 @@ The Leave Management a demo web application that allows users to register, manag
 
   - Method: POST
   - Headers
+
     - Authorization: Bearer token
       - The token must belong to an authorised user.
     - Content-Type: application/json
@@ -451,6 +464,8 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 404 Not found: {"error": "Not found: ..."}
+  - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ## Environment variables

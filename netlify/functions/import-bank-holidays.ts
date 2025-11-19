@@ -6,11 +6,11 @@ import { BankHolidayData, BankHolidayEvent } from '../../lib/types';
 import { firebase_collections } from '../../lib/firebase_collections';
 
 const handler: Handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return response(405, 'Method Not Allowed');
-  }
-
   try {
+    if (event.httpMethod !== 'POST') {
+      throw new Error('Method not allowed');
+    }
+
     // const decodedToken =
     await verifyBearerToken(event.headers.authorization);
 

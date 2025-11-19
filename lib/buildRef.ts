@@ -22,7 +22,7 @@ export const buildRef = (
           body[idField] = ref.id;
         }
       } else {
-        throw new Error(`Bad request. Missing required field: ${idField}`);
+        throw new Error(`Bad request: Missing required field: ${idField}`);
       }
     } else {
       if (ref instanceof admin.firestore.DocumentReference) {
