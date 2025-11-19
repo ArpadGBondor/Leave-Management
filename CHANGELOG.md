@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.3...v1.4.4) (2025-11-19)
+
+
+### Bug Fixes
+
+* refactor error responses, and document them. ([9690350](https://github.com/ArpadGBondor/Leave-Management/commit/9690350ef23bc2b437a3f0366ee4e564624ab024))
+
 ## [1.4.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.2...v1.4.3) (2025-11-17)
 
 
