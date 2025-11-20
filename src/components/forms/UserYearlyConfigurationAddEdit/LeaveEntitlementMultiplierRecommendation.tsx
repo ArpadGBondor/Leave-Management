@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import User from '../../../interface/User.interface';
 import WorkdaysOfTheWeek from '../../../interface/WorkdaysOfTheWeek.interface';
 import countWorkdays from '../../../utils/countWorkdays';
+import InfoBubble from '../../info/InfoBubble';
 
 interface LeaveEntitlementMultiplierRecommendationProps<T> {
   user: User;
@@ -69,22 +70,28 @@ export default function LeaveEntitlementMultiplierRecommendation<
   }, [user.serviceStartDate, user.serviceStartDate, numberOfWorkdays]);
 
   return (
-    <>
+    <div>
       <h4 className="text-xl font-medium text-brand-green-700">
-        Leave entitlement multiplier calculation
+        Leave entitlement multiplier recommendation
       </h4>
+      <InfoBubble>
+        The leave entitlement multiplier adjusts a team member’s annual holiday
+        allowance based on two factors: the number of days they normally work
+        each week and the portion of the year they are employed. Full-time staff
+        working five days a week for the entire year receive a multiplier of
+        1.0. Part-time schedules or mid-year starters receive a proportionally
+        lower multiplier, ensuring their entitlement fairly reflects their
+        working pattern and employment period.
+      </InfoBubble>
       <p className=" text-brand-green-800">
-        Selected <span className="font-bold">{numberOfWorkdays}</span> workdays
-        per week.
-        <br />
+        Team member is scheduled to work {numberOfWorkdays} days per week, and
+        is{' '}
         {workdaysDuringEmployment === workdaysDuringTheYear ? (
-          <>Team member is employed all year.</>
+          <>employed all year.</>
         ) : (
           <>
-            Team member is only employed for{' '}
-            <span className="font-bold">{workdaysDuringEmployment}</span> out of{' '}
-            <span className="font-bold">{workdaysDuringTheYear}</span> workdays
-            in {year}.
+            only employed for {workdaysDuringEmployment} out of{' '}
+            {workdaysDuringTheYear} workdays in {year}.
           </>
         )}
         <br />
@@ -92,6 +99,6 @@ export default function LeaveEntitlementMultiplierRecommendation<
         {workdaysDuringEmployment / workdaysDuringTheYear} ={' '}
         <span className="font-bold">{recommendedMultiplier}</span>
       </p>
-    </>
+    </div>
   );
 }
