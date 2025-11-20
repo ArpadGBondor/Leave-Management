@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.4...v1.4.5) (2025-11-20)
+
+
+### Bug Fixes
+
+* show Leave Entitlement Recommendations above input fields. ([42480af](https://github.com/ArpadGBondor/Leave-Management/commit/42480afe72d69a18d4b12eea5d1dc199ad1278bb))
+
 ## [1.4.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.3...v1.4.4) (2025-11-19)
 
 
