@@ -89,6 +89,12 @@ const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
         setFormData={setFormData}
         year={currentYear()}
       />
+      {formData.numberOfBankHolidays > 0 && currentYear() && (
+        <p className=" text-brand-green-800 text-center">
+          Number of bank holiday days in {currentYear()}:{' '}
+          <span className="font-bold">{formData.numberOfBankHolidays}</span>
+        </p>
+      )}
     </form>
   );
 });

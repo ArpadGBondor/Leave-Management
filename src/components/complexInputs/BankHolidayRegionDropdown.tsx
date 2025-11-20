@@ -140,20 +140,6 @@ export default function BankHolidayRegionDropdown<
         options={bankHolidayOptions}
         onChange={(e) => handleInputChange(e, setFormData)}
       />
-      {workdaysOfTheWeek ? (
-        <p className=" text-brand-green-800 text-center">
-          Number of bank holiday days when team member is scheduled to work in{' '}
-          {year}:{' '}
-          <span className="font-bold">{formData.numberOfBankHolidays}</span>
-        </p>
-      ) : (
-        formData.numberOfBankHolidays > 0 && (
-          <p className=" text-brand-green-800 text-center">
-            Number of bank holiday days in {year}:{' '}
-            <span className="font-bold">{formData.numberOfBankHolidays}</span>
-          </p>
-        )
-      )}
     </>
   );
 }

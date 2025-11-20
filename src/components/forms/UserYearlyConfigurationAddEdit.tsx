@@ -13,6 +13,9 @@ import { firebase_collections } from '../../../lib/firebase_collections';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 import User from '../../interface/User.interface';
 import LeaveEntitlementMultiplierRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementMultiplierRecommendation';
+import LeaveEntitlementDeductionRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementDeductionRecommendation';
+import LeaveEntitlementBaseRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementBaseRecommendation';
+import LeaveEntitlementAdditionalRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementAdditionalRecommendation';
 
 interface UserYearlyConfigurationAddEditProps {
   isEditing: boolean;
@@ -178,11 +181,14 @@ export default function UserYearlyConfigurationAddEdit({
       <h3 className="text-2xl font-bold text-brand-green-700">
         Holiday Entitlement
       </h3>
+      <LeaveEntitlementBaseRecommendation />
+      <LeaveEntitlementAdditionalRecommendation />
       <LeaveEntitlementMultiplierRecommendation
         user={user}
         formData={formData}
         year={id}
       />
+      <LeaveEntitlementDeductionRecommendation formData={formData} year={id} />
       <HolidayCalculationInputs
         formData={formData}
         setFormData={setFormData}
