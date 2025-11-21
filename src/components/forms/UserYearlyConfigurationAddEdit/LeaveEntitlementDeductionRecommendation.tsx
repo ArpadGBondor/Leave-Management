@@ -1,5 +1,5 @@
 import BankHolidayRegion from '../../../interface/BankHolidayRegion.interface';
-import InfoBubble from '../../info/InfoBubble';
+import LeaveEntitlementDeductionInfo from '../../info/LeaveEntitlementDeductionInfo';
 
 interface LeaveEntitlementDeductionRecommendationProps<T> {
   formData: T;
@@ -14,12 +14,7 @@ export default function LeaveEntitlementDeductionRecommendation<
       <h4 className="text-xl font-medium text-brand-green-700">
         Leave entitlement deduction recommendation
       </h4>
-      <InfoBubble>
-        If the employee’s contract does not include bank holidays in addition to
-        their annual leave entitlement, the number of bank holidays that
-        coincide with their working days should be deducted from their total
-        entitlement.
-      </InfoBubble>
+      <LeaveEntitlementDeductionInfo />
       <p className=" text-brand-green-800">
         Number of bank holiday days when team member is scheduled to work in{' '}
         {year}:{' '}
