@@ -9,9 +9,6 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
 import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
-import Calendars from './pages/Calendars';
-import CalendarOfUser from './pages/CalendarOfUser';
-import ApprovedLeaves from './pages/ApprovedLeaves';
 
 const Home = lazy(() => import('./pages/Home'));
 const Requests = lazy(() => import('./pages/Requests'));
@@ -31,6 +28,10 @@ const RequestAddEdit = lazy(() => import('./pages/RequestAddEdit'));
 const ManageRequestApproveReject = lazy(
   () => import('./pages/ManageRequestApproveReject')
 );
+const Calendars = lazy(() => import('./pages/Calendars'));
+const CalendarOfUser = lazy(() => import('./pages/CalendarOfUser'));
+const ApprovedLeaves = lazy(() => import('./pages/ApprovedLeaves'));
+const RejectedLeaves = lazy(() => import('./pages/RejectedLeaves'));
 
 export default function App() {
   return (
@@ -58,6 +59,7 @@ export default function App() {
                   element={<RequestAddEdit />}
                 />
                 <Route path="/approved-leaves" element={<ApprovedLeaves />} />
+                <Route path="/rejected-leaves" element={<RejectedLeaves />} />
               </Route>
               <Route
                 element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}

@@ -4,8 +4,12 @@ import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
   const { user, userCount, loggedIn, loading: userLoading } = useUserContext();
-  const { ownApprovedLeavesCount, ownRequestCount, managableRequestCount } =
-    useRequestsContext();
+  const {
+    ownRejectedLeavesCount,
+    ownApprovedLeavesCount,
+    ownRequestCount,
+    managableRequestCount,
+  } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
   const bottomNavItems: NavItem[] = [];
@@ -49,6 +53,11 @@ const useNavItems = () => {
       name: `Approved Leaves (${ownApprovedLeavesCount})`,
       link: '/approved-leaves',
       icon: 'FaCheckCircle',
+    });
+    topNavItems.push({
+      name: `Rejected Leaves (${ownRejectedLeavesCount})`,
+      link: '/rejected-leaves',
+      icon: 'FaTimesCircle',
     });
   }
   topNavItems.push({ name: 'About', link: '/about', icon: 'FaInfoCircle' });

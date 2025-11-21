@@ -9,27 +9,27 @@ import { useUserContext } from '../context/user/useUserContext';
 import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
 
-export default function ApprovedLeaves() {
-  const [approvedLeaves, setApprovedLeaves] = useState<LeaveRequest[]>([]);
+export default function RejectedLeaves() {
+  const [rejectedLeaves, setRejectedLeaves] = useState<LeaveRequest[]>([]);
   const [year, setYear] = useState<number>(new Date().getUTCFullYear());
   const [loading, setLoading] = useState(true);
   const { user } = useUserContext();
 
   useEffect(() => {
     if (!user?.id) return;
-    const ownApprovedLeavesQuery = query(
-      collection(db, firebase_collections.APPROVED_LEAVES),
+    const ownRejectedLeavesQuery = query(
+      collection(db, firebase_collections.REJECTED_LEAVES),
       where('requestedById', '==', user.id),
       where('year', '==', `${year}`)
     );
     const unsubscribe = onSnapshot(
-      ownApprovedLeavesQuery,
+      ownRejectedLeavesQuery,
       (snapshot) => {
-        const approvedLeavesList = snapshot.docs.map((doc) => ({
+        const rejectedLeavesList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as LeaveRequest[];
-        setApprovedLeaves(approvedLeavesList);
+        setRejectedLeaves(rejectedLeavesList);
         setLoading(false);
       },
       (error) => {
@@ -82,15 +82,15 @@ export default function ApprovedLeaves() {
     },
   ];
 
-  if (loading) return <div className="p-8">Loading approved leaves...</div>;
+  if (loading) return <div className="p-8">Loading rejected leaves...</div>;
 
   return (
     <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
       <ChangeYear year={year} setYear={setYear} />
       <Table
-        data={approvedLeaves}
+        data={rejectedLeaves}
         columns={columns}
-        title="Your approved leaves"
+        title="Your rejected leaves"
       />
     </div>
   );
