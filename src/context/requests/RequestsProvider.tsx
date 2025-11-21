@@ -5,6 +5,7 @@ import {
   SET_OWN_REQUEST_COUNT,
   SET_MANAGABLE_REQUEST_COUNT,
   SET_OWN_APPROVED_LEAVES_COUNT,
+  SET_OWN_REJECTED_LEAVES_COUNT,
 } from '../types';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import {
@@ -20,13 +21,13 @@ import {
   LeaveRequest,
   LeaveRequestType,
 } from '../../interface/LeaveRequest.interface';
-import { data } from 'react-router-dom';
 
 interface RequestsProviderProps {
   children: React.ReactNode;
 }
 
 const initialState: RequestsState = {
+  ownRejectedLeavesCount: 0,
   ownApprovedLeavesCount: 0,
   ownRequestCount: 0,
   managableRequestCount: 0,
@@ -189,6 +190,23 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     if (!user) return;
     const year = new Date().getUTCFullYear();
 
+    const ownRejectedLeavesQuery = query(
+      collection(db, firebase_collections.REJECTED_LEAVES),
+      where('requestedById', '==', user.id),
+      where('year', '==', `${year}`)
+    );
+
+    const ownRejectedLeavesUnsubscribe: Unsubscribe = onSnapshot(
+      ownRejectedLeavesQuery,
+      (snapshot) => {
+        const requestCount: number = snapshot.docs.length;
+        dispatch({
+          type: SET_OWN_REJECTED_LEAVES_COUNT,
+          payload: requestCount,
+        });
+      }
+    );
+
     const ownApprovedLeavesQuery = query(
       collection(db, firebase_collections.APPROVED_LEAVES),
       where('requestedById', '==', user.id),
@@ -241,6 +259,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     }
 
     return () => {
+      ownRejectedLeavesUnsubscribe();
       ownApprovedLeavesUnsubscribe();
       ownRequestsUnsubscribe();
       managableRequestsUnsubscribe && managableRequestsUnsubscribe();

@@ -6,6 +6,7 @@ import {
 
 export type RequestsState = {
   ownApprovedLeavesCount: number;
+  ownRejectedLeavesCount: number;
   ownRequestCount: number;
   managableRequestCount: number;
 };

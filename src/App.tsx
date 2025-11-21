@@ -12,6 +12,7 @@ import Spinner from './components/spinner/Spinner';
 import Calendars from './pages/Calendars';
 import CalendarOfUser from './pages/CalendarOfUser';
 import ApprovedLeaves from './pages/ApprovedLeaves';
+import RejectedLeaves from './pages/RejectedLeaves';
 
 const Home = lazy(() => import('./pages/Home'));
 const Requests = lazy(() => import('./pages/Requests'));
@@ -58,6 +59,7 @@ export default function App() {
                   element={<RequestAddEdit />}
                 />
                 <Route path="/approved-leaves" element={<ApprovedLeaves />} />
+                <Route path="/rejected-leaves" element={<RejectedLeaves />} />
               </Route>
               <Route
                 element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
