@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.5...v1.4.6) (2025-11-21)
+
+
+### Bug Fixes
+
+* add instructions to manage company page too ([bcaa5cd](https://github.com/ArpadGBondor/Leave-Management/commit/bcaa5cdfd662e1e3930d0625cdc7359b1a669efe))
+
 ## [1.4.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.4...v1.4.5) (2025-11-20)
 
 
