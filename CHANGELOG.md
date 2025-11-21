@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.6...v1.4.7) (2025-11-21)
+
+
+### Bug Fixes
+
+* add approved-leaves page ([4df5264](https://github.com/ArpadGBondor/Leave-Management/commit/4df52643107d35e5b0cd6db81c70339179212226))
+
 ## [1.4.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.5...v1.4.6) (2025-11-21)
 
 
