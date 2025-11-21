@@ -1,3 +1,11 @@
+## [1.4.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.7...v1.4.8) (2025-11-21)
+
+
+### Bug Fixes
+
+* add rejected leaves page ([9410d53](https://github.com/ArpadGBondor/Leave-Management/commit/9410d53d3a6b92c55f5d44b5d95bc7a63eeea948))
+* lazy load new pages ([1b13a9e](https://github.com/ArpadGBondor/Leave-Management/commit/1b13a9e24bafc1e984c4e3d99a8503b0443267f0))
+
 ## [1.4.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.6...v1.4.7) (2025-11-21)
 
 
