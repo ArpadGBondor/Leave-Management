@@ -8,6 +8,10 @@ import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs'
 import SubmitFormResponse, {
   formResponse,
 } from '../../interface/SubmitFormResponse.interface';
+import LeaveEntitlementBaseInfo from '../info/LeaveEntitlementBaseInfo';
+import LeaveEntitlementAdditionalInfo from '../info/LeaveEntitlementAdditionalInfo';
+import LeaveEntitlementMultiplierInfo from '../info/LeaveEntitlementMultiplierInfo';
+import LeaveEntitlementDeductionInfo from '../info/LeaveEntitlementDeductionInfo';
 
 const CompanyHolidayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<HolidayEntitlement>({
@@ -105,6 +109,10 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
       <h3 className="text-2xl font-bold text-brand-green-700">
         Yearly holiday entitlement
       </h3>
+      <LeaveEntitlementBaseInfo />
+      <LeaveEntitlementAdditionalInfo />
+      <LeaveEntitlementMultiplierInfo />
+      <LeaveEntitlementDeductionInfo />
 
       <HolidayCalculationInputs
         formData={formData}

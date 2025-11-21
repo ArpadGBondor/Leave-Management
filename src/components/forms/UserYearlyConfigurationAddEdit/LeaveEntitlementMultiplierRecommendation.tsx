@@ -3,6 +3,7 @@ import User from '../../../interface/User.interface';
 import WorkdaysOfTheWeek from '../../../interface/WorkdaysOfTheWeek.interface';
 import countWorkdays from '../../../utils/countWorkdays';
 import InfoBubble from '../../info/InfoBubble';
+import LeaveEntitlementMultiplierInfo from '../../info/LeaveEntitlementMultiplierInfo';
 
 interface LeaveEntitlementMultiplierRecommendationProps<T> {
   user: User;
@@ -74,15 +75,7 @@ export default function LeaveEntitlementMultiplierRecommendation<
       <h4 className="text-xl font-medium text-brand-green-700">
         Leave entitlement multiplier recommendation
       </h4>
-      <InfoBubble>
-        The leave entitlement multiplier adjusts a team member’s annual holiday
-        allowance based on two factors: the number of days they normally work
-        each week and the portion of the year they are employed. Full-time staff
-        working five days a week for the entire year receive a multiplier of
-        1.0. Part-time schedules or mid-year starters receive a proportionally
-        lower multiplier, ensuring their entitlement fairly reflects their
-        working pattern and employment period.
-      </InfoBubble>
+      <LeaveEntitlementMultiplierInfo />
       <p className=" text-brand-green-800">
         Team member is scheduled to work {numberOfWorkdays} days per week, and
         is{' '}
