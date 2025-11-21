@@ -1,7 +1,11 @@
 import React, { useReducer, useEffect, useCallback } from 'react';
 import { RequestsContext, RequestsState } from './RequestsContext';
 import { RequestsReducer } from './RequestsReducer';
-import { SET_OWN_REQUEST_COUNT, SET_MANAGABLE_REQUEST_COUNT } from '../types';
+import {
+  SET_OWN_REQUEST_COUNT,
+  SET_MANAGABLE_REQUEST_COUNT,
+  SET_OWN_APPROVED_LEAVES_COUNT,
+} from '../types';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import {
   collection,
@@ -23,6 +27,7 @@ interface RequestsProviderProps {
 }
 
 const initialState: RequestsState = {
+  ownApprovedLeavesCount: 0,
   ownRequestCount: 0,
   managableRequestCount: 0,
 };
@@ -182,6 +187,25 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (!user) return;
+    const year = new Date().getUTCFullYear();
+
+    const ownApprovedLeavesQuery = query(
+      collection(db, firebase_collections.APPROVED_LEAVES),
+      where('requestedById', '==', user.id),
+      where('year', '==', `${year}`)
+    );
+
+    const ownApprovedLeavesUnsubscribe: Unsubscribe = onSnapshot(
+      ownApprovedLeavesQuery,
+      (snapshot) => {
+        const requestCount: number = snapshot.docs.length;
+        dispatch({
+          type: SET_OWN_APPROVED_LEAVES_COUNT,
+          payload: requestCount,
+        });
+      }
+    );
+
     const requestsRef = collection(db, firebase_collections.REQUESTS);
     const ownRequestQuery = query(
       requestsRef,
@@ -217,6 +241,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     }
 
     return () => {
+      ownApprovedLeavesUnsubscribe();
       ownRequestsUnsubscribe();
       managableRequestsUnsubscribe && managableRequestsUnsubscribe();
     };

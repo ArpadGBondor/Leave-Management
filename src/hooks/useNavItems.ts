@@ -4,7 +4,8 @@ import NavItem from '../interface/NavItem.interface';
 
 const useNavItems = () => {
   const { user, userCount, loggedIn, loading: userLoading } = useUserContext();
-  const { ownRequestCount, managableRequestCount } = useRequestsContext();
+  const { ownApprovedLeavesCount, ownRequestCount, managableRequestCount } =
+    useRequestsContext();
 
   const topNavItems: NavItem[] = [];
   const bottomNavItems: NavItem[] = [];
@@ -35,7 +36,7 @@ const useNavItems = () => {
     topNavItems.push({
       name: `Manage requests  (${managableRequestCount})`,
       link: '/manage-requests',
-      icon: 'FaClipboardCheck',
+      icon: 'FaClipboardCheck', // FaRegCalendarCheck
     });
   }
   if (loggedIn) {
@@ -43,6 +44,11 @@ const useNavItems = () => {
       name: `Requests (${ownRequestCount})`,
       link: '/requests',
       icon: 'FaPaperPlane',
+    });
+    topNavItems.push({
+      name: `Approved Leaves (${ownApprovedLeavesCount})`,
+      link: '/approved-leaves',
+      icon: 'FaCheckCircle',
     });
   }
   topNavItems.push({ name: 'About', link: '/about', icon: 'FaInfoCircle' });

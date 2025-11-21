@@ -19,6 +19,8 @@ import {
   FaArrowLeft,
   FaRegTimesCircle,
   FaCalendarAlt,
+  // FaRegCalendarCheck,
+  FaCheckCircle,
 } from 'react-icons/fa';
 
 export {
@@ -41,4 +43,6 @@ export {
   FaArrowLeft,
   FaRegTimesCircle,
   FaCalendarAlt,
+  // FaRegCalendarCheck,
+  FaCheckCircle,
 };
