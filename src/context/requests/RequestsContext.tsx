@@ -17,6 +17,8 @@ export interface RequestsContextType extends RequestsState {
     from: string,
     to: string,
     numberOfWorkdays: number,
+    isNumberOfWorkdaysOverwritten: boolean,
+    numberOfWorkdaysOverwritten: number,
     description: string
   ) => Promise<void>;
   updateRequest: (

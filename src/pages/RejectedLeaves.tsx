@@ -57,7 +57,10 @@ export default function RejectedLeaves() {
     },
     {
       header: 'Number of workdays',
-      accessor: 'numberOfWorkdays',
+      accessor: (row) =>
+        row.isNumberOfWorkdaysOverwritten
+          ? row.numberOfWorkdaysOverwritten
+          : row.numberOfWorkdays,
       sortable: true,
       width: 'min-w-24',
     },
