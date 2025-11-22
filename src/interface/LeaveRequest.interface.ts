@@ -4,12 +4,19 @@ export interface LeaveRequest {
   id: string;
   requestedById: string;
   requestedByName: string; // Let's store name too, so we don't have to look it up on listing requests
-  approvedById: string; // I'd prefer to have same structure for approved leaves
+  approvedById: string;
   approvedByName: string; // Let's store name too, so we don't have to look it up on listing requests
+
   from: string;
   to: string;
+
   numberOfWorkdays: number;
+  // let users adjust. maybe the calculation was wrong, maybe they want partial day leaves
+  isNumberOfWorkdaysOverwritten: boolean;
+  numberOfWorkdaysOverwritten: number;
+
   requestType: LeaveRequestType;
+
   description: string;
   created?: Timestamp;
   updated?: Timestamp;

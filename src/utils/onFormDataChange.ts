@@ -8,7 +8,9 @@ export function handleInputChange<T>(
 ) {
   const { name, value, type } = e.target;
   let parsedValue: any = value;
-  if (type === 'number') {
+  if (type === 'checkbox' && e.target instanceof HTMLInputElement) {
+    parsedValue = e.target.checked; // <-- THIS is the fix
+  } else if (type === 'number') {
     parsedValue = value === '' ? '' : Number(value);
   }
   handleValueChange(

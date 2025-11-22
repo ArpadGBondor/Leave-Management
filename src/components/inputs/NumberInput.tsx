@@ -9,6 +9,7 @@ interface NumberInputProps {
   error?: string;
   autoComplete?: string;
   disabled?: boolean;
+  hidden?: boolean;
   min?: number;
   max?: number;
   step?: number;
@@ -24,13 +25,14 @@ export default function NumberInput({
   error,
   autoComplete,
   disabled,
+  hidden,
   min,
   max,
   step,
   onChange,
 }: NumberInputProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={`flex flex-col gap-1 ${hidden ? 'hidden' : ''}`}>
       {/* Label */}
       <label htmlFor={id} className="block text-brand-green-800 text-medium">
         {label}
@@ -46,6 +48,7 @@ export default function NumberInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         disabled={disabled}
+        hidden={hidden}
         min={min}
         max={max}
         step={step}

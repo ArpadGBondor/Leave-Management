@@ -52,7 +52,7 @@ export default function DateInput({
           type="button"
           disabled={disabled}
           onClick={handleDisplayClick}
-          className={`relative flex flex-row justify-between items-center w-full rounded-full border px-4 py-2 cursor-pointer select-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2
+          className={`relative flex flex-row justify-between items-center w-full rounded-full border px-4 py-2 cursor-pointer select-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 focus:outline-none
           ${
             disabled
               ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed'

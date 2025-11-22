@@ -44,6 +44,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       from: string,
       to: string,
       numberOfWorkdays: number,
+      isNumberOfWorkdaysOverwritten: boolean,
+      numberOfWorkdaysOverwritten: number,
       description: string
     ) => {
       const currentUser = auth.currentUser;
@@ -60,6 +62,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         from,
         to,
         numberOfWorkdays,
+        isNumberOfWorkdaysOverwritten,
+        numberOfWorkdaysOverwritten,
         requestType,
         description,
         year: from.slice(0, 4),

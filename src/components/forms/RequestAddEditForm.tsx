@@ -34,6 +34,8 @@ import TextAreaInput from '../inputs/TextAreaInput';
 import countWorkdays from '../../utils/countWorkdays';
 import RadioInput from '../inputs/RadioInput';
 import isDateInRanges from '../../utils/isDateInRanges';
+import NumberInput from '../inputs/NumberInput';
+import CheckboxInput from '../inputs/CheckboxInput';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -53,6 +55,8 @@ export default function RequestAddEditForm({
     to: string;
     id: string;
     numberOfWorkdays: number;
+    isNumberOfWorkdaysOverwritten: boolean;
+    numberOfWorkdaysOverwritten: number;
     requestType: LeaveRequestType;
     description: string;
     requestedByName: string;
@@ -61,6 +65,8 @@ export default function RequestAddEditForm({
     from: '',
     to: '',
     numberOfWorkdays: 0,
+    isNumberOfWorkdaysOverwritten: false,
+    numberOfWorkdaysOverwritten: 0,
     requestType: leaveRequestTypeOptions[0],
     description: '',
     requestedByName: '',
@@ -71,6 +77,8 @@ export default function RequestAddEditForm({
     from: '',
     to: '',
     numberOfWorkdays: '',
+    isNumberOfWorkdaysOverwritten: '',
+    numberOfWorkdaysOverwritten: '',
     requestType: '',
     description: '',
     requestedByName: '',
@@ -107,6 +115,8 @@ export default function RequestAddEditForm({
     from,
     to,
     numberOfWorkdays,
+    isNumberOfWorkdaysOverwritten,
+    numberOfWorkdaysOverwritten,
     requestType,
     description,
     requestedByName,
@@ -149,6 +159,9 @@ export default function RequestAddEditForm({
           from: doc.from,
           to: doc.to,
           numberOfWorkdays: doc.numberOfWorkdays,
+          isNumberOfWorkdaysOverwritten:
+            doc.isNumberOfWorkdaysOverwritten ?? false,
+          numberOfWorkdaysOverwritten: doc.numberOfWorkdaysOverwritten ?? 0,
           requestType: doc.requestType,
           description: doc.description,
           requestedByName: doc.requestedByName,
@@ -448,6 +461,8 @@ export default function RequestAddEditForm({
           from,
           to,
           numberOfWorkdays,
+          isNumberOfWorkdaysOverwritten,
+          numberOfWorkdaysOverwritten,
           description,
         });
       } else {
@@ -456,6 +471,8 @@ export default function RequestAddEditForm({
           from,
           to,
           numberOfWorkdays,
+          isNumberOfWorkdaysOverwritten,
+          numberOfWorkdaysOverwritten,
           description
         );
       }
@@ -487,6 +504,17 @@ export default function RequestAddEditForm({
     } finally {
       stopLoading('delete-request');
     }
+  };
+
+  const autoUpdateOnCheckboxUpdate = (
+    state: typeof formData
+  ): typeof formData => {
+    return {
+      ...state,
+      numberOfWorkdaysOverwritten: state.isNumberOfWorkdaysOverwritten
+        ? state.numberOfWorkdays
+        : 0,
+    };
   };
 
   // Prevent editing if request does not belong to user
@@ -555,11 +583,53 @@ export default function RequestAddEditForm({
           </div>
         </div>
 
-        {numberOfWorkdays > 0 && (
-          <p className="text-brand-green-800">
-            Number of workdays: {numberOfWorkdays}
-          </p>
-        )}
+        <div className="flex flex-col md:flex-row items-stretch md:items-start gap-4">
+          <div className="flex-1">
+            {isNumberOfWorkdaysOverwritten ? (
+              <NumberInput
+                id="numberOfWorkdaysOverwritten"
+                label="Custom number of workdays"
+                name="numberOfWorkdaysOverwritten"
+                value={numberOfWorkdaysOverwritten}
+                onChange={(e) => handleInputChange(e, setFormData, setError)}
+                placeholder="DD-MM-YYYY"
+                error={errors.to}
+                disabled={disabled}
+                min={0}
+                step={0.5}
+              />
+            ) : (
+              <NumberInput
+                id="numberOfWorkdays"
+                label="Calculated number of workdays"
+                name="numberOfWorkdays"
+                value={numberOfWorkdays}
+                onChange={() => {}}
+                placeholder="DD-MM-YYYY"
+                error={errors.to}
+                disabled
+              />
+            )}
+          </div>
+          <div className="flex-1">
+            <CheckboxInput
+              id="isNumberOfWorkdaysOverwritten"
+              label="Custom number of days"
+              name="isNumberOfWorkdaysOverwritten"
+              checked={isNumberOfWorkdaysOverwritten}
+              onChange={(e) =>
+                handleInputChange(
+                  e,
+                  setFormData,
+                  setError,
+                  autoUpdateOnCheckboxUpdate
+                )
+              }
+              error={errors.isNumberOfWorkdaysOverwritten}
+              disabled={disabled}
+            />
+          </div>
+        </div>
 
         <TextAreaInput
           id="description"
