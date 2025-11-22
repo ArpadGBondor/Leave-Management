@@ -1,3 +1,10 @@
+## [1.4.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.8...v1.4.9) (2025-11-22)
+
+
+### Bug Fixes
+
+* add CheckboxInput, allow users to set custom number of requested leave days ([35e076f](https://github.com/ArpadGBondor/Leave-Management/commit/35e076fdb31cd664a315be88f34fa1e1ff907efb))
+
 ## [1.4.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.7...v1.4.8) (2025-11-21)
 
 
