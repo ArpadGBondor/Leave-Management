@@ -32,6 +32,9 @@ export interface RequestsContextType extends RequestsState {
   ) => Promise<void>;
   deleteRequest: (data: { id: string }) => Promise<void>;
   deleteRejectedLeave: (data: { id: string }) => Promise<void>;
+  reRequestRejectedLeave: (
+    data: { id: string } & Partial<LeaveRequest>
+  ) => Promise<void>;
 }
 
 export const RequestsContext = createContext<RequestsContextType | undefined>(
