@@ -8,12 +8,14 @@ import { useUserContext } from '../context/user/useUserContext';
 import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
 import { useFirebase } from '../hooks/useFirebase';
+import { useNavigate } from 'react-router-dom';
 
 export default function RejectedLeaves() {
   const [rejectedLeaves, setRejectedLeaves] = useState<LeaveRequest[]>([]);
   const [year, setYear] = useState<number>(new Date().getUTCFullYear());
   const [loading, setLoading] = useState(true);
   const { user } = useUserContext();
+  const navigate = useNavigate();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -98,6 +100,7 @@ export default function RejectedLeaves() {
         data={rejectedLeaves}
         columns={columns}
         title="Your rejected leaves"
+        onRowClick={(request) => navigate(`/rejected-leaves/${request.id}`)}
       />
     </div>
   );

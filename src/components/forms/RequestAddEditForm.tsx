@@ -41,12 +41,17 @@ interface RequestAddEditFormProps {
   requestId?: string;
   disabled?: boolean;
   setRequest?: React.Dispatch<React.SetStateAction<LeaveRequest | null>>;
+  requestCollection?:
+    | typeof firebase_collections.REQUESTS
+    | typeof firebase_collections.APPROVED_LEAVES
+    | typeof firebase_collections.REJECTED_LEAVES;
 }
 
 export default function RequestAddEditForm({
   requestId,
   disabled,
   setRequest,
+  requestCollection = firebase_collections.REQUESTS,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
   const { user } = useUserContext();
@@ -133,7 +138,7 @@ export default function RequestAddEditForm({
     if (!user?.id) return setFormError("Can't find logged in user.");
     if (requestId === 'new') return; /* New request, nothing to load */
     startLoading('fetch-request-details');
-    const ref = doc(db, firebase_collections.REQUESTS, requestId);
+    const ref = doc(db, requestCollection, requestId);
     getDoc(ref)
       .then(async (snap) => {
         if (!snap.exists()) return setFormError("Can't find request.");
