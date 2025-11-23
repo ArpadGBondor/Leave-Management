@@ -10,7 +10,6 @@ import {
   where,
 } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
-import { db } from '../../firebase.config';
 import { useUserContext } from '../../context/user/useUserContext';
 import {
   LeaveRequest,
@@ -36,6 +35,7 @@ import RadioInput from '../inputs/RadioInput';
 import isDateInRanges from '../../utils/isDateInRanges';
 import NumberInput from '../inputs/NumberInput';
 import CheckboxInput from '../inputs/CheckboxInput';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -110,6 +110,9 @@ export default function RequestAddEditForm({
   const { createRequest, updateRequest, deleteRequest } = useRequestsContext();
   const navigate = useNavigate();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   const {
     id,
     from,
@@ -125,6 +128,7 @@ export default function RequestAddEditForm({
   const isEditing = Boolean(requestId !== 'new');
 
   useEffect(() => {
+    if (!db) return;
     if (!requestId) return setFormError("Can't find request.");
     if (!user?.id) return setFormError("Can't find logged in user.");
     if (requestId === 'new') return; /* New request, nothing to load */
@@ -170,9 +174,10 @@ export default function RequestAddEditForm({
       .finally(() => {
         stopLoading('fetch-request-details');
       });
-  }, [requestId, disabled]);
+  }, [db, requestId, disabled]);
 
   useEffect(() => {
+    if (!db) return;
     if (disabled) return;
     if (!user?.id) return;
     startLoading('load-users-own-requests');
@@ -198,9 +203,10 @@ export default function RequestAddEditForm({
     );
 
     return () => ownRequestsUnsubscribe();
-  }, [disabled, user?.id]);
+  }, [db, disabled, user?.id]);
 
   useEffect(() => {
+    if (!db) return;
     if (disabled) return;
     if (!user?.id) return;
     if (!loadedYear) return;
@@ -228,11 +234,11 @@ export default function RequestAddEditForm({
     );
 
     return () => approvedLeavesUnsubscribe();
-  }, [disabled, user?.id, loadedYear]);
+  }, [db, disabled, user?.id, loadedYear]);
 
   useEffect(() => {
-    // no need to load year when just viewing
-    if (disabled) return;
+    if (!db) return;
+    if (disabled) return; // no need to load year when just viewing
     if (from) {
       const year = from.slice(0, 4);
       if (year !== loadedYear) {
@@ -240,7 +246,7 @@ export default function RequestAddEditForm({
         loadYear(year).finally(() => stopLoading('load-year'));
       }
     }
-  }, [from, disabled]);
+  }, [db, from, disabled]);
 
   useEffect(() => {
     // No need to update when just viewing

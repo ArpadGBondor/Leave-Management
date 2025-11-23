@@ -9,7 +9,6 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from 'firebase/firestore';
-import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/User.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
@@ -24,6 +23,7 @@ import UserYearlyConfigurationAddEdit from '../components/forms/UserYearlyConfig
 import { useCompanyContext } from '../context/company/useCompanyContext';
 import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
 import TeamMemberUserDetailsUpdate from '../components/forms/TeamMemberUserDetailsUpdate';
+import { useFirebase } from '../hooks/useFirebase';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -77,6 +77,9 @@ export default function ManageTeamMember() {
   } = useCompanyContext();
   const navigate = useNavigate();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
     setEmploymentYears(
       importedYears.filter((year) => {
@@ -92,6 +95,7 @@ export default function ManageTeamMember() {
   }, [importedYears, user?.serviceEndDate, user?.serviceStartDate]);
 
   useEffect(() => {
+    if (!db) return;
     if (!userId) return;
 
     startLoading('fetch-configured-years');
@@ -138,7 +142,7 @@ export default function ManageTeamMember() {
       configurationUnsubscribe();
       userUnsubscribe();
     };
-  }, [userId]);
+  }, [db, userId]);
 
   const selectRow = (row: UserHolidayEntitlement) => {
     setSelectedForEditing(row);

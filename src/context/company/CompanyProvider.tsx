@@ -3,7 +3,6 @@ import { CompanyContext } from './CompanyContext';
 import { loadingReducer, CompanyState } from './CompanyReducer';
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import { useUserContext } from '../user/useUserContext';
-import { auth, db } from '../../firebase.config';
 import {
   SET_HOLIDAY_ENTITLEMENT,
   SET_WORKDAYS_OF_THE_WEEK,
@@ -16,6 +15,7 @@ import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import ImportBankHolidayResponse from '../../interface/ImportBankHolidayResponse.interface';
 import BankHolidayRegion from '../../interface/BankHolidayRegion.interface';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface CompanyProviderProps {
   children: React.ReactNode;
@@ -49,9 +49,13 @@ const initialState: CompanyState = {
 const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(loadingReducer, initialState);
   const { user } = useUserContext();
+  const firebase = useFirebase();
+  const db = firebase?.db;
+  const auth = firebase?.auth;
 
   const updateHolidayEntitlement = useCallback(
     async (data: HolidayEntitlement) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -73,11 +77,12 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
       dispatch({ type: SET_HOLIDAY_ENTITLEMENT, payload: doc });
     },
-    [user]
+    [user, firebase]
   );
 
   const updateWorkdaysOfTheWeek = useCallback(
     async (data: WorkdaysOfTheWeek) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -99,11 +104,12 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
       dispatch({ type: SET_WORKDAYS_OF_THE_WEEK, payload: doc });
     },
-    [user]
+    [user, firebase]
   );
 
   const updateBankHolidayRegion = useCallback(
     async (data: BankHolidayRegion) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -125,11 +131,12 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
       dispatch({ type: SET_BANK_HOLIDAY_REGION, payload: doc });
     },
-    [user]
+    [user, firebase]
   );
 
   const importBankHolidaysFromGovUK =
     useCallback(async (): Promise<ImportBankHolidayResponse> => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -148,9 +155,10 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
       const result = await response.json();
       return result;
-    }, [user]);
+    }, [user, firebase]);
 
   useEffect(() => {
+    if (!db) return;
     const holidayEntitlementRef = doc(
       db,
       firebase_collections.CONFIG,
@@ -230,7 +238,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       importedRegionsUnsubscribe();
       importedYearsUnsubscribe();
     };
-  }, []);
+  }, [db]);
 
   return (
     <CompanyContext.Provider

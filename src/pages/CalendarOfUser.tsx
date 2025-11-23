@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/User.interface';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import UserCalendar from '../components/userCalendar/UserCalendar';
 import NavButton from '../components/buttons/NavButton';
 import ProfileBadge from '../components/profile/ProfileBadge';
+import { useFirebase } from '../hooks/useFirebase';
 
 export default function CalendarOfUser() {
   const { userId } = useParams();
   const [user, setUser] = useState<User | null>(null);
   const { startLoading, stopLoading } = useLoadingContext();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     if (!userId) return;
 
     startLoading('fetch-user');
@@ -35,7 +39,7 @@ export default function CalendarOfUser() {
       }
     );
     return () => userUnsubscribe();
-  }, [userId]);
+  }, [db, userId]);
 
   return (
     <>

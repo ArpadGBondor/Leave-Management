@@ -4,10 +4,10 @@ import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { db } from '../firebase.config';
 import { useUserContext } from '../context/user/useUserContext';
 import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
+import { useFirebase } from '../hooks/useFirebase';
 
 export default function RejectedLeaves() {
   const [rejectedLeaves, setRejectedLeaves] = useState<LeaveRequest[]>([]);
@@ -15,7 +15,11 @@ export default function RejectedLeaves() {
   const [loading, setLoading] = useState(true);
   const { user } = useUserContext();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     if (!user?.id) return;
     const ownRejectedLeavesQuery = query(
       collection(db, firebase_collections.REJECTED_LEAVES),
@@ -39,7 +43,7 @@ export default function RejectedLeaves() {
     );
 
     return () => unsubscribe();
-  }, [user?.id, year]);
+  }, [db, user?.id, year]);
 
   const columns: TableColumn<LeaveRequest>[] = [
     {

@@ -13,14 +13,7 @@ import {
   linkWithCredential,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  Timestamp,
-} from 'firebase/firestore';
-import { auth, db } from '../../firebase.config';
+import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
 import User, { userTypeOptions } from '../../interface/User.interface';
@@ -34,6 +27,7 @@ import {
 import getBase64FromUrl from '../../utils/getBase64FromUrl';
 import { useLoadingContext } from '../loading/useLoadingContext';
 import { firebase_collections } from '../../../lib/firebase_collections';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface Props {
   children: React.ReactNode;
@@ -42,12 +36,20 @@ interface Props {
 const UserProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, initialUserState);
   const { startLoading, stopLoading } = useLoadingContext();
+  const firebase = useFirebase();
+  const db = firebase?.db;
+  const auth = firebase?.auth;
 
-  const login = useCallback(async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
-  }, []);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      await signInWithEmailAndPassword(auth, email, password);
+    },
+    [auth]
+  );
 
   const loginWithGoogle = useCallback(async () => {
+    if (!auth || !db) throw new Error('Firebase not loaded yet');
     const provider = new GoogleAuthProvider();
     const cred = await signInWithPopup(auth, provider);
 
@@ -87,10 +89,11 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         dispatch({ type: SET_USER, payload: doc });
       }
     }
-  }, []);
+  }, [auth, db]);
 
   const register = useCallback(
     async (email: string, password: string, name: string, photo: string) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const cred = await createUserWithEmailAndPassword(auth, email, password);
 
       if (cred.user) {
@@ -117,11 +120,13 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         dispatch({ type: SET_USER, payload: doc });
       }
     },
-    []
+    [auth]
   );
 
-  const logout = () => signOut(auth);
-
+  const logout = useCallback(async () => {
+    if (!auth) throw new Error('Firebase not loaded yet');
+    await signOut(auth);
+  }, [auth]);
   /**
    * id always needs to be passed, this way the
    * function can update any user, not just the
@@ -129,6 +134,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
    */
   const updateUser = useCallback(
     async (data: { id: string } & Partial<User>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -166,7 +172,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         dispatch({ type: SET_USER, payload: doc });
       }
     },
-    [state?.user, auth.currentUser]
+    [state?.user, auth?.currentUser]
   );
 
   /**
@@ -176,6 +182,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
    */
   const deleteUser = useCallback(
     async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -196,11 +203,12 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         await signOut(auth);
       }
     },
-    [state?.user, auth.currentUser]
+    [state?.user, auth?.currentUser]
   );
 
   const updatePassword = useCallback(
     async (currentPassword: string, newPassword: string) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const user = auth.currentUser;
       if (!user || !user.email) throw new Error('No user logged in');
 
@@ -216,11 +224,12 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       // Now you can update password
       await firebaseUpdatePassword(user, newPassword);
     },
-    [auth.currentUser]
+    [auth?.currentUser]
   );
 
   const addPassword = useCallback(
     async (newPassword: string) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const user = auth.currentUser;
       if (!user || !user.email) throw new Error('No user logged in');
 
@@ -245,14 +254,19 @@ const UserProvider: React.FC<Props> = ({ children }) => {
         }
       }
     },
-    [auth.currentUser]
+    [auth?.currentUser]
   );
 
-  const forgotPassword = useCallback(async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
-  }, []);
+  const forgotPassword = useCallback(
+    async (email: string) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      await sendPasswordResetEmail(auth, email);
+    },
+    [auth]
+  );
 
   useEffect(() => {
+    if (!db || !auth) return;
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
       startLoading('user');
       dispatch({ type: SET_LOADING, payload: true });
@@ -300,7 +314,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       unsubscribeAuth();
       unsubscribeUsers();
     };
-  }, []);
+  }, [auth, db]);
 
   return (
     <UserContext.Provider

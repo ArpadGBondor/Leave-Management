@@ -15,12 +15,12 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
-import { auth, db } from '../../firebase.config';
 import { useUserContext } from '../user/useUserContext';
 import {
   LeaveRequest,
   LeaveRequestType,
 } from '../../interface/LeaveRequest.interface';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface RequestsProviderProps {
   children: React.ReactNode;
@@ -38,6 +38,10 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
   const { user } = useUserContext();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+  const auth = firebase?.auth;
+
   const createRequest = useCallback(
     async (
       requestType: LeaveRequestType,
@@ -48,6 +52,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       numberOfWorkdaysOverwritten: number,
       description: string
     ) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
@@ -82,11 +87,12 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
       return doc;
     },
-    [user, auth.currentUser]
+    [user, auth?.currentUser]
   );
 
   const updateRequest = useCallback(
     async (data: { id: string } & Partial<LeaveRequest>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
@@ -109,11 +115,12 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
       return doc;
     },
-    [user, auth.currentUser]
+    [user, auth?.currentUser]
   );
 
   const approveRequest = useCallback(
     async (data: { id: string } & Partial<LeaveRequest>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
@@ -138,11 +145,12 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
       return doc;
     },
-    [user, auth.currentUser]
+    [user, auth?.currentUser]
   );
 
   const rejectRequest = useCallback(
     async (data: { id: string } & Partial<LeaveRequest>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
@@ -167,11 +175,12 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
       return doc;
     },
-    [user, auth.currentUser]
+    [user, auth?.currentUser]
   );
 
   const deleteRequest = useCallback(
     async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -187,10 +196,11 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!createRequestResponse.ok)
         throw new Error('Failed to delete request');
     },
-    [auth.currentUser]
+    [auth?.currentUser]
   );
 
   useEffect(() => {
+    if (!db) return;
     if (!user) return;
     const year = new Date().getUTCFullYear();
 
@@ -268,7 +278,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       ownRequestsUnsubscribe();
       managableRequestsUnsubscribe && managableRequestsUnsubscribe();
     };
-  }, [user]);
+  }, [db, user]);
 
   return (
     <RequestsContext.Provider

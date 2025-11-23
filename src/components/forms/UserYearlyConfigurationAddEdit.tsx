@@ -3,7 +3,7 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { auth, db } from '../../firebase.config';
+import { getFirebase } from '../../firebase.lazy';
 import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
@@ -90,6 +90,7 @@ export default function UserYearlyConfigurationAddEdit({
 
     startLoading('update-user-yearly-configuration');
     try {
+      const { auth } = await getFirebase();
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
@@ -119,6 +120,7 @@ export default function UserYearlyConfigurationAddEdit({
   const onDelete = async () => {
     startLoading('delete-user-yearly-configuration');
     try {
+      const { auth } = await getFirebase();
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();

@@ -14,10 +14,10 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
-import { db } from '../../firebase.config';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
 import { LeaveRequest } from '../../interface/LeaveRequest.interface';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface UserCalendarProps {
   user: User;
@@ -89,7 +89,11 @@ export default function UserCalendar({
   } = useCompanyContext();
   const currentYear = format(currentMonth, 'yyyy');
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     if (!user?.id) return;
     startLoading('fetch-own-requests');
     const requestsRef = collection(db, firebase_collections.REQUESTS);
@@ -111,9 +115,10 @@ export default function UserCalendar({
       }
     );
     return () => ownRequestsUnsubscribe();
-  }, [user]);
+  }, [db, user]);
 
   useEffect(() => {
+    if (!db) return;
     if (!user?.id) return;
     if (!currentYear) return;
     const year = parseInt(currentYear);
@@ -188,9 +193,10 @@ export default function UserCalendar({
       currentYearApprovedLeavesUnsubscribe();
       nextYearApprovedLeavesUnsubscribe();
     };
-  }, [user?.id, currentYear]);
+  }, [db, user?.id, currentYear]);
 
   useEffect(() => {
+    if (!db) return;
     if (!user?.id) return;
     if (!currentYear) return;
     const year = parseInt(currentYear);
@@ -290,9 +296,10 @@ export default function UserCalendar({
       currentYearConfigurationUnsubscribe();
       nextYearConfigurationUnsubscribe();
     };
-  }, [user?.id, currentYear]);
+  }, [db, user?.id, currentYear]);
 
   useEffect(() => {
+    if (!db) return;
     if (!previousYearBankHolidayRegion) return;
     if (!currentYear) return;
     // Need to load previous and next year too
@@ -321,9 +328,10 @@ export default function UserCalendar({
     return () => {
       previousYearBankHolidaysUnsubscribe();
     };
-  }, [previousYearBankHolidayRegion, currentYear]);
+  }, [db, previousYearBankHolidayRegion, currentYear]);
 
   useEffect(() => {
+    if (!db) return;
     if (!currentYearBankHolidayRegion) return;
     if (!currentYear) return;
     // Need to load previous and next year too
@@ -350,9 +358,10 @@ export default function UserCalendar({
     return () => {
       currentYearBankHolidaysUnsubscribe();
     };
-  }, [currentYearBankHolidayRegion, currentYear]);
+  }, [db, currentYearBankHolidayRegion, currentYear]);
 
   useEffect(() => {
+    if (!db) return;
     if (!nextYearBankHolidayRegion) return;
     if (!currentYear) return;
     // Need to load previous and next year too
@@ -382,7 +391,7 @@ export default function UserCalendar({
     return () => {
       nextYearBankHolidaysUnsubscribe();
     };
-  }, [nextYearBankHolidayRegion, currentYear]);
+  }, [db, nextYearBankHolidayRegion, currentYear]);
 
   return (
     <Calendar
