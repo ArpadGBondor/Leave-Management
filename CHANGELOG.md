@@ -1,3 +1,10 @@
+## [1.4.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.10...v1.4.11) (2025-11-23)
+
+
+### Bug Fixes
+
+* allow user to delete rejected leave ([1808f46](https://github.com/ArpadGBondor/Leave-Management/commit/1808f4610a11795ceeeef3b1e029a642f8de7ae8))
+
 ## [1.4.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.9...v1.4.10) (2025-11-23)
 
 
