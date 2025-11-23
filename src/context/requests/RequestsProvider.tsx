@@ -98,7 +98,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const createRequestResponse = await fetch('/api/requests', {
+      const requestResponse = await fetch('/api/requests', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -109,9 +109,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           ...(data.from ? { year: data.from.slice(0, 4) } : {}),
         }),
       });
-      if (!createRequestResponse.ok)
-        throw new Error('Failed to update request');
-      const { doc } = await createRequestResponse.json();
+      if (!requestResponse.ok) throw new Error('Failed to update request');
+      const { doc } = await requestResponse.json();
 
       return doc;
     },
@@ -126,7 +125,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const createRequestResponse = await fetch('/api/request-approve', {
+      const requestResponse = await fetch('/api/request-approve', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,9 +138,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           approvedByName: user.name,
         }),
       });
-      if (!createRequestResponse.ok)
-        throw new Error('Failed to approve request');
-      const { doc } = await createRequestResponse.json();
+      if (!requestResponse.ok) throw new Error('Failed to approve request');
+      const { doc } = await requestResponse.json();
 
       return doc;
     },
@@ -156,7 +154,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const createRequestResponse = await fetch('/api/request-reject', {
+      const requestResponse = await fetch('/api/request-reject', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -169,9 +167,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           approvedByName: user.name,
         }),
       });
-      if (!createRequestResponse.ok)
-        throw new Error('Failed to reject request');
-      const { doc } = await createRequestResponse.json();
+      if (!requestResponse.ok) throw new Error('Failed to reject request');
+      const { doc } = await requestResponse.json();
 
       return doc;
     },
@@ -185,7 +182,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const createRequestResponse = await fetch('/api/requests', {
+      const requestResponse = await fetch('/api/requests', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -193,8 +190,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         },
         body: JSON.stringify({ id: data.id }),
       });
-      if (!createRequestResponse.ok)
-        throw new Error('Failed to delete request');
+      if (!requestResponse.ok) throw new Error('Failed to delete request');
     },
     [auth?.currentUser]
   );
@@ -206,7 +202,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const createRequestResponse = await fetch('/api/rejected-leaves', {
+      const requestResponse = await fetch('/api/rejected-leaves', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -214,10 +210,38 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         },
         body: JSON.stringify({ id: data.id }),
       });
-      if (!createRequestResponse.ok)
-        throw new Error('Failed to delete request');
+      if (!requestResponse.ok) throw new Error('Failed to delete request');
     },
     [auth?.currentUser]
+  );
+
+  const reRequestRejectedLeave = useCallback(
+    async (data: { id: string } & Partial<LeaveRequest>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const requestResponse = await fetch('/api/rejected-leave-re-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+          approvedById: user.id,
+          approvedByName: user.name,
+        }),
+      });
+      if (!requestResponse.ok) throw new Error('Failed to reject request');
+      const { doc } = await requestResponse.json();
+
+      return doc;
+    },
+    [user, auth?.currentUser]
   );
 
   useEffect(() => {
@@ -311,6 +335,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         rejectRequest,
         deleteRequest,
         deleteRejectedLeave,
+        reRequestRejectedLeave,
       }}
     >
       {children}

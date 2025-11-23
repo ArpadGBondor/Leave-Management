@@ -112,7 +112,13 @@ export default function RequestAddEditForm({
   } = useCompanyContext();
 
   const { startLoading, stopLoading } = useLoadingContext();
-  const { createRequest, updateRequest, deleteRequest } = useRequestsContext();
+  const {
+    createRequest,
+    updateRequest,
+    deleteRequest,
+    deleteRejectedLeave,
+    reRequestRejectedLeave,
+  } = useRequestsContext();
   const navigate = useNavigate();
 
   const firebase = useFirebase();
@@ -466,16 +472,29 @@ export default function RequestAddEditForm({
       }
 
       if (isEditing) {
-        await updateRequest({
-          id,
-          requestType,
-          from,
-          to,
-          numberOfWorkdays,
-          isNumberOfWorkdaysOverwritten,
-          numberOfWorkdaysOverwritten,
-          description,
-        });
+        if (requestCollection === firebase_collections.REJECTED_LEAVES) {
+          await reRequestRejectedLeave({
+            id,
+            requestType,
+            from,
+            to,
+            numberOfWorkdays,
+            isNumberOfWorkdaysOverwritten,
+            numberOfWorkdaysOverwritten,
+            description,
+          });
+        } else {
+          await updateRequest({
+            id,
+            requestType,
+            from,
+            to,
+            numberOfWorkdays,
+            isNumberOfWorkdaysOverwritten,
+            numberOfWorkdaysOverwritten,
+            description,
+          });
+        }
       } else {
         await createRequest(
           requestType,
@@ -494,7 +513,7 @@ export default function RequestAddEditForm({
       } else {
         toast.info('Request created');
       }
-      navigate('/requests');
+      onBack();
     } catch (error: any) {
       toast.error(
         error.message || `Could not ${isEditing ? 'update' : 'create'} request`
@@ -504,18 +523,27 @@ export default function RequestAddEditForm({
     }
   };
 
-  const onDelete = () => {
+  const onDelete = async () => {
     startLoading('delete-request');
     try {
-      deleteRequest({ id: requestId! });
+      if (requestCollection === firebase_collections.REJECTED_LEAVES) {
+        await deleteRejectedLeave({ id: requestId! });
+      } else {
+        await deleteRequest({ id: requestId! });
+      }
       toast.info('Request deleted');
-      navigate('/requests');
+      onBack();
     } catch (error: any) {
       toast.error(error.message || `Could not delete request`);
     } finally {
       stopLoading('delete-request');
     }
   };
+
+  const onBack = () =>
+    requestCollection === firebase_collections.REJECTED_LEAVES
+      ? navigate('/rejected-leaves')
+      : navigate('/requests');
 
   const autoUpdateOnCheckboxUpdate = (
     state: typeof formData
@@ -655,12 +683,20 @@ export default function RequestAddEditForm({
 
         {!disabled && (
           <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
-            <Button label={isEditing ? 'Submit changes' : 'Submit request'} />
+            <Button
+              label={
+                isEditing
+                  ? requestCollection === firebase_collections.REJECTED_LEAVES
+                    ? 'Re-submit request'
+                    : 'Submit changes'
+                  : 'Submit request'
+              }
+            />
             <Button
               type="button"
               variant="secondary"
               label={isEditing ? 'Discard changes' : 'Cancel'}
-              onClick={() => navigate('/requests')}
+              onClick={onBack}
             />
             {isEditing && (
               <Button
