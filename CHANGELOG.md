@@ -1,3 +1,10 @@
+## [1.4.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.9...v1.4.10) (2025-11-23)
+
+
+### Bug Fixes
+
+* lazy load firebase ([f15b580](https://github.com/ArpadGBondor/Leave-Management/commit/f15b5803b2fb14ff87ac2a82d609f1936d4561e8))
+
 ## [1.4.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.8...v1.4.9) (2025-11-22)
 
 
