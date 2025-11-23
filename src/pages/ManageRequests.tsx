@@ -2,18 +2,22 @@ import { useEffect, useState } from 'react';
 import { LeaveRequest } from '../interface/LeaveRequest.interface';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
-import { collection, onSnapshot, Timestamp } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { db } from '../firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { useFirebase } from '../hooks/useFirebase';
 
 export default function ManageRequests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     const requestsRef = collection(db, firebase_collections.REQUESTS);
 
     const unsubscribe = onSnapshot(
@@ -33,7 +37,8 @@ export default function ManageRequests() {
     );
 
     return () => unsubscribe();
-  }, []);
+  }, [db]);
+
   const columns: TableColumn<LeaveRequest>[] = [
     {
       header: 'Requested By',

@@ -4,9 +4,9 @@ import { useCompanyContext } from '../../context/company/useCompanyContext';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase.config';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface BankHolidayRegionDropdownProps<T> {
   formData: T;
@@ -34,6 +34,8 @@ export default function BankHolidayRegionDropdown<
   ] as SelectInputOption[]);
 
   const { importedRegions } = useCompanyContext();
+  const firebase = useFirebase();
+  const db = firebase?.db;
 
   const { bankHolidayRegionId } = formData;
 
@@ -60,6 +62,7 @@ export default function BankHolidayRegionDropdown<
   }, [importedRegions]);
 
   useEffect(() => {
+    if (!db) return;
     if (!year || !bankHolidayRegionId) {
       setFormData((prevState) => ({
         ...prevState,
@@ -117,6 +120,7 @@ export default function BankHolidayRegionDropdown<
 
     return () => numberOfBankHolidaysUnsubscribe();
   }, [
+    db,
     bankHolidayRegionId,
     year,
     employmentStart,

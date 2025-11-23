@@ -2,19 +2,13 @@ import { useEffect, useState } from 'react';
 import { LeaveRequest } from '../interface/LeaveRequest.interface';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
-import {
-  collection,
-  onSnapshot,
-  query,
-  Timestamp,
-  where,
-} from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { db } from '../firebase.config';
 import { useUserContext } from '../context/user/useUserContext';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import { format } from 'date-fns';
+import { useFirebase } from '../hooks/useFirebase';
 
 export default function Requests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -22,7 +16,11 @@ export default function Requests() {
   const { user } = useUserContext();
   const navigate = useNavigate();
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     if (!user?.id) return;
     const requestsRef = collection(db, firebase_collections.REQUESTS);
     const ownRequestQuery = query(
@@ -47,7 +45,7 @@ export default function Requests() {
     );
 
     return () => unsubscribe();
-  }, [user?.id]);
+  }, [db, user?.id]);
 
   const columns: TableColumn<LeaveRequest>[] = [
     {

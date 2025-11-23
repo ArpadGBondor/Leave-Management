@@ -4,17 +4,21 @@ import { LeaveRequest } from '../interface/LeaveRequest.interface';
 import { useEffect, useState } from 'react';
 import User from '../interface/User.interface';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase.config';
 import { firebase_collections } from '../../lib/firebase_collections';
 import UserCalendar from '../components/userCalendar/UserCalendar';
 import RequestApproveReject from '../components/forms/RequestApproveReject';
+import { useFirebase } from '../hooks/useFirebase';
 
 export default function ManageRequestApproveReject() {
   const { requestId } = useParams();
   const [request, setRequest] = useState<LeaveRequest | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     if (!request?.requestedById) return;
 
     const userRef = doc(
@@ -31,7 +35,7 @@ export default function ManageRequestApproveReject() {
 
     // Cleanup subscription on unmount
     return () => userUnsubscribe();
-  }, [request?.requestedById]);
+  }, [db, request?.requestedById]);
 
   return (
     <div className="p-4 md:p-8 md:min-w-xl rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">

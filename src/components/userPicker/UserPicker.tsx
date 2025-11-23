@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase.config';
 import User, { userTypeOptions } from '../../interface/User.interface';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import Table from '../table/Table';
 import { TableColumn } from '../table/types';
 import { maskEmail } from '../../utils/maskEmail';
+import { useFirebase } from '../../hooks/useFirebase';
 
 interface UserPickerProps {
   onClick: (user: User) => void;
@@ -16,7 +16,11 @@ export default function UserPicker({ onClick }: UserPickerProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const firebase = useFirebase();
+  const db = firebase?.db;
+
   useEffect(() => {
+    if (!db) return;
     const usersCol = collection(db, firebase_collections.USERS);
 
     const unsubscribe = onSnapshot(
@@ -36,7 +40,7 @@ export default function UserPicker({ onClick }: UserPickerProps) {
     );
 
     return () => unsubscribe();
-  }, []);
+  }, [db]);
 
   if (loading) return <div className="p-8">Loading users...</div>;
 
