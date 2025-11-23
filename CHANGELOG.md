@@ -1,3 +1,10 @@
+## [1.4.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.11...v1.4.12) (2025-11-23)
+
+
+### Bug Fixes
+
+* allow user to re-submit rejected leaves ([8671e8c](https://github.com/ArpadGBondor/Leave-Management/commit/8671e8cb2a52a16e37e114558b70703d30120e28))
+
 ## [1.4.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.10...v1.4.11) (2025-11-23)
 
 
