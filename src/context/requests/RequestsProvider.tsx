@@ -199,6 +199,27 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     [auth?.currentUser]
   );
 
+  const deleteRejectedLeave = useCallback(
+    async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const createRequestResponse = await fetch('/api/rejected-leaves', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: data.id }),
+      });
+      if (!createRequestResponse.ok)
+        throw new Error('Failed to delete request');
+    },
+    [auth?.currentUser]
+  );
+
   useEffect(() => {
     if (!db) return;
     if (!user) return;
@@ -289,6 +310,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         approveRequest,
         rejectRequest,
         deleteRequest,
+        deleteRejectedLeave,
       }}
     >
       {children}

@@ -31,7 +31,9 @@ const ManageRequestApproveReject = lazy(
 const Calendars = lazy(() => import('./pages/Calendars'));
 const CalendarOfUser = lazy(() => import('./pages/CalendarOfUser'));
 const ApprovedLeaves = lazy(() => import('./pages/ApprovedLeaves'));
+const ApprovedLeavesViev = lazy(() => import('./pages/ApprovedLeavesViev'));
 const RejectedLeaves = lazy(() => import('./pages/RejectedLeaves'));
+const RejectedLeavesViev = lazy(() => import('./pages/RejectedLeavesViev'));
 
 export default function App() {
   return (
@@ -59,7 +61,15 @@ export default function App() {
                   element={<RequestAddEdit />}
                 />
                 <Route path="/approved-leaves" element={<ApprovedLeaves />} />
+                <Route
+                  path="/approved-leaves/:requestId"
+                  element={<ApprovedLeavesViev />}
+                />
                 <Route path="/rejected-leaves" element={<RejectedLeaves />} />
+                <Route
+                  path="/rejected-leaves/:requestId"
+                  element={<RejectedLeavesViev />}
+                />
               </Route>
               <Route
                 element={<PrivateManagerRoute restrictToClaim="SUPER_ADMIN" />}
