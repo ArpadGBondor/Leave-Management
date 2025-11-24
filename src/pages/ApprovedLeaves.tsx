@@ -94,7 +94,7 @@ export default function ApprovedLeaves() {
   if (loading) return <div className="p-8">Loading approved leaves...</div>;
 
   return (
-    <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
+    <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full">
       <ChangeYear year={year} setYear={setYear} />
       <Table
         data={approvedLeaves}
