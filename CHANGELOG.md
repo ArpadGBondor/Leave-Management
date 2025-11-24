@@ -1,3 +1,10 @@
+## [1.4.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.12...v1.4.13) (2025-11-24)
+
+
+### Bug Fixes
+
+* update ChangeYear component ([c504d8c](https://github.com/ArpadGBondor/Leave-Management/commit/c504d8c05386f241365954ced5feac38f1413d71))
+
 ## [1.4.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.11...v1.4.12) (2025-11-23)
 
 
