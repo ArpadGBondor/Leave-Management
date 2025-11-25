@@ -235,11 +235,42 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         body: JSON.stringify({
           ...data,
           ...(data.from ? { year: data.from.slice(0, 4) } : {}),
-          approvedById: user.id,
-          approvedByName: user.name,
         }),
       });
-      if (!requestResponse.ok) throw new Error('Failed to reject request');
+      if (!requestResponse.ok)
+        throw new Error('Failed to re-request rejected leave');
+      const { doc } = await requestResponse.json();
+
+      return doc;
+    },
+    [user, auth?.currentUser]
+  );
+
+  const requestChangeToApprovedLeave = useCallback(
+    async (data: { id: string } & Partial<LeaveRequest>) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const requestResponse = await fetch(
+        '/api/approved-leave-change-request',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...data,
+            ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+            requestType: RequestTypeEnum.Change,
+          }),
+        }
+      );
+      if (!requestResponse.ok)
+        throw new Error('Failed to request change to approved leave');
       const { doc } = await requestResponse.json();
 
       return doc;
@@ -339,6 +370,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         deleteRequest,
         deleteRejectedLeave,
         reRequestRejectedLeave,
+        requestChangeToApprovedLeave,
       }}
     >
       {children}

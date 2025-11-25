@@ -11,12 +11,14 @@ export type HandlerConfigOptions = {
   sourcePath: CollectionConfig[]; // sequence of collections/subcollections
   destinationPath: CollectionConfig[]; // sequence of collections/subcollections
   restrictToClaim?: 'ADMIN' | 'SUPER_ADMIN';
+  action: 'MOVE' | 'COPY';
 };
 
-export const createMoveHandler = ({
+export const createMoveOrCopyHandler = ({
   sourcePath,
   destinationPath,
   restrictToClaim,
+  action,
 }: HandlerConfigOptions): Handler => {
   return async (event) => {
     try {
@@ -52,7 +54,9 @@ export const createMoveHandler = ({
         ...cleanUpdateFields,
         updated: admin.firestore.FieldValue.serverTimestamp(),
       });
-      batch.delete(sourceRef);
+      if (action === 'MOVE') {
+        batch.delete(sourceRef);
+      }
 
       await batch.commit();
 

@@ -3,10 +3,11 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import { createMoveOrCopyHandler } from '../../lib/handlers/createMoveOrCopyHandler';
 
 export const handler: Handler = createMoveOrCopyHandler({
-  sourcePath: [{ collection: firebase_collections.REQUESTS, idField: 'id' }],
-  destinationPath: [
-    { collection: firebase_collections.REJECTED_LEAVES, idField: 'id' },
+  sourcePath: [
+    { collection: firebase_collections.APPROVED_LEAVES, idField: 'id' },
   ],
-  restrictToClaim: 'ADMIN',
-  action: 'MOVE',
+  destinationPath: [
+    { collection: firebase_collections.REQUESTS, idField: 'id' },
+  ],
+  action: 'COPY',
 });

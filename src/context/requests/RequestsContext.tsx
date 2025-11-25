@@ -35,6 +35,9 @@ export interface RequestsContextType extends RequestsState {
   reRequestRejectedLeave: (
     data: { id: string } & Partial<LeaveRequest>
   ) => Promise<void>;
+  requestChangeToApprovedLeave: (
+    data: { id: string } & Partial<LeaveRequest>
+  ) => Promise<void>;
 }
 
 export const RequestsContext = createContext<RequestsContextType | undefined>(

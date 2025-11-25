@@ -119,6 +119,7 @@ export default function RequestAddEditForm({
     deleteRequest,
     deleteRejectedLeave,
     reRequestRejectedLeave,
+    requestChangeToApprovedLeave,
   } = useRequestsContext();
   const navigate = useNavigate();
 
@@ -468,7 +469,18 @@ export default function RequestAddEditForm({
       }
 
       if (isEditing) {
-        if (requestCollection === firebase_collections.REJECTED_LEAVES) {
+        if (requestCollection === firebase_collections.APPROVED_LEAVES) {
+          await requestChangeToApprovedLeave({
+            id,
+            leaveType,
+            from,
+            to,
+            numberOfWorkdays,
+            isNumberOfWorkdaysOverwritten,
+            numberOfWorkdaysOverwritten,
+            description,
+          });
+        } else if (requestCollection === firebase_collections.REJECTED_LEAVES) {
           await reRequestRejectedLeave({
             id,
             leaveType,
@@ -536,10 +548,13 @@ export default function RequestAddEditForm({
     }
   };
 
-  const onBack = () =>
-    requestCollection === firebase_collections.REJECTED_LEAVES
-      ? navigate('/rejected-leaves')
-      : navigate('/requests');
+  const onBack = () => {
+    if (requestCollection === firebase_collections.REJECTED_LEAVES)
+      return navigate('/rejected-leaves');
+    if (requestCollection === firebase_collections.APPROVED_LEAVES)
+      return navigate('/approved-leaves');
+    return navigate('/requests');
+  };
 
   const autoUpdateOnCheckboxUpdate = (
     state: typeof formData
@@ -684,6 +699,8 @@ export default function RequestAddEditForm({
                 isEditing
                   ? requestCollection === firebase_collections.REJECTED_LEAVES
                     ? 'Re-submit request'
+                    : requestCollection === firebase_collections.APPROVED_LEAVES
+                    ? 'Request changes'
                     : 'Submit changes'
                   : 'Submit request'
               }
@@ -694,14 +711,15 @@ export default function RequestAddEditForm({
               label={isEditing ? 'Discard changes' : 'Cancel'}
               onClick={onBack}
             />
-            {isEditing && (
-              <Button
-                type="button"
-                variant="danger"
-                label="Delete request"
-                onClick={onDelete}
-              />
-            )}
+            {isEditing &&
+              requestCollection !== firebase_collections.APPROVED_LEAVES && (
+                <Button
+                  type="button"
+                  variant="danger"
+                  label="Delete request"
+                  onClick={onDelete}
+                />
+              )}
           </div>
         )}
       </form>
