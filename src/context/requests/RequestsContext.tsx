@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import {
   LeaveRequest,
-  LeaveRequestType,
+  LeaveType,
 } from '../../interface/LeaveRequest.interface';
 
 export type RequestsState = {
@@ -13,7 +13,7 @@ export type RequestsState = {
 
 export interface RequestsContextType extends RequestsState {
   createRequest: (
-    requestType: LeaveRequestType,
+    leaveType: LeaveType,
     from: string,
     to: string,
     numberOfWorkdays: number,

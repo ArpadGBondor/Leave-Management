@@ -49,7 +49,7 @@ export default function ApprovedLeaves() {
 
   const columns: TableColumn<LeaveRequest>[] = [
     {
-      header: 'Requested Dates',
+      header: 'Requested dates',
       accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
       sortable: true,
       render: (from: Date, row: LeaveRequest) =>
@@ -71,8 +71,8 @@ export default function ApprovedLeaves() {
       width: 'min-w-24',
     },
     {
-      header: 'Request Type',
-      accessor: 'requestType',
+      header: 'Leave type',
+      accessor: 'leaveType',
       sortable: true,
       width: 'min-w-32',
     },

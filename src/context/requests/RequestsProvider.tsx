@@ -18,7 +18,8 @@ import {
 import { useUserContext } from '../user/useUserContext';
 import {
   LeaveRequest,
-  LeaveRequestType,
+  LeaveType,
+  RequestTypeEnum,
 } from '../../interface/LeaveRequest.interface';
 import { useFirebase } from '../../hooks/useFirebase';
 
@@ -44,7 +45,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
   const createRequest = useCallback(
     async (
-      requestType: LeaveRequestType,
+      leaveType: LeaveType,
       from: string,
       to: string,
       numberOfWorkdays: number,
@@ -69,7 +70,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         numberOfWorkdays,
         isNumberOfWorkdaysOverwritten,
         numberOfWorkdaysOverwritten,
-        requestType,
+        leaveType,
+        requestType: RequestTypeEnum.New,
         description,
         year: from.slice(0, 4),
       };
@@ -134,6 +136,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         body: JSON.stringify({
           ...data,
           ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+          requestType: RequestTypeEnum.Approved,
           approvedById: user.id,
           approvedByName: user.name,
         }),

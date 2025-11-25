@@ -13,8 +13,9 @@ import { firebase_collections } from '../../../lib/firebase_collections';
 import { useUserContext } from '../../context/user/useUserContext';
 import {
   LeaveRequest,
-  LeaveRequestType,
-  leaveRequestTypeOptions,
+  LeaveType,
+  LeaveTypeEnum,
+  leaveTypeOptions,
 } from '../../interface/LeaveRequest.interface';
 import NavButton from '../buttons/NavButton';
 import Button from '../buttons/Button';
@@ -62,7 +63,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: number;
     isNumberOfWorkdaysOverwritten: boolean;
     numberOfWorkdaysOverwritten: number;
-    requestType: LeaveRequestType;
+    leaveType: LeaveType;
     description: string;
     requestedByName: string;
   } = {
@@ -72,7 +73,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: 0,
     isNumberOfWorkdaysOverwritten: false,
     numberOfWorkdaysOverwritten: 0,
-    requestType: leaveRequestTypeOptions[0],
+    leaveType: LeaveTypeEnum.Annual,
     description: '',
     requestedByName: '',
   };
@@ -84,7 +85,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays: '',
     isNumberOfWorkdaysOverwritten: '',
     numberOfWorkdaysOverwritten: '',
-    requestType: '',
+    leaveType: '',
     description: '',
     requestedByName: '',
   };
@@ -131,7 +132,7 @@ export default function RequestAddEditForm({
     numberOfWorkdays,
     isNumberOfWorkdaysOverwritten,
     numberOfWorkdaysOverwritten,
-    requestType,
+    leaveType,
     description,
     requestedByName,
   } = formData;
@@ -177,7 +178,7 @@ export default function RequestAddEditForm({
           isNumberOfWorkdaysOverwritten:
             doc.isNumberOfWorkdaysOverwritten ?? false,
           numberOfWorkdaysOverwritten: doc.numberOfWorkdaysOverwritten ?? 0,
-          requestType: doc.requestType,
+          leaveType: doc.leaveType,
           description: doc.description,
           requestedByName: doc.requestedByName,
         });
@@ -262,12 +263,7 @@ export default function RequestAddEditForm({
   useEffect(() => {
     // No need to update when just viewing
     if (disabled) return;
-    if (
-      requestType === leaveRequestTypeOptions[0] &&
-      from &&
-      to &&
-      validateRequest()
-    ) {
+    if (leaveType === LeaveTypeEnum.Annual && from && to && validateRequest()) {
       const startDate = new Date(from);
       const endDate = new Date(to);
 
@@ -288,7 +284,7 @@ export default function RequestAddEditForm({
         numberOfWorkdays: 0,
       }));
     }
-  }, [disabled, from, to, requestType, bankHolidays, workdaysOfTheWeek]);
+  }, [disabled, from, to, leaveType, bankHolidays, workdaysOfTheWeek]);
 
   const loadYear = async (year: string) => {
     // fetch configuration
@@ -475,7 +471,7 @@ export default function RequestAddEditForm({
         if (requestCollection === firebase_collections.REJECTED_LEAVES) {
           await reRequestRejectedLeave({
             id,
-            requestType,
+            leaveType,
             from,
             to,
             numberOfWorkdays,
@@ -486,7 +482,7 @@ export default function RequestAddEditForm({
         } else {
           await updateRequest({
             id,
-            requestType,
+            leaveType,
             from,
             to,
             numberOfWorkdays,
@@ -497,7 +493,7 @@ export default function RequestAddEditForm({
         }
       } else {
         await createRequest(
-          requestType,
+          leaveType,
           from,
           to,
           numberOfWorkdays,
@@ -586,11 +582,11 @@ export default function RequestAddEditForm({
           </p>
         )}
         <RadioInput
-          id="requestType"
+          id="leaveType"
           label="Leave type"
-          name="requestType"
-          value={requestType}
-          options={leaveRequestTypeOptions}
+          name="leaveType"
+          value={leaveType}
+          options={leaveTypeOptions}
           onChange={(e) => handleInputChange(e, setFormData)}
           disabled={disabled}
         />
