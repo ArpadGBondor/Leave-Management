@@ -397,7 +397,7 @@ The Leave Management a demo web application that allows users to register, manag
 - Description:
 
   - Moves documents from `requests` collection to `approved-leaves` collection.
-  - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
+  - This endpoint uses a reusable handler (createMoveOrCopyHandler) to move a document from one collection to another one.
   - This endpoint is restricted to olny serve ADMIN users.
 
 - Request:
@@ -435,7 +435,7 @@ The Leave Management a demo web application that allows users to register, manag
 - Description:
 
   - Moves documents from `requests` collection to `rejected-leaves` collection.
-  - This endpoint uses a reusable handler (createMoveHandler) to move a document from one collection to another one.
+  - This endpoint uses a reusable handler (createMoveOrCopyHandler) to move a document from one collection to another one.
   - This endpoint is restricted to olny serve ADMIN users.
 
 - Request:
