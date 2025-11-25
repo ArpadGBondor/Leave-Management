@@ -47,7 +47,7 @@ export default function ManageRequests() {
       width: 'min-w-48',
     },
     {
-      header: 'Requested Dates',
+      header: 'Requested dates',
       accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
       sortable: true,
       render: (from: Date, row: LeaveRequest) =>
@@ -60,8 +60,8 @@ export default function ManageRequests() {
       width: 'min-w-48',
     },
     {
-      header: 'Request Type',
-      accessor: 'requestType',
+      header: 'Leave type',
+      accessor: 'leaveType',
       sortable: true,
       width: 'min-w-32',
     },

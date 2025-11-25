@@ -15,7 +15,11 @@ export interface LeaveRequest {
   isNumberOfWorkdaysOverwritten: boolean;
   numberOfWorkdaysOverwritten: number;
 
-  requestType: LeaveRequestType;
+  // Annual / Other
+  leaveType: LeaveType;
+
+  // New request / Cancellation request / Change request / Approved request
+  requestType: RequestType;
 
   description: string;
   created?: Timestamp;
@@ -23,6 +27,27 @@ export interface LeaveRequest {
   year: string; // store year separately for indexing
 }
 
-export const leaveRequestTypeOptions = ['Annual Leave', 'Other Leave'] as const;
+export const LeaveTypeEnum = {
+  Annual: 'Annual Leave',
+  Other: 'Other Leave',
+} as const;
 
-export type LeaveRequestType = (typeof leaveRequestTypeOptions)[number];
+export type LeaveType = (typeof LeaveTypeEnum)[keyof typeof LeaveTypeEnum];
+
+export const leaveTypeOptions: LeaveType[] = Object.values(LeaveTypeEnum);
+
+export const RequestTypeEnum = {
+  New: 'New request',
+  // unapproved, new request, details can change, there is only one document either in requests or rejected-leaves collection.
+  Cancellation: 'Cancellation request',
+  // approved request, no details should change, 3 collections can possible contain document with the same ID, approval should remove the document with the same ID from 3 collections
+  Change: 'Change request',
+  // approved request, details can change, 3 collections can possible contain document with the same ID
+  Approved: 'Approved request',
+  // approved request, no details change, just in the approved-leaves collection
+} as const;
+
+export type RequestType =
+  (typeof RequestTypeEnum)[keyof typeof RequestTypeEnum];
+
+export const requestTypeOptions: RequestType[] = Object.values(RequestTypeEnum);
