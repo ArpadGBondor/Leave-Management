@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.0...v1.5.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* allow user to request changes to approved leaves ([5c28ae8](https://github.com/ArpadGBondor/Leave-Management/commit/5c28ae806a835ffa045a5fe199bae5f328d943de))
+
 # [1.5.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.13...v1.5.0) (2025-11-25)
 
 
