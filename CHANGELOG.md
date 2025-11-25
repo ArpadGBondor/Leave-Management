@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.13...v1.5.0) (2025-11-25)
+
+
+### Features
+
+* Add RequestType to requests, rename LeaveRequestType to LeaveType to avoid confusion ([2053635](https://github.com/ArpadGBondor/Leave-Management/commit/205363595ab6e065c7a151ad1a44d2744b740f7e))
+
 ## [1.4.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.4.12...v1.4.13) (2025-11-24)
 
 
