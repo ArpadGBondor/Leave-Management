@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.1...v1.5.2) (2025-11-26)
+
+
+### Bug Fixes
+
+* allow user to request cancellation of approved request ([91e337c](https://github.com/ArpadGBondor/Leave-Management/commit/91e337cbcef1afdf0895ae20645d3cd46c79017a))
+
 ## [1.5.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.0...v1.5.1) (2025-11-25)
 
 
