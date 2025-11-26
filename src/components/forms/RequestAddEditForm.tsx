@@ -16,6 +16,8 @@ import {
   LeaveType,
   LeaveTypeEnum,
   leaveTypeOptions,
+  RequestType,
+  RequestTypeEnum,
 } from '../../interface/LeaveRequest.interface';
 import NavButton from '../buttons/NavButton';
 import Button from '../buttons/Button';
@@ -55,6 +57,9 @@ export default function RequestAddEditForm({
   requestCollection = firebase_collections.REQUESTS,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
+  const [requestType, setRequestType] = useState<RequestType>(
+    RequestTypeEnum.New
+  );
   const { user } = useUserContext();
   const defaultRequest: {
     from: string;
@@ -120,6 +125,7 @@ export default function RequestAddEditForm({
     deleteRejectedLeave,
     reRequestRejectedLeave,
     requestChangeToApprovedLeave,
+    requestCancellationOfApprovedLeave,
   } = useRequestsContext();
   const navigate = useNavigate();
 
@@ -139,6 +145,10 @@ export default function RequestAddEditForm({
   } = formData;
 
   const isEditing = Boolean(requestId !== 'new');
+
+  // Cancellation request should not get changes
+  const formInputsDisabled =
+    disabled || requestType === RequestTypeEnum.Cancellation;
 
   useEffect(() => {
     if (!db) return;
@@ -170,6 +180,8 @@ export default function RequestAddEditForm({
           await loadYear(year);
           stopLoading('load-year');
         }
+
+        setRequestType(doc.requestType);
 
         return setFormData({
           id: requestId,
@@ -534,7 +546,9 @@ export default function RequestAddEditForm({
   const onDelete = async () => {
     startLoading('delete-request');
     try {
-      if (requestCollection === firebase_collections.REJECTED_LEAVES) {
+      if (requestCollection === firebase_collections.APPROVED_LEAVES) {
+        await requestCancellationOfApprovedLeave({ id: requestId! });
+      } else if (requestCollection === firebase_collections.REJECTED_LEAVES) {
         await deleteRejectedLeave({ id: requestId! });
       } else {
         await deleteRequest({ id: requestId! });
@@ -581,7 +595,9 @@ export default function RequestAddEditForm({
   return (
     <>
       <h2 className="text-4xl font-bold text-brand-purple-700">
-        {disabled
+        {requestType === RequestTypeEnum.Cancellation
+          ? 'Cancellation request'
+          : formInputsDisabled
           ? 'Request details'
           : isEditing
           ? 'Change your request'
@@ -603,7 +619,7 @@ export default function RequestAddEditForm({
           value={leaveType}
           options={leaveTypeOptions}
           onChange={(e) => handleInputChange(e, setFormData)}
-          disabled={disabled}
+          disabled={formInputsDisabled}
         />
 
         <div className="flex flex-col md:flex-row gap-4">
@@ -616,7 +632,7 @@ export default function RequestAddEditForm({
               onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="DD-MM-YYYY"
               error={errors.from}
-              disabled={disabled}
+              disabled={formInputsDisabled}
             />
           </div>
           <div className="flex-1">
@@ -628,7 +644,7 @@ export default function RequestAddEditForm({
               onChange={(e) => handleInputChange(e, setFormData, setError)}
               placeholder="DD-MM-YYYY"
               error={errors.to}
-              disabled={disabled}
+              disabled={formInputsDisabled}
             />
           </div>
         </div>
@@ -644,7 +660,7 @@ export default function RequestAddEditForm({
                 onChange={(e) => handleInputChange(e, setFormData, setError)}
                 placeholder="DD-MM-YYYY"
                 error={errors.to}
-                disabled={disabled}
+                disabled={formInputsDisabled}
                 min={0}
                 step={0.5}
               />
@@ -676,7 +692,7 @@ export default function RequestAddEditForm({
                 )
               }
               error={errors.isNumberOfWorkdaysOverwritten}
-              disabled={disabled}
+              disabled={formInputsDisabled}
             />
           </div>
         </div>
@@ -689,37 +705,51 @@ export default function RequestAddEditForm({
           onChange={(e) => handleInputChange(e, setFormData, setError)}
           placeholder="You can share any additional information about your leave here."
           error={errors.description}
-          disabled={disabled}
+          disabled={formInputsDisabled}
         />
 
         {!disabled && (
           <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
-            <Button
-              label={
-                isEditing
-                  ? requestCollection === firebase_collections.REJECTED_LEAVES
-                    ? 'Re-submit request'
-                    : requestCollection === firebase_collections.APPROVED_LEAVES
-                    ? 'Request changes'
-                    : 'Submit changes'
-                  : 'Submit request'
-              }
-            />
+            {(requestCollection === firebase_collections.APPROVED_LEAVES ||
+              requestType !== RequestTypeEnum.Cancellation) && (
+              <Button
+                label={
+                  isEditing
+                    ? requestCollection === firebase_collections.REJECTED_LEAVES
+                      ? 'Re-submit request'
+                      : requestCollection ===
+                        firebase_collections.APPROVED_LEAVES
+                      ? 'Request changes'
+                      : 'Submit changes'
+                    : 'Submit request'
+                }
+              />
+            )}
+
             <Button
               type="button"
               variant="secondary"
-              label={isEditing ? 'Discard changes' : 'Cancel'}
+              label={
+                isEditing
+                  ? requestType === RequestTypeEnum.Cancellation
+                    ? 'Back'
+                    : 'Discard changes'
+                  : 'Cancel'
+              }
               onClick={onBack}
             />
-            {isEditing &&
-              requestCollection !== firebase_collections.APPROVED_LEAVES && (
-                <Button
-                  type="button"
-                  variant="danger"
-                  label="Delete request"
-                  onClick={onDelete}
-                />
-              )}
+            {isEditing && (
+              <Button
+                type="button"
+                variant="danger"
+                label={
+                  requestCollection === firebase_collections.APPROVED_LEAVES
+                    ? 'Request cancellation'
+                    : 'Delete request'
+                }
+                onClick={onDelete}
+              />
+            )}
           </div>
         )}
       </form>

@@ -278,6 +278,68 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     [user, auth?.currentUser]
   );
 
+  const requestCancellationOfApprovedLeave = useCallback(
+    async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const requestResponse = await fetch(
+        '/api/approved-leave-change-request',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...data,
+            requestType: RequestTypeEnum.Cancellation,
+          }),
+        }
+      );
+      if (!requestResponse.ok)
+        throw new Error('Failed to request change to approved leave');
+      const { doc } = await requestResponse.json();
+
+      return doc;
+    },
+    [user, auth?.currentUser]
+  );
+
+  const applyCancellationOfApprovedLeave = useCallback(
+    async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const deleteApprovedLeaveResponse = await fetch('/api/approved-leaves', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: data.id }),
+      });
+      if (!deleteApprovedLeaveResponse.ok)
+        throw new Error('Failed to delete approved leave');
+      const deleteRequestResponse = await fetch('/api/requests', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: data.id }),
+      });
+      if (!deleteRequestResponse.ok)
+        throw new Error('Failed to delete request');
+    },
+    [auth?.currentUser]
+  );
+
   useEffect(() => {
     if (!db) return;
     if (!user) return;
@@ -371,6 +433,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         deleteRejectedLeave,
         reRequestRejectedLeave,
         requestChangeToApprovedLeave,
+        requestCancellationOfApprovedLeave,
+        applyCancellationOfApprovedLeave,
       }}
     >
       {children}

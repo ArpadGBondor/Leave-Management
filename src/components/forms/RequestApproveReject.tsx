@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useRequestsContext } from '../../context/requests/useRequestsContext';
-import { LeaveRequest } from '../../interface/LeaveRequest.interface';
+import {
+  LeaveRequest,
+  RequestTypeEnum,
+} from '../../interface/LeaveRequest.interface';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
-import { useUserContext } from '../../context/user/useUserContext';
 
 interface RequestApproveRejectProp {
   request: LeaveRequest;
@@ -13,14 +15,19 @@ interface RequestApproveRejectProp {
 export default function RequestApproveReject({
   request,
 }: RequestApproveRejectProp) {
-  const { approveRequest, rejectRequest } = useRequestsContext();
+  const { approveRequest, rejectRequest, applyCancellationOfApprovedLeave } =
+    useRequestsContext();
   const { startLoading, stopLoading } = useLoadingContext();
   const navigate = useNavigate();
 
   const onApprove = async () => {
     startLoading('approve-request');
     try {
-      await approveRequest({ id: request.id });
+      if (request.requestType === RequestTypeEnum.Cancellation) {
+        await applyCancellationOfApprovedLeave({ id: request.id });
+      } else {
+        await approveRequest({ id: request.id });
+      }
       toast.info('Request approved');
       navigate('/manage-requests');
     } catch (error: any) {
@@ -46,7 +53,15 @@ export default function RequestApproveReject({
   return (
     <>
       <div className="flex flex-col md:flex-row md:justify-stretch gap-1 md:gap-4">
-        <Button type="button" label={'Approve request'} onClick={onApprove} />
+        <Button
+          type="button"
+          label={
+            request.requestType === RequestTypeEnum.Cancellation
+              ? 'Approve cancellation'
+              : 'Approve request'
+          }
+          onClick={onApprove}
+        />
         <Button
           type="button"
           variant="danger"
