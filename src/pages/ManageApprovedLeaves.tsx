@@ -5,16 +5,15 @@ import { TableColumn } from '../components/table/types';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
 import { useUserContext } from '../context/user/useUserContext';
-import { useNavigate } from 'react-router-dom';
-import Button from '../components/buttons/Button';
 import { format } from 'date-fns';
+import ChangeYear from '../components/complexInputs/ChangeYear';
 import { useFirebase } from '../hooks/useFirebase';
 
-export default function Requests() {
-  const [requests, setRequests] = useState<LeaveRequest[]>([]);
+export default function ManageApprovedLeaves() {
+  const [approvedLeaves, setApprovedLeaves] = useState<LeaveRequest[]>([]);
+  const [year, setYear] = useState<number>(new Date().getUTCFullYear());
   const [loading, setLoading] = useState(true);
   const { user } = useUserContext();
-  const navigate = useNavigate();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -22,20 +21,18 @@ export default function Requests() {
   useEffect(() => {
     if (!db) return;
     if (!user?.id) return;
-    const requestsRef = collection(db, firebase_collections.REQUESTS);
-    const ownRequestQuery = query(
-      requestsRef,
-      where('requestedById', '==', user.id)
-    ); // only this user's requests
-
+    const ownApprovedLeavesQuery = query(
+      collection(db, firebase_collections.APPROVED_LEAVES),
+      where('year', '==', `${year}`)
+    );
     const unsubscribe = onSnapshot(
-      ownRequestQuery,
+      ownApprovedLeavesQuery,
       (snapshot) => {
-        const requestsList = snapshot.docs.map((doc) => ({
+        const approvedLeavesList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as LeaveRequest[];
-        setRequests(requestsList);
+        setApprovedLeaves(approvedLeavesList);
         setLoading(false);
       },
       (error) => {
@@ -45,9 +42,15 @@ export default function Requests() {
     );
 
     return () => unsubscribe();
-  }, [db, user?.id]);
+  }, [db, year]);
 
   const columns: TableColumn<LeaveRequest>[] = [
+    {
+      header: 'Requested By',
+      accessor: 'requestedByName',
+      sortable: true,
+      width: 'min-w-48',
+    },
     {
       header: 'Requested dates',
       accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
@@ -62,15 +65,6 @@ export default function Requests() {
       width: 'min-w-48',
     },
     {
-      header: 'Number of workdays',
-      accessor: (row) =>
-        row.isNumberOfWorkdaysOverwritten
-          ? row.numberOfWorkdaysOverwritten
-          : row.numberOfWorkdays,
-      sortable: true,
-      width: 'min-w-24',
-    },
-    {
       header: 'Leave type',
       accessor: 'leaveType',
       sortable: true,
@@ -80,7 +74,17 @@ export default function Requests() {
       header: 'Additional information',
       accessor: 'description',
       sortable: true,
-      width: 'min-w-64',
+      width: 'max-w-48 md:max-w-64',
+      render: (description: string) => (
+        <div className="line-clamp-1">{description}</div>
+      ),
+    },
+    {
+      header: 'Created',
+      accessor: (row) => row.created?.toDate(),
+      sortable: true,
+      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
+      width: 'min-w-28',
     },
     {
       header: 'Updated',
@@ -91,22 +95,15 @@ export default function Requests() {
     },
   ];
 
-  if (loading) return <div className="p-8">Loading requests...</div>;
+  if (loading) return <div className="p-8">Loading approved leaves...</div>;
 
   return (
-    <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
+    <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full">
       <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
-        Your pending leave requests
+        Team's approved leaves
       </h1>
-      <Table
-        data={requests}
-        columns={columns}
-        onRowClick={(request) => navigate(`/requests/${request.id}`)}
-      />
-      <Button
-        label="New leave request"
-        onClick={() => navigate(`/requests/new`)}
-      />
+      <ChangeYear year={year} setYear={setYear} />
+      <Table data={approvedLeaves} columns={columns} />
     </div>
   );
 }

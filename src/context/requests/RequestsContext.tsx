@@ -5,10 +5,11 @@ import {
 } from '../../interface/LeaveRequest.interface';
 
 export type RequestsState = {
+  ownRequestCount: number;
   ownApprovedLeavesCount: number;
   ownRejectedLeavesCount: number;
-  ownRequestCount: number;
   managableRequestCount: number;
+  managableApprovedLeavesCount: number;
   managableRejectedLeavesCount: number;
 };
 

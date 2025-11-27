@@ -3,9 +3,10 @@ import { RequestsContext, RequestsState } from './RequestsContext';
 import { RequestsReducer } from './RequestsReducer';
 import {
   SET_OWN_REQUEST_COUNT,
-  SET_MANAGABLE_REQUEST_COUNT,
   SET_OWN_APPROVED_LEAVES_COUNT,
   SET_OWN_REJECTED_LEAVES_COUNT,
+  SET_MANAGABLE_REQUEST_COUNT,
+  SET_MANAGABLE_APPROVED_LEAVES_COUNT,
   SET_MANAGABLE_REJECTED_LEAVES_COUNT,
 } from '../types';
 import { firebase_collections } from '../../../lib/firebase_collections';
@@ -29,10 +30,11 @@ interface RequestsProviderProps {
 }
 
 const initialState: RequestsState = {
-  ownRejectedLeavesCount: 0,
-  ownApprovedLeavesCount: 0,
   ownRequestCount: 0,
+  ownApprovedLeavesCount: 0,
+  ownRejectedLeavesCount: 0,
   managableRequestCount: 0,
+  managableApprovedLeavesCount: 0,
   managableRejectedLeavesCount: 0,
 };
 
@@ -360,8 +362,12 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       }
     );
 
+    const approvedLeavesRef = collection(
+      db,
+      firebase_collections.APPROVED_LEAVES
+    );
     const ownApprovedLeavesQuery = query(
-      collection(db, firebase_collections.APPROVED_LEAVES),
+      approvedLeavesRef,
       where('requestedById', '==', user.id),
       where('year', '==', `${year}`)
     );
@@ -431,11 +437,36 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       });
     }
 
+    const managableApprovedLeavesQuery = query(
+      approvedLeavesRef,
+      where('year', '==', `${year}`)
+    );
+    let managableApprovedLeavesUnsubscribe: null | Unsubscribe = null;
+    if (user?.claims?.ADMIN || user?.claims?.SUPER_ADMIN) {
+      managableApprovedLeavesUnsubscribe = onSnapshot(
+        managableApprovedLeavesQuery,
+        (snapshot) => {
+          const approvedLeavesCount: number = snapshot.docs.length;
+          dispatch({
+            type: SET_MANAGABLE_APPROVED_LEAVES_COUNT,
+            payload: approvedLeavesCount,
+          });
+        }
+      );
+    } else {
+      dispatch({
+        type: SET_MANAGABLE_REJECTED_LEAVES_COUNT,
+        payload: 0,
+      });
+    }
+
     return () => {
       ownRejectedLeavesUnsubscribe();
       ownApprovedLeavesUnsubscribe();
       ownRequestsUnsubscribe();
       managableRequestsUnsubscribe && managableRequestsUnsubscribe();
+      managableApprovedLeavesUnsubscribe &&
+        managableApprovedLeavesUnsubscribe();
       managableRejectedLeavesUnsubscribe &&
         managableRejectedLeavesUnsubscribe();
     };
