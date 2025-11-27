@@ -65,7 +65,11 @@ export default function RequestApproveReject({
         <Button
           type="button"
           variant="danger"
-          label="Reject request"
+          label={
+            request.requestType === RequestTypeEnum.Cancellation
+              ? 'Reject cancellation'
+              : 'Reject request'
+          }
           onClick={onReject}
         />
         <Button
