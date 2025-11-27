@@ -21,7 +21,6 @@ import {
 } from '../../interface/LeaveRequest.interface';
 import NavButton from '../buttons/NavButton';
 import Button from '../buttons/Button';
-
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
 import { handleInputChange } from '../../utils/onFormDataChange';
@@ -39,6 +38,8 @@ import isDateInRanges from '../../utils/isDateInRanges';
 import NumberInput from '../inputs/NumberInput';
 import CheckboxInput from '../inputs/CheckboxInput';
 import { useFirebase } from '../../hooks/useFirebase';
+import RequestTypeInfo from '../info/RequestTypeInfo';
+import { format } from 'date-fns';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -128,6 +129,7 @@ export default function RequestAddEditForm({
     requestCancellationOfApprovedLeave,
   } = useRequestsContext();
   const navigate = useNavigate();
+  const [approvedLeave, setApprovedLeave] = useState<LeaveRequest | null>(null);
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -149,6 +151,27 @@ export default function RequestAddEditForm({
   // Cancellation request should not get changes
   const formInputsDisabled =
     disabled || requestType === RequestTypeEnum.Cancellation;
+
+  useEffect(() => {
+    if (!db) return;
+    if (!requestId) return;
+    if (
+      requestType === RequestTypeEnum.Change ||
+      requestCollection === firebase_collections.APPROVED_LEAVES
+    ) {
+      const ref = doc(db, firebase_collections.APPROVED_LEAVES, requestId);
+      getDoc(ref).then(async (snap) => {
+        if (snap.exists()) {
+          const doc = snap.data() as LeaveRequest;
+          setApprovedLeave(doc);
+        } else {
+          setApprovedLeave(null);
+        }
+      });
+    } else {
+      setApprovedLeave(null);
+    }
+  }, [db, requestId, requestType]);
 
   useEffect(() => {
     if (!db) return;
@@ -604,6 +627,7 @@ export default function RequestAddEditForm({
           : 'New leave request'}
       </h2>
       <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
+        <RequestTypeInfo requestType={requestType} />
         {disabled && (
           <p className="text-brand-green-800">
             Requested by:{' '}
@@ -612,16 +636,24 @@ export default function RequestAddEditForm({
             </span>
           </p>
         )}
-        <RadioInput
-          id="leaveType"
-          label="Leave type"
-          name="leaveType"
-          value={leaveType}
-          options={leaveTypeOptions}
-          onChange={(e) => handleInputChange(e, setFormData)}
-          disabled={formInputsDisabled}
-        />
+        <div>
+          <RadioInput
+            id="leaveType"
+            label="Leave type"
+            name="leaveType"
+            value={leaveType}
+            options={leaveTypeOptions}
+            onChange={(e) => handleInputChange(e, setFormData)}
+            disabled={formInputsDisabled}
+          />
 
+          {approvedLeave && approvedLeave.leaveType !== leaveType && (
+            <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
+              Changed from:{' '}
+              <span className="font-medium ">{approvedLeave.leaveType}</span>
+            </p>
+          )}
+        </div>
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <DateInput
@@ -634,6 +666,14 @@ export default function RequestAddEditForm({
               error={errors.from}
               disabled={formInputsDisabled}
             />
+            {approvedLeave && approvedLeave.from !== from && (
+              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
+                Changed from:{' '}
+                <span className="font-medium ">
+                  {format(new Date(approvedLeave.from), 'dd-MM-yyyy')}
+                </span>
+              </p>
+            )}
           </div>
           <div className="flex-1">
             <DateInput
@@ -646,68 +686,105 @@ export default function RequestAddEditForm({
               error={errors.to}
               disabled={formInputsDisabled}
             />
-          </div>
-        </div>
-
-        <div className="flex flex-col md:flex-row items-stretch md:items-start gap-4">
-          <div className="flex-1">
-            {isNumberOfWorkdaysOverwritten ? (
-              <NumberInput
-                id="numberOfWorkdaysOverwritten"
-                label="Custom number of workdays"
-                name="numberOfWorkdaysOverwritten"
-                value={numberOfWorkdaysOverwritten}
-                onChange={(e) => handleInputChange(e, setFormData, setError)}
-                placeholder="DD-MM-YYYY"
-                error={errors.to}
-                disabled={formInputsDisabled}
-                min={0}
-                step={0.5}
-              />
-            ) : (
-              <NumberInput
-                id="numberOfWorkdays"
-                label="Calculated number of workdays"
-                name="numberOfWorkdays"
-                value={numberOfWorkdays}
-                onChange={() => {}}
-                placeholder="DD-MM-YYYY"
-                error={errors.to}
-                disabled
-              />
+            {approvedLeave && approvedLeave.to !== to && (
+              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
+                Changed from:{' '}
+                <span className="font-medium ">
+                  {format(new Date(approvedLeave.to), 'dd-MM-yyyy')}
+                </span>
+              </p>
             )}
           </div>
-          <div className="flex-1">
-            <CheckboxInput
-              id="isNumberOfWorkdaysOverwritten"
-              label="Custom number of days"
-              name="isNumberOfWorkdaysOverwritten"
-              checked={isNumberOfWorkdaysOverwritten}
-              onChange={(e) =>
-                handleInputChange(
-                  e,
-                  setFormData,
-                  setError,
-                  autoUpdateOnCheckboxUpdate
-                )
-              }
-              error={errors.isNumberOfWorkdaysOverwritten}
-              disabled={formInputsDisabled}
-            />
+        </div>
+        <div>
+          <div className="flex flex-col md:flex-row items-stretch md:items-start gap-4">
+            <div className="flex-1">
+              {isNumberOfWorkdaysOverwritten ? (
+                <NumberInput
+                  id="numberOfWorkdaysOverwritten"
+                  label="Custom number of workdays"
+                  name="numberOfWorkdaysOverwritten"
+                  value={numberOfWorkdaysOverwritten}
+                  onChange={(e) => handleInputChange(e, setFormData, setError)}
+                  placeholder="DD-MM-YYYY"
+                  error={errors.numberOfWorkdaysOverwritten}
+                  disabled={formInputsDisabled}
+                  min={0}
+                  step={0.5}
+                />
+              ) : (
+                <NumberInput
+                  id="numberOfWorkdays"
+                  label="Calculated number of workdays"
+                  name="numberOfWorkdays"
+                  value={numberOfWorkdays}
+                  onChange={() => {}}
+                  placeholder="DD-MM-YYYY"
+                  error={errors.numberOfWorkdays}
+                  disabled
+                />
+              )}
+              {approvedLeave &&
+                (approvedLeave.isNumberOfWorkdaysOverwritten
+                  ? approvedLeave.numberOfWorkdaysOverwritten
+                  : approvedLeave.numberOfWorkdays) !==
+                  (isNumberOfWorkdaysOverwritten
+                    ? numberOfWorkdaysOverwritten
+                    : numberOfWorkdays) && (
+                  <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
+                    Changed from:{' '}
+                    <span className="font-medium ">
+                      {approvedLeave.isNumberOfWorkdaysOverwritten
+                        ? approvedLeave.numberOfWorkdaysOverwritten
+                        : approvedLeave.numberOfWorkdays}
+                    </span>
+                  </p>
+                )}
+            </div>
+            <div className="flex-1">
+              {(!formInputsDisabled || isNumberOfWorkdaysOverwritten) && (
+                <CheckboxInput
+                  id="isNumberOfWorkdaysOverwritten"
+                  label="Custom number of days"
+                  name="isNumberOfWorkdaysOverwritten"
+                  checked={isNumberOfWorkdaysOverwritten}
+                  onChange={(e) =>
+                    handleInputChange(
+                      e,
+                      setFormData,
+                      setError,
+                      autoUpdateOnCheckboxUpdate
+                    )
+                  }
+                  error={errors.isNumberOfWorkdaysOverwritten}
+                  disabled={formInputsDisabled}
+                />
+              )}
+            </div>
           </div>
         </div>
-
-        <TextAreaInput
-          id="description"
-          label="Additional information"
-          name="description"
-          value={description}
-          onChange={(e) => handleInputChange(e, setFormData, setError)}
-          placeholder="You can share any additional information about your leave here."
-          error={errors.description}
-          disabled={formInputsDisabled}
-        />
-
+        <div>
+          <TextAreaInput
+            id="description"
+            label="Additional information"
+            name="description"
+            value={description}
+            onChange={(e) => handleInputChange(e, setFormData, setError)}
+            placeholder="You can share any additional information about your leave here."
+            error={errors.description}
+            disabled={formInputsDisabled}
+          />
+          {approvedLeave &&
+            approvedLeave.description &&
+            approvedLeave.description !== description && (
+              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
+                Changed from:{' '}
+                <span className="font-medium ">
+                  {approvedLeave.description}
+                </span>
+              </p>
+            )}
+        </div>
         {!disabled && (
           <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
             {(requestCollection === firebase_collections.APPROVED_LEAVES ||
