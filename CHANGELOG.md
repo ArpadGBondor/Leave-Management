@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.3...v1.5.4) (2025-11-27)
+
+
+### Bug Fixes
+
+* add Manage rejected leaves page ([ee540ad](https://github.com/ArpadGBondor/Leave-Management/commit/ee540ad3fda008961f3d3cf642bd20b5497008a1))
+
 ## [1.5.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.2...v1.5.3) (2025-11-27)
 
 
