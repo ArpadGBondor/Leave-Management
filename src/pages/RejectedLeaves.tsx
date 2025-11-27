@@ -95,11 +95,13 @@ export default function RejectedLeaves() {
 
   return (
     <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full">
+      <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
+        Your rejected leaves
+      </h1>
       <ChangeYear year={year} setYear={setYear} />
       <Table
         data={rejectedLeaves}
         columns={columns}
-        title="Your rejected leaves"
         onRowClick={(request) => navigate(`/rejected-leaves/${request.id}`)}
       />
     </div>

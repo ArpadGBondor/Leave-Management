@@ -9,6 +9,7 @@ const useNavItems = () => {
     ownApprovedLeavesCount,
     ownRequestCount,
     managableRequestCount,
+    managableRejectedLeavesCount,
   } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
@@ -40,7 +41,14 @@ const useNavItems = () => {
     topNavItems.push({
       name: `Manage requests  (${managableRequestCount})`,
       link: '/manage-requests',
-      icon: 'FaClipboardCheck', // FaRegCalendarCheck
+      icon: 'FaQuestionCircle', // FaCalendarCheck
+    });
+  }
+  if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
+      name: `Manage rejected leaves  (${managableRejectedLeavesCount})`,
+      link: '/manage-rejected-leaves',
+      icon: 'FaCalendarTimes', // FaCalendarCheck
     });
   }
   if (loggedIn) {

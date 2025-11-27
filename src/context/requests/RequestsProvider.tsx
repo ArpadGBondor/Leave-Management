@@ -6,6 +6,7 @@ import {
   SET_MANAGABLE_REQUEST_COUNT,
   SET_OWN_APPROVED_LEAVES_COUNT,
   SET_OWN_REJECTED_LEAVES_COUNT,
+  SET_MANAGABLE_REJECTED_LEAVES_COUNT,
 } from '../types';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import {
@@ -32,6 +33,7 @@ const initialState: RequestsState = {
   ownApprovedLeavesCount: 0,
   ownRequestCount: 0,
   managableRequestCount: 0,
+  managableRejectedLeavesCount: 0,
 };
 
 const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
@@ -338,12 +340,15 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     if (!user) return;
     const year = new Date().getUTCFullYear();
 
+    const rejectedLeavesRef = collection(
+      db,
+      firebase_collections.REJECTED_LEAVES
+    );
     const ownRejectedLeavesQuery = query(
-      collection(db, firebase_collections.REJECTED_LEAVES),
+      rejectedLeavesRef,
       where('requestedById', '==', user.id),
       where('year', '==', `${year}`)
     );
-
     const ownRejectedLeavesUnsubscribe: Unsubscribe = onSnapshot(
       ownRejectedLeavesQuery,
       (snapshot) => {
@@ -360,7 +365,6 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       where('requestedById', '==', user.id),
       where('year', '==', `${year}`)
     );
-
     const ownApprovedLeavesUnsubscribe: Unsubscribe = onSnapshot(
       ownApprovedLeavesQuery,
       (snapshot) => {
@@ -377,7 +381,6 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       requestsRef,
       where('requestedById', '==', user.id)
     ); // only this user's requests
-
     const ownRequestsUnsubscribe: Unsubscribe = onSnapshot(
       ownRequestQuery,
       (snapshot) => {
@@ -390,7 +393,6 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     );
 
     let managableRequestsUnsubscribe: null | Unsubscribe = null;
-
     if (user?.claims?.ADMIN || user?.claims?.SUPER_ADMIN) {
       managableRequestsUnsubscribe = onSnapshot(requestsRef, (snapshot) => {
         const requestCount: number = snapshot.docs.length;
@@ -406,11 +408,36 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       });
     }
 
+    const managableRejectedLeavesQuery = query(
+      rejectedLeavesRef,
+      where('year', '==', `${year}`)
+    );
+    let managableRejectedLeavesUnsubscribe: null | Unsubscribe = null;
+    if (user?.claims?.ADMIN || user?.claims?.SUPER_ADMIN) {
+      managableRejectedLeavesUnsubscribe = onSnapshot(
+        managableRejectedLeavesQuery,
+        (snapshot) => {
+          const rejectedLeavesCount: number = snapshot.docs.length;
+          dispatch({
+            type: SET_MANAGABLE_REJECTED_LEAVES_COUNT,
+            payload: rejectedLeavesCount,
+          });
+        }
+      );
+    } else {
+      dispatch({
+        type: SET_MANAGABLE_REJECTED_LEAVES_COUNT,
+        payload: 0,
+      });
+    }
+
     return () => {
       ownRejectedLeavesUnsubscribe();
       ownApprovedLeavesUnsubscribe();
       ownRequestsUnsubscribe();
       managableRequestsUnsubscribe && managableRequestsUnsubscribe();
+      managableRejectedLeavesUnsubscribe &&
+        managableRejectedLeavesUnsubscribe();
     };
   }, [db, user]);
 

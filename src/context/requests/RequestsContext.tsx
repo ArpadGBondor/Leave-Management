@@ -9,6 +9,7 @@ export type RequestsState = {
   ownRejectedLeavesCount: number;
   ownRequestCount: number;
   managableRequestCount: number;
+  managableRejectedLeavesCount: number;
 };
 
 export interface RequestsContextType extends RequestsState {
