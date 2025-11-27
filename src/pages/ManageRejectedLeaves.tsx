@@ -8,14 +8,12 @@ import { useUserContext } from '../context/user/useUserContext';
 import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
 import { useFirebase } from '../hooks/useFirebase';
-import { useNavigate } from 'react-router-dom';
 
-export default function ApprovedLeaves() {
-  const [approvedLeaves, setApprovedLeaves] = useState<LeaveRequest[]>([]);
+export default function ManageRejectedLeaves() {
+  const [rejectedLeaves, setRejectedLeaves] = useState<LeaveRequest[]>([]);
   const [year, setYear] = useState<number>(new Date().getUTCFullYear());
   const [loading, setLoading] = useState(true);
   const { user } = useUserContext();
-  const navigate = useNavigate();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -23,19 +21,18 @@ export default function ApprovedLeaves() {
   useEffect(() => {
     if (!db) return;
     if (!user?.id) return;
-    const ownApprovedLeavesQuery = query(
-      collection(db, firebase_collections.APPROVED_LEAVES),
-      where('requestedById', '==', user.id),
+    const ownRejectedLeavesQuery = query(
+      collection(db, firebase_collections.REJECTED_LEAVES),
       where('year', '==', `${year}`)
     );
     const unsubscribe = onSnapshot(
-      ownApprovedLeavesQuery,
+      ownRejectedLeavesQuery,
       (snapshot) => {
-        const approvedLeavesList = snapshot.docs.map((doc) => ({
+        const rejectedLeavesList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as LeaveRequest[];
-        setApprovedLeaves(approvedLeavesList);
+        setRejectedLeaves(rejectedLeavesList);
         setLoading(false);
       },
       (error) => {
@@ -45,9 +42,15 @@ export default function ApprovedLeaves() {
     );
 
     return () => unsubscribe();
-  }, [db, user?.id, year]);
+  }, [db, year]);
 
   const columns: TableColumn<LeaveRequest>[] = [
+    {
+      header: 'Requested By',
+      accessor: 'requestedByName',
+      sortable: true,
+      width: 'min-w-48',
+    },
     {
       header: 'Requested dates',
       accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
@@ -62,15 +65,6 @@ export default function ApprovedLeaves() {
       width: 'min-w-48',
     },
     {
-      header: 'Number of workdays',
-      accessor: (row) =>
-        row.isNumberOfWorkdaysOverwritten
-          ? row.numberOfWorkdaysOverwritten
-          : row.numberOfWorkdays,
-      sortable: true,
-      width: 'min-w-24',
-    },
-    {
       header: 'Leave type',
       accessor: 'leaveType',
       sortable: true,
@@ -80,7 +74,17 @@ export default function ApprovedLeaves() {
       header: 'Additional information',
       accessor: 'description',
       sortable: true,
-      width: 'min-w-64',
+      width: 'max-w-48 md:max-w-64',
+      render: (description: string) => (
+        <div className="line-clamp-1">{description}</div>
+      ),
+    },
+    {
+      header: 'Created',
+      accessor: (row) => row.created?.toDate(),
+      sortable: true,
+      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
+      width: 'min-w-28',
     },
     {
       header: 'Updated',
@@ -91,19 +95,15 @@ export default function ApprovedLeaves() {
     },
   ];
 
-  if (loading) return <div className="p-8">Loading approved leaves...</div>;
+  if (loading) return <div className="p-8">Loading rejected leaves...</div>;
 
   return (
     <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full">
       <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
-        Your approved leaves
+        Manage Rejected Leaves
       </h1>
       <ChangeYear year={year} setYear={setYear} />
-      <Table
-        data={approvedLeaves}
-        columns={columns}
-        onRowClick={(request) => navigate(`/approved-leaves/${request.id}`)}
-      />
+      <Table data={rejectedLeaves} columns={columns} />
     </div>
   );
 }

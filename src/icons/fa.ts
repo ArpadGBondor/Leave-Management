@@ -5,7 +5,7 @@ import {
   FaBriefcase,
   FaHome,
   FaUsers,
-  FaClipboardCheck,
+  // FaClipboardCheck,
   FaPaperPlane,
   FaInfoCircle,
   FaUser,
@@ -19,9 +19,11 @@ import {
   FaArrowLeft,
   FaRegTimesCircle,
   FaCalendarAlt,
-  // FaRegCalendarCheck,
+  // FaCalendarCheck,
+  FaCalendarTimes,
   FaCheckCircle,
   FaTimesCircle,
+  FaQuestionCircle,
 } from 'react-icons/fa';
 
 export {
@@ -30,7 +32,7 @@ export {
   FaBriefcase,
   FaHome,
   FaUsers,
-  FaClipboardCheck,
+  // FaClipboardCheck,
   FaPaperPlane,
   FaInfoCircle,
   FaUser,
@@ -44,7 +46,9 @@ export {
   FaArrowLeft,
   FaRegTimesCircle,
   FaCalendarAlt,
-  // FaRegCalendarCheck,
+  // FaCalendarCheck,
+  FaCalendarTimes,
   FaCheckCircle,
   FaTimesCircle,
+  FaQuestionCircle,
 };
