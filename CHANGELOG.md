@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.2...v1.5.3) (2025-11-27)
+
+
+### Bug Fixes
+
+* approved leave cancellation is faster if it is handled by a single backend function ([7613d59](https://github.com/ArpadGBondor/Leave-Management/commit/7613d5982edae68e8c8ddc1e9a1d3e2e4cf8f9c2))
+
 ## [1.5.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.1...v1.5.2) (2025-11-26)
 
 
