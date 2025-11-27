@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.5...v1.5.6) (2025-11-27)
+
+
+### Bug Fixes
+
+* show details of approved leave on change requests ([f4dad91](https://github.com/ArpadGBondor/Leave-Management/commit/f4dad914ae8828a66068db3b8d84bca40247f455))
+
 ## [1.5.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.4...v1.5.5) (2025-11-27)
 
 
