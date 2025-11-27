@@ -10,6 +10,7 @@ const useNavItems = () => {
     ownRequestCount,
     managableRequestCount,
     managableRejectedLeavesCount,
+    managableApprovedLeavesCount,
   } = useRequestsContext();
 
   const topNavItems: NavItem[] = [];
@@ -32,38 +33,45 @@ const useNavItems = () => {
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
-      name: `Calendars (${userCount})`,
+      name: `Personal calendars (${userCount})`,
       link: '/calendars',
       icon: 'FaCalendarAlt',
     });
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
-      name: `Manage requests  (${managableRequestCount})`,
+      name: `Team's pending requests  (${managableRequestCount})`,
       link: '/manage-requests',
-      icon: 'FaQuestionCircle', // FaCalendarCheck
+      icon: 'FaQuestionCircle',
     });
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
-      name: `Manage rejected leaves  (${managableRejectedLeavesCount})`,
+      name: `Team's approved leaves  (${managableApprovedLeavesCount})`,
+      link: '/manage-approved-leaves',
+      icon: 'FaCalendarCheck',
+    });
+  }
+  if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
+      name: `Team's rejected leaves  (${managableRejectedLeavesCount})`,
       link: '/manage-rejected-leaves',
-      icon: 'FaCalendarTimes', // FaCalendarCheck
+      icon: 'FaCalendarTimes',
     });
   }
   if (loggedIn) {
     topNavItems.push({
-      name: `Requests (${ownRequestCount})`,
+      name: `Your pending requests (${ownRequestCount})`,
       link: '/requests',
       icon: 'FaPaperPlane',
     });
     topNavItems.push({
-      name: `Approved Leaves (${ownApprovedLeavesCount})`,
+      name: `Your approved leaves (${ownApprovedLeavesCount})`,
       link: '/approved-leaves',
       icon: 'FaCheckCircle',
     });
     topNavItems.push({
-      name: `Rejected Leaves (${ownRejectedLeavesCount})`,
+      name: `Your rejected leaves (${ownRejectedLeavesCount})`,
       link: '/rejected-leaves',
       icon: 'FaTimesCircle',
     });
