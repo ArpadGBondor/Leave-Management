@@ -316,26 +316,19 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!currentUser) throw new Error('User not logged in');
       const token = await currentUser.getIdToken();
 
-      const deleteApprovedLeaveResponse = await fetch('/api/approved-leaves', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ id: data.id }),
-      });
+      const deleteApprovedLeaveResponse = await fetch(
+        '/api/approved-leave-cancel',
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ id: data.id }),
+        }
+      );
       if (!deleteApprovedLeaveResponse.ok)
         throw new Error('Failed to delete approved leave');
-      const deleteRequestResponse = await fetch('/api/requests', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ id: data.id }),
-      });
-      if (!deleteRequestResponse.ok)
-        throw new Error('Failed to delete request');
     },
     [auth?.currentUser]
   );
