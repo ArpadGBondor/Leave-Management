@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.6...v1.5.7) (2025-11-28)
+
+
+### Bug Fixes
+
+* refactor Request Add/Edit form validation ([6ea0ce7](https://github.com/ArpadGBondor/Leave-Management/commit/6ea0ce778f23e6e5edea58ab7639566b929fcff1))
+
 ## [1.5.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.5...v1.5.6) (2025-11-27)
 
 
