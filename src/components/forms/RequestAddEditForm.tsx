@@ -34,12 +34,13 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import TextAreaInput from '../inputs/TextAreaInput';
 import countWorkdays from '../../utils/countWorkdays';
 import RadioInput from '../inputs/RadioInput';
-import isDateInRanges from '../../utils/isDateInRanges';
 import NumberInput from '../inputs/NumberInput';
 import CheckboxInput from '../inputs/CheckboxInput';
 import { useFirebase } from '../../hooks/useFirebase';
 import RequestTypeInfo from '../info/RequestTypeInfo';
 import { format } from 'date-fns';
+import validateRequest from './RequestAddEditForm/validateRequest';
+import ChangedFieldNotice from './RequestAddEditForm/ChangedFieldNotice';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -299,7 +300,19 @@ export default function RequestAddEditForm({
   useEffect(() => {
     // No need to update when just viewing
     if (disabled) return;
-    if (leaveType === LeaveTypeEnum.Annual && from && to && validateRequest()) {
+    if (
+      leaveType === LeaveTypeEnum.Annual &&
+      from &&
+      to &&
+      validateRequest(
+        formData,
+        requestsOfTheUser,
+        approvedLeavesOfTheUser,
+        user,
+        setError,
+        requestId
+      )
+    ) {
       const startDate = new Date(from);
       const endDate = new Date(to);
 
@@ -374,118 +387,6 @@ export default function RequestAddEditForm({
       [field]: message,
     }));
 
-  const validateRequest = () => {
-    let valid = true;
-
-    const employmentStart = user?.serviceStartDate
-      ? new Date(user?.serviceStartDate)
-      : null;
-    const employmentEnd = user?.serviceEndDate
-      ? new Date(user?.serviceEndDate)
-      : null;
-
-    // From validation
-    if (!from.trim()) {
-      setError('from', 'Please Please enter start date.');
-      valid = false;
-    } else {
-      const fromDate = new Date(from);
-      if (employmentStart && employmentStart > fromDate) {
-        setError('from', `Leave cannot start before ${user?.serviceStartDate}`);
-        valid = false;
-      } else if (employmentEnd && employmentEnd < fromDate) {
-        setError('from', `Leave cannot start after ${user?.serviceEndDate}`);
-        valid = false;
-      } else {
-        setError('from', '');
-      }
-    }
-
-    // From validation
-    if (!to.trim()) {
-      setError('to', 'Please Please enter end date.');
-      valid = false;
-    } else if (new Date(from) > new Date(to)) {
-      setError('to', 'Leave end date should be later than start date.');
-      valid = false;
-    } else {
-      const toDate = new Date(to);
-      if (employmentStart && employmentStart > toDate) {
-        setError('to', `Leave cannot end before ${user?.serviceStartDate}`);
-        valid = false;
-      } else if (employmentEnd && employmentEnd < toDate) {
-        setError('to', `Leave cannot end after ${user?.serviceEndDate}`);
-        valid = false;
-      } else {
-        setError('to', '');
-      }
-    }
-
-    if (valid) {
-      const fromDate = new Date(from);
-      const toDate = new Date(to);
-      if (toDate.getFullYear() !== fromDate.getFullYear()) {
-        setError(
-          'to',
-          'Your start and end dates span multiple years. Please create a separate request for each year.'
-        );
-        valid = false;
-      }
-
-      // Check for conflicting requests
-      const otherRequests = requestsOfTheUser.filter(
-        // Do not compare the request with itself
-        (request) => requestId !== request.id
-      );
-
-      if (valid && isDateInRanges(fromDate, otherRequests)) {
-        setError('from', 'Your start date conflicts with another request.');
-        valid = false;
-      }
-      if (valid && isDateInRanges(toDate, otherRequests)) {
-        setError('to', 'Your end date conflicts with another request.');
-        valid = false;
-      }
-
-      for (const request of otherRequests) {
-        if (valid && fromDate < request.from && request.to < toDate) {
-          setError(
-            'to',
-            'Your requested leave interval conflicts with another request.'
-          );
-          valid = false;
-        }
-      }
-
-      // Check for conflicting requests
-      const otherApprovedLeaves = approvedLeavesOfTheUser.filter(
-        // Do not compare the request with itself
-        (request) => requestId !== request.id
-      );
-
-      if (valid && isDateInRanges(fromDate, otherApprovedLeaves)) {
-        setError('from', 'Your start date conflicts with an approved leave.');
-        valid = false;
-      }
-      if (valid && isDateInRanges(toDate, otherApprovedLeaves)) {
-        setError('to', 'Your end date conflicts with an approved leave.');
-        valid = false;
-      }
-
-      for (const request of otherApprovedLeaves) {
-        if (valid && fromDate < request.from && request.to < toDate) {
-          setError(
-            'to',
-            'Your requested leave interval conflicts with an approved leave.'
-          );
-          valid = false;
-        }
-      }
-    }
-
-    return valid;
-  };
-
   const onSubmitUpdateRequest = async (e: any) => {
     e.preventDefault();
 
@@ -498,8 +399,17 @@ export default function RequestAddEditForm({
         return;
       }
 
-      if (!validateRequest()) {
-        toast.error('Please fill in all fields');
+      if (
+        !validateRequest(
+          formData,
+          requestsOfTheUser,
+          approvedLeavesOfTheUser,
+          user,
+          setError,
+          requestId
+        )
+      ) {
+        toast.error('Form is not ready to submit');
         return;
       }
 
@@ -515,6 +425,7 @@ export default function RequestAddEditForm({
             numberOfWorkdaysOverwritten,
             description,
           });
+          toast.info('Change request submitted');
         } else if (requestCollection === firebase_collections.REJECTED_LEAVES) {
           await reRequestRejectedLeave({
             id,
@@ -526,6 +437,7 @@ export default function RequestAddEditForm({
             numberOfWorkdaysOverwritten,
             description,
           });
+          toast.info('Request re-submitted');
         } else {
           await updateRequest({
             id,
@@ -537,6 +449,7 @@ export default function RequestAddEditForm({
             numberOfWorkdaysOverwritten,
             description,
           });
+          toast.info('Request details updated');
         }
       } else {
         await createRequest(
@@ -548,14 +461,9 @@ export default function RequestAddEditForm({
           numberOfWorkdaysOverwritten,
           description
         );
-      }
-
-      // Call function to update or edit request -> Add 2 functions to Request Provider
-      if (isEditing) {
-        toast.info('Request details updated');
-      } else {
         toast.info('Request created');
       }
+
       onBack();
     } catch (error: any) {
       toast.error(
@@ -571,12 +479,14 @@ export default function RequestAddEditForm({
     try {
       if (requestCollection === firebase_collections.APPROVED_LEAVES) {
         await requestCancellationOfApprovedLeave({ id: requestId! });
+        toast.info('Cancellation request submitted');
       } else if (requestCollection === firebase_collections.REJECTED_LEAVES) {
         await deleteRejectedLeave({ id: requestId! });
+        toast.info('Request deleted');
       } else {
         await deleteRequest({ id: requestId! });
+        toast.info('Request deleted');
       }
-      toast.info('Request deleted');
       onBack();
     } catch (error: any) {
       toast.error(error.message || `Could not delete request`);
@@ -610,7 +520,7 @@ export default function RequestAddEditForm({
       <>
         <h2 className="text-4xl font-bold text-red-700">{formError}</h2>
         <div className="flex flex-col items-center">
-          <NavButton label="Back" link="/requests" icon="FaArrowLeft" />
+          <NavButton label="Back" link={'/'} icon="FaArrowLeft" />
         </div>
       </>
     );
@@ -646,12 +556,11 @@ export default function RequestAddEditForm({
             onChange={(e) => handleInputChange(e, setFormData)}
             disabled={formInputsDisabled}
           />
-
-          {approvedLeave && approvedLeave.leaveType !== leaveType && (
-            <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
-              Changed from:{' '}
-              <span className="font-medium ">{approvedLeave.leaveType}</span>
-            </p>
+          {approvedLeave && (
+            <ChangedFieldNotice
+              oldValue={approvedLeave.leaveType}
+              newValue={leaveType}
+            />
           )}
         </div>
         <div className="flex flex-col md:flex-row gap-4">
@@ -666,13 +575,12 @@ export default function RequestAddEditForm({
               error={errors.from}
               disabled={formInputsDisabled}
             />
-            {approvedLeave && approvedLeave.from !== from && (
-              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
-                Changed from:{' '}
-                <span className="font-medium ">
-                  {format(new Date(approvedLeave.from), 'dd-MM-yyyy')}
-                </span>
-              </p>
+            {approvedLeave && (
+              <ChangedFieldNotice
+                oldValue={approvedLeave.from}
+                newValue={from}
+                format={(s: string) => format(new Date(s), 'dd-MM-yyyy')}
+              />
             )}
           </div>
           <div className="flex-1">
@@ -686,13 +594,12 @@ export default function RequestAddEditForm({
               error={errors.to}
               disabled={formInputsDisabled}
             />
-            {approvedLeave && approvedLeave.to !== to && (
-              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
-                Changed from:{' '}
-                <span className="font-medium ">
-                  {format(new Date(approvedLeave.to), 'dd-MM-yyyy')}
-                </span>
-              </p>
+            {approvedLeave && (
+              <ChangedFieldNotice
+                oldValue={approvedLeave.to}
+                newValue={to}
+                format={(s: string) => format(new Date(s), 'dd-MM-yyyy')}
+              />
             )}
           </div>
         </div>
@@ -724,22 +631,20 @@ export default function RequestAddEditForm({
                   disabled
                 />
               )}
-              {approvedLeave &&
-                (approvedLeave.isNumberOfWorkdaysOverwritten
-                  ? approvedLeave.numberOfWorkdaysOverwritten
-                  : approvedLeave.numberOfWorkdays) !==
-                  (isNumberOfWorkdaysOverwritten
-                    ? numberOfWorkdaysOverwritten
-                    : numberOfWorkdays) && (
-                  <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
-                    Changed from:{' '}
-                    <span className="font-medium ">
-                      {approvedLeave.isNumberOfWorkdaysOverwritten
-                        ? approvedLeave.numberOfWorkdaysOverwritten
-                        : approvedLeave.numberOfWorkdays}
-                    </span>
-                  </p>
-                )}
+              {approvedLeave && (
+                <ChangedFieldNotice
+                  oldValue={
+                    approvedLeave.isNumberOfWorkdaysOverwritten
+                      ? approvedLeave.numberOfWorkdaysOverwritten
+                      : approvedLeave.numberOfWorkdays
+                  }
+                  newValue={
+                    isNumberOfWorkdaysOverwritten
+                      ? numberOfWorkdaysOverwritten
+                      : numberOfWorkdays
+                  }
+                />
+              )}
             </div>
             <div className="flex-1">
               {(!formInputsDisabled || isNumberOfWorkdaysOverwritten) && (
@@ -774,16 +679,12 @@ export default function RequestAddEditForm({
             error={errors.description}
             disabled={formInputsDisabled}
           />
-          {approvedLeave &&
-            approvedLeave.description &&
-            approvedLeave.description !== description && (
-              <p className="bg-brand-purple-100 text-brand-purple-800 border border-brand-purple-700 mt-2 py-2 px-4">
-                Changed from:{' '}
-                <span className="font-medium ">
-                  {approvedLeave.description}
-                </span>
-              </p>
-            )}
+          {approvedLeave && (
+            <ChangedFieldNotice
+              oldValue={approvedLeave.description}
+              newValue={description}
+            />
+          )}
         </div>
         {!disabled && (
           <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
