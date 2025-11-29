@@ -5,7 +5,10 @@ import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { passwordValidator } from '../../utils/fieldValidators';
+import {
+  validatePasswordComplexity,
+  validateRequiredField,
+} from '../../utils/fieldValidators';
 
 export default function PasswordAdd() {
   const [formData, setFormData] = useState({
@@ -29,13 +32,23 @@ export default function PasswordAdd() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validatePassword = () => {
     let valid = true;
+    clearErrors();
 
     // Check password
-    let passwordValid = passwordValidator(password);
-    valid &&= passwordValid.valid;
-    setError('password', passwordValid.message);
+    valid &&= validateRequiredField(
+      formData,
+      'password',
+      'your password',
+      setError
+    );
+    valid &&= validatePasswordComplexity(formData, 'password', setError);
 
     if (password !== confirmPassword) {
       setError('confirmPassword', 'Passwords do not match');

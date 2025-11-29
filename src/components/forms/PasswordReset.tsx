@@ -6,7 +6,10 @@ import Button from '../buttons/Button';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { emailValidator } from '../../utils/fieldValidators';
+import {
+  validateEmailFormat,
+  validateRequiredField,
+} from '../../utils/fieldValidators';
 
 export default function PasswordReset() {
   const [formData, setFormData] = useState({
@@ -35,13 +38,18 @@ export default function PasswordReset() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validateEmail = () => {
     let valid = true;
+    clearErrors();
 
     // Email validation
-    let emailValid = emailValidator(email);
-    valid &&= emailValid.valid;
-    setError('email', emailValid.message);
+    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateEmailFormat(formData, 'email', setError);
 
     return valid;
   };

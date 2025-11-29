@@ -2,31 +2,29 @@ import { Leave } from '../interface/Leave.interface';
 import isDateInRanges from './isDateInRanges';
 import { isSameDay } from 'date-fns';
 
-interface ValidatorResponse {
-  valid: boolean;
-  message: string;
-}
-const response = (valid: boolean, message: string): ValidatorResponse => ({
-  valid,
-  message,
-});
-export function emailValidator(email: string): ValidatorResponse {
+export function validateEmailFormat<T extends Record<string, string>>(
+  formData: T,
+  field: keyof T,
+  setError: (field: keyof T, msg: string) => void
+): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email.trim()) {
-    return response(false, 'Please enter your email address.');
-  } else if (!emailRegex.test(email)) {
-    return response(false, 'Please enter a valid email address.');
+  if (!emailRegex.test(formData[field])) {
+    setError(field, 'Please enter a valid email address.');
+    return false;
   }
-  return response(true, '');
+  return true;
 }
 
-export function passwordValidator(password: string): ValidatorResponse {
-  if (!password.trim()) {
-    return response(false, 'Please enter your password.');
-  } else if (password.trim().length < 6) {
-    return response(false, 'Password is too short.');
+export function validatePasswordComplexity<T extends Record<string, string>>(
+  formData: T,
+  field: keyof T,
+  setError: (field: keyof T, msg: string) => void
+): boolean {
+  if (formData[field].trim().length < 6) {
+    setError(field, 'Password is too short.');
+    return false;
   }
-  return response(true, '');
+  return true;
 }
 
 export function validateRequiredField<T extends Record<string, string>>(

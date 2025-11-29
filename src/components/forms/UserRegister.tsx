@@ -10,7 +10,11 @@ import {
   handleInputChange,
   handleValueChange,
 } from '../../utils/onFormDataChange';
-import { emailValidator, passwordValidator } from '../../utils/fieldValidators';
+import {
+  validateEmailFormat,
+  validatePasswordComplexity,
+  validateRequiredField,
+} from '../../utils/fieldValidators';
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
@@ -48,26 +52,31 @@ export default function UserRegister() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validateRegistration = () => {
     let valid = true;
 
+    clearErrors();
+
     // Name validation
-    if (!name.trim()) {
-      setError('name', 'Please enter your name.');
-      valid = false;
-    } else {
-      setError('name', '');
-    }
+    valid &&= validateRequiredField(formData, 'name', 'your name', setError);
 
     // Email validation
-    let emailValid = emailValidator(email);
-    valid &&= emailValid.valid;
-    setError('email', emailValid.message);
+    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateEmailFormat(formData, 'email', setError);
 
     // Check password
-    let passwordValid = passwordValidator(password);
-    valid &&= passwordValid.valid;
-    setError('password', passwordValid.message);
+    valid &&= validateRequiredField(
+      formData,
+      'password',
+      'your password',
+      setError
+    );
+    valid &&= validatePasswordComplexity(formData, 'password', setError);
 
     if (password !== confirmPassword) {
       // Check password confirmation

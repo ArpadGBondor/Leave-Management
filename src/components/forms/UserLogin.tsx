@@ -6,7 +6,11 @@ import Button from '../buttons/Button';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { emailValidator, passwordValidator } from '../../utils/fieldValidators';
+import {
+  validateEmailFormat,
+  validatePasswordComplexity,
+  validateRequiredField,
+} from '../../utils/fieldValidators';
 
 export default function UserLogin() {
   const [formData, setFormData] = useState({
@@ -37,18 +41,28 @@ export default function UserLogin() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validateLogin = () => {
     let valid = true;
 
+    clearErrors();
+
     // Email validation
-    let emailValid = emailValidator(email);
-    valid &&= emailValid.valid;
-    setError('email', emailValid.message);
+    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateEmailFormat(formData, 'email', setError);
 
     // Check password
-    let passwordValid = passwordValidator(password);
-    valid &&= passwordValid.valid;
-    setError('password', passwordValid.message);
+    valid &&= validateRequiredField(
+      formData,
+      'password',
+      'your password',
+      setError
+    );
+    valid &&= validatePasswordComplexity(formData, 'password', setError);
 
     return valid;
   };
