@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.8...v1.5.9) (2025-11-29)
+
+
+### Bug Fixes
+
+* refactor UserUpdate form validation ([78d6759](https://github.com/ArpadGBondor/Leave-Management/commit/78d6759de6e4ed65db4a95219010352971cfe4d3))
+
 ## [1.5.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.7...v1.5.8) (2025-11-29)
 
 
