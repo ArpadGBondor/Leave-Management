@@ -1,3 +1,10 @@
+## [1.5.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.7...v1.5.8) (2025-11-29)
+
+
+### Bug Fixes
+
+* refactor email format and password complexity validation ([6eb18e1](https://github.com/ArpadGBondor/Leave-Management/commit/6eb18e16574c181d9ae9d31da726b4d04808f49e))
+
 ## [1.5.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.6...v1.5.7) (2025-11-28)
 
 
