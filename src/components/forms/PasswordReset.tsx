@@ -48,7 +48,12 @@ export default function PasswordReset() {
     clearErrors();
 
     // Email validation
-    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateRequiredField(
+      formData,
+      'email',
+      'enter your email',
+      setError
+    );
     valid &&= validateEmailFormat(formData, 'email', setError);
 
     return valid;

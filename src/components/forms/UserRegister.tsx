@@ -13,6 +13,7 @@ import {
 import {
   validateEmailFormat,
   validatePasswordComplexity,
+  validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
 
@@ -63,36 +64,44 @@ export default function UserRegister() {
     clearErrors();
 
     // Name validation
-    valid &&= validateRequiredField(formData, 'name', 'your name', setError);
+    valid &&= validateRequiredField(
+      formData,
+      'name',
+      'enter your name',
+      setError
+    );
 
     // Email validation
-    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateRequiredField(
+      formData,
+      'email',
+      'enter your email',
+      setError
+    );
     valid &&= validateEmailFormat(formData, 'email', setError);
 
     // Check password
     valid &&= validateRequiredField(
       formData,
       'password',
-      'your password',
+      'enter your password',
       setError
     );
     valid &&= validatePasswordComplexity(formData, 'password', setError);
-
-    if (password !== confirmPassword) {
-      // Check password confirmation
-      setError('confirmPassword', 'Passwords do not match');
-      valid = false;
-    } else {
-      setError('confirmPassword', '');
-    }
+    valid &&= validatePasswordsMatching(
+      formData,
+      'password',
+      'confirmPassword',
+      setError
+    );
 
     // Photo validation
-    if (!photo.trim()) {
-      setError('photo', 'Please select a photo.');
-      valid = false;
-    } else {
-      setError('photo', '');
-    }
+    valid &&= validateRequiredField(
+      formData,
+      'photo',
+      'select a photo',
+      setError
+    );
 
     return valid;
   };

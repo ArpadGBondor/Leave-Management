@@ -52,14 +52,19 @@ export default function UserLogin() {
     clearErrors();
 
     // Email validation
-    valid &&= validateRequiredField(formData, 'email', 'your email', setError);
+    valid &&= validateRequiredField(
+      formData,
+      'email',
+      'enter your email',
+      setError
+    );
     valid &&= validateEmailFormat(formData, 'email', setError);
 
     // Check password
     valid &&= validateRequiredField(
       formData,
       'password',
-      'your password',
+      'enter your password',
       setError
     );
     valid &&= validatePasswordComplexity(formData, 'password', setError);

@@ -27,6 +27,19 @@ export function validatePasswordComplexity<T extends Record<string, string>>(
   return true;
 }
 
+export function validatePasswordsMatching<T extends Record<string, string>>(
+  formData: T,
+  passwordField: keyof T,
+  confirmField: keyof T,
+  setError: (field: keyof T, msg: string) => void
+): boolean {
+  if (formData[passwordField] !== formData[confirmField]) {
+    setError(confirmField, 'Passwords do not match');
+    return false;
+  }
+  return true;
+}
+
 export function validateRequiredField<T extends Record<string, string>>(
   formData: T,
   field: keyof T,
@@ -34,7 +47,7 @@ export function validateRequiredField<T extends Record<string, string>>(
   setError: (field: keyof T, msg: string) => void
 ): boolean {
   if (!formData[field].trim()) {
-    setError(field, `Please enter ${label}.`);
+    setError(field, `Please ${label}.`);
     return false;
   }
   return true;

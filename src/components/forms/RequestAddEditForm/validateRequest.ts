@@ -30,12 +30,17 @@ export default function validateRequest<T extends { from: string; to: string }>(
   const toDate = formData.to ? new Date(formData.to) : null;
 
   // validate that start date is not empty
-  valid &&= validateRequiredField(formData, 'from', 'start date', setError);
+  valid &&= validateRequiredField(
+    formData,
+    'from',
+    'enter start date',
+    setError
+  );
   // validate that start date is valid date
   valid &&= validateDateField(formData, 'from', 'start date', setError);
 
   // validate that end date is not empty
-  valid &&= validateRequiredField(formData, 'to', 'end date', setError);
+  valid &&= validateRequiredField(formData, 'to', 'enter end date', setError);
   // validate that end date is valid date
   valid &&= validateDateField(formData, 'to', 'end date', setError);
 
