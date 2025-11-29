@@ -5,7 +5,10 @@ import TextInput from '../inputs/TextInput';
 import { useUserContext } from '../../context/user/useUserContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { passwordValidator } from '../../utils/fieldValidators';
+import {
+  validatePasswordComplexity,
+  validateRequiredField,
+} from '../../utils/fieldValidators';
 
 export default function PasswordUpdate() {
   const defaultFormData = {
@@ -32,18 +35,32 @@ export default function PasswordUpdate() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validateUpdatePassword = () => {
     let valid = true;
+    clearErrors();
 
     // Check currentPassword
-    let currentPasswordValid = passwordValidator(currentPassword);
-    valid &&= currentPasswordValid.valid;
-    setError('currentPassword', currentPasswordValid.message);
+    valid &&= validateRequiredField(
+      formData,
+      'currentPassword',
+      'your password',
+      setError
+    );
+    valid &&= validatePasswordComplexity(formData, 'currentPassword', setError);
 
     // Check new password
-    let passwordValid = passwordValidator(password);
-    valid &&= passwordValid.valid;
-    setError('password', passwordValid.message);
+    valid &&= validateRequiredField(
+      formData,
+      'password',
+      'your password',
+      setError
+    );
+    valid &&= validatePasswordComplexity(formData, 'password', setError);
 
     if (password !== confirmPassword) {
       // Check password confirmation
