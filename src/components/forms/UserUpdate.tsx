@@ -12,6 +12,7 @@ import {
   handleValueChange,
 } from '../../utils/onFormDataChange';
 import DateInput from '../inputs/DateInput';
+import { validateRequiredField } from '../../utils/fieldValidators';
 
 export default function UserUpdate() {
   const defaultState: {
@@ -65,24 +66,31 @@ export default function UserUpdate() {
       [field]: message,
     }));
 
+  const clearErrors = () =>
+    setErrors({
+      ...defaultErrors,
+    });
+
   const validateUser = () => {
     let valid = true;
 
+    clearErrors();
+
     // Name validation
-    if (!name.trim()) {
-      setError('name', 'Please enter your name.');
-      valid = false;
-    } else {
-      setError('name', '');
-    }
+    valid &&= validateRequiredField(
+      formData,
+      'name',
+      'enter your name',
+      setError
+    );
 
     // Photo validation
-    if (!photo.trim()) {
-      setError('photo', 'Please select a photo.');
-      valid = false;
-    } else {
-      setError('photo', '');
-    }
+    valid &&= validateRequiredField(
+      formData,
+      'photo',
+      'select a photo',
+      setError
+    );
 
     if (
       serviceStartDate &&

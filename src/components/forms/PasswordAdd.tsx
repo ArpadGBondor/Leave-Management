@@ -7,6 +7,7 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import {
   validatePasswordComplexity,
+  validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
 
@@ -45,17 +46,16 @@ export default function PasswordAdd() {
     valid &&= validateRequiredField(
       formData,
       'password',
-      'your password',
+      'enter your password',
       setError
     );
     valid &&= validatePasswordComplexity(formData, 'password', setError);
-
-    if (password !== confirmPassword) {
-      setError('confirmPassword', 'Passwords do not match');
-      valid = false;
-    } else {
-      setError('confirmPassword', '');
-    }
+    valid &&= validatePasswordsMatching(
+      formData,
+      'password',
+      'confirmPassword',
+      setError
+    );
 
     return valid;
   };
