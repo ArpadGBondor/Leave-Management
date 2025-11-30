@@ -17,7 +17,7 @@
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
-  - [/api/users (POST|PUT|DELETE)](#apiusers-postputdelete)
+  - [/api/user (POST|PUT|DELETE)](#apiuser-postputdelete)
   - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
   - [/api/requests (POST|PUT|DELETE)](#apirequests-postputdelete)
   - [/api/request-approve (POST)](#apirequest-approve-post)
@@ -278,7 +278,7 @@ The Leave Management a demo web application that allows users to register, manag
   - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
-### /api/users (POST|PUT|DELETE)
+### /api/user (POST|PUT|DELETE)
 
 - Description:
   - Manages documents in the `users` collection in Firestore.
