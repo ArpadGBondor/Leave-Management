@@ -12,7 +12,7 @@ import {
 } from '../../utils/onFormDataChange';
 import {
   validateEmailFormat,
-  validatePasswordComplexity,
+  validatePasswordComplexityUpgraded,
   validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
@@ -87,7 +87,11 @@ export default function UserRegister() {
       'enter your password',
       setError
     );
-    valid &&= validatePasswordComplexity(formData, 'password', setError);
+    valid &&= validatePasswordComplexityUpgraded(
+      formData,
+      'password',
+      setError
+    );
     valid &&= validatePasswordsMatching(
       formData,
       'password',

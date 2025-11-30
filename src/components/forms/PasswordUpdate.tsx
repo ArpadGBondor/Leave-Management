@@ -7,6 +7,7 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import {
   validatePasswordComplexity,
+  validatePasswordComplexityUpgraded,
   validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
@@ -61,7 +62,11 @@ export default function PasswordUpdate() {
       'enter your new password',
       setError
     );
-    valid &&= validatePasswordComplexity(formData, 'password', setError);
+    valid &&= validatePasswordComplexityUpgraded(
+      formData,
+      'password',
+      setError
+    );
     valid &&= validatePasswordsMatching(
       formData,
       'password',
