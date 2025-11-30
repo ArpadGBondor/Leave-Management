@@ -10,6 +10,7 @@ import {
   validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
+import PasswordComplexityInfo from '../info/PasswordComplexityInfo';
 
 export default function PasswordAdd() {
   const [formData, setFormData] = useState({
@@ -102,7 +103,7 @@ export default function PasswordAdd() {
             hidden
           />
 
-          <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+          <h2 className="text-4xl font-bold text-brand-purple-700">
             Add password
           </h2>
 
@@ -129,6 +130,8 @@ export default function PasswordAdd() {
             autoComplete="new-password"
             error={errors.confirmPassword}
           />
+
+          <PasswordComplexityInfo />
 
           <Button label="Add password" />
         </form>

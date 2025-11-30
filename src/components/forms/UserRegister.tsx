@@ -16,6 +16,7 @@ import {
   validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
+import PasswordComplexityInfo from '../info/PasswordComplexityInfo';
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
@@ -192,6 +193,8 @@ export default function UserRegister() {
           setError={(msg) => setError('photo', msg)}
         />
       </div>
+
+      <PasswordComplexityInfo />
 
       <Button label="Register" />
     </form>

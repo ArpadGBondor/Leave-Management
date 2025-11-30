@@ -11,6 +11,7 @@ import {
   validatePasswordsMatching,
   validateRequiredField,
 } from '../../utils/fieldValidators';
+import PasswordComplexityInfo from '../info/PasswordComplexityInfo';
 
 export default function PasswordUpdate() {
   const defaultFormData = {
@@ -119,7 +120,7 @@ export default function PasswordUpdate() {
             autoComplete="username"
             hidden
           />
-          <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+          <h2 className="text-4xl font-bold text-brand-purple-700">
             Update password
           </h2>
           <TextInput
@@ -157,6 +158,8 @@ export default function PasswordUpdate() {
             autoComplete="new-password"
             error={errors.confirmPassword}
           />
+
+          <PasswordComplexityInfo />
 
           <Button label="Update password" />
         </form>
