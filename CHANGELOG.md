@@ -1,3 +1,10 @@
+## [1.5.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.13...v1.5.14) (2025-11-30)
+
+
+### Bug Fixes
+
+* add request types to tables listing leave requests ([9d2362d](https://github.com/ArpadGBondor/Leave-Management/commit/9d2362d6740c2738fe8102542c09a53fc023757f))
+
 ## [1.5.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.12...v1.5.13) (2025-11-30)
 
 
