@@ -103,7 +103,7 @@ export default function PasswordAdd() {
             hidden
           />
 
-          <h2 className="text-4xl font-bold text-brand-purple-700 mb-4">
+          <h2 className="text-4xl font-bold text-brand-purple-700">
             Add password
           </h2>
 
