@@ -74,7 +74,7 @@ export default function PasswordAdd() {
 
       toast.info('Password added');
     } catch (error: any) {
-      toast.error(error.message || 'Could not update password');
+      toast.error(error.message || 'Could not add password');
     } finally {
       stopLoading('add-password');
     }
