@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
-import { Leave } from '../../interface/Leave.interface';
+import { createLeaveObject, Leave } from '../../interface/Leave.interface';
 import User from '../../interface/User.interface';
 import Calendar from '../calendar/Calendar';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ import { firebase_collections } from '../../../lib/firebase_collections';
 import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
 import { LeaveRequest } from '../../interface/LeaveRequest.interface';
 import { useFirebase } from '../../hooks/useFirebase';
+import UserDashboard from '../dashboard/UserDashboard';
 
 interface UserCalendarProps {
   user: User;
@@ -56,6 +57,9 @@ export default function UserCalendar({
   const [nextYearBankHolidayRegion, setNextYearBankHolidayRegion] =
     useState('');
 
+  const [currentYearHolidayEntitlement, setCurrentYearHolidayEntitlement] =
+    useState(0);
+
   const [previousYearBankHolidays, setPreviousYearBankHolidays] = useState<
     Leave[]
   >([]);
@@ -86,6 +90,7 @@ export default function UserCalendar({
   const {
     workdaysOfTheWeek: companyWorkdaysOfTheWeek,
     bankHolidayRegion: companyBankHolidayRegion,
+    holidayEntitlement: companyHolidayEntitlement,
   } = useCompanyContext();
   const currentYear = format(currentMonth, 'yyyy');
 
@@ -107,8 +112,8 @@ export default function UserCalendar({
       (snapshot) => {
         const requested: Leave[] = [];
         for (const doc of snapshot.docs) {
-          const data = doc.data();
-          requested.push({ from: new Date(data.from), to: new Date(data.to) });
+          const data = doc.data() as LeaveRequest;
+          requested.push(createLeaveObject(data));
         }
         setRequested(requested);
         stopLoading('fetch-own-requests');
@@ -136,11 +141,7 @@ export default function UserCalendar({
         const requests: Leave[] = [];
         for (const doc of snapshot.docs) {
           const request = doc.data() as LeaveRequest;
-          requests.push({
-            from: new Date(request.from),
-            to: new Date(request.to),
-            id: request.id,
-          });
+          requests.push(createLeaveObject(request));
         }
         setPreviousYearApprovedLeaves(requests);
         stopLoading('fetch-previous-year-approved-leaves');
@@ -157,11 +158,7 @@ export default function UserCalendar({
         const requests: Leave[] = [];
         for (const doc of snapshot.docs) {
           const request = doc.data() as LeaveRequest;
-          requests.push({
-            from: new Date(request.from),
-            to: new Date(request.to),
-            id: request.id,
-          });
+          requests.push(createLeaveObject(request));
         }
         setCurrentYearApprovedLeaves(requests);
         stopLoading('fetch-current-year-approved-leaves');
@@ -178,11 +175,7 @@ export default function UserCalendar({
         const requests: Leave[] = [];
         for (const doc of snapshot.docs) {
           const request = doc.data() as LeaveRequest;
-          requests.push({
-            from: new Date(request.from),
-            to: new Date(request.to),
-            id: request.id,
-          });
+          requests.push(createLeaveObject(request));
         }
         setNextYearApprovedLeaves(requests);
         stopLoading('fetch-next-year-approved-leaves');
@@ -252,10 +245,14 @@ export default function UserCalendar({
             sunday: data.sunday,
           });
           setCurrentYearBankHolidayRegion(data.bankHolidayRegionId);
+          setCurrentYearHolidayEntitlement(data.holidayEntitlementTotal);
         } else {
           setCurrentYearWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
           setCurrentYearBankHolidayRegion(
             companyBankHolidayRegion.bankHolidayRegionId
+          );
+          setCurrentYearHolidayEntitlement(
+            companyHolidayEntitlement.holidayEntitlementTotal
           );
         }
         stopLoading('fetch-current-year-configured-years');
@@ -319,7 +316,7 @@ export default function UserCalendar({
         for (const doc of snapshot.docs) {
           const data = doc.data();
           const date = new Date(data.date);
-          leaves.push({ from: date, to: date });
+          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
         }
         setPreviousYearBankHolidays(leaves);
         stopLoading('fetch-previous-year-bank-holidays');
@@ -349,7 +346,7 @@ export default function UserCalendar({
         for (const doc of snapshot.docs) {
           const data = doc.data();
           const date = new Date(data.date);
-          leaves.push({ from: date, to: date });
+          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
         }
         setCurrentYearBankHolidays(leaves);
         stopLoading('fetch-current-year-bank-holidays');
@@ -382,7 +379,7 @@ export default function UserCalendar({
         for (const doc of snapshot.docs) {
           const data = doc.data();
           const date = new Date(data.date);
-          leaves.push({ from: date, to: date });
+          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
         }
         setNextYearBankHolidays(leaves);
         stopLoading('fetch-next-year-bank-holidays');
@@ -394,30 +391,38 @@ export default function UserCalendar({
   }, [db, nextYearBankHolidayRegion, currentYear]);
 
   return (
-    <Calendar
-      currentMonth={currentMonth}
-      setCurrentMonth={setCurrentMonth}
-      previousYearWorkdaysOfTheWeek={previousYearWorkdaysOfTheWeek}
-      currentYearWorkdaysOfTheWeek={currentYearWorkdaysOfTheWeek}
-      nextYearWorkdaysOfTheWeek={nextYearWorkdaysOfTheWeek}
-      bankHolidays={[
-        ...previousYearBankHolidays,
-        ...currentYearBankHolidays,
-        ...nextYearBankHolidays,
-      ]}
-      approved={[
-        ...previousYearApprovedLeaves,
-        ...currentYearApprovedLeaves,
-        ...nextYearApprovedLeaves,
-      ]}
-      requests={requested}
-      serviceStartDate={
-        user?.serviceStartDate ? new Date(user?.serviceStartDate) : undefined
-      }
-      serviceEndDate={
-        user?.serviceEndDate ? new Date(user?.serviceEndDate) : undefined
-      }
-      className={className}
-    />
+    <div className={`space-y-4 ${className}`}>
+      <UserDashboard
+        user={user}
+        currentYear={currentYear}
+        totalLeaveEntitlement={currentYearHolidayEntitlement}
+        approved={currentYearApprovedLeaves}
+        requests={requested.filter((leave) => leave.year === currentYear)}
+      />
+      <Calendar
+        currentMonth={currentMonth}
+        setCurrentMonth={setCurrentMonth}
+        previousYearWorkdaysOfTheWeek={previousYearWorkdaysOfTheWeek}
+        currentYearWorkdaysOfTheWeek={currentYearWorkdaysOfTheWeek}
+        nextYearWorkdaysOfTheWeek={nextYearWorkdaysOfTheWeek}
+        bankHolidays={[
+          ...previousYearBankHolidays,
+          ...currentYearBankHolidays,
+          ...nextYearBankHolidays,
+        ]}
+        approved={[
+          ...previousYearApprovedLeaves,
+          ...currentYearApprovedLeaves,
+          ...nextYearApprovedLeaves,
+        ]}
+        requests={requested}
+        serviceStartDate={
+          user?.serviceStartDate ? new Date(user?.serviceStartDate) : undefined
+        }
+        serviceEndDate={
+          user?.serviceEndDate ? new Date(user?.serviceEndDate) : undefined
+        }
+      />
+    </div>
   );
 }
