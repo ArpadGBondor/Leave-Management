@@ -1,3 +1,10 @@
+## [1.5.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.15...v1.5.16) (2025-11-30)
+
+
+### Bug Fixes
+
+* require higher complexity for new passwords ([6283c7e](https://github.com/ArpadGBondor/Leave-Management/commit/6283c7e281bebdec5909d35ef1dad1d3856b5220))
+
 ## [1.5.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.14...v1.5.15) (2025-11-30)
 
 
