@@ -1,3 +1,10 @@
+## [1.5.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.11...v1.5.12) (2025-11-30)
+
+
+### Bug Fixes
+
+* add dashboard to UserCalendar ([3fdd98a](https://github.com/ArpadGBondor/Leave-Management/commit/3fdd98ab3854202eb8fd67ef697d76ea6afad823))
+
 ## [1.5.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.10...v1.5.11) (2025-11-30)
 
 
