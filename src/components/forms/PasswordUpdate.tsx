@@ -86,7 +86,12 @@ export default function PasswordUpdate() {
       toast.info('Password updated');
       setFormData({ ...defaultFormData });
     } catch (error: any) {
-      toast.error(error.message || 'Could not update password');
+      if (error?.message === 'Firebase: Error (auth/invalid-credential).') {
+        toast.error('Current password invalid');
+        setError('currentPassword', 'Password invalid');
+      } else {
+        toast.error(error.message || 'Could not update password');
+      }
     } finally {
       stopLoading('update-password');
     }
