@@ -19,11 +19,11 @@
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
-  - [/api/user (POST|PUT|DELETE)](#apiuser-postputdelete)
-  - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
   - [/api/requests (POST|PUT|DELETE)](#apirequests-postputdelete)
   - [/api/request-approve (POST)](#apirequest-approve-post)
   - [/api/request-reject (POST)](#apirequest-reject-post)
+  - [/api/user (POST|PUT|DELETE)](#apiuser-postputdelete)
+  - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
 - [Environment variables](#environment-variables)
 
 ![work in progress](work-in-progress.jpg)
@@ -352,84 +352,6 @@ The Leave Management a demo web application that allows users to register, manag
   - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
-### /api/user (POST|PUT|DELETE)
-
-- Description:
-  - Manages documents in the `users` collection in Firestore.
-  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform
-    create, update, and delete operations with consistent authentication,
-    validation, and timestamp management.
-  - Custom Delete Behavior when a user is deleted:
-    - The corresponding Firebase Authentication account
-      (auth.deleteUser(userId)) is removed.
-    - The user’s Firestore document and all subcollections are recursively deleted (db.recursiveDelete(ref)).
-- Request:
-
-  - Method: POST | PUT | DELETE
-  - Headers
-
-    - Authorization: Bearer token
-      - The token must belong to an authorised user.
-    - Content-Type: application/json
-
-  - Body:
-
-    - `id` (string): Firebase Auth user UID (used as document ID).
-
-    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
-
-    - other fields: user data to store (e.g.: name, email, ...)
-
-- Response 200 OK:
-
-  - { "success": true, "doc": { ... stored fields ... } }
-
-- Error responses:
-
-  - 400 Bad request: {"error": "Bad request: ..."}
-  - 401 Unauthorised: {"error": "Unauthorised"}
-  - 403 Forbidden: {"error": "Forbidden"}
-  - 405 Method not allowed: {"error": "Method not allowed"}
-  - 500 Internal Server Error: {"error": "Unknown server error"}
-
-### /api/user-yearly-holiday-configuration (POST|PUT|DELETE)
-
-- Description:
-
-  - Manages documents in the `holiday_entitlement` subcollection of user documents in Firestore.
-  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
-
-- Request:
-
-  - Method: POST | PUT | DELETE
-  - Headers
-
-    - Authorization: Bearer token
-      - The token must belong to an authorised user.
-    - Content-Type: application/json
-
-  - Body:
-
-    - `userId` (string): identifies the user (from the parent Firestore document),
-
-    - `id` (string:) typically represents the year (e.g., "2025").
-
-    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
-
-    - other fields: configuration data to store
-
-- Response 200 OK:
-
-  - { "success": true, "doc": { ... stored fields ... } }
-
-- Error responses:
-
-  - 400 Bad request: {"error": "Bad request: ..."}
-  - 401 Unauthorised: {"error": "Unauthorised"}
-  - 403 Forbidden: {"error": "Forbidden"}
-  - 405 Method not allowed: {"error": "Method not allowed"}
-  - 500 Internal Server Error: {"error": "Unknown server error"}
-
 ### /api/requests (POST|PUT|DELETE)
 
 - Description:
@@ -539,6 +461,84 @@ The Leave Management a demo web application that allows users to register, manag
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
   - 404 Not found: {"error": "Not found: ..."}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/user (POST|PUT|DELETE)
+
+- Description:
+  - Manages documents in the `users` collection in Firestore.
+  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform
+    create, update, and delete operations with consistent authentication,
+    validation, and timestamp management.
+  - Custom Delete Behavior when a user is deleted:
+    - The corresponding Firebase Authentication account
+      (auth.deleteUser(userId)) is removed.
+    - The user’s Firestore document and all subcollections are recursively deleted (db.recursiveDelete(ref)).
+- Request:
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Firebase Auth user UID (used as document ID).
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: user data to store (e.g.: name, email, ...)
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/user-yearly-holiday-configuration (POST|PUT|DELETE)
+
+- Description:
+
+  - Manages documents in the `holiday_entitlement` subcollection of user documents in Firestore.
+  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
+
+- Request:
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `userId` (string): identifies the user (from the parent Firestore document),
+
+    - `id` (string:) typically represents the year (e.g., "2025").
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: configuration data to store
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
   - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
