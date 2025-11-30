@@ -3,7 +3,6 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
   query,
   Unsubscribe,
@@ -28,9 +27,6 @@ import DateInput from '../inputs/DateInput';
 import { useRequestsContext } from '../../context/requests/useRequestsContext';
 import { useNavigate } from 'react-router-dom';
 import { Leave } from '../../interface/Leave.interface';
-import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
-import { useCompanyContext } from '../../context/company/useCompanyContext';
-import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.interface';
 import TextAreaInput from '../inputs/TextAreaInput';
 import countWorkdays from '../../utils/countWorkdays';
 import RadioInput from '../inputs/RadioInput';
@@ -41,6 +37,7 @@ import RequestTypeInfo from '../info/RequestTypeInfo';
 import { format } from 'date-fns';
 import validateRequest from './RequestAddEditForm/validateRequest';
 import ChangedFieldNotice from './RequestAddEditForm/ChangedFieldNotice';
+import useLoadUserYearlyConfiguration from '../../hooks/useLoadUserYearlyConfiguration';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -97,27 +94,10 @@ export default function RequestAddEditForm({
     requestedByName: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
-  const [loadedYear, setLoadedYear] = useState<string>('');
   const [requestsOfTheUser, setRequestsOfTheUser] = useState<Leave[]>([]);
   const [approvedLeavesOfTheUser, setApprovedLeavesOfTheUser] = useState<
     Leave[]
   >([]);
-  const [bankHolidays, setBankHolidays] = useState<Leave[]>([]);
-  const [workdaysOfTheWeek, setWorkdaysOfTheWeek] = useState<WorkdaysOfTheWeek>(
-    {
-      monday: true,
-      tuesday: true,
-      wednesday: true,
-      thursday: true,
-      friday: true,
-      saturday: false,
-      sunday: false,
-    }
-  );
-  const {
-    workdaysOfTheWeek: companyWorkdaysOfTheWeek,
-    bankHolidayRegion: companyBankHolidayRegion,
-  } = useCompanyContext();
 
   const { startLoading, stopLoading } = useLoadingContext();
   const {
@@ -131,9 +111,14 @@ export default function RequestAddEditForm({
   } = useRequestsContext();
   const navigate = useNavigate();
   const [approvedLeave, setApprovedLeave] = useState<LeaveRequest | null>(null);
-
   const firebase = useFirebase();
   const db = firebase?.db;
+
+  const { loadedYear, workdaysOfTheWeek, bankHolidays, loadYear } =
+    useLoadUserYearlyConfiguration({
+      db,
+      userId: user!.id,
+    });
 
   const {
     id,
@@ -334,52 +319,6 @@ export default function RequestAddEditForm({
       }));
     }
   }, [disabled, from, to, leaveType, bankHolidays, workdaysOfTheWeek]);
-
-  const loadYear = async (year: string) => {
-    // fetch configuration
-    const configRef = doc(
-      db,
-      `${firebase_collections.USERS}/${user!.id}/${
-        firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION
-      }/${year}`
-    );
-    const configSnap = await getDoc(configRef);
-    let bankHolidayRegion = companyBankHolidayRegion.bankHolidayRegionId;
-    let workdaysOfTheWeek = companyWorkdaysOfTheWeek;
-    if (configSnap.exists()) {
-      const data = configSnap.data() as UserHolidayEntitlement;
-      workdaysOfTheWeek = {
-        monday: data.monday,
-        tuesday: data.tuesday,
-        wednesday: data.wednesday,
-        thursday: data.thursday,
-        friday: data.friday,
-        saturday: data.saturday,
-        sunday: data.sunday,
-      };
-      bankHolidayRegion = data.bankHolidayRegionId;
-    }
-
-    setWorkdaysOfTheWeek(workdaysOfTheWeek);
-
-    // fetch bank holidays
-    const bankHolidayRef = collection(
-      db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegion}/${year}`
-    );
-    const bankHolidaySnap = await getDocs(bankHolidayRef);
-    const bankHolidays: Leave[] = [];
-    for (const doc of bankHolidaySnap.docs) {
-      const data = doc.data();
-      const date = new Date(data.date);
-      bankHolidays.push({ from: date, to: date });
-    }
-    setBankHolidays(bankHolidays);
-
-    setLoadedYear(year);
-
-    return { workdaysOfTheWeek, bankHolidays };
-  };
 
   const setError = (field: keyof typeof errors, message: string) =>
     setErrors((prevState) => ({
