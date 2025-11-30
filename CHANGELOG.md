@@ -1,3 +1,10 @@
+## [1.5.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.12...v1.5.13) (2025-11-30)
+
+
+### Bug Fixes
+
+* round up total entitlement to 1 decimal ([5b04734](https://github.com/ArpadGBondor/Leave-Management/commit/5b047341f6ca37da3af18c9ad5b77b5f632739cd))
+
 ## [1.5.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.11...v1.5.12) (2025-11-30)
 
 
