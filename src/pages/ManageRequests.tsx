@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { LeaveRequest } from '../interface/LeaveRequest.interface';
+import {
+  LeaveRequest,
+  RequestTypeEnum,
+} from '../interface/LeaveRequest.interface';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import { collection, onSnapshot } from 'firebase/firestore';
@@ -45,6 +48,25 @@ export default function ManageRequests() {
       accessor: 'requestedByName',
       sortable: true,
       width: 'min-w-48',
+    },
+    {
+      header: 'Request type',
+      accessor: 'requestType',
+      sortable: true,
+      render: (requestType: string) => (
+        <span
+          className={`${
+            requestType === RequestTypeEnum.Cancellation
+              ? 'text-red-600'
+              : requestType === RequestTypeEnum.Change
+              ? 'text-brand-purple-600'
+              : 'text-brand-green-600'
+          }`}
+        >
+          {requestType}
+        </span>
+      ),
+      width: 'min-w-40',
     },
     {
       header: 'Requested dates',

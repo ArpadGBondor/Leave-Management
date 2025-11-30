@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { LeaveRequest } from '../interface/LeaveRequest.interface';
+import {
+  LeaveRequest,
+  RequestTypeEnum,
+} from '../interface/LeaveRequest.interface';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -48,6 +51,25 @@ export default function RejectedLeaves() {
   }, [db, user?.id, year]);
 
   const columns: TableColumn<LeaveRequest>[] = [
+    {
+      header: 'Request type',
+      accessor: 'requestType',
+      sortable: true,
+      render: (requestType: string) => (
+        <span
+          className={`${
+            requestType === RequestTypeEnum.Cancellation
+              ? 'text-red-600'
+              : requestType === RequestTypeEnum.Change
+              ? 'text-brand-purple-600'
+              : 'text-brand-green-600'
+          }`}
+        >
+          {requestType}
+        </span>
+      ),
+      width: 'min-w-40',
+    },
     {
       header: 'Requested dates',
       accessor: (row) => new Date(row.from), // Accessor is Date type, so it can get sorted
