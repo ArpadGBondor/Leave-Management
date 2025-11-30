@@ -1,3 +1,16 @@
+## [1.5.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.9...v1.5.10) (2025-11-30)
+
+
+### Bug Fixes
+
+* /api/user documentation ([7866171](https://github.com/ArpadGBondor/Leave-Management/commit/7866171ecbdaa3c332e1e2e0b638114d64fe8b8f))
+* add /api/approved-leave-cancel documentation ([8463fe0](https://github.com/ArpadGBondor/Leave-Management/commit/8463fe07cd7322f8ce3561a047d9c40e21114b52))
+* add /api/approved-leave-change-request documentation ([87c617e](https://github.com/ArpadGBondor/Leave-Management/commit/87c617e2d9558ecd196dd8c8e150f536c95264e7))
+* add /api/rejected-leave-re-request documentation ([2de3d7b](https://github.com/ArpadGBondor/Leave-Management/commit/2de3d7b6f629569eb14ef5129a645b0c56e84191))
+* add /api/rejected-leaves documentation ([fa27a45](https://github.com/ArpadGBondor/Leave-Management/commit/fa27a451a92699bcd92128ddf73c6b938a4c36e8))
+* sort api documentation endpoints ([8eb8c2f](https://github.com/ArpadGBondor/Leave-Management/commit/8eb8c2fbec49fd4da2f204debd9b94503fbadc5b))
+* sort api documentation endpoints ([3a5f7a8](https://github.com/ArpadGBondor/Leave-Management/commit/3a5f7a8343cb8927ee688d62eb6f4ebf07d29bdd))
+
 ## [1.5.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.8...v1.5.9) (2025-11-29)
 
 
