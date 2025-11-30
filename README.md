@@ -15,8 +15,8 @@
   - [Requests (WIP)](#requests-wip)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
-  - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
+  - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
   - [/api/user (POST|PUT|DELETE)](#apiuser-postputdelete)
   - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
   - [/api/requests (POST|PUT|DELETE)](#apirequests-postputdelete)
@@ -203,6 +203,42 @@ The Leave Management a demo web application that allows users to register, manag
   - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
+### /api/config (POST|PUT|DELETE)
+
+- Description:
+
+  - Manages documents in the `config` collection in Firestore.
+  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
+
+- Request
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: configuration data to store
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
 ### /api/import-bank-holidays (POST)
 
 - Description:
@@ -233,42 +269,6 @@ The Leave Management a demo web application that allows users to register, manag
 - Response 200 OK:
 
   - {"success": true, "created": 10, "updated": 3, "skipped": 45 }
-
-- Error responses:
-
-  - 400 Bad request: {"error": "Bad request: ..."}
-  - 401 Unauthorised: {"error": "Unauthorised"}
-  - 403 Forbidden: {"error": "Forbidden"}
-  - 405 Method not allowed: {"error": "Method not allowed"}
-  - 500 Internal Server Error: {"error": "Unknown server error"}
-
-### /api/config (POST|PUT|DELETE)
-
-- Description:
-
-  - Manages documents in the `config` collection in Firestore.
-  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
-
-- Request
-
-  - Method: POST | PUT | DELETE
-  - Headers
-
-    - Authorization: Bearer token
-      - The token must belong to an authorised user.
-    - Content-Type: application/json
-
-  - Body:
-
-    - `id` (string): Document ID in firestore
-
-    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
-
-    - other fields: configuration data to store
-
-- Response 200 OK:
-
-  - { "success": true, "doc": { ... stored fields ... } }
 
 - Error responses:
 
