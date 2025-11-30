@@ -1,5 +1,4 @@
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from '../../icons/fa';
-import Button from '../buttons/Button';
 
 interface ChangeYearProps {
   year: number;

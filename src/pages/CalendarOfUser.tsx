@@ -46,10 +46,6 @@ export default function CalendarOfUser() {
       {user && (
         <div className="p-4 md:p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
           <h1 className="text-4xl font-bold text-brand-purple-600">Calendar</h1>
-          <div className="bg-brand-green-600 p-4 rounded-xl">
-            <ProfileBadge user={user} />
-          </div>
-
           <UserCalendar user={user} />
           <div className="flex flex-col items-center">
             <NavButton label="Back" link="/calendars" icon="FaArrowLeft" />
