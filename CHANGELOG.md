@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.10...v1.5.11) (2025-11-30)
+
+
+### Bug Fixes
+
+* convert loadYear function to reusable useLoadUserYearlyConfiguration hook ([8978bfd](https://github.com/ArpadGBondor/Leave-Management/commit/8978bfd8e90e07067cc3f7cb37b6bdc7d6003019))
+
 ## [1.5.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.9...v1.5.10) (2025-11-30)
 
 
