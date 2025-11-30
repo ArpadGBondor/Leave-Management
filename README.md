@@ -15,6 +15,7 @@
   - [Requests (WIP)](#requests-wip)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
+  - [/api/approved-leave-change-request (POST)](#apiapproved-leave-change-request-post)
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
@@ -162,7 +163,7 @@ The Leave Management a demo web application that allows users to register, manag
     - rejected-leaves
   - The requests and approved-leaves collections have to contain a document with
     the provided ID otherwise a 404 error is returned
-  - This endpoint is restricted to olny serve ADMIN users.
+  - This endpoint is restricted to only serve ADMIN users.
 
 - Request
 
@@ -186,6 +187,43 @@ The Leave Management a demo web application that allows users to register, manag
   - 400 Bad request: {"error": "Bad request: ..."}
   - 401 Unauthorised: {"error": "Unauthorised"}
   - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/approved-leave-change-request (POST)
+
+- Description:
+
+  - Copies documents from `approved-leaves` collection to `requests` collection.
+  - This endpoint uses a reusable handler (createMoveOrCopyHandler) to copy and modify a document from one collection to another one.
+
+- Request:
+
+  - Method: POST
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `updated` (timestamp) field is automatically updated by function
+
+    - other fields: all passed fields will overwrite the fields of the soudestination document.
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 404 Not found: {"error": "Not found: ..."}
   - 405 Method not allowed: {"error": "Method not allowed"}
   - 500 Internal Server Error: {"error": "Unknown server error"}
 
@@ -434,7 +472,7 @@ The Leave Management a demo web application that allows users to register, manag
 
   - Moves documents from `requests` collection to `approved-leaves` collection.
   - This endpoint uses a reusable handler (createMoveOrCopyHandler) to move a document from one collection to another one.
-  - This endpoint is restricted to olny serve ADMIN users.
+  - This endpoint is restricted to only serve ADMIN users.
 
 - Request:
 
@@ -472,7 +510,7 @@ The Leave Management a demo web application that allows users to register, manag
 
   - Moves documents from `requests` collection to `rejected-leaves` collection.
   - This endpoint uses a reusable handler (createMoveOrCopyHandler) to move a document from one collection to another one.
-  - This endpoint is restricted to olny serve ADMIN users.
+  - This endpoint is restricted to only serve ADMIN users.
 
 - Request:
 
