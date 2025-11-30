@@ -19,6 +19,7 @@
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
+  - [/api/rejected-leaves (POST|PUT|DELETE)](#apirejected-leaves-postputdelete)
   - [/api/requests (POST|PUT|DELETE)](#apirequests-postputdelete)
   - [/api/request-approve (POST)](#apirequest-approve-post)
   - [/api/request-reject (POST)](#apirequest-reject-post)
@@ -343,6 +344,42 @@ The Leave Management a demo web application that allows users to register, manag
 - Response 200 OK:
 
   - {"success": true, "created": 10, "updated": 3, "skipped": 45 }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
+
+### /api/rejected-leaves (POST|PUT|DELETE)
+
+- Description:
+
+  - Manages documents in the `rejected-leaves` collection in Firestore.
+  - This endpoint uses a reusable handler (createUpdateOrDeleteDoc) to perform create, update, and delete operations with consistent authentication, validation, and timestamp management.
+
+- Request:
+
+  - Method: POST | PUT | DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+    - `created` (timestamp) & `updated` (timestamp) fields are automatically managed by function
+
+    - other fields: POST/PUT requests write/overwrite all passed fields on the document.
+
+- Response 200 OK:
+
+  - { "success": true, "doc": { ... stored fields ... } }
 
 - Error responses:
 
