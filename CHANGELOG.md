@@ -1,3 +1,10 @@
+## [1.5.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.14...v1.5.15) (2025-11-30)
+
+
+### Bug Fixes
+
+* improve error message of password update form ([beb4a07](https://github.com/ArpadGBondor/Leave-Management/commit/beb4a07072f6a1565260aef60500f1a397e20140))
+
 ## [1.5.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.13...v1.5.14) (2025-11-30)
 
 
