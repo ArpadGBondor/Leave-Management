@@ -556,7 +556,7 @@ export default function RequestAddEditForm({
                   error={errors.numberOfWorkdaysOverwritten}
                   disabled={formInputsDisabled}
                   min={0}
-                  step={0.5}
+                  step={0.1}
                 />
               ) : (
                 <NumberInput
