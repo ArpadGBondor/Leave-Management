@@ -14,6 +14,7 @@
   - [Manage Team](#manage-team)
   - [Requests (WIP)](#requests-wip)
 - [Serverless Backend Functions](#serverless-backend-functions)
+  - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
   - [/api/auth-set-user-claims (POST)](#apiauth-set-user-claims-post)
   - [/api/config (POST|PUT|DELETE)](#apiconfig-postputdelete)
   - [/api/import-bank-holidays (POST)](#apiimport-bank-holidays-post)
@@ -23,8 +24,6 @@
   - [/api/request-approve (POST)](#apirequest-approve-post)
   - [/api/request-reject (POST)](#apirequest-reject-post)
 - [Environment variables](#environment-variables)
-
-Work in progress...
 
 ![work in progress](work-in-progress.jpg)
 
@@ -152,6 +151,43 @@ The Leave Management a demo web application that allows users to register, manag
 ### Requests (WIP)
 
 ## Serverless Backend Functions
+
+### /api/approved-leave-cancel (DELETE)
+
+- Description:
+
+  - This endpoint deletes documents with the same ID from 3 collections:
+    - requests
+    - approved-leaves
+    - rejected-leaves
+  - The requests and approved-leaves collections have to contain a document with
+    the provided ID otherwise a 404 error is returned
+  - This endpoint is restricted to olny serve ADMIN users.
+
+- Request
+
+  - Method: DELETE
+  - Headers
+
+    - Authorization: Bearer token
+      - The token must belong to an authorised user.
+    - Content-Type: application/json
+
+  - Body:
+
+    - `id` (string): Document ID in firestore
+
+- Response 200 OK:
+
+  - { "success": true, "message": "Documents deleted successfully" }
+
+- Error responses:
+
+  - 400 Bad request: {"error": "Bad request: ..."}
+  - 401 Unauthorised: {"error": "Unauthorised"}
+  - 403 Forbidden: {"error": "Forbidden"}
+  - 405 Method not allowed: {"error": "Method not allowed"}
+  - 500 Internal Server Error: {"error": "Unknown server error"}
 
 ### /api/auth-set-user-claims (POST)
 
