@@ -27,6 +27,49 @@ export function validatePasswordComplexity<T extends Record<string, string>>(
   return true;
 }
 
+// Only use new rules for new passwords. Do not block existing weaker password logins
+export function validatePasswordComplexityUpgraded<
+  T extends Record<string, string>
+>(
+  formData: T,
+  field: keyof T,
+  setError: (field: keyof T, msg: string) => void
+): boolean {
+  const password = formData[field].trim();
+
+  // Minimum length
+  if (password.length < 8) {
+    setError(field, 'Password must be at least 8 characters long.');
+    return false;
+  }
+
+  // Lowercase letter
+  if (!/[a-z]/.test(password)) {
+    setError(field, 'Password must include at least one lowercase letter.');
+    return false;
+  }
+
+  // Uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    setError(field, 'Password must include at least one uppercase letter.');
+    return false;
+  }
+
+  // Number
+  if (!/[0-9]/.test(password)) {
+    setError(field, 'Password must include at least one number.');
+    return false;
+  }
+
+  // Special character
+  if (!/[!@#$%^&*(),.?":{}|<>_\-\\\/\[\];'`~+=]/.test(password)) {
+    setError(field, 'Password must include at least one special character.');
+    return false;
+  }
+
+  return true;
+}
+
 export function validatePasswordsMatching<T extends Record<string, string>>(
   formData: T,
   passwordField: keyof T,
