@@ -1,3 +1,11 @@
+## [1.5.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.16...v1.5.17) (2025-11-30)
+
+
+### Bug Fixes
+
+* add info bubble with password rules ([f490709](https://github.com/ArpadGBondor/Leave-Management/commit/f490709d59722600601bf674520a3223b6c46b54))
+* remove extra header margin ([0bb937d](https://github.com/ArpadGBondor/Leave-Management/commit/0bb937dd21c74589321b564b8319a31ac194b4cb))
+
 ## [1.5.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.15...v1.5.16) (2025-11-30)
 
 
