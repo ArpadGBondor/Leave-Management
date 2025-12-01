@@ -24,6 +24,8 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaQuestionCircle,
+  FaEyeSlash,
+  FaEye,
 } from 'react-icons/fa';
 
 export {
@@ -51,4 +53,6 @@ export {
   FaCheckCircle,
   FaTimesCircle,
   FaQuestionCircle,
+  FaEyeSlash,
+  FaEye,
 };
