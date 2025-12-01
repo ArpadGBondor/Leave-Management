@@ -1,3 +1,10 @@
+## [1.5.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.17...v1.5.18) (2025-12-01)
+
+
+### Bug Fixes
+
+* remove fix steps from holiday entitlement calculation inputs, because form validation was limiting the values user could enter ([c6a2793](https://github.com/ArpadGBondor/Leave-Management/commit/c6a279324846146dce76827e49ce7108c7606fc4))
+
 ## [1.5.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.16...v1.5.17) (2025-11-30)
 
 
