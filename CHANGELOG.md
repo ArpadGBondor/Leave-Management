@@ -1,3 +1,10 @@
+## [1.5.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.18...v1.5.19) (2025-12-01)
+
+
+### Bug Fixes
+
+* allow TextInput fieldss to show password field content ([f512c47](https://github.com/ArpadGBondor/Leave-Management/commit/f512c47d0a8e8f7424953bab4268720899b59952))
+
 ## [1.5.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.17...v1.5.18) (2025-12-01)
 
 
