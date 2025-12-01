@@ -55,6 +55,7 @@ export default function HolidayCalculationInputs<
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
+        step="any"
         error={errors.holidayEntitlementBase}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
@@ -69,7 +70,7 @@ export default function HolidayCalculationInputs<
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
-        step={1}
+        step="any"
         error={errors.holidayEntitlementAdditional}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
@@ -87,7 +88,7 @@ export default function HolidayCalculationInputs<
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Multiplier"
-        step={0.01}
+        step="any"
         min={0}
         error={errors.holidayEntitlementMultiplier}
       />
@@ -103,7 +104,7 @@ export default function HolidayCalculationInputs<
           handleInputChange(e, setFormData, setError, autoUpdate)
         }
         placeholder="Number of days"
-        step={1}
+        step="any"
         error={errors.holidayEntitlementDeduction}
       />
       <div className="hidden md:block mb-2 text-4xl font-bold text-brand-purple-700">
