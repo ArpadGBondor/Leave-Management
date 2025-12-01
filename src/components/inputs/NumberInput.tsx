@@ -12,7 +12,7 @@ interface NumberInputProps {
   hidden?: boolean;
   min?: number;
   max?: number;
-  step?: number;
+  step?: number | string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
