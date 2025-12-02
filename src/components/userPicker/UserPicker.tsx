@@ -7,6 +7,7 @@ import Table from '../table/Table';
 import { TableColumn } from '../table/types';
 import { maskEmail } from '../../utils/maskEmail';
 import { useFirebase } from '../../hooks/useFirebase';
+import EmailMaskingInfo from '../info/EmailMaskingInfo';
 
 interface UserPickerProps {
   onClick: (user: User) => void;
@@ -89,6 +90,7 @@ export default function UserPicker({ onClick }: UserPickerProps) {
 
   return (
     <>
+      <EmailMaskingInfo />
       <Table
         title="Owners"
         data={users.filter((user) => user.userType === userTypeOptions[2])}

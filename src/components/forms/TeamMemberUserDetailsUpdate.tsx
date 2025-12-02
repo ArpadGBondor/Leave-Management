@@ -7,6 +7,7 @@ import User, { userTypeOptions } from '../../interface/User.interface';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import DateInput from '../inputs/DateInput';
+import UserTypeInfo from '../info/UserTypeInfo';
 
 interface TeamMemberUserDetailsUpdateProps {
   user: User;
@@ -95,10 +96,11 @@ export default function TeamMemberUserDetailsUpdate({
   };
 
   return (
-    <div>
+    <div className="space-y-2">
       <h3 className="text-2xl font-bold text-brand-green-700">
         Update team member details
       </h3>
+      <UserTypeInfo />
       <form
         onSubmit={onSubmitUpdateUser}
         className="flex flex-col gap-4 w-full"
