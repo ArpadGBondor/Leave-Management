@@ -21,12 +21,23 @@ const handler: Handler = createUpdateOrDeleteDoc({
       // Delete document and subcollections too
       await db.recursiveDelete(ref);
       // Delete requests
-      const snap = await db
+      const requestsSnap = await db
         .collection(firebase_collections.REQUESTS)
         .where('requestedById', '==', userId)
         .get();
-      await deleteResultsInBatches(snap);
-      // Delete booked holidays
+      await deleteResultsInBatches(requestsSnap);
+      // Delete approved leaves
+      const approvedLeavesSnap = await db
+        .collection(firebase_collections.APPROVED_LEAVES)
+        .where('requestedById', '==', userId)
+        .get();
+      await deleteResultsInBatches(approvedLeavesSnap);
+      // Delete rejected leaves
+      const rejectedLeavesSnap = await db
+        .collection(firebase_collections.APPROVED_LEAVES)
+        .where('requestedById', '==', userId)
+        .get();
+      await deleteResultsInBatches(rejectedLeavesSnap);
 
       return response(200, {
         success: true,
