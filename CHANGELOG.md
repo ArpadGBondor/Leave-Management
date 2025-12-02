@@ -1,3 +1,11 @@
+## [1.5.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.19...v1.5.20) (2025-12-02)
+
+
+### Bug Fixes
+
+* add info bubble to demo features ([a1f003f](https://github.com/ArpadGBondor/Leave-Management/commit/a1f003f59ab558036034044306927e738034ad7c))
+* delete approved leaves and rejected leaves too when a user gets deleted. ([beb71e8](https://github.com/ArpadGBondor/Leave-Management/commit/beb71e859024290a08742951e531a5dffa68f014))
+
 ## [1.5.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.18...v1.5.19) (2025-12-01)
 
 
