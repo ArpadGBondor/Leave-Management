@@ -13,6 +13,7 @@ import {
 } from '../../utils/onFormDataChange';
 import DateInput from '../inputs/DateInput';
 import { validateRequiredField } from '../../utils/fieldValidators';
+import UserTypeInfo from '../info/UserTypeInfo';
 
 export default function UserUpdate() {
   const defaultState: {
@@ -198,6 +199,8 @@ export default function UserUpdate() {
         error={errors.photo}
         setError={(msg) => setError('photo', msg)}
       />
+
+      <UserTypeInfo />
 
       <SelectInput
         id="userType"

@@ -34,7 +34,7 @@ const handler: Handler = createUpdateOrDeleteDoc({
       await deleteResultsInBatches(approvedLeavesSnap);
       // Delete rejected leaves
       const rejectedLeavesSnap = await db
-        .collection(firebase_collections.APPROVED_LEAVES)
+        .collection(firebase_collections.REJECTED_LEAVES)
         .where('requestedById', '==', userId)
         .get();
       await deleteResultsInBatches(rejectedLeavesSnap);
