@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex flex-col justify-between gap-2 w-76 h-screen bg-brand-green-700 text-white p-4 overflow-auto">
+      <div className="hidden lg:flex flex-col justify-between gap-2 w-80 h-screen bg-brand-green-700 text-white p-4 overflow-auto">
         <div>
           <h1 className="text-xl font-bold mb-4">{appName}</h1>
           <hr className="my-1" />

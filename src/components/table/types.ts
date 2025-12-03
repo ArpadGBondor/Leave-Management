@@ -6,7 +6,7 @@ export type TableColumn<T> = {
   sortable?: boolean;
   width?: string; // Tailwind width classes or inline style string
   align?: 'left' | 'center' | 'right';
-  searchable?: boolean;
+  searchable?: keyof T;
 };
 
 export type SortByType = {

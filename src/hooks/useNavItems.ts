@@ -17,6 +17,13 @@ const useNavItems = () => {
   const bottomNavItems: NavItem[] = [];
 
   topNavItems.push({ name: 'Home', link: '/', icon: 'FaHome' });
+  if (loggedIn) {
+    topNavItems.push({
+      name: 'Getting started',
+      link: '/getting-started',
+      icon: 'FaRocket',
+    });
+  }
   if (loggedIn && user?.claims?.SUPER_ADMIN) {
     topNavItems.push({
       name: 'Manage company',
@@ -42,7 +49,7 @@ const useNavItems = () => {
     topNavItems.push({
       name: `Team's pending requests  (${managableRequestCount})`,
       link: '/manage-requests',
-      icon: 'FaQuestionCircle',
+      icon: 'FaClipboardQuestion',
     });
   }
   if (loggedIn && user?.claims?.ADMIN) {
@@ -61,9 +68,14 @@ const useNavItems = () => {
   }
   if (loggedIn) {
     topNavItems.push({
+      name: `New leave request`,
+      link: '/requests/new',
+      icon: 'FaPaperPlane',
+    });
+    topNavItems.push({
       name: `Your pending requests (${ownRequestCount})`,
       link: '/requests',
-      icon: 'FaPaperPlane',
+      icon: 'FaQuestionCircle',
     });
     topNavItems.push({
       name: `Your approved leaves (${ownApprovedLeavesCount})`,

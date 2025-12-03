@@ -52,7 +52,7 @@ export default function UserPicker({ onClick }: UserPickerProps) {
       sortable: true,
       render: (userType: string) => <strong>{userType}</strong>,
       width: 'w-28',
-      searchable: true,
+      searchable: 'userType',
     },
     {
       header: 'Photo',
@@ -72,7 +72,7 @@ export default function UserPicker({ onClick }: UserPickerProps) {
       accessor: 'name',
       sortable: true,
       render: (name: string) => <strong>{name}</strong>,
-      searchable: true,
+      searchable: 'name',
     },
     {
       header: 'Email',
@@ -99,17 +99,18 @@ export default function UserPicker({ onClick }: UserPickerProps) {
 
   return (
     <>
-      <EmailMaskingInfo />
       <Table
         data={users}
         columns={columns}
         onRowClick={onClick}
         pageSize={10}
+        title="Please select a team member"
         defaultSort={{
           columnIndex: 0,
           direction: 'desc',
         }}
       />
+      <EmailMaskingInfo />
     </>
   );
 }

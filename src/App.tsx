@@ -11,6 +11,7 @@ import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
 
 const Home = lazy(() => import('./pages/Home'));
+const GettingStarted = lazy(() => import('./pages/GettingStarted'));
 const Requests = lazy(() => import('./pages/Requests'));
 const Login = lazy(() => import('./pages/Login'));
 const About = lazy(() => import('./pages/About'));
@@ -56,6 +57,7 @@ export default function App() {
             <Routes>
               <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/getting-started" element={<GettingStarted />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/requests" element={<Requests />} />
                 <Route
