@@ -28,6 +28,8 @@ import {
   FaEye,
 } from 'react-icons/fa';
 
+import { FaClipboardQuestion, FaRocket } from 'react-icons/fa6';
+
 export {
   FaTimes,
   FaBars,
@@ -55,4 +57,6 @@ export {
   FaQuestionCircle,
   FaEyeSlash,
   FaEye,
+  FaClipboardQuestion,
+  FaRocket,
 };

@@ -51,25 +51,17 @@ export default function Table<T extends Record<string, any>>({
     if (searchableColumns.length === 0) return data;
 
     const fuse = new Fuse(data, {
-      keys: searchableColumns.map((col) =>
-        typeof col.accessor === 'string' ? col.accessor : ''
-      ),
-      threshold: 0.3, // Adjust fuzziness
+      keys: searchableColumns.map((col): string => col.searchable as string),
+      threshold: 0.5, // Adjust fuzziness
       ignoreLocation: true,
     });
 
     // Split search term into words and search individually
     const words = searchTerm.trim().split(/\s+/);
 
-    console.log(`>>> ${words}`);
-
     // Collect results for each word
     const resultsPerWord = words.map((word) =>
-      fuse.search(word).map((result) => {
-        console.log(`>>> ${result.item}`);
-
-        return result.item;
-      })
+      fuse.search(word).map((result) => result.item)
     );
 
     // Merge results (OR logic: keep all items that appear in any word results)
@@ -119,15 +111,13 @@ export default function Table<T extends Record<string, any>>({
 
   return (
     <div className={`w-full space-y-4 ${className}`}>
-      {title && (
-        <h3 className="text-2xl font-bold text-brand-green-700 mb-2">
-          {title}
-        </h3>
-      )}
-      <div className="flex flex-col sm:flex-row gap-4 justify-end items-stretch sm:items-center">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+        {title && (
+          <h3 className="text-2xl font-bold text-brand-green-700">{title}</h3>
+        )}
         {searchableColumns.length > 0 && (
-          <>
-            <div className="sm:max-w-64">
+          <div className="flex flex-col sm:flex-row gap-4 justify-stretch md:justify-end">
+            <div className="md:max-w-64 flex-1">
               <TextInput
                 id={'search'}
                 label={''}
@@ -144,7 +134,7 @@ export default function Table<T extends Record<string, any>>({
                 variant="danger"
               />
             </div>
-          </>
+          </div>
         )}
       </div>
       <div className="overflow-x-auto block">
