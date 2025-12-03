@@ -47,23 +47,32 @@ export default function UserPicker({ onClick }: UserPickerProps) {
 
   const columns: TableColumn<User>[] = [
     {
+      header: 'User type',
+      accessor: 'userType',
+      sortable: true,
+      render: (userType: string) => <strong>{userType}</strong>,
+      width: 'w-28',
+      searchable: true,
+    },
+    {
       header: 'Photo',
       accessor: 'photo',
       render: (photo: string) => (
         <img
           src={photo}
           alt="Profile picture"
-          className="w-8 h-8 rounded-full border-2 border-brand-green-700 block"
+          className="w-12 h-12 rounded-full border-2 border-brand-green-700 block"
         />
       ),
       align: 'center',
+      width: 'min-w-20 w-20',
     },
     {
       header: 'Name',
       accessor: 'name',
       sortable: true,
       render: (name: string) => <strong>{name}</strong>,
-      width: 'min-w-48',
+      searchable: true,
     },
     {
       header: 'Email',
@@ -92,22 +101,14 @@ export default function UserPicker({ onClick }: UserPickerProps) {
     <>
       <EmailMaskingInfo />
       <Table
-        title="Owners"
-        data={users.filter((user) => user.userType === userTypeOptions[2])}
+        data={users}
         columns={columns}
         onRowClick={onClick}
-      />
-      <Table
-        title="Managers"
-        data={users.filter((user) => user.userType === userTypeOptions[1])}
-        columns={columns}
-        onRowClick={onClick}
-      />
-      <Table
-        title="Employees"
-        data={users.filter((user) => user.userType === userTypeOptions[0])}
-        columns={columns}
-        onRowClick={onClick}
+        pageSize={10}
+        defaultSort={{
+          columnIndex: 0,
+          direction: 'desc',
+        }}
       />
     </>
   );
