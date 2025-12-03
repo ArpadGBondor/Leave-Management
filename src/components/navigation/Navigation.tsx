@@ -15,8 +15,8 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex flex-col justify-between gap-2 w-80 h-screen bg-brand-green-700 text-white p-4 overflow-auto">
-        <div>
+      <div className="hidden lg:flex flex-col justify-between gap-2 w-80 h-screen bg-brand-green-700 text-white overflow-auto">
+        <div className="overflow-y-auto px-4 pt-4">
           <h1 className="text-xl font-bold mb-4">{appName}</h1>
           <hr className="my-1" />
           <nav className="flex flex-col gap-2">
@@ -30,9 +30,10 @@ export default function Navbar() {
             ))}
           </nav>
         </div>
-        <div>
+        <div className="px-4 pb-4">
           {user && (
             <>
+              <hr className="mb-2" />
               <ProfileBadge user={user} />
               <hr className="my-2" />
             </>
