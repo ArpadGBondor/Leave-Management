@@ -1,3 +1,10 @@
+## [1.5.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.24...v1.5.25) (2025-12-03)
+
+
+### Bug Fixes
+
+* mobile navbar scrolling ([25631d7](https://github.com/ArpadGBondor/Leave-Management/commit/25631d7351ce48453dec43a4319bc1e98e5f0c14))
+
 ## [1.5.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.23...v1.5.24) (2025-12-03)
 
 
