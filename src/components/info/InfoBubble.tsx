@@ -10,7 +10,7 @@ export default function InfoBubble({ children }: InfoBubbleProps) {
 
   return (
     <div
-      className="flex gap-2 sm:gap-4 border border-brand-green-700 bg-brand-green-50 p-2 sm:p-4 text-brand-green-800 cursor-pointer"
+      className="flex gap-2 sm:gap-4 border border-brand-green-700 bg-brand-green-50 p-2 sm:p-4 text-brand-green-800 cursor-pointer overflow-hidden"
       onClick={() => setOpen(!open)}
     >
       <FaInfoCircle className="mt-1 text-brand-green-600 flex-shrink-0" />

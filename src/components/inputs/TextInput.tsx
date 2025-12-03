@@ -33,10 +33,12 @@ export default function TextInput({
   const togglePassword = () => setShowPassword((prev) => !prev);
   return (
     <div className={`flex flex-col gap-1 ${hidden ? 'hidden' : ''}`}>
-      {/* Label */}
-      <label htmlFor={id} className="block text-brand-green-800 text-medium">
-        {label}
-      </label>
+      {label && (
+        /* Label */
+        <label htmlFor={id} className="block text-brand-green-800 text-medium">
+          {label}
+        </label>
+      )}
 
       <div className="relative w-full">
         {/* Input */}
