@@ -60,7 +60,7 @@ export default function Navbar() {
       {/* Mobile Menu Drawer */}
 
       <div
-        className={`lg:hidden fixed top-13 left-0 p-4 pt-0 w-full bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+        className={`lg:hidden fixed top-13 left-0 p-4 pt-0 w-full max-h-[80vh] overflow-y-auto bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
           isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
