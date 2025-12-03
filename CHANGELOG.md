@@ -1,3 +1,10 @@
+## [1.5.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.23...v1.5.24) (2025-12-03)
+
+
+### Bug Fixes
+
+* refactor Getting Started page ([e758143](https://github.com/ArpadGBondor/Leave-Management/commit/e758143e1a4e7cfaacdcc3b889d4292427d98b38))
+
 ## [1.5.23](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.22...v1.5.23) (2025-12-03)
 
 
