@@ -1,3 +1,10 @@
+## [1.5.22](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.21...v1.5.22) (2025-12-03)
+
+
+### Bug Fixes
+
+* add search to tables ([59850cf](https://github.com/ArpadGBondor/Leave-Management/commit/59850cfbc78874598919bf0ac5aa833506a4b3db))
+
 ## [1.5.21](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.20...v1.5.21) (2025-12-02)
 
 
