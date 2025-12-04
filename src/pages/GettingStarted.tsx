@@ -2,7 +2,7 @@ import NavButton from '../components/buttons/NavButton';
 
 export default function GettingStarted() {
   return (
-    <div className="p-4 md:p-8 md:min-w-sm lg:min-w-md rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-xl">
+    <div className="p-4 md:p-8 md:m-4 xl:m-8 md:min-w-sm lg:min-w-md md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-4xl">
       <div className="w-full space-y-4">
         <header className="space-y-2">
           <h1 className="text-4xl font-bold text-brand-purple-600">
