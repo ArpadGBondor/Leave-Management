@@ -1,3 +1,10 @@
+## [1.5.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.25...v1.5.26) (2025-12-04)
+
+
+### Bug Fixes
+
+* add links to Getting Started page ([fc08e06](https://github.com/ArpadGBondor/Leave-Management/commit/fc08e06a56358961743e489f42aeea3fca775946))
+
 ## [1.5.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.24...v1.5.25) (2025-12-03)
 
 
