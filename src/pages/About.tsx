@@ -3,7 +3,7 @@ import NavButton from '../components/buttons/NavButton';
 
 export default function About() {
   return (
-    <div className="max-w-md m-8 p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto">
+    <div className="max-w-md m-4 md:m-8 p-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto">
       <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
         About this project
       </h1>
