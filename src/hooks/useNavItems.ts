@@ -67,11 +67,11 @@ const useNavItems = () => {
     });
   }
   if (loggedIn) {
-    topNavItems.push({
-      name: `New leave request`,
-      link: '/requests/new',
-      icon: 'FaPaperPlane',
-    });
+    // topNavItems.push({
+    //   name: `New leave request`,
+    //   link: '/requests/new',
+    //   icon: 'FaPaperPlane',
+    // });
     topNavItems.push({
       name: `Your pending requests (${ownRequestCount})`,
       link: '/requests',
