@@ -1,3 +1,10 @@
+## [1.5.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.26...v1.5.27) (2025-12-04)
+
+
+### Bug Fixes
+
+* adjust page payout ([d96cc33](https://github.com/ArpadGBondor/Leave-Management/commit/d96cc33719ce06c5f1f4489ce151bce2b88a50d0))
+
 ## [1.5.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.25...v1.5.26) (2025-12-04)
 
 
