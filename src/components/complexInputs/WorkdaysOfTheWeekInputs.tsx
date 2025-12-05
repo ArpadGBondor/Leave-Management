@@ -1,6 +1,6 @@
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
-import { handleValueChange } from '../../utils/onFormDataChange';
-import SwitchButton from '../buttons/SwitchButton';
+import { handleInputChange } from '../../utils/onFormDataChange';
+import CheckboxInput from '../inputs/CheckboxInput';
 
 interface WorkdaysOfTheWeekInputsProps<T> {
   formData: T;
@@ -22,17 +22,18 @@ export default function WorkdaysOfTheWeekInputs<T extends WorkdaysOfTheWeek>({
   ] as const;
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 justify-stretch items-end">
+    <div className="flex flex-row flex-wrap gap-4 justify-stretch items-center">
       {weekdays.map((day) => (
-        <SwitchButton
-          key={day}
-          label={day.charAt(0).toUpperCase() + day.slice(1)}
-          name={day}
-          checked={formData[day]}
-          onChange={(name, value) =>
-            handleValueChange(name as keyof typeof formData, value, setFormData)
-          }
-        />
+        <div key={day}>
+          <CheckboxInput
+            id={day}
+            label={`${day[0].toUpperCase()}${day.slice(1)}`}
+            name={day}
+            checked={formData[day]}
+            onChange={(e) => handleInputChange(e, setFormData)}
+            flatten={true}
+          />
+        </div>
       ))}
     </div>
   );

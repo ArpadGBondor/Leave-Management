@@ -3,6 +3,7 @@ import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
+import BankHolidayImportInfo from '../info/BankHolidayImportInfo';
 
 export default function CompanyImportBankHolidays() {
   const { startLoading, stopLoading } = useLoadingContext();
@@ -32,9 +33,13 @@ export default function CompanyImportBankHolidays() {
   return (
     <form
       onSubmit={onSubmitImportBankHolidays}
-      className="flex flex-col gap-4 w-full"
+      className="flex flex-col gap-4 w-full border border-brand-green-600 rounded-xl p-4"
     >
-      <h3 className="text-2xl font-bold text-brand-green-700">Bank holidays</h3>
+      <h3 className="text-2xl font-bold text-brand-green-700">
+        Imported bank holidays
+      </h3>
+
+      <BankHolidayImportInfo />
 
       {importedRegions.length > 0 && importedYears.length > 0 ? (
         <div className="space-y-2">

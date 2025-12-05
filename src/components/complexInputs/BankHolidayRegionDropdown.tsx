@@ -138,7 +138,7 @@ export default function BankHolidayRegionDropdown<
     <>
       <SelectInput
         id="bankHolidayRegionId"
-        label="Bank Holidays automatically excluded"
+        label="Bank holidays automatically applied"
         name="bankHolidayRegionId"
         value={formData.bankHolidayRegionId}
         options={bankHolidayOptions}

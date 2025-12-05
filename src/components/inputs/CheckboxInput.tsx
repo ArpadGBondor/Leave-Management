@@ -7,6 +7,7 @@ interface CheckboxInputProps {
   hidden?: boolean;
   error?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  flatten?: boolean;
 }
 
 export default function CheckboxInput({
@@ -18,10 +19,11 @@ export default function CheckboxInput({
   hidden,
   error,
   onChange,
+  flatten,
 }: CheckboxInputProps) {
   return (
     <div className={`flex flex-col gap-1 ${hidden ? 'hidden' : ''}`}>
-      <div className="h-6"></div>
+      {!flatten && <div className="h-6"></div>}
       <label
         htmlFor={id}
         className={`flex items-center gap-2  text-medium rounded-full border py-2 px-4 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-green-700  ${

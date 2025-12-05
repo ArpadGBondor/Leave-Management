@@ -49,12 +49,12 @@ export default function ManageCompany() {
         </h2>
 
         <p className="text-brand-green-800">
-          These are default fallback values, in case employees are not
-          configured individually for a certain year.
+          These values act as defaults when an employee does not have a specific
+          configuration for a given year.
         </p>
         <CompanyImportBankHolidays />
-        <CompanyWorkdayDefaults ref={workdayRef} />
         <CompanyBankHolidayRegionDefault ref={regionRef} />
+        <CompanyWorkdayDefaults ref={workdayRef} />
         <CompanyHolidayDefaults ref={holidayRef} />
         <Button
           type="button"
