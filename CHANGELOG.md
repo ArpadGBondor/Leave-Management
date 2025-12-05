@@ -1,3 +1,11 @@
+## [1.5.30](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.29...v1.5.30) (2025-12-05)
+
+
+### Bug Fixes
+
+* add border to team member user details update form ([2588c01](https://github.com/ArpadGBondor/Leave-Management/commit/2588c010452e7fa37e5fb0799580d5ae696eb0d2))
+* text-medium was a mistake text-base is normal size in tailwind. make search field smaller on tables, connect dashboard and calendar ([914151d](https://github.com/ArpadGBondor/Leave-Management/commit/914151d77a6e018c8884908b4c4ec0b634ae3d2a))
+
 ## [1.5.29](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.28...v1.5.29) (2025-12-05)
 
 
