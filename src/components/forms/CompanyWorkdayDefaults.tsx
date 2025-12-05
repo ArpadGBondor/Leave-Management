@@ -7,6 +7,7 @@ import SubmitFormResponse, {
   formResponse,
 } from '../../interface/SubmitFormResponse.interface';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
+import CompanyWorkdaysNotMonToFriWarning from '../warning/CompanyWorkdaysNotMonToFriWarning';
 
 const CompanyWorkdayDefaults = forwardRef((props, ref) => {
   const [formData, setFormData] = useState<WorkdaysOfTheWeek>({
@@ -115,6 +116,12 @@ const CompanyWorkdayDefaults = forwardRef((props, ref) => {
         Recommended leave entitlement multiplier:{' '}
         <span className="font-bold">{numberOfWorkdays() / 5}</span>
       </p>
+
+      {(!formData.monday ||
+        !formData.tuesday ||
+        !formData.wednesday ||
+        !formData.thursday ||
+        !formData.friday) && <CompanyWorkdaysNotMonToFriWarning />}
     </form>
   );
 });

@@ -67,13 +67,13 @@ export default function Navbar() {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`lg:hidden fixed top-13 left-0 py-4 pt-0 w-full bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+        className={`lg:hidden fixed top-13 left-0 py-4 pt-0 w-full bg-brand-green-600/75 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
           isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
         <hr className="my-1 px-4" />
         <div>
-          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto py-2 px-4">
+          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pt-2 pb-1 px-4">
             {topNavItems.map((item) => (
               <NavButton
                 key={item.name}
@@ -83,7 +83,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
               />
             ))}
-            <hr className="my-1" />
+            <hr />
             {bottomNavItems.map((item) => (
               <NavButton
                 key={item.name}
@@ -95,10 +95,14 @@ export default function Navbar() {
             ))}
           </nav>
           {user && (
-            <div className="px-4">
-              <hr className="mt-1 mb-4" />
-              <ProfileBadge user={user} />
-            </div>
+            <>
+              <div className="px-4">
+                <hr className="mt-1 mb-2" />
+                <div className="p-4 bg-brand-green-700 rounded-xl">
+                  <ProfileBadge user={user} />
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
