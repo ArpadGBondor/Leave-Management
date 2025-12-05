@@ -1,3 +1,10 @@
+## [1.5.29](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.28...v1.5.29) (2025-12-05)
+
+
+### Bug Fixes
+
+* refactor Manage Company page ([67ecf6b](https://github.com/ArpadGBondor/Leave-Management/commit/67ecf6bbdc13c82955a4aa40842bc71538c3b078))
+
 ## [1.5.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.27...v1.5.28) (2025-12-05)
 
 
