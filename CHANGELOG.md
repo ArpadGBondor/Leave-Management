@@ -1,3 +1,10 @@
+## [1.5.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.31...v1.5.32) (2025-12-05)
+
+
+### Bug Fixes
+
+* add warning bubble, and display warning when company workdays don't cover Mon to Fri ([57788ff](https://github.com/ArpadGBondor/Leave-Management/commit/57788ff774d8f83f28d87652213d8c0c4c561926))
+
 ## [1.5.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.30...v1.5.31) (2025-12-05)
 
 
