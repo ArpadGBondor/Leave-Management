@@ -78,10 +78,10 @@ const CompanyBankHolidayRegionDefault = forwardRef((props, ref) => {
   return (
     <form
       onSubmit={onSubmitBankHolidayRegion}
-      className="flex flex-col gap-4 w-full"
+      className="flex flex-col gap-4 w-full border border-brand-green-600 rounded-xl p-4"
     >
       <h3 className="text-2xl font-bold text-brand-green-700">
-        Default Bank Holiday Region
+        Company's default bank holiday region
       </h3>
 
       <BankHolidayRegionDropdown

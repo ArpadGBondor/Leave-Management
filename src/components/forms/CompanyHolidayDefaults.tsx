@@ -104,10 +104,10 @@ const CompanyHolidayDefaults = forwardRef((props, ref) => {
   return (
     <form
       onSubmit={onSubmitHolidayEntitlement}
-      className="flex flex-col gap-4 w-full"
+      className="flex flex-col gap-4 w-full border border-brand-green-600 rounded-xl p-4"
     >
       <h3 className="text-2xl font-bold text-brand-green-700">
-        Yearly holiday entitlement
+        Company's default yearly holiday entitlement configuration
       </h3>
       <LeaveEntitlementBaseInfo />
       <LeaveEntitlementAdditionalInfo />
