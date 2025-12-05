@@ -64,7 +64,7 @@ export default function FileInput({
       {/* Label */}
       <label
         htmlFor={id}
-        className="block text-brand-green-800 text-medium w-full"
+        className="block text-brand-green-800 text-base w-full"
       >
         {label}
       </label>

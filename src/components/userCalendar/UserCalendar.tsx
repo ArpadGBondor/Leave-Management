@@ -391,13 +391,14 @@ export default function UserCalendar({
   }, [db, nextYearBankHolidayRegion, currentYear]);
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`${className}`}>
       <UserDashboard
         user={user}
         currentYear={currentYear}
         totalLeaveEntitlement={currentYearHolidayEntitlement}
         approved={currentYearApprovedLeaves}
         requests={requested.filter((leave) => leave.year === currentYear)}
+        className="rounded-b-none"
       />
       <Calendar
         currentMonth={currentMonth}
@@ -422,6 +423,7 @@ export default function UserCalendar({
         serviceEndDate={
           user?.serviceEndDate ? new Date(user?.serviceEndDate) : undefined
         }
+        className="rounded-t-none"
       />
     </div>
   );

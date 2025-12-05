@@ -44,7 +44,7 @@ export default function DateInput({
   return (
     <div className="flex flex-col gap-1">
       {/* Label */}
-      <label htmlFor={id} className="block text-brand-green-800 text-medium">
+      <label htmlFor={id} className="block text-brand-green-800 text-base">
         {label}
       </label>
       <div className="flex items-center gap-2">
