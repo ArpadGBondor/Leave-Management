@@ -227,8 +227,12 @@ export default function ManageTeamMember() {
           Manage team member
         </h2>
         {user && (
-          <>
-            <div className="bg-brand-green-600 p-4 rounded-xl flex flex-col md:flex-row gap-4 justify-between items-center">
+          <div>
+            <div
+              className={`bg-brand-green-600 p-4 flex flex-col md:flex-row gap-4 justify-between items-center ${
+                editUserDetails ? 'rounded-t-xl' : 'rounded-xl'
+              }`}
+            >
               <ProfileBadge user={user} />
               <div className="w-full md:w-1/2">
                 {!editUserDetails && (
@@ -242,14 +246,16 @@ export default function ManageTeamMember() {
               </div>
             </div>
             {user && editUserDetails && (
-              <TeamMemberUserDetailsUpdate
-                user={user}
-                onBack={() => {
-                  setEditUserDetails(false);
-                }}
-              />
+              <div className="p-4 rounded-b-xl border border-brand-green-600 bg-brand-purple-100">
+                <TeamMemberUserDetailsUpdate
+                  user={user}
+                  onBack={() => {
+                    setEditUserDetails(false);
+                  }}
+                />
+              </div>
             )}
-          </>
+          </div>
         )}
         {screenPhase === 1 && (
           <>
