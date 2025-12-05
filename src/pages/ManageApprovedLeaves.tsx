@@ -92,29 +92,22 @@ export default function ManageApprovedLeaves() {
       sortable: true,
       width: 'min-w-32',
     },
-    {
-      header: 'Additional information',
-      accessor: 'description',
-      sortable: true,
-      width: 'max-w-48 md:max-w-64',
-      render: (description: string) => (
-        <div className="line-clamp-1">{description}</div>
-      ),
-    },
-    {
-      header: 'Created',
-      accessor: (row) => row.created?.toDate(),
-      sortable: true,
-      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
-      width: 'min-w-28',
-    },
-    {
-      header: 'Updated',
-      accessor: (row) => row.updated?.toDate(),
-      sortable: true,
-      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-28',
-    },
+    // {
+    //   header: 'Additional information',
+    //   accessor: 'description',
+    //   sortable: true,
+    //   width: 'max-w-48 md:max-w-64',
+    //   render: (description: string) => (
+    //     <div className="line-clamp-1">{description}</div>
+    //   ),
+    // },
+    // {
+    //   header: 'Updated',
+    //   accessor: (row) => row.updated?.toDate(),
+    //   sortable: true,
+    //   render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
+    //   width: 'min-w-28',
+    // },
   ];
 
   if (loading) return <div className="p-8">Loading approved leaves...</div>;

@@ -98,19 +98,19 @@ export default function Requests() {
       sortable: true,
       width: 'min-w-32',
     },
-    {
-      header: 'Additional information',
-      accessor: 'description',
-      sortable: true,
-      width: 'min-w-64',
-    },
-    {
-      header: 'Updated',
-      accessor: (row) => row.updated?.toDate(),
-      sortable: true,
-      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-28',
-    },
+    // {
+    //   header: 'Additional information',
+    //   accessor: 'description',
+    //   sortable: true,
+    //   width: 'min-w-64',
+    // },
+    // {
+    //   header: 'Updated',
+    //   accessor: (row) => row.updated?.toDate(),
+    //   sortable: true,
+    //   render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
+    //   width: 'min-w-28',
+    // },
   ];
 
   if (loading) return <div className="p-8">Loading requests...</div>;

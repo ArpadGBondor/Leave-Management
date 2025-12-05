@@ -137,7 +137,9 @@ export default function Table<T extends Record<string, any>>({
           </div>
         )}
       </div>
-      <div className="overflow-x-auto block">
+
+      {/* DESKTOP TABLE */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="divide-y bg-brand-green-50 divide-brand-green-400 border border-brand-green-400 border-collapse table-auto min-w-full">
           <TableHeader
             columns={columns}
@@ -172,6 +174,57 @@ export default function Table<T extends Record<string, any>>({
           </tbody>
         </table>
       </div>
+
+      {/* Mobile */}
+      {/* MOBILE CARD VIEW */}
+      <div className=" grid md:hidden grid-cols-1 sm:grid-cols-2 gap-2">
+        {pageData.length === 0 ? (
+          searchTerm ? (
+            <div className="text-center text-brand-green-800">
+              No search results
+            </div>
+          ) : (
+            emptyState
+          )
+        ) : (
+          pageData.map((row, rowIndex) => (
+            <button
+              key={String(getRowId(row, page * pageSize + rowIndex))}
+              onClick={() => onRowClick?.(row)}
+              className={`w-full text-left p-4 rounded-xl border ${
+                highlightRow && highlightRow(row)
+                  ? 'bg-brand-purple-50 hover:bg-brand-purple-100 text-brand-purple-600'
+                  : 'bg-brand-green-50 hover:bg-brand-green-100 text-brand-green-600'
+              } cursor-${onRowClick ? 'pointer' : 'auto'} shadow-sm`}
+            >
+              <div className="">
+                {columns.map((col, i) => {
+                  const value = getValueFromAccessor(row, col.accessor);
+                  const rendered = col.render ? col.render(value, row) : value;
+
+                  return (
+                    <div
+                      key={col.key ?? i}
+                      className={`py-1 w-full grid grid-cols-2 gap-2 items-center ${
+                        i > 0 ? 'border-t border-brand-green-300' : ''
+                      }`}
+                    >
+                      <div className="text-sm text-brand-green-600 font-semibold">
+                        {col.header}
+                      </div>
+
+                      <div className="text-sm text-brand-green-600 text-right place-self-end">
+                        {rendered}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </button>
+          ))
+        )}
+      </div>
+
       <TablePaginationFooter
         sorted={sorted}
         page={page}

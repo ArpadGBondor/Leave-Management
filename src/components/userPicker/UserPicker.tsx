@@ -81,20 +81,6 @@ export default function UserPicker({ onClick }: UserPickerProps) {
       sortable: true,
       width: 'min-w-32',
     },
-    {
-      header: 'Created',
-      accessor: (row) => row.created?.toDate(),
-      sortable: true,
-      render: (created: Date) => `${format(created, 'dd-MM-yyyy')}`,
-      width: 'min-w-28',
-    },
-    {
-      header: 'Updated',
-      accessor: (row) => row.updated?.toDate(),
-      sortable: true,
-      render: (updated: Date) => `${format(updated, 'dd-MM-yyyy')}`,
-      width: 'min-w-28',
-    },
   ];
 
   return (
