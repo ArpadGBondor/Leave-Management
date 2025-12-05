@@ -33,6 +33,8 @@ export default function BankHolidayRegionDropdown<
     noOption,
   ] as SelectInputOption[]);
 
+  const [bankHolidayDates, setBankHolidayDates] = useState<Date[]>([]);
+
   const { importedRegions } = useCompanyContext();
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -77,52 +79,55 @@ export default function BankHolidayRegionDropdown<
     const numberOfBankHolidaysUnsubscribe = onSnapshot(
       bankHolidayRef,
       (snapshot) => {
-        let numberOfBankHolidays: number = 0;
-
-        for (const doc of snapshot.docs) {
-          const date = new Date(doc.id);
-          // Do not count days outside of employment
-          if (employmentStart && date < employmentStart) continue;
-          if (employmentEnd && date > employmentEnd) continue;
-          const day = date.getDay();
-          switch (day) {
-            case 0:
-              if (sunday) ++numberOfBankHolidays;
-              break;
-            case 1:
-              if (monday) ++numberOfBankHolidays;
-              break;
-            case 2:
-              if (tuesday) ++numberOfBankHolidays;
-              break;
-            case 3:
-              if (wednesday) ++numberOfBankHolidays;
-              break;
-            case 4:
-              if (thursday) ++numberOfBankHolidays;
-              break;
-            case 5:
-              if (friday) ++numberOfBankHolidays;
-              break;
-            case 6:
-              if (saturday) ++numberOfBankHolidays;
-              break;
-            default:
-              break;
-          }
-        }
-        setFormData((prevState) => ({
-          ...prevState,
-          numberOfBankHolidays,
-        }));
+        // store raw list of holidays as dates
+        const dates = snapshot.docs.map((doc) => new Date(doc.id));
+        setBankHolidayDates(dates);
       }
     );
 
     return () => numberOfBankHolidaysUnsubscribe();
+  }, [db, bankHolidayRegionId, year]);
+
+  useEffect(() => {
+    let numberOfBankHolidays: number = 0;
+
+    for (const date of bankHolidayDates) {
+      // Do not count days outside of employment
+      if (employmentStart && date < employmentStart) continue;
+      if (employmentEnd && date > employmentEnd) continue;
+      const day = date.getDay();
+      switch (day) {
+        case 0:
+          if (sunday) ++numberOfBankHolidays;
+          break;
+        case 1:
+          if (monday) ++numberOfBankHolidays;
+          break;
+        case 2:
+          if (tuesday) ++numberOfBankHolidays;
+          break;
+        case 3:
+          if (wednesday) ++numberOfBankHolidays;
+          break;
+        case 4:
+          if (thursday) ++numberOfBankHolidays;
+          break;
+        case 5:
+          if (friday) ++numberOfBankHolidays;
+          break;
+        case 6:
+          if (saturday) ++numberOfBankHolidays;
+          break;
+        default:
+          break;
+      }
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      numberOfBankHolidays,
+    }));
   }, [
-    db,
-    bankHolidayRegionId,
-    year,
+    bankHolidayDates,
     employmentStart,
     employmentEnd,
     monday,
