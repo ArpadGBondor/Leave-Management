@@ -30,7 +30,7 @@ export default function RadioInput({
   return (
     <div className="flex flex-col gap-1">
       {/* Label */}
-      <label className="block text-brand-green-800 text-medium" htmlFor={id}>
+      <label className="block text-brand-green-800 text-base" htmlFor={id}>
         {label}
       </label>
 

@@ -11,6 +11,7 @@ interface UserDashboardProps {
   totalLeaveEntitlement: number;
   requests: Leave[];
   approved: Leave[];
+  className?: string;
 }
 
 export default function UserDashboard({
@@ -19,6 +20,7 @@ export default function UserDashboard({
   totalLeaveEntitlement,
   requests,
   approved,
+  className,
 }: UserDashboardProps) {
   const approvedDays = useMemo(
     () => approved.reduce((n, leave) => n + (leave.numberOfWorkdays || 0), 0),
@@ -55,7 +57,7 @@ export default function UserDashboard({
   );
   return (
     <div
-      className={`bg-brand-green-600 border border-brand-green-600 rounded-xl p-4 space-y-4 w-full max-w-2xl mx-auto overflow-hidden`}
+      className={`bg-brand-green-600 border border-brand-green-600 rounded-xl p-4 space-y-4 w-full max-w-2xl mx-auto overflow-hidden ${className}`}
     >
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="md:col-span-3">

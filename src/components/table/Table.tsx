@@ -116,7 +116,7 @@ export default function Table<T extends Record<string, any>>({
           <h3 className="text-2xl font-bold text-brand-green-700">{title}</h3>
         )}
         {searchableColumns.length > 0 && (
-          <div className="flex flex-col sm:flex-row gap-4 justify-stretch md:justify-end">
+          <div className="flex flex-col sm:flex-row gap-2 justify-stretch md:justify-end sm:items-center">
             <div className="md:max-w-64 flex-1">
               <TextInput
                 id={'search'}
@@ -125,6 +125,7 @@ export default function Table<T extends Record<string, any>>({
                 value={searchTerm}
                 placeholder="Enter search keyword"
                 onChange={(e) => setSearchTerm(e.target.value)}
+                size="sm"
               />
             </div>
             <div>
@@ -132,6 +133,7 @@ export default function Table<T extends Record<string, any>>({
                 label={'Clear search'}
                 onClick={() => setSearchTerm('')}
                 variant="danger"
+                size="sm"
               />
             </div>
           </div>

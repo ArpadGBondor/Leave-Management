@@ -5,6 +5,7 @@ type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
   type?: 'submit' | 'reset' | 'button' | undefined;
+  size?: 'md' | 'sm';
 };
 
 export default function Button({
@@ -14,9 +15,11 @@ export default function Button({
   disabled,
   onClick,
   type,
+  size = 'md',
 }: ButtonProps) {
-  const baseClasses =
-    'w-full flex items-center justify-center gap-3 px-4 py-2 rounded-xl transition font-medium';
+  const baseClasses = `w-full flex items-center justify-center rounded-xl transition ${
+    size === 'sm' ? 'px-2 py-1 font-small' : 'px-4 py-2 font-medium'
+  }`;
   const variants = {
     primary: `${
       highlight ? 'bg-brand-green-800' : 'bg-brand-green-700'
