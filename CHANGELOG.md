@@ -1,3 +1,10 @@
+## [1.5.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.27...v1.5.28) (2025-12-05)
+
+
+### Bug Fixes
+
+* remove unneccessary columns, and add mobile card-view for tables ([23c0046](https://github.com/ArpadGBondor/Leave-Management/commit/23c0046a5941f9e4b75a88d9bcb69b0da2850851))
+
 ## [1.5.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.26...v1.5.27) (2025-12-04)
 
 
