@@ -19,7 +19,7 @@ export default function Navbar() {
         <div className="overflow-y-auto px-4 pt-4">
           <h1 className="text-xl font-bold mb-4">{appName}</h1>
           <hr className="my-1" />
-          <nav className="flex flex-col gap-2">
+          <nav className="flex flex-col gap-2 mb-2">
             {topNavItems.map((item) => (
               <NavButton
                 key={item.name}
@@ -57,16 +57,23 @@ export default function Navbar() {
         <NavbarToggler isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Backdrop (click outside to close) */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-30"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
+      {/* Mobile Menu Drawer */}
       <div
-        className={`lg:hidden fixed top-13 left-0 p-4 pt-0 w-full max-h-[80vh] overflow-y-auto bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+        className={`lg:hidden fixed top-13 left-0 py-4 pt-0 w-full bg-brand-green-700 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
           isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
-        <hr className="my-1" />
+        <hr className="my-1 px-4" />
         <div>
-          <nav className="flex flex-col gap-2">
+          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto py-2 px-4">
             {topNavItems.map((item) => (
               <NavButton
                 key={item.name}
@@ -76,9 +83,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
               />
             ))}
-          </nav>
-          <hr className="my-1" />
-          <nav className="flex flex-col gap-2">
+            <hr className="my-1" />
             {bottomNavItems.map((item) => (
               <NavButton
                 key={item.name}
@@ -90,10 +95,10 @@ export default function Navbar() {
             ))}
           </nav>
           {user && (
-            <>
+            <div className="px-4">
               <hr className="mt-1 mb-4" />
               <ProfileBadge user={user} />
-            </>
+            </div>
           )}
         </div>
       </div>

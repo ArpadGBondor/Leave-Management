@@ -9,7 +9,7 @@ const NavbarToggler = ({ isOpen, onClick }: NavbarTogglerProps) => {
   return (
     <button
       onClick={onClick}
-      className="relative inline-flex h-8 w-12 items-center justify-center text-2xl transition-transform duration-300 ease-in-out"
+      className="relative inline-flex h-8 w-12 items-center justify-center text-2xl transition-transform duration-300 ease-in-out focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 focus:ring-brand-green-700 rounded-xl"
       aria-label="Toggle navigation"
     >
       <span
