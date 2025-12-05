@@ -1,3 +1,10 @@
+## [1.5.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.30...v1.5.31) (2025-12-05)
+
+
+### Bug Fixes
+
+* add buttons focus ring + extra layer to close mobile navbar when clicking outside ([6fe31bf](https://github.com/ArpadGBondor/Leave-Management/commit/6fe31bf6bb3cf05b71150e3abe3d02fc2f8cdc64))
+
 ## [1.5.30](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.29...v1.5.30) (2025-12-05)
 
 
