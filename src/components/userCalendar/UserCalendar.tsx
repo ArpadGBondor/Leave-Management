@@ -120,7 +120,7 @@ export default function UserCalendar({
       }
     );
     return () => ownRequestsUnsubscribe();
-  }, [db, user]);
+  }, [db, user?.id]);
 
   useEffect(() => {
     if (!db) return;
