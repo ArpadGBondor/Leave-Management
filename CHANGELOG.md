@@ -1,3 +1,10 @@
+## [1.5.35](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.34...v1.5.35) (2025-12-06)
+
+
+### Bug Fixes
+
+* allow managers to unapprove approved leave requests ([93bb5a5](https://github.com/ArpadGBondor/Leave-Management/commit/93bb5a5b53e43889e529212c06274be1581b9e42))
+
 ## [1.5.34](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.33...v1.5.34) (2025-12-06)
 
 
