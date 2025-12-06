@@ -1,6 +1,6 @@
 import React, { useReducer, useCallback, useEffect } from 'react';
-import { CompanyContext } from './CompanyContext';
-import { loadingReducer, CompanyState } from './CompanyReducer';
+import { CompanyContext, CompanyState } from './CompanyContext';
+import { loadingReducer } from './CompanyReducer';
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
 import { useUserContext } from '../user/useUserContext';
 import {
@@ -9,8 +9,9 @@ import {
   SET_IMPORTED_REGIONS,
   SET_IMPORTED_YEARS,
   SET_BANK_HOLIDAY_REGION,
+  SET_BANK_HOLIDAYS_CACHE,
 } from '../types';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import ImportBankHolidayResponse from '../../interface/ImportBankHolidayResponse.interface';
@@ -44,6 +45,7 @@ const initialState: CompanyState = {
   },
   importedRegions: [],
   importedYears: [],
+  bankHolidayCache: {},
 };
 
 const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
@@ -157,6 +159,36 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       return result;
     }, [user, firebase]);
 
+  const getBankHolidays = useCallback(
+    async (regionId: string, year: string) => {
+      if (!db) throw new Error('Firestore unavailable');
+      if (!regionId || !year) return [];
+
+      const key = `${regionId}-${year}`;
+
+      // Return cached dates
+      if (state.bankHolidayCache[key]) {
+        return state.bankHolidayCache[key];
+      }
+
+      const bankHolidayRef = collection(
+        db,
+        `${firebase_collections.BANK_HOLIDAYS}/${regionId}/${year}`
+      );
+
+      const snapshot = await getDocs(bankHolidayRef);
+      const dates = snapshot.docs.map((doc) => new Date(doc.id));
+
+      dispatch({
+        type: SET_BANK_HOLIDAYS_CACHE,
+        payload: { key, dates },
+      });
+
+      return dates;
+    },
+    [db, state.bankHolidayCache]
+  );
+
   useEffect(() => {
     if (!db) return;
     const holidayEntitlementRef = doc(
@@ -248,6 +280,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
         updateWorkdaysOfTheWeek,
         updateBankHolidayRegion,
         importBankHolidaysFromGovUK,
+        getBankHolidays,
       }}
     >
       {children}
