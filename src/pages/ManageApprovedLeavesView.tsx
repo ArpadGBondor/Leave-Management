@@ -6,10 +6,10 @@ import User from '../interface/User.interface';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
 import UserCalendar from '../components/userCalendar/UserCalendar';
-import ManageRequestActions from '../components/forms/ManageRequestActions';
 import { useFirebase } from '../hooks/useFirebase';
+import ManageApprovedLeaveActions from '../components/forms/ManageApprovedLeaveActions';
 
-export default function ManageRequestApproveReject() {
+export default function ManageApprovedLeavesView() {
   const { requestId } = useParams();
   const [request, setRequest] = useState<LeaveRequest | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -41,10 +41,11 @@ export default function ManageRequestApproveReject() {
     <div className="p-4 md:p-8 md:min-w-xl w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
       <RequestAddEditForm
         requestId={requestId}
+        requestCollection={firebase_collections.APPROVED_LEAVES}
         disabled
         setRequest={setRequest}
       />
-      {request && <ManageRequestActions request={request} />}
+      {request && <ManageApprovedLeaveActions request={request} />}
       {user && (
         <UserCalendar
           className="mt-8"
