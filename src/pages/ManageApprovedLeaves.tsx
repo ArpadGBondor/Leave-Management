@@ -23,13 +23,15 @@ export default function ManageApprovedLeaves() {
 
   useEffect(() => {
     if (!db) return;
-    if (!user?.id) return;
-    const ownApprovedLeavesQuery = query(
+    if (!year) return;
+
+    const approvedLeavesQuery = query(
       collection(db, firebase_collections.APPROVED_LEAVES),
       where('year', '==', `${year}`)
     );
+
     const unsubscribe = onSnapshot(
-      ownApprovedLeavesQuery,
+      approvedLeavesQuery,
       (snapshot) => {
         const approvedLeavesList = snapshot.docs.map((doc) => ({
           id: doc.id,
