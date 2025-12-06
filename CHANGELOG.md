@@ -1,3 +1,10 @@
+## [1.5.40](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.39...v1.5.40) (2025-12-06)
+
+
+### Bug Fixes
+
+* minor layout adjustments ([2307e66](https://github.com/ArpadGBondor/Leave-Management/commit/2307e666cdb51bf2c122364706805edcf1bd48e0))
+
 ## [1.5.39](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.38...v1.5.39) (2025-12-06)
 
 
