@@ -29,7 +29,9 @@ export default function Table<T extends Record<string, any>>({
   rowKey,
   onRowClick,
   highlightRow,
-  emptyState = <div className="text-center text-brand-green-800">No data</div>,
+  emptyState = (
+    <div className="text-center text-brand-green-700 p-4">No data</div>
+  ),
   defaultSort,
 }: TableProps<T>) {
   const [sortBy, setSortBy] = useState<SortByType>(
@@ -154,7 +156,7 @@ export default function Table<T extends Record<string, any>>({
               <tr>
                 <td colSpan={columns.length}>
                   {searchTerm ? (
-                    <div className="text-center text-brand-green-800">
+                    <div className="text-center text-brand-green-700 p-4">
                       No search results
                     </div>
                   ) : (
@@ -181,19 +183,21 @@ export default function Table<T extends Record<string, any>>({
       {/* MOBILE CARD VIEW */}
       <div className=" grid md:hidden grid-cols-1 sm:grid-cols-2 gap-2">
         {pageData.length === 0 ? (
-          searchTerm ? (
-            <div className="text-center text-brand-green-800">
-              No search results
-            </div>
-          ) : (
-            emptyState
-          )
+          <div className="col-span-1 sm:col-span-2 bg-brand-green-50 border border-brand-green-400 rounded-lg">
+            {searchTerm ? (
+              <div className="text-center text-brand-green-700 p-4">
+                No search results
+              </div>
+            ) : (
+              emptyState
+            )}
+          </div>
         ) : (
           pageData.map((row, rowIndex) => (
             <button
               key={String(getRowId(row, page * pageSize + rowIndex))}
               onClick={() => onRowClick?.(row)}
-              className={`w-full text-left p-4 rounded-xl border ${
+              className={`w-full text-left p-4 rounded-xl border border-brand-green-400 ${
                 highlightRow && highlightRow(row)
                   ? 'bg-brand-purple-50 hover:bg-brand-purple-100 text-brand-purple-600'
                   : 'bg-brand-green-50 hover:bg-brand-green-100 text-brand-green-600'
