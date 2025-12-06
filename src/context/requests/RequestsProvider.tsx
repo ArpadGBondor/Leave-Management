@@ -369,6 +369,37 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     [user, auth?.currentUser]
   );
 
+  const unrejectRejectedLeave = useCallback(
+    async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const requestResponse = await fetch('/api/rejected-leave-re-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          // need to pass ID
+          id: data.id,
+          // Clear approved field? Make it look like approved by no-one
+          approvedById: '',
+          approvedByName: '',
+        }),
+      });
+      if (!requestResponse.ok)
+        throw new Error('Failed to re-request rejected leave');
+      const { doc } = await requestResponse.json();
+
+      return doc;
+    },
+    [user, auth?.currentUser]
+  );
+
   useEffect(() => {
     if (!db) return;
     if (!user) return;
@@ -519,6 +550,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         requestCancellationOfApprovedLeave,
         applyCancellationOfApprovedLeave,
         unapproveApprovedLeave,
+        unrejectRejectedLeave,
       }}
     >
       {children}
