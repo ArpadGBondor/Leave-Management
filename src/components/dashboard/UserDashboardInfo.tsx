@@ -1,6 +1,6 @@
 interface UserDashboardInfoProps {
   label: string;
-  value: number;
+  value: number | string;
 }
 
 export default function UserDashboardInfo({
@@ -9,17 +9,19 @@ export default function UserDashboardInfo({
 }: UserDashboardInfoProps) {
   return (
     <div
-      className={`bg-brand-green-100 rounded-xl flex-1 p-2 flex flex-col justify-between gap-2 items-center`}
+      className={`bg-brand-green-100 rounded-xl flex-1 p-2 flex flex-row md:flex-col justify-between gap-2 items-center`}
     >
-      <div className="flex-2 text-center text-brand-green-700 font-medium flex flex-col justify-center items-center">
+      <div className="flex-4 text-sm md:text-base text-brand-green-700 font-medium md:text-center ">
         {label}
       </div>
       <div
-        className={`flex-1 text-2xl font-semibold ${
-          value < 0 ? 'text-red-500' : 'text-brand-purple-700'
+        className={`flex-1 text-base sm:text-lg md:text-2xl font-semibold text-right md:text-center ${
+          typeof value === 'number' && value < 0
+            ? 'text-red-500'
+            : 'text-brand-purple-700'
         }`}
       >
-        {value.toFixed(1)}
+        {typeof value === 'number' ? value.toFixed(1) : value}
       </div>
     </div>
   );
