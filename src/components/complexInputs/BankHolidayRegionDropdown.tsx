@@ -122,10 +122,15 @@ export default function BankHolidayRegionDropdown<
           break;
       }
     }
-    setFormData((prevState) => ({
-      ...prevState,
-      numberOfBankHolidays,
-    }));
+    setFormData((prevState) => {
+      if (prevState.numberOfBankHolidays !== numberOfBankHolidays) {
+        return {
+          ...prevState,
+          numberOfBankHolidays,
+        };
+      }
+      return prevState;
+    });
   }, [
     bankHolidayDates,
     employmentStart,
