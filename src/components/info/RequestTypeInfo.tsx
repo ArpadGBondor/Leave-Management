@@ -24,9 +24,9 @@ export default function RequestTypeInfo({ requestType }: RequestTypeInfoProps) {
           This is a cancellation request to an already approved leave.
         </InfoBubble>
       )}
-      {requestType === RequestTypeEnum.Approved && (
+      {/* {requestType === RequestTypeEnum.Approved && (
         <InfoBubble>This is an approved leave.</InfoBubble>
-      )}
+      )} */}
     </>
   );
 }
