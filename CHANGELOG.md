@@ -1,3 +1,18 @@
+## [1.5.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.32...v1.5.33) (2025-12-06)
+
+
+### Bug Fixes
+
+* break infinite loop re-running useEffect in BankHolidayRegionDropdown ([2e4a4ed](https://github.com/ArpadGBondor/Leave-Management/commit/2e4a4ed72e743b37559ca05fcc0c53264cecfd39))
+* LeaveEntitlementMultiplierRecommendation useEffect dependency array correction ([f88a887](https://github.com/ArpadGBondor/Leave-Management/commit/f88a88716a55c994eddf34cfe4529b361092707b))
+* ManageApprovedLeaves minor change to useEffect ([c655248](https://github.com/ArpadGBondor/Leave-Management/commit/c65524842812bf861202517c70205d6318ef9dcc))
+* ManageTeamMember refactor useEffect ([d5454cf](https://github.com/ArpadGBondor/Leave-Management/commit/d5454cfe6d0c2e6ee449a61ad0a23c6197e84e0c))
+* minor change to ManageRejectedLeaves useEffect ([d0c9467](https://github.com/ArpadGBondor/Leave-Management/commit/d0c94677408897d3c4988749103638e6aa5e5741))
+* refactor UserProvider useEffect ([b0c9085](https://github.com/ArpadGBondor/Leave-Management/commit/b0c9085db92117db53a787d7fa4421c664a6ec7d))
+* refactored BankHolidayRegionDropdown useEffect ([735ce6e](https://github.com/ArpadGBondor/Leave-Management/commit/735ce6e42d12d72c0cfe218e1995fd5348b81332))
+* RequestsProvider minor issue ([bc67fed](https://github.com/ArpadGBondor/Leave-Management/commit/bc67fedba2751c7404c064611530940933bba87a))
+* UserCalendar minor fix ([5a3f438](https://github.com/ArpadGBondor/Leave-Management/commit/5a3f4386b90bebc5738051dbb1bfecfee4f60270))
+
 ## [1.5.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.31...v1.5.32) (2025-12-05)
 
 
