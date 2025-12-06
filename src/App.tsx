@@ -37,6 +37,9 @@ const RejectedLeaves = lazy(() => import('./pages/RejectedLeaves'));
 const RejectedLeavesViev = lazy(() => import('./pages/RejectedLeavesViev'));
 const ManageRejectedLeaves = lazy(() => import('./pages/ManageRejectedLeaves'));
 const ManageApprovedLeaves = lazy(() => import('./pages/ManageApprovedLeaves'));
+const ManageApprovedLeavesView = lazy(
+  () => import('./pages/ManageApprovedLeavesView')
+);
 
 export default function App() {
   return (
@@ -96,6 +99,10 @@ export default function App() {
                 <Route
                   path="/manage-approved-leaves"
                   element={<ManageApprovedLeaves />}
+                />
+                <Route
+                  path="/manage-approved-leaves/:requestId"
+                  element={<ManageApprovedLeavesView />}
                 />
                 <Route
                   path="/manage-rejected-leaves"

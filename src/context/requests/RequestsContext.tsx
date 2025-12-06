@@ -42,6 +42,7 @@ export interface RequestsContextType extends RequestsState {
   ) => Promise<void>;
   requestCancellationOfApprovedLeave: (data: { id: string }) => Promise<void>;
   applyCancellationOfApprovedLeave: (data: { id: string }) => Promise<void>;
+  unapproveApprovedLeave: (data: { id: string }) => Promise<void>;
 }
 
 export const RequestsContext = createContext<RequestsContextType | undefined>(

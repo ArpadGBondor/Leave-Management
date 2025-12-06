@@ -8,13 +8,13 @@ import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
 
-interface RequestApproveRejectProp {
+interface ManageRequestActionsProp {
   request: LeaveRequest;
 }
 
-export default function RequestApproveReject({
+export default function ManageRequestActions({
   request,
-}: RequestApproveRejectProp) {
+}: ManageRequestActionsProp) {
   const { approveRequest, rejectRequest, applyCancellationOfApprovedLeave } =
     useRequestsContext();
   const { startLoading, stopLoading } = useLoadingContext();
@@ -52,16 +52,7 @@ export default function RequestApproveReject({
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:justify-stretch gap-1 md:gap-4">
-        <Button
-          type="button"
-          label={
-            request.requestType === RequestTypeEnum.Cancellation
-              ? 'Approve cancellation'
-              : 'Approve request'
-          }
-          onClick={onApprove}
-        />
+      <div className="flex flex-col-reverse md:flex-row md:justify-stretch gap-1 md:gap-4">
         <Button
           type="button"
           variant="danger"
@@ -77,6 +68,15 @@ export default function RequestApproveReject({
           variant="secondary"
           label={'Back'}
           onClick={() => navigate('/manage-requests')}
+        />
+        <Button
+          type="button"
+          label={
+            request.requestType === RequestTypeEnum.Cancellation
+              ? 'Approve cancellation'
+              : 'Approve request'
+          }
+          onClick={onApprove}
         />
       </div>
     </>

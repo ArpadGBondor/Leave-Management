@@ -7,16 +7,16 @@ import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
-import { useUserContext } from '../context/user/useUserContext';
 import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
 import { useFirebase } from '../hooks/useFirebase';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManageApprovedLeaves() {
   const [approvedLeaves, setApprovedLeaves] = useState<LeaveRequest[]>([]);
   const [year, setYear] = useState<number>(new Date().getUTCFullYear());
   const [loading, setLoading] = useState(true);
-  const { user } = useUserContext();
+  const navigate = useNavigate();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -120,7 +120,13 @@ export default function ManageApprovedLeaves() {
         Team's approved leaves
       </h1>
       <ChangeYear year={year} setYear={setYear} />
-      <Table data={approvedLeaves} columns={columns} />
+      <Table
+        data={approvedLeaves}
+        columns={columns}
+        onRowClick={(request) =>
+          navigate(`/manage-approved-leaves/${request.id}`)
+        }
+      />
     </div>
   );
 }
