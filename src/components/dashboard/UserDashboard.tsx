@@ -57,17 +57,17 @@ export default function UserDashboard({
   );
   return (
     <div
-      className={`bg-brand-green-600 border border-brand-green-600 rounded-xl p-4 space-y-4 w-full max-w-2xl mx-auto overflow-hidden ${className}`}
+      className={`bg-brand-green-600 border border-brand-green-600 rounded-xl p-4 space-y-2 md:space-y-4 w-full max-w-2xl mx-auto overflow-hidden ${className}`}
     >
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="md:col-span-3">
+      <div className="grid grid-cols-4 gap-4 items-stretch">
+        <div className="col-span-3">
           <ProfileBadge user={user} />
         </div>
-        <div className="md:col-span-1 p-4 bg-brand-green-100 rounded-xl flex justify-center items-center text-brand-green-700 font-medium">
+        <div className="col-span-1 text-sm sm:text-base p-2 sm:p-4 bg-brand-green-100 rounded-xl flex justify-center items-center text-brand-green-700 font-medium text-center">
           Year: {currentYear}
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
         <UserDashboardInfo
           label={'Total leave entitlement days'}
           value={totalLeaveEntitlement}
