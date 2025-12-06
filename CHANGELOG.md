@@ -1,3 +1,10 @@
+## [1.5.37](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.36...v1.5.37) (2025-12-06)
+
+
+### Bug Fixes
+
+* move header outside of request add edit form ([fc4ba4f](https://github.com/ArpadGBondor/Leave-Management/commit/fc4ba4f17da186bd44b6ce771ab960a197644d57))
+
 ## [1.5.36](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.35...v1.5.36) (2025-12-06)
 
 
