@@ -23,13 +23,15 @@ export default function ManageRejectedLeaves() {
 
   useEffect(() => {
     if (!db) return;
-    if (!user?.id) return;
-    const ownRejectedLeavesQuery = query(
+    if (!year) return;
+
+    const rejectedLeavesQuery = query(
       collection(db, firebase_collections.REJECTED_LEAVES),
       where('year', '==', `${year}`)
     );
+
     const unsubscribe = onSnapshot(
-      ownRejectedLeavesQuery,
+      rejectedLeavesQuery,
       (snapshot) => {
         const rejectedLeavesList = snapshot.docs.map((doc) => ({
           id: doc.id,
