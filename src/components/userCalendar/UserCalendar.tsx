@@ -91,6 +91,7 @@ export default function UserCalendar({
     workdaysOfTheWeek: companyWorkdaysOfTheWeek,
     bankHolidayRegion: companyBankHolidayRegion,
     holidayEntitlement: companyHolidayEntitlement,
+    getBankHolidays,
   } = useCompanyContext();
   const currentYear = format(currentMonth, 'yyyy');
 
@@ -299,95 +300,65 @@ export default function UserCalendar({
     if (!db) return;
     if (!previousYearBankHolidayRegion) return;
     if (!currentYear) return;
-    // Need to load previous and next year too
     const year = parseInt(currentYear);
     startLoading('fetch-previous-year-bank-holidays');
-    const previousYearBankHolidayRef = collection(
-      db,
-      `/${
-        firebase_collections.BANK_HOLIDAYS
-      }/${previousYearBankHolidayRegion}/${year - 1}`
-    );
-
-    const previousYearBankHolidaysUnsubscribe = onSnapshot(
-      previousYearBankHolidayRef,
-      (snapshot) => {
-        const leaves: Leave[] = [];
-        for (const doc of snapshot.docs) {
-          const data = doc.data();
-          const date = new Date(data.date);
-          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
-        }
-        setPreviousYearBankHolidays(leaves);
-        stopLoading('fetch-previous-year-bank-holidays');
-      }
-    );
-    return () => {
-      previousYearBankHolidaysUnsubscribe();
+    const fetchBankHolidays = async () => {
+      const dates = await getBankHolidays(
+        previousYearBankHolidayRegion,
+        `${year - 1}`
+      );
+      const leaves: Leave[] = dates.map((date) => ({
+        from: date,
+        to: date,
+        numberOfWorkdays: 1,
+      }));
+      setPreviousYearBankHolidays(leaves);
+      stopLoading('fetch-previous-year-bank-holidays');
     };
+    fetchBankHolidays();
   }, [db, previousYearBankHolidayRegion, currentYear]);
 
   useEffect(() => {
     if (!db) return;
     if (!currentYearBankHolidayRegion) return;
     if (!currentYear) return;
-    // Need to load previous and next year too
-    const year = parseInt(currentYear);
     startLoading('fetch-current-year-bank-holidays');
-    const currentYearBankHolidayRef = collection(
-      db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${currentYearBankHolidayRegion}/${year}`
-    );
-
-    const currentYearBankHolidaysUnsubscribe = onSnapshot(
-      currentYearBankHolidayRef,
-      (snapshot) => {
-        const leaves: Leave[] = [];
-        for (const doc of snapshot.docs) {
-          const data = doc.data();
-          const date = new Date(data.date);
-          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
-        }
-        setCurrentYearBankHolidays(leaves);
-        stopLoading('fetch-current-year-bank-holidays');
-      }
-    );
-    return () => {
-      currentYearBankHolidaysUnsubscribe();
+    const fetchBankHolidays = async () => {
+      const dates = await getBankHolidays(
+        currentYearBankHolidayRegion,
+        currentYear
+      );
+      const leaves: Leave[] = dates.map((date) => ({
+        from: date,
+        to: date,
+        numberOfWorkdays: 1,
+      }));
+      setCurrentYearBankHolidays(leaves);
+      stopLoading('fetch-current-year-bank-holidays');
     };
+    fetchBankHolidays();
   }, [db, currentYearBankHolidayRegion, currentYear]);
 
   useEffect(() => {
     if (!db) return;
     if (!nextYearBankHolidayRegion) return;
     if (!currentYear) return;
-    // Need to load previous and next year too
     const year = parseInt(currentYear);
     startLoading('fetch-next-year-bank-holidays');
-
-    const nextYearBankHolidayRef = collection(
-      db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${nextYearBankHolidayRegion}/${
-        year + 1
-      }`
-    );
-
-    const nextYearBankHolidaysUnsubscribe = onSnapshot(
-      nextYearBankHolidayRef,
-      (snapshot) => {
-        const leaves: Leave[] = [];
-        for (const doc of snapshot.docs) {
-          const data = doc.data();
-          const date = new Date(data.date);
-          leaves.push({ from: date, to: date, numberOfWorkdays: 1 });
-        }
-        setNextYearBankHolidays(leaves);
-        stopLoading('fetch-next-year-bank-holidays');
-      }
-    );
-    return () => {
-      nextYearBankHolidaysUnsubscribe();
+    const fetchBankHolidays = async () => {
+      const dates = await getBankHolidays(
+        nextYearBankHolidayRegion,
+        `${year + 1}`
+      );
+      const leaves: Leave[] = dates.map((date) => ({
+        from: date,
+        to: date,
+        numberOfWorkdays: 1,
+      }));
+      setNextYearBankHolidays(leaves);
+      stopLoading('fetch-next-year-bank-holidays');
     };
+    fetchBankHolidays();
   }, [db, nextYearBankHolidayRegion, currentYear]);
 
   return (

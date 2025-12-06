@@ -35,7 +35,7 @@ export default function BankHolidayRegionDropdown<
 
   const [bankHolidayDates, setBankHolidayDates] = useState<Date[]>([]);
 
-  const { importedRegions } = useCompanyContext();
+  const { importedRegions, getBankHolidays } = useCompanyContext();
   const firebase = useFirebase();
   const db = firebase?.db;
 
@@ -72,20 +72,11 @@ export default function BankHolidayRegionDropdown<
       }));
       return;
     }
-    const bankHolidayRef = collection(
-      db,
-      `/${firebase_collections.BANK_HOLIDAYS}/${bankHolidayRegionId}/${year}`
-    );
-    const numberOfBankHolidaysUnsubscribe = onSnapshot(
-      bankHolidayRef,
-      (snapshot) => {
-        // store raw list of holidays as dates
-        const dates = snapshot.docs.map((doc) => new Date(doc.id));
-        setBankHolidayDates(dates);
-      }
-    );
-
-    return () => numberOfBankHolidaysUnsubscribe();
+    const fetchBankHolidays = async () => {
+      const dates = await getBankHolidays(bankHolidayRegionId, year);
+      setBankHolidayDates(dates);
+    };
+    fetchBankHolidays();
   }, [db, bankHolidayRegionId, year]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
 import UserHolidayEntitlement from '../interface/UserHolidayEntitlement.interface';
 import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
@@ -18,6 +18,7 @@ export default function useLoadUserYearlyConfiguration({
   const {
     workdaysOfTheWeek: companyWorkdays,
     bankHolidayRegion: companyBankHolidayRegion,
+    getBankHolidays,
   } = useCompanyContext();
   const [loadedYear, setLoadedYear] = useState('');
   const [workdaysOfTheWeek, setWorkdaysOfTheWeek] =
@@ -56,19 +57,8 @@ export default function useLoadUserYearlyConfiguration({
 
       setWorkdaysOfTheWeek(finalWorkdays);
 
-      const bankHolidayRef = collection(
-        db,
-        `${firebase_collections.BANK_HOLIDAYS}/${finalRegion}/${year}`
-      );
-
-      const bankHolidaySnap = await getDocs(bankHolidayRef);
-
-      const holidays: Leave[] = [];
-      for (const docSnap of bankHolidaySnap.docs) {
-        const data = docSnap.data();
-        const date = new Date(data.date);
-        holidays.push({ from: date, to: date });
-      }
+      const dates = await getBankHolidays(finalRegion, year);
+      const holidays: Leave[] = dates.map((date) => ({ from: date, to: date }));
 
       setBankHolidays(holidays);
 
