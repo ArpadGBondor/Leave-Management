@@ -13,7 +13,13 @@ import {
   linkWithCredential,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  Unsubscribe,
+} from 'firebase/firestore';
 import { UserContext, initialUserState } from './UserContext';
 import { UserReducer } from './UserReducer';
 import User, { userTypeOptions } from '../../interface/User.interface';
@@ -267,9 +273,18 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!db || !auth) return;
+
+    let unsubscribeUserDoc: Unsubscribe | null = null;
+
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
       startLoading('user');
       dispatch({ type: SET_LOADING, payload: true });
+
+      // Clean up old snapshot if it exists
+      if (unsubscribeUserDoc) {
+        unsubscribeUserDoc();
+        unsubscribeUserDoc = null;
+      }
 
       if (firebaseUser) {
         dispatch({ type: SET_LOGGED_IN, payload: true });
@@ -282,7 +297,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
 
         // Listen to Firestore user document for real-time updates
         const userRef = doc(db, firebase_collections.USERS, firebaseUser.uid);
-        const unsubscribeUserDoc = onSnapshot(userRef, (snap) => {
+        unsubscribeUserDoc = onSnapshot(userRef, (snap) => {
           if (snap.exists()) {
             dispatch({ type: SET_USER, payload: snap.data() as User });
           } else {
@@ -292,9 +307,6 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           dispatch({ type: SET_LOADING, payload: false });
           stopLoading('user');
         });
-
-        // Return this unsubscribe when auth changes
-        return unsubscribeUserDoc;
       } else {
         dispatch({ type: SET_LOGGED_IN, payload: false });
         dispatch({ type: SET_HAS_PASSWORD, payload: false });
@@ -313,6 +325,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
     return () => {
       unsubscribeAuth();
       unsubscribeUsers();
+      unsubscribeUserDoc && unsubscribeUserDoc();
     };
   }, [auth, db]);
 

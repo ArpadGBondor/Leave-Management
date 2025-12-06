@@ -81,18 +81,24 @@ export default function ManageTeamMember() {
   const db = firebase?.db;
 
   useEffect(() => {
+    const startYear = user?.serviceStartDate?.substring(0, 4);
+    const endYear = user?.serviceEndDate?.substring(0, 4);
+
     setEmploymentYears(
       importedYears.filter((year) => {
         // Show already configured years to avoid errors
         if (configuredYears.some(({ id }) => id === year)) return true;
-        if (user?.serviceStartDate && user?.serviceStartDate.slice(0, 4) > year)
-          return false;
-        if (user?.serviceEndDate && user?.serviceEndDate.slice(0, 4) < year)
-          return false;
+        if (startYear && startYear > year) return false;
+        if (endYear && endYear < year) return false;
         return true;
       })
     );
-  }, [importedYears, user?.serviceEndDate, user?.serviceStartDate]);
+  }, [
+    importedYears,
+    configuredYears,
+    user?.serviceEndDate,
+    user?.serviceStartDate,
+  ]);
 
   useEffect(() => {
     if (!db) return;

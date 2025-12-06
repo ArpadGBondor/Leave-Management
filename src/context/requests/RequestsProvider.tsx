@@ -455,7 +455,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       );
     } else {
       dispatch({
-        type: SET_MANAGABLE_REJECTED_LEAVES_COUNT,
+        type: SET_MANAGABLE_APPROVED_LEAVES_COUNT,
         payload: 0,
       });
     }

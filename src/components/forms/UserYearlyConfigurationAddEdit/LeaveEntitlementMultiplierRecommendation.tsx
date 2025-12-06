@@ -68,7 +68,7 @@ export default function LeaveEntitlementMultiplierRecommendation<
       (numberOfWorkdays / 5) *
         (_workdaysDuringEmployment / _workdaysDuringTheYear)
     );
-  }, [user.serviceStartDate, user.serviceStartDate, numberOfWorkdays]);
+  }, [user.serviceStartDate, user.serviceEndDate, numberOfWorkdays, year]);
 
   return (
     <div>
