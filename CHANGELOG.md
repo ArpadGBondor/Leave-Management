@@ -1,3 +1,11 @@
+## [1.5.34](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.33...v1.5.34) (2025-12-06)
+
+
+### Bug Fixes
+
+* update react ([ab3038b](https://github.com/ArpadGBondor/Leave-Management/commit/ab3038bc76121d2f8fc5802214cdb5a7226b9866))
+* update semantic release ([6d0311a](https://github.com/ArpadGBondor/Leave-Management/commit/6d0311a1d65ed0b33847075dd905be2c270f75c6))
+
 ## [1.5.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.32...v1.5.33) (2025-12-06)
 
 
