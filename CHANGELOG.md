@@ -1,3 +1,10 @@
+## [1.5.36](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.35...v1.5.36) (2025-12-06)
+
+
+### Bug Fixes
+
+* allow managers to un-reject (reopen) previously rejected requests ([0c1baa7](https://github.com/ArpadGBondor/Leave-Management/commit/0c1baa7f01437626af64fb9db74620c8d27af506))
+
 ## [1.5.35](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.34...v1.5.35) (2025-12-06)
 
 
