@@ -1,3 +1,10 @@
+## [1.5.39](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.38...v1.5.39) (2025-12-06)
+
+
+### Bug Fixes
+
+* do not cache missing data ([0257b8f](https://github.com/ArpadGBondor/Leave-Management/commit/0257b8f377620156e753a89151e2e3356d92b277))
+
 ## [1.5.38](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.37...v1.5.38) (2025-12-06)
 
 
