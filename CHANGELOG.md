@@ -1,3 +1,10 @@
+## [1.5.38](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.37...v1.5.38) (2025-12-06)
+
+
+### Bug Fixes
+
+* cache bank holidays in state management to avoid unnecessary fetching ([494bee3](https://github.com/ArpadGBondor/Leave-Management/commit/494bee36753b455651ce6cfe71920c3bba1096be))
+
 ## [1.5.37](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.36...v1.5.37) (2025-12-06)
 
 
