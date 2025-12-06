@@ -179,10 +179,14 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       const snapshot = await getDocs(bankHolidayRef);
       const dates = snapshot.docs.map((doc) => new Date(doc.id));
 
-      dispatch({
-        type: SET_BANK_HOLIDAYS_CACHE,
-        payload: { key, dates },
-      });
+      // Do not cache if there's nothing to cache.
+      // Import might fill up database with missing years.
+      if (dates.length) {
+        dispatch({
+          type: SET_BANK_HOLIDAYS_CACHE,
+          payload: { key, dates },
+        });
+      }
 
       return dates;
     },
