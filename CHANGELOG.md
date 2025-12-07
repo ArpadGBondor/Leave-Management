@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.0...v1.6.1) (2025-12-07)
+
+
+### Bug Fixes
+
+* add confirmation modal ([242c80b](https://github.com/ArpadGBondor/Leave-Management/commit/242c80bbb584926e4cf886f2e16b0a33fc64532c))
+* use confirmation modal for deletions ([76dba77](https://github.com/ArpadGBondor/Leave-Management/commit/76dba777492289dbed2b9739322e5f5f0264dfa0))
+
 # [1.6.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.41...v1.6.0) (2025-12-07)
 
 
