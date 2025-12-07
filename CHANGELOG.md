@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.41...v1.6.0) (2025-12-07)
+
+
+### Bug Fixes
+
+* pass requesting user as a prop to RequestAddEditForm ([daf0e92](https://github.com/ArpadGBondor/Leave-Management/commit/daf0e92d7f1f7c24ce09e45aa0df75bc443cbdf8))
+
+
+### Features
+
+* give managers full control over managing leaves of team members without requiring them to log in to the system ([06b4ded](https://github.com/ArpadGBondor/Leave-Management/commit/06b4deddced3e1c3f44c240a3d16252501dbb1f7))
+
 ## [1.5.41](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.40...v1.5.41) (2025-12-07)
 
 
