@@ -43,6 +43,10 @@ const ManageApprovedLeaves = lazy(() => import('./pages/ManageApprovedLeaves'));
 const ManageApprovedLeavesView = lazy(
   () => import('./pages/ManageApprovedLeavesView')
 );
+const ManageNewRequest = lazy(() => import('./pages/ManageNewRequest'));
+const ManageNewRequestAddEdit = lazy(
+  () => import('./pages/ManageNewRequestAddEdit')
+);
 
 export default function App() {
   return (
@@ -94,6 +98,14 @@ export default function App() {
                 />
                 <Route path="/calendars" element={<Calendars />} />
                 <Route path="/calendars/:userId" element={<CalendarOfUser />} />
+                <Route
+                  path="/manage-new-request"
+                  element={<ManageNewRequest />}
+                />
+                <Route
+                  path="/manage-new-request/:requestingUserId/:requestId"
+                  element={<ManageNewRequestAddEdit />}
+                />
                 <Route path="/manage-requests" element={<ManageRequests />} />
                 <Route
                   path="/manage-requests/:requestId"

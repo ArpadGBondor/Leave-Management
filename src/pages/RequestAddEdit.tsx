@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 import RequestAddEditForm from '../components/forms/RequestAddEditForm';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function RequestAddEdit() {
   const { requestId } = useParams();
+  const { user } = useUserContext();
 
   const isEditing = Boolean(requestId !== 'new');
 
@@ -11,7 +13,7 @@ export default function RequestAddEdit() {
       <h2 className="text-4xl font-bold text-brand-purple-700">
         {isEditing ? 'Pending leave request details' : 'New leave request'}
       </h2>
-      <RequestAddEditForm requestId={requestId} />
+      {user && <RequestAddEditForm requestId={requestId} user={user} />}
     </div>
   );
 }

@@ -3,10 +3,14 @@ import { FaExclamationTriangle } from '../../icons/fa';
 
 interface WarningBubbleProps {
   children: ReactNode;
+  collapsedByDefault?: boolean;
 }
 
-export default function WarningBubble({ children }: WarningBubbleProps) {
-  const [open, setOpen] = useState(true);
+export default function WarningBubble({
+  children,
+  collapsedByDefault,
+}: WarningBubbleProps) {
+  const [open, setOpen] = useState(!Boolean(collapsedByDefault));
 
   return (
     <div

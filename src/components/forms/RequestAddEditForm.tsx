@@ -9,7 +9,6 @@ import {
   where,
 } from 'firebase/firestore';
 import { firebase_collections } from '../../../lib/firebase_collections';
-import { useUserContext } from '../../context/user/useUserContext';
 import {
   LeaveRequest,
   LeaveType,
@@ -38,6 +37,7 @@ import { format } from 'date-fns';
 import validateRequest from './RequestAddEditForm/validateRequest';
 import ChangedFieldNotice from './RequestAddEditForm/ChangedFieldNotice';
 import useLoadUserYearlyConfiguration from '../../hooks/useLoadUserYearlyConfiguration';
+import User from '../../interface/User.interface';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -47,6 +47,8 @@ interface RequestAddEditFormProps {
     | typeof firebase_collections.REQUESTS
     | typeof firebase_collections.APPROVED_LEAVES
     | typeof firebase_collections.REJECTED_LEAVES;
+  user: User;
+  navigateBack?: string;
 }
 
 export default function RequestAddEditForm({
@@ -54,12 +56,13 @@ export default function RequestAddEditForm({
   disabled,
   setRequest,
   requestCollection = firebase_collections.REQUESTS,
+  user,
+  navigateBack,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
   const [requestType, setRequestType] = useState<RequestType>(
     RequestTypeEnum.New
   );
-  const { user } = useUserContext();
   const defaultRequest: {
     from: string;
     to: string;
@@ -398,7 +401,9 @@ export default function RequestAddEditForm({
           numberOfWorkdays,
           isNumberOfWorkdaysOverwritten,
           numberOfWorkdaysOverwritten,
-          description
+          description,
+          user.id,
+          user.name
         );
         toast.info('Request created');
       }
@@ -435,6 +440,7 @@ export default function RequestAddEditForm({
   };
 
   const onBack = () => {
+    if (navigateBack) return navigate(navigateBack);
     if (requestCollection === firebase_collections.REJECTED_LEAVES)
       return navigate('/rejected-leaves');
     if (requestCollection === firebase_collections.APPROVED_LEAVES)

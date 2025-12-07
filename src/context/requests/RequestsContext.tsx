@@ -21,7 +21,9 @@ export interface RequestsContextType extends RequestsState {
     numberOfWorkdays: number,
     isNumberOfWorkdaysOverwritten: boolean,
     numberOfWorkdaysOverwritten: number,
-    description: string
+    description: string,
+    requestedById: string,
+    requestedByName: string
   ) => Promise<void>;
   updateRequest: (
     data: { id: string } & Partial<LeaveRequest>
