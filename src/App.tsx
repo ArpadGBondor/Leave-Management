@@ -9,6 +9,7 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import PrivateManagerRoute from './components/auth/PrivateManagerRoute';
 import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
+import ConfirmationOverlay from './components/confirmation/ConfirmationOverlay';
 
 const Home = lazy(() => import('./pages/Home'));
 const GettingStarted = lazy(() => import('./pages/GettingStarted'));
@@ -51,6 +52,7 @@ const ManageNewRequestAddEdit = lazy(
 export default function App() {
   return (
     <div className="h-screen w-full flex flex-col lg:flex-row justify-stretch items-stretch bg-brand-purple-50 bg-no-repeat bg-cover bg-bottom overflow-hidden relative">
+      <ConfirmationOverlay />
       <LoadingOverlay />
       <div className="navigation grow-0 shrink-0">
         <Navigation />
