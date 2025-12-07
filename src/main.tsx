@@ -8,18 +8,21 @@ import UserProvider from './context/user/UserProvider';
 import LoadingProvider from './context/loading/LoadingProvider';
 import CompanyProvider from './context/company/CompanyProvider';
 import RequestsProvider from './context/requests/RequestsProvider';
+import ConfirmationProvider from './context/confirmation/ConfirmationProvider';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>
       <LoadingProvider>
-        <UserProvider>
-          <CompanyProvider>
-            <RequestsProvider>
-              <App />
-            </RequestsProvider>
-          </CompanyProvider>
-        </UserProvider>
+        <ConfirmationProvider>
+          <UserProvider>
+            <CompanyProvider>
+              <RequestsProvider>
+                <App />
+              </RequestsProvider>
+            </CompanyProvider>
+          </UserProvider>
+        </ConfirmationProvider>
       </LoadingProvider>
     </BrowserRouter>
   </StrictMode>

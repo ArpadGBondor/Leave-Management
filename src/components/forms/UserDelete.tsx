@@ -3,14 +3,26 @@ import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useUserContext } from '../../context/user/useUserContext';
 import Button from '../buttons/Button';
 import RightToBeForgottenInfo from '../info/RightToBeForgottenInfo';
+import { useConfirmationContext } from '../../context/confirmation/useConfirmationContext';
+import { defaultConfirmationOptions } from '../../context/confirmation/types';
 
 export default function UserDelete() {
   const { user, deleteUser } = useUserContext();
   const { startLoading, stopLoading } = useLoadingContext();
+  const { confirm } = useConfirmationContext();
 
   if (!user) return <></>;
 
-  const clickDelete = async () => {
+  const onDeleteConfirm = () => {
+    confirm(
+      defaultConfirmationOptions(
+        'You’re about to permanently delete your account and all associated personal data. This includes your yearly entitlement settings and all leave requests. Once deleted, this information cannot be recovered.',
+        onDelete
+      )
+    );
+  };
+
+  const onDelete = async () => {
     startLoading('delete-user');
     try {
       await deleteUser(user);
@@ -31,7 +43,7 @@ export default function UserDelete() {
         <Button
           variant="danger"
           label="Delete user profile"
-          onClick={clickDelete}
+          onClick={onDeleteConfirm}
         />
       </div>
     </div>

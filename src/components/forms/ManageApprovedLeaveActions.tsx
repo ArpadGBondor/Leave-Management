@@ -7,6 +7,8 @@ import {
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
+import { useConfirmationContext } from '../../context/confirmation/useConfirmationContext';
+import { defaultConfirmationOptions } from '../../context/confirmation/types';
 
 interface ManageApprovedLeaveActionsProp {
   request: LeaveRequest;
@@ -18,6 +20,17 @@ export default function ManageApprovedLeaveActions({
   const { unapproveApprovedLeave } = useRequestsContext();
   const { startLoading, stopLoading } = useLoadingContext();
   const navigate = useNavigate();
+
+  const { confirm } = useConfirmationContext();
+
+  const onUnapproveConfirm = () => {
+    confirm(
+      defaultConfirmationOptions(
+        'You’re about to unapprove this approved request. After this action, the request will became pending.',
+        onUnapprove
+      )
+    );
+  };
 
   const onUnapprove = async () => {
     startLoading('unapprove-approved-request');
@@ -41,7 +54,7 @@ export default function ManageApprovedLeaveActions({
           type="button"
           variant="danger"
           label={'Unapprove request'}
-          onClick={onUnapprove}
+          onClick={onUnapproveConfirm}
         />
         <Button
           type="button"
