@@ -16,6 +16,8 @@ import LeaveEntitlementMultiplierRecommendation from './UserYearlyConfigurationA
 import LeaveEntitlementDeductionRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementDeductionRecommendation';
 import LeaveEntitlementBaseRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementBaseRecommendation';
 import LeaveEntitlementAdditionalRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementAdditionalRecommendation';
+import { defaultConfirmationOptions } from '../../context/confirmation/types';
+import { useConfirmationContext } from '../../context/confirmation/useConfirmationContext';
 
 interface UserYearlyConfigurationAddEditProps {
   isEditing: boolean;
@@ -72,6 +74,7 @@ export default function UserYearlyConfigurationAddEdit({
     numberOfBankHolidays: '',
   });
   const { startLoading, stopLoading } = useLoadingContext();
+  const { confirm } = useConfirmationContext();
 
   const { id } = formData;
 
@@ -117,6 +120,15 @@ export default function UserYearlyConfigurationAddEdit({
     }
   };
 
+  const onDeleteConfirm = () => {
+    confirm(
+      defaultConfirmationOptions(
+        `You are about to delete ${user.name}'s ${id} year configuration. Once removed, the user's workdays, bank holidays, and holiday entitlement will be recalculated using the company's default values.`,
+        onDelete
+      )
+    );
+  };
+
   const onDelete = async () => {
     startLoading('delete-user-yearly-configuration');
     try {
@@ -132,7 +144,7 @@ export default function UserYearlyConfigurationAddEdit({
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          id,
+          id, // year
           userId,
         }),
       });
@@ -210,7 +222,7 @@ export default function UserYearlyConfigurationAddEdit({
             type="button"
             variant="danger"
             label="Delete"
-            onClick={onDelete}
+            onClick={onDeleteConfirm}
           />
         )}
       </div>

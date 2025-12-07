@@ -35,3 +35,15 @@ export const TestConfirmationState: ConfirmationState = {
     ],
   },
 };
+
+export const defaultConfirmationOptions = (
+  message: string,
+  callback: () => void
+): ConfirmationOptions => ({
+  title: 'Please confirm your action',
+  message,
+  buttons: [
+    { label: 'Confirm', callback, variant: 'danger' },
+    { label: 'Cancel', variant: 'secondary' },
+  ],
+});

@@ -38,6 +38,8 @@ import validateRequest from './RequestAddEditForm/validateRequest';
 import ChangedFieldNotice from './RequestAddEditForm/ChangedFieldNotice';
 import useLoadUserYearlyConfiguration from '../../hooks/useLoadUserYearlyConfiguration';
 import User from '../../interface/User.interface';
+import { useConfirmationContext } from '../../context/confirmation/useConfirmationContext';
+import { defaultConfirmationOptions } from '../../context/confirmation/types';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -103,6 +105,7 @@ export default function RequestAddEditForm({
   >([]);
 
   const { startLoading, stopLoading } = useLoadingContext();
+  const { confirm } = useConfirmationContext();
   const {
     createRequest,
     updateRequest,
@@ -418,6 +421,28 @@ export default function RequestAddEditForm({
     }
   };
 
+  const onDeleteRequestConfirmation = () => {
+    let message = '';
+
+    switch (requestCollection) {
+      case firebase_collections.APPROVED_LEAVES:
+        message =
+          'You are about to submit a cancellation request for an approved leave. If the cancellation is approved, the leave will be removed.';
+        break;
+
+      case firebase_collections.REJECTED_LEAVES:
+        message =
+          'You are about to permanently delete this rejected request from the system.';
+        break;
+
+      default:
+        message =
+          'You are about to delete this pending request from the system.';
+    }
+
+    confirm(defaultConfirmationOptions(message, onDelete));
+  };
+
   const onDelete = async () => {
     startLoading('delete-request');
     try {
@@ -651,7 +676,7 @@ export default function RequestAddEditForm({
                   ? 'Request cancellation'
                   : 'Delete request'
               }
-              onClick={onDelete}
+              onClick={onDeleteRequestConfirmation}
             />
           )}
         </div>
