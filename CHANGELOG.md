@@ -1,3 +1,10 @@
+## [1.5.41](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.40...v1.5.41) (2025-12-07)
+
+
+### Bug Fixes
+
+* add background, border and pagging to "No data" and "No search results" messages ([fc1fe7c](https://github.com/ArpadGBondor/Leave-Management/commit/fc1fe7ca68980dea0c946378f3eec91cb9c81b7c))
+
 ## [1.5.40](https://github.com/ArpadGBondor/Leave-Management/compare/v1.5.39...v1.5.40) (2025-12-06)
 
 
