@@ -55,7 +55,9 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       numberOfWorkdays: number,
       isNumberOfWorkdaysOverwritten: boolean,
       numberOfWorkdaysOverwritten: number,
-      description: string
+      description: string,
+      requestedById: string,
+      requestedByName: string
     ) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
@@ -65,8 +67,8 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
 
       const data: Partial<LeaveRequest> = {
         // id: '', ID will be auto generated
-        requestedById: user.id,
-        requestedByName: user.name,
+        requestedById,
+        requestedByName,
         approvedById: '',
         approvedByName: '',
         from,

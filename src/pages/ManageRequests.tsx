@@ -10,6 +10,8 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useFirebase } from '../hooks/useFirebase';
+import Button from '../components/buttons/Button';
+import NewRequestAsATeamMemberInfo from '../components/info/NewRequestAsATeamMemberInfo';
 
 export default function ManageRequests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -108,7 +110,7 @@ export default function ManageRequests() {
   if (loading) return <div className="p-8">Loading requests...</div>;
 
   return (
-    <div className="p-4 md:p-8 w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
+    <div className="p-4 md:p-8 w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-3xl space-y-4">
       <h1 className="text-4xl font-bold text-brand-purple-600">
         Team's pending leave requests
       </h1>
@@ -116,6 +118,11 @@ export default function ManageRequests() {
         data={requests}
         columns={columns}
         onRowClick={(request) => navigate(`/manage-requests/${request.id}`)}
+      />
+      <NewRequestAsATeamMemberInfo />
+      <Button
+        label="Submit a new leave request as a team member"
+        onClick={() => navigate(`/manage-new-request`)}
       />
     </div>
   );

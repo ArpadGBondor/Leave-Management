@@ -79,6 +79,13 @@ export default function ManageRequestActions({
           onClick={onApprove}
         />
       </div>
+      <Button
+        label="Edit request as the requesting team member"
+        onClick={() =>
+          navigate(`/manage-new-request/${request.requestedById}/${request.id}`)
+        }
+        variant="danger"
+      />
     </>
   );
 }

@@ -48,6 +48,7 @@ interface RequestAddEditFormProps {
     | typeof firebase_collections.APPROVED_LEAVES
     | typeof firebase_collections.REJECTED_LEAVES;
   user: User;
+  navigateBack?: string;
 }
 
 export default function RequestAddEditForm({
@@ -56,6 +57,7 @@ export default function RequestAddEditForm({
   setRequest,
   requestCollection = firebase_collections.REQUESTS,
   user,
+  navigateBack,
 }: RequestAddEditFormProps) {
   const [formError, setFormError] = useState('');
   const [requestType, setRequestType] = useState<RequestType>(
@@ -399,7 +401,9 @@ export default function RequestAddEditForm({
           numberOfWorkdays,
           isNumberOfWorkdaysOverwritten,
           numberOfWorkdaysOverwritten,
-          description
+          description,
+          user.id,
+          user.name
         );
         toast.info('Request created');
       }
@@ -436,6 +440,7 @@ export default function RequestAddEditForm({
   };
 
   const onBack = () => {
+    if (navigateBack) return navigate(navigateBack);
     if (requestCollection === firebase_collections.REJECTED_LEAVES)
       return navigate('/rejected-leaves');
     if (requestCollection === firebase_collections.APPROVED_LEAVES)
