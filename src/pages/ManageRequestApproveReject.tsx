@@ -11,11 +11,13 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import UserCalendar from '../components/userCalendar/UserCalendar';
 import ManageRequestActions from '../components/forms/ManageRequestActions';
 import { useFirebase } from '../hooks/useFirebase';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function ManageRequestApproveReject() {
   const { requestId } = useParams();
   const [request, setRequest] = useState<LeaveRequest | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [requestingUser, setRequestingUser] = useState<User | null>(null);
+  const { user } = useUserContext();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -30,9 +32,9 @@ export default function ManageRequestApproveReject() {
     );
     const userUnsubscribe = onSnapshot(userRef, (snapshot) => {
       if (!snapshot.exists()) {
-        setUser(null);
+        setRequestingUser(null);
       } else {
-        setUser(snapshot.data() as User);
+        setRequestingUser(snapshot.data() as User);
       }
     });
 
@@ -47,16 +49,19 @@ export default function ManageRequestApproveReject() {
           ? 'Pending cancellation request'
           : 'Pending leave request details'}
       </h2>
-      <RequestAddEditForm
-        requestId={requestId}
-        disabled
-        setRequest={setRequest}
-      />
-      {request && <ManageRequestActions request={request} />}
       {user && (
+        <RequestAddEditForm
+          requestId={requestId}
+          disabled
+          setRequest={setRequest}
+          user={user}
+        />
+      )}
+      {request && <ManageRequestActions request={request} />}
+      {requestingUser && (
         <UserCalendar
           className="mt-8"
-          user={user}
+          user={requestingUser}
           initialDate={request?.from}
         />
       )}

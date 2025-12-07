@@ -8,11 +8,13 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import UserCalendar from '../components/userCalendar/UserCalendar';
 import { useFirebase } from '../hooks/useFirebase';
 import ManageApprovedLeaveActions from '../components/forms/ManageApprovedLeaveActions';
+import { useUserContext } from '../context/user/useUserContext';
 
 export default function ManageApprovedLeavesView() {
   const { requestId } = useParams();
   const [request, setRequest] = useState<LeaveRequest | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [requestingUser, setRequestingUser] = useState<User | null>(null);
+  const { user } = useUserContext();
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -27,9 +29,9 @@ export default function ManageApprovedLeavesView() {
     );
     const userUnsubscribe = onSnapshot(userRef, (snapshot) => {
       if (!snapshot.exists()) {
-        setUser(null);
+        setRequestingUser(null);
       } else {
-        setUser(snapshot.data() as User);
+        setRequestingUser(snapshot.data() as User);
       }
     });
 
@@ -42,17 +44,20 @@ export default function ManageApprovedLeavesView() {
       <h2 className="text-4xl font-bold text-brand-purple-700">
         Approved leave details
       </h2>
-      <RequestAddEditForm
-        requestId={requestId}
-        requestCollection={firebase_collections.APPROVED_LEAVES}
-        disabled
-        setRequest={setRequest}
-      />
-      {request && <ManageApprovedLeaveActions request={request} />}
       {user && (
+        <RequestAddEditForm
+          requestId={requestId}
+          requestCollection={firebase_collections.APPROVED_LEAVES}
+          disabled
+          setRequest={setRequest}
+          user={user}
+        />
+      )}
+      {request && <ManageApprovedLeaveActions request={request} />}
+      {requestingUser && (
         <UserCalendar
           className="mt-8"
-          user={user}
+          user={requestingUser}
           initialDate={request?.from}
         />
       )}
