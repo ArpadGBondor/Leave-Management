@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.3...v1.6.4) (2025-12-08)
+
+
+### Bug Fixes
+
+* document Getting Started page ([c5dc197](https://github.com/ArpadGBondor/Leave-Management/commit/c5dc197638215332cc1c131d064a5d3772f17538))
+
 ## [1.6.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.2...v1.6.3) (2025-12-08)
 
 
