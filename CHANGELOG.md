@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.7...v1.6.8) (2025-12-08)
+
+
+### Bug Fixes
+
+* add Your approved leaves documentation ([e3cbb59](https://github.com/ArpadGBondor/Leave-Management/commit/e3cbb595a731ad91c6138661128bd254bb33ccff))
+
 ## [1.6.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.6...v1.6.7) (2025-12-08)
 
 
