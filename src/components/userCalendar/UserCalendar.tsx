@@ -19,6 +19,8 @@ import UserHolidayEntitlement from '../../interface/UserHolidayEntitlement.inter
 import { LeaveRequest } from '../../interface/LeaveRequest.interface';
 import { useFirebase } from '../../hooks/useFirebase';
 import UserDashboard from '../dashboard/UserDashboard';
+import MissingEmploymentStartDateWarning from '../warning/MissingEmploymentStartDateWarning';
+import MissingYearlyHolidayEntitlementWarning from '../warning/MissingYearlyHolidayEntitlementWarning';
 
 interface UserCalendarProps {
   user: User;
@@ -77,6 +79,11 @@ export default function UserCalendar({
   const [nextYearApprovedLeaves, setNextYearApprovedLeaves] = useState<Leave[]>(
     []
   );
+
+  const [
+    currentYearCompanyFallbackValueUsed,
+    setCurrentYearCompanyFallbackValueUsed,
+  ] = useState<boolean>(false);
 
   const [requested, setRequested] = useState<Leave[]>([]);
 
@@ -247,6 +254,7 @@ export default function UserCalendar({
           });
           setCurrentYearBankHolidayRegion(data.bankHolidayRegionId);
           setCurrentYearHolidayEntitlement(data.holidayEntitlementTotal);
+          setCurrentYearCompanyFallbackValueUsed(false);
         } else {
           setCurrentYearWorkdaysOfTheWeek(companyWorkdaysOfTheWeek);
           setCurrentYearBankHolidayRegion(
@@ -255,6 +263,7 @@ export default function UserCalendar({
           setCurrentYearHolidayEntitlement(
             companyHolidayEntitlement.holidayEntitlementTotal
           );
+          setCurrentYearCompanyFallbackValueUsed(true);
         }
         stopLoading('fetch-current-year-configured-years');
       }
@@ -371,6 +380,16 @@ export default function UserCalendar({
         requests={requested.filter((leave) => leave.year === currentYear)}
         className="rounded-b-none"
       />
+      {!user?.serviceStartDate && (
+        <div className="max-w-2xl mx-auto">
+          <MissingEmploymentStartDateWarning />
+        </div>
+      )}
+      {currentYearCompanyFallbackValueUsed && (
+        <div className="max-w-2xl mx-auto">
+          <MissingYearlyHolidayEntitlementWarning />
+        </div>
+      )}
       <Calendar
         currentMonth={currentMonth}
         setCurrentMonth={setCurrentMonth}
