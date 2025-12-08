@@ -15,6 +15,7 @@
   - [Manage team](#manage-team)
   - [Your pending requests](#your-pending-requests)
   - [Your approved leaves](#your-approved-leaves)
+  - [Your rejected leaves](#your-rejected-leaves)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
   - [/api/approved-leave-change-request (POST)](#apiapproved-leave-change-request-post)
@@ -247,6 +248,22 @@ The Leave Management a demo web application that allows users to register, manag
   - An existing approved leave is changed or cancelled
 
 - Helps users track all confirmed time off and plan future leave accordingly.
+
+### Your rejected leaves
+
+- Displays all leave requests that have been rejected by a manager.
+- Users can:
+
+  - View details of each rejected leave (dates, type, notes, number of workdays)
+  - Re-submit a new request based on the rejected leave by adjusting dates, type, or workdays
+
+- Rejected leaves remain read-only, except for creating a new request.
+- The list updates automatically whenever:
+
+  - A request is rejected
+  - A new request is submitted
+
+- Helps users track unsuccessful leave requests and plan adjustments for future submissions.
 
 ## Serverless Backend Functions
 
