@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.1...v1.6.2) (2025-12-08)
+
+
+### Bug Fixes
+
+* add start date missing warning, and yearly entitlement not configured warning ([5c137aa](https://github.com/ArpadGBondor/Leave-Management/commit/5c137aa1cf2b2aeb04de948503e8e271ba830f1a))
+
 ## [1.6.1](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.0...v1.6.1) (2025-12-07)
 
 
