@@ -182,19 +182,17 @@ The Leave Management a demo web application that allows users to register, manag
 
 - Restricted to: Managers and Owners.
 
-- Managers and Owners can:
+- Managers and Owners can update team member details, including:
 
-  - Modify user roles (including promoting users).
+  - User type / role (promotions allowed; restrictions not enforced in the demo)
+  - Employment start date
+  - Employment end date
 
-    - For demo purposes, promotion restrictions are not enforced.
+- They can also configure individual yearly settings for each user:
 
-  - Configure individual users’:
-
-    - Yearly holiday entitlement
-
-    - Work schedule
-
-    - Bank holiday region
+  - Yearly holiday entitlement
+  - Work schedule (workdays of the week)
+  - Bank holiday region
 
 ### Requests (WIP)
 
