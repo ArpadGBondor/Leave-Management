@@ -112,6 +112,7 @@ export default function RequestAddEditForm({
     deleteRequest,
     deleteRejectedLeave,
     reRequestRejectedLeave,
+    reRequestRejectedCancellation,
     requestChangeToApprovedLeave,
     requestCancellationOfApprovedLeave,
   } = useRequestsContext();
@@ -371,6 +372,14 @@ export default function RequestAddEditForm({
             description,
           });
           toast.info('Change request submitted');
+        } else if (
+          requestCollection === firebase_collections.REJECTED_LEAVES &&
+          requestType === RequestTypeEnum.Cancellation
+        ) {
+          await reRequestRejectedCancellation({
+            id,
+          });
+          toast.info('Request re-submitted');
         } else if (requestCollection === firebase_collections.REJECTED_LEAVES) {
           await reRequestRejectedLeave({
             id,
@@ -641,6 +650,7 @@ export default function RequestAddEditForm({
       {!disabled && (
         <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
           {(requestCollection === firebase_collections.APPROVED_LEAVES ||
+            requestCollection === firebase_collections.REJECTED_LEAVES ||
             requestType !== RequestTypeEnum.Cancellation) && (
             <Button
               label={

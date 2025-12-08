@@ -252,6 +252,37 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
     [user, auth?.currentUser]
   );
 
+  const reRequestRejectedCancellation = useCallback(
+    async (data: { id: string }) => {
+      if (!auth) throw new Error('Firebase not loaded yet');
+      const currentUser = auth.currentUser;
+      if (!user) throw new Error('User not logged in');
+      if (!currentUser) throw new Error('User not logged in');
+      const token = await currentUser.getIdToken();
+
+      const requestResponse = await fetch(
+        '/api/rejected-cancellation-re-request',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...data,
+            requestType: RequestTypeEnum.Cancellation,
+          }),
+        }
+      );
+      if (!requestResponse.ok)
+        throw new Error('Failed to request change to approved leave');
+      const { doc } = await requestResponse.json();
+
+      return doc;
+    },
+    [user, auth?.currentUser]
+  );
+
   const requestChangeToApprovedLeave = useCallback(
     async (data: { id: string } & Partial<LeaveRequest>) => {
       if (!auth) throw new Error('Firebase not loaded yet');
@@ -548,6 +579,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         deleteRequest,
         deleteRejectedLeave,
         reRequestRejectedLeave,
+        reRequestRejectedCancellation,
         requestChangeToApprovedLeave,
         requestCancellationOfApprovedLeave,
         applyCancellationOfApprovedLeave,

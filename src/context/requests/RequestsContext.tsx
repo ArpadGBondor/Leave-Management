@@ -39,6 +39,7 @@ export interface RequestsContextType extends RequestsState {
   reRequestRejectedLeave: (
     data: { id: string } & Partial<LeaveRequest>
   ) => Promise<void>;
+  reRequestRejectedCancellation: (data: { id: string }) => Promise<void>;
   requestChangeToApprovedLeave: (
     data: { id: string } & Partial<LeaveRequest>
   ) => Promise<void>;
