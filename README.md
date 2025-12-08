@@ -11,9 +11,10 @@
   - [Login](#login)
   - [Logout](#logout)
   - [Profile](#profile)
-  - [Manage Company](#manage-company)
-  - [Manage Team](#manage-team)
+  - [Manage company](#manage-company)
+  - [Manage team](#manage-team)
   - [Your pending requests](#your-pending-requests)
+  - [Your approved leaves](#your-approved-leaves)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
   - [/api/approved-leave-change-request (POST)](#apiapproved-leave-change-request-post)
@@ -106,13 +107,13 @@ The Leave Management a demo web application that allows users to register, manag
 
   - Approve or reject team leave requests
   - View team approved/rejected leaves
-  - Manage team member data on Manage Team (roles, entitlements, workdays,
+  - Manage team member data on Manage team page (roles, entitlements, workdays,
     employment dates)
   - View team calendars
 
 - Owners have full admin control:
 
-  - Configure company defaults on Manage Company (entitlements, work schedule,
+  - Configure company defaults on Manage company page (entitlements, work schedule,
     bank holidays)
   - Defaults apply automatically unless overridden per user
 
@@ -162,7 +163,7 @@ The Leave Management a demo web application that allows users to register, manag
   - Users can delete their own accounts.
     This feature ensures that testers can remove their data from the system at any time.
 
-### Manage Company
+### Manage company
 
 - Restricted to: Owners only.
 
@@ -178,7 +179,7 @@ The Leave Management a demo web application that allows users to register, manag
 
 - Preloaded data includes UK bank holidays for 2024–2027.
 
-### Manage Team
+### Manage team
 
 - Restricted to: Managers and Owners.
 
@@ -228,6 +229,24 @@ The Leave Management a demo web application that allows users to register, manag
   - Submitted
   - Modified
   - Approved or rejected by a manager
+
+### Your approved leaves
+
+- Displays all leave requests that have been approved by a manager.
+- Users can:
+
+  - View details of each approved leave (dates, type, notes, number of workdays)
+  - Submit a change request if they need to adjust an approved leave
+  - Submit a cancellation request if they want to cancel the leave
+
+- Approved leaves are read-only, except for initiating change or cancellation
+  requests.
+- The list updates automatically whenever:
+
+  - A new leave is approved
+  - An existing approved leave is changed or cancelled
+
+- Helps users track all confirmed time off and plan future leave accordingly.
 
 ## Serverless Backend Functions
 
