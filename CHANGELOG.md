@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.5...v1.6.6) (2025-12-08)
+
+
+### Bug Fixes
+
+* update Manage Team documentation ([f0728d1](https://github.com/ArpadGBondor/Leave-Management/commit/f0728d1fd692720ed4b9767edf3c94ad0a1d1802))
+
 ## [1.6.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.4...v1.6.5) (2025-12-08)
 
 
