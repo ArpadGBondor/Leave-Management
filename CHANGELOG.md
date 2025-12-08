@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.6...v1.6.7) (2025-12-08)
+
+
+### Bug Fixes
+
+* document Your pending requests page ([f520cfc](https://github.com/ArpadGBondor/Leave-Management/commit/f520cfc92eee132a7e6753eac345364418d94021))
+
 ## [1.6.6](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.5...v1.6.6) (2025-12-08)
 
 
