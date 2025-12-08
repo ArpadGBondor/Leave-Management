@@ -4,6 +4,7 @@ import WorkdaysOfTheWeek from '../../../interface/WorkdaysOfTheWeek.interface';
 import countWorkdays from '../../../utils/countWorkdays';
 import InfoBubble from '../../info/InfoBubble';
 import LeaveEntitlementMultiplierInfo from '../../info/LeaveEntitlementMultiplierInfo';
+import MissingEmploymentStartDateWarning from '../../warning/MissingEmploymentStartDateWarning';
 
 interface LeaveEntitlementMultiplierRecommendationProps<T> {
   user: User;
@@ -76,6 +77,7 @@ export default function LeaveEntitlementMultiplierRecommendation<
         Leave entitlement multiplier recommendation
       </h4>
       <LeaveEntitlementMultiplierInfo />
+      {!user.serviceStartDate && <MissingEmploymentStartDateWarning />}
       <p className=" text-brand-green-800">
         Team member is scheduled to work {numberOfWorkdays} days per week, and
         is{' '}
