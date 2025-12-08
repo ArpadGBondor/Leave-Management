@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.2...v1.6.3) (2025-12-08)
+
+
+### Bug Fixes
+
+* allow users to re-submit cancellation requests ([549dfda](https://github.com/ArpadGBondor/Leave-Management/commit/549dfda893eb06c7cff0ab812d557c686925d13d))
+
 ## [1.6.2](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.1...v1.6.2) (2025-12-08)
 
 
