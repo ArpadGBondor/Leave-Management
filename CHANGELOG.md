@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.4...v1.6.5) (2025-12-08)
+
+
+### Bug Fixes
+
+* add Home page documentation ([121af6e](https://github.com/ArpadGBondor/Leave-Management/commit/121af6e11d5feb625c1facf771cde7d4e8afe4c8))
+
 ## [1.6.4](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.3...v1.6.4) (2025-12-08)
 
 
