@@ -4,6 +4,7 @@
 - [Overview](#overview)
 - [Highlights](#highlights)
 - [Pages](#pages)
+  - [Getting Started](#getting-started)
   - [Home (WIP)](#home-wip)
   - [About (WIP)](#about-wip)
   - [Register](#register)
@@ -70,6 +71,35 @@ The Leave Management a demo web application that allows users to register, manag
 ## Pages
 
 ### Home (WIP)
+
+### Getting Started
+
+- This page introduces new users to the application and explains the three
+  available roles: Employee, Manager, and Owner.
+
+- All users begin as Employees, but (for demo purposes) can switch roles from
+  the Profile page at any time.
+
+- As an Employee a user can:
+
+  - Update personal details on the Profile page
+  - Create and track leave requests
+  - View approved and rejected leaves
+  - See their personalised calendar on the Home page (workdays, bank holidays, leave, yearly entitlement)
+
+- Managers have all Employee permissions plus team-level tools:
+
+  - Approve or reject team leave requests
+  - View team approved/rejected leaves
+  - Manage team member data on Manage Team (roles, entitlements, workdays,
+    employment dates)
+  - View team calendars
+
+- Owners have full admin control:
+
+  - Configure company defaults on Manage Company (entitlements, work schedule,
+    bank holidays)
+  - Defaults apply automatically unless overridden per user
 
 ### About (WIP)
 
