@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.8...v1.6.9) (2025-12-08)
+
+
+### Bug Fixes
+
+* document Your rejected leaves page ([c5ccde4](https://github.com/ArpadGBondor/Leave-Management/commit/c5ccde4c431f2d35914eeb4801b8521551f944f6))
+
 ## [1.6.8](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.7...v1.6.8) (2025-12-08)
 
 
