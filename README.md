@@ -13,6 +13,7 @@
   - [Profile](#profile)
   - [Manage company](#manage-company)
   - [Manage team](#manage-team)
+  - [Personal calendars](#personal-calendars)
   - [Your pending requests](#your-pending-requests)
   - [Your approved leaves](#your-approved-leaves)
   - [Your rejected leaves](#your-rejected-leaves)
@@ -195,6 +196,27 @@ The Leave Management a demo web application that allows users to register, manag
   - Yearly holiday entitlement
   - Work schedule (workdays of the week)
   - Bank holiday region
+
+### Personal calendars
+
+- Restricted to: Managers and Owners.
+- Displays the calendar for an individual user.
+- Similar to the Home page, it shows:
+
+  - Workdays
+  - Bank holidays
+  - Pending and approved leaves
+  - Remaining yearly holiday entitlement
+
+- The calendar updates automatically based on:
+
+  - The user’s role
+  - Their configured entitlement
+  - Their approved/pending leave data
+
+- Managers and Owners can use this page to view team members’ calendars for
+  planning and monitoring availability.
+- Calendars update automatically when leave requests are created, approved, rejected, or modified.
 
 ### Your pending requests
 
