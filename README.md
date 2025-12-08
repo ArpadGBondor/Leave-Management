@@ -13,7 +13,7 @@
   - [Profile](#profile)
   - [Manage Company](#manage-company)
   - [Manage Team](#manage-team)
-  - [Requests (WIP)](#requests-wip)
+  - [Your pending requests](#your-pending-requests)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
   - [/api/approved-leave-change-request (POST)](#apiapproved-leave-change-request-post)
@@ -194,7 +194,40 @@ The Leave Management a demo web application that allows users to register, manag
   - Work schedule (workdays of the week)
   - Bank holiday region
 
-### Requests (WIP)
+### Your pending requests
+
+- Displays all leave requests that are awaiting manager approval.
+
+- Users can create new requests using the “Submit new request” button.
+
+- Supported leave types:
+
+  - Annual Leave
+  - Other Leave Type (custom non-annual categories)
+
+- Each request includes:
+
+  - From and To dates
+  - Calculated number of workdays
+  - Optional manual adjustment (when user overrides the auto-calculation)
+
+- Pending requests can be:
+
+  - Edited (dates, type, notes, workday count)
+  - Deleted before approval
+
+- Request types include:
+
+  - New request – normal unapproved request; details can change
+  - Change request – modifies an already-approved request
+  - Cancellation request – cancels an approved request
+  - Approved request – displayed in the Approved Requests page; not editable here
+
+- The list updates automatically as requests are:
+
+  - Submitted
+  - Modified
+  - Approved or rejected by a manager
 
 ## Serverless Backend Functions
 
