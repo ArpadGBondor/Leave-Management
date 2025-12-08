@@ -4,8 +4,8 @@
 - [Overview](#overview)
 - [Highlights](#highlights)
 - [Pages](#pages)
+  - [Home](#home)
   - [Getting Started](#getting-started)
-  - [Home (WIP)](#home-wip)
   - [About (WIP)](#about-wip)
   - [Register](#register)
   - [Login](#login)
@@ -70,7 +70,22 @@ The Leave Management a demo web application that allows users to register, manag
 
 ## Pages
 
-### Home (WIP)
+### Home
+
+- Displays the user’s personal calendar, showing:
+
+  - Workdays
+  - Bank holidays
+  - Pending and approved leaves
+  - Remaining yearly holiday entitlement
+
+- The calendar updates automatically based on:
+
+  - The user’s role
+  - Their configured entitlement
+  - Their approved/pending leave data
+
+- Provides a quick overview of current and upcoming time off, making it the main dashboard for day-to-day use.
 
 ### Getting Started
 
