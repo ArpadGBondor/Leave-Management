@@ -241,6 +241,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
         body: JSON.stringify({
           ...data,
           ...(data.from ? { year: data.from.slice(0, 4) } : {}),
+          reasonOfRejection: '',
         }),
       });
       if (!requestResponse.ok)
@@ -422,6 +423,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
           // Clear approved field? Make it look like approved by no-one
           approvedById: '',
           approvedByName: '',
+          reasonOfRejection: '',
         }),
       });
       if (!requestResponse.ok)

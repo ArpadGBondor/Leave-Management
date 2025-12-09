@@ -75,6 +75,7 @@ export default function RequestAddEditForm({
     leaveType: LeaveType;
     description: string;
     requestedByName: string;
+    reasonOfRejection: string;
   } = {
     id: 'new',
     from: '',
@@ -85,6 +86,7 @@ export default function RequestAddEditForm({
     leaveType: LeaveTypeEnum.Annual,
     description: '',
     requestedByName: '',
+    reasonOfRejection: '',
   };
   const [formData, setFormData] = useState({ ...defaultRequest });
   const defaultErrors = {
@@ -97,6 +99,7 @@ export default function RequestAddEditForm({
     leaveType: '',
     description: '',
     requestedByName: '',
+    reasonOfRejection: '',
   };
   const [errors, setErrors] = useState(defaultErrors);
   const [requestsOfTheUser, setRequestsOfTheUser] = useState<Leave[]>([]);
@@ -136,7 +139,7 @@ export default function RequestAddEditForm({
     numberOfWorkdaysOverwritten,
     leaveType,
     description,
-    requestedByName,
+    reasonOfRejection,
   } = formData;
 
   const isEditing = Boolean(requestId !== 'new');
@@ -210,6 +213,7 @@ export default function RequestAddEditForm({
           leaveType: doc.leaveType,
           description: doc.description,
           requestedByName: doc.requestedByName,
+          reasonOfRejection: doc.reasonOfRejection ?? '',
         });
       })
       .finally(() => {
@@ -647,6 +651,18 @@ export default function RequestAddEditForm({
           />
         )}
       </div>
+      {reasonOfRejection && (
+        <TextAreaInput
+          id="reasonOfRejection"
+          label="Reason of rejection"
+          name="reasonOfRejection"
+          value={reasonOfRejection}
+          onChange={() => {}}
+          error={errors.reasonOfRejection}
+          disabled
+        />
+      )}
+
       {!disabled && (
         <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
           {(requestCollection === firebase_collections.APPROVED_LEAVES ||

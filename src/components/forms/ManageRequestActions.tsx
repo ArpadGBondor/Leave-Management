@@ -7,6 +7,10 @@ import {
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
+import TextAreaInput from '../inputs/TextAreaInput';
+import { handleInputChange } from '../../utils/onFormDataChange';
+import { validateRequiredField } from '../../utils/fieldValidators';
 
 interface ManageRequestActionsProp {
   request: LeaveRequest;
@@ -15,10 +19,28 @@ interface ManageRequestActionsProp {
 export default function ManageRequestActions({
   request,
 }: ManageRequestActionsProp) {
+  const [formData, setFormData] = useState({
+    reasonOfRejection: request.reasonOfRejection ?? '',
+  });
+  const defaultErrors: {
+    reasonOfRejection: string;
+  } = {
+    reasonOfRejection: '',
+  };
+  const [errors, setErrors] = useState(defaultErrors);
+
   const { approveRequest, rejectRequest, applyCancellationOfApprovedLeave } =
     useRequestsContext();
   const { startLoading, stopLoading } = useLoadingContext();
   const navigate = useNavigate();
+
+  const { reasonOfRejection } = formData;
+
+  const setError = (field: keyof typeof errors, message: string) =>
+    setErrors((prevState) => ({
+      ...prevState,
+      [field]: message,
+    }));
 
   const onApprove = async () => {
     startLoading('approve-request');
@@ -37,10 +59,31 @@ export default function ManageRequestActions({
     }
   };
 
+  const validateRejection = <T extends { reasonOfRejection: string }>(
+    formData: T,
+    setError: (field: keyof T, message: string) => void
+  ) => {
+    let valid = true;
+
+    // validate that start date is not empty
+    valid &&= validateRequiredField(
+      formData,
+      'reasonOfRejection',
+      'enter the reason of rejection',
+      setError
+    );
+
+    return valid;
+  };
+
   const onReject = async () => {
     startLoading('reject-request');
     try {
-      await rejectRequest({ id: request.id });
+      if (!validateRejection(formData, setError)) {
+        toast.error('Form is not ready to submit');
+        return;
+      }
+      await rejectRequest({ id: request.id, reasonOfRejection });
       toast.info('Request rejected');
       navigate('/manage-requests');
     } catch (error: any) {
@@ -52,6 +95,16 @@ export default function ManageRequestActions({
 
   return (
     <>
+      <TextAreaInput
+        id="reasonOfRejection"
+        label="Reason of rejection"
+        name="reasonOfRejection"
+        value={reasonOfRejection}
+        onChange={(e) => handleInputChange(e, setFormData, setError)}
+        placeholder="In case of rejection, please let the team member know the reason."
+        error={errors.reasonOfRejection}
+      />
+
       <div className="flex flex-col-reverse md:flex-row md:justify-stretch gap-1 md:gap-4">
         <Button
           type="button"
