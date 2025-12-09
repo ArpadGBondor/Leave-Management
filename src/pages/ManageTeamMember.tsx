@@ -13,7 +13,6 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/User.interface';
 import ProfileBadge from '../components/profile/ProfileBadge';
 import UserHolidayEntitlement from '../interface/UserHolidayEntitlement.interface';
-import HolidayEntitlement from '../interface/HolidayEntitlement.interface';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import Table from '../components/table/Table';
 import { TableColumn } from '../components/table/types';
@@ -21,9 +20,11 @@ import Button from '../components/buttons/Button';
 import WorkdaysOfTheWeek from '../interface/WorkdaysOfTheWeek.interface';
 import UserYearlyConfigurationAddEdit from '../components/forms/UserYearlyConfigurationAddEdit';
 import { useCompanyContext } from '../context/company/useCompanyContext';
-import BankHolidayRegion from '../interface/BankHolidayRegion.interface';
 import TeamMemberUserDetailsUpdate from '../components/forms/TeamMemberUserDetailsUpdate';
 import { useFirebase } from '../hooks/useFirebase';
+import countNumberOfBankHolidaysOnWorkdays from '../utils/countNumberOfBankHolidaysOnWorkdays';
+import calculateHolidayEntitlementTotal from '../utils/calculateHolidayEntitlementTotal';
+import countWorkdays from '../utils/countWorkdays';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -71,9 +72,10 @@ export default function ManageTeamMember() {
   const [isEditing, setIsEditing] = useState(false);
   const {
     importedYears,
-    bankHolidayRegion,
-    holidayEntitlement,
-    workdaysOfTheWeek,
+    getBankHolidays,
+    workdaysOfTheWeek: companyWorkdaysOfTheWeek,
+    bankHolidayRegion: companyBankHolidayRegion,
+    holidayEntitlement: companyHolidayEntitlement,
   } = useCompanyContext();
   const navigate = useNavigate();
 
@@ -180,48 +182,127 @@ export default function ManageTeamMember() {
 
   const addNew = async () => {
     const id = pickNextAvailableYear(); // next or previous year that is available and not configured yet
+
+    let previousSettings: UserHolidayEntitlement | null = null;
     if (configuredYears.length > 0) {
       // if there are years configured, take data from the last one
-      let row = configuredYears[0];
+      previousSettings = configuredYears[0];
       for (const c of configuredYears) {
-        if (row.id < c.id) row = c;
+        if (previousSettings.id < c.id) previousSettings = c;
       }
-
-      setSelectedForEditing({
-        ...row,
-        id,
-      });
-    } else {
-      const companyHolidayEntitlement: HolidayEntitlement =
-        holidayEntitlement ?? {
-          holidayEntitlementBase: 28,
-          holidayEntitlementAdditional: 0,
-          holidayEntitlementMultiplier: 1,
-          holidayEntitlementDeduction: 0,
-          holidayEntitlementTotal: 28,
-        }; // default;
-
-      const companyWorkdaysOfTheWeek: WorkdaysOfTheWeek = workdaysOfTheWeek ?? {
-        monday: true,
-        tuesday: true,
-        wednesday: true,
-        thursday: true,
-        friday: true,
-        saturday: false,
-        sunday: false,
-      }; // default;
-
-      const companyBankHolidayRegion: BankHolidayRegion = bankHolidayRegion ?? {
-        bankHolidayRegionId: '', // initialise with no bank holiday region
-        numberOfBankHolidays: 0,
-      };
-      setSelectedForEditing({
-        ...companyHolidayEntitlement,
-        ...companyWorkdaysOfTheWeek,
-        ...companyBankHolidayRegion,
-        id,
-      });
     }
+
+    const employmentStart: Date | undefined = user?.serviceStartDate
+      ? new Date(user.serviceStartDate)
+      : undefined;
+    const employmentEnd: Date | undefined = user?.serviceEndDate
+      ? new Date(user.serviceEndDate)
+      : undefined;
+
+    const newWorkdaysOfTheWeek: WorkdaysOfTheWeek = {
+      monday:
+        previousSettings?.monday ?? companyWorkdaysOfTheWeek.monday ?? true,
+      tuesday:
+        previousSettings?.tuesday ?? companyWorkdaysOfTheWeek.tuesday ?? true,
+      wednesday:
+        previousSettings?.wednesday ??
+        companyWorkdaysOfTheWeek.wednesday ??
+        true,
+      thursday:
+        previousSettings?.thursday ?? companyWorkdaysOfTheWeek.thursday ?? true,
+      friday:
+        previousSettings?.friday ?? companyWorkdaysOfTheWeek.friday ?? true,
+      saturday:
+        previousSettings?.saturday ??
+        companyWorkdaysOfTheWeek.saturday ??
+        false,
+      sunday:
+        previousSettings?.sunday ?? companyWorkdaysOfTheWeek.sunday ?? false,
+    };
+
+    let bankHolidayRegionId: string =
+      previousSettings?.bankHolidayRegionId ??
+      companyBankHolidayRegion?.bankHolidayRegionId ??
+      '';
+
+    let bankHolidays = await getBankHolidays(bankHolidayRegionId, id);
+    // Number of bank holiday days when team member is scheduled to work
+    let numberOfBankHolidays = countNumberOfBankHolidaysOnWorkdays(
+      bankHolidays,
+      newWorkdaysOfTheWeek,
+      employmentStart,
+      employmentEnd
+    );
+
+    let holidayEntitlementBase: number =
+      previousSettings?.holidayEntitlementBase ??
+      companyHolidayEntitlement?.holidayEntitlementBase ??
+      28;
+    let holidayEntitlementAdditional: number =
+      previousSettings?.holidayEntitlementAdditional ??
+      companyHolidayEntitlement?.holidayEntitlementAdditional ??
+      0;
+
+    // Need to count total number of workdays of the year
+    const firstDayOfTheYear = new Date(`${id}-01-01`);
+    const lastDayOfTheYear = new Date(`${id}-12-31`);
+    const totalWorkdays = countWorkdays(
+      firstDayOfTheYear,
+      lastDayOfTheYear,
+      [],
+      newWorkdaysOfTheWeek
+    );
+
+    // Need to count number of workdays of the year that fall between employment start and end date
+    const firstEmployedDayOfTheYear =
+      employmentStart &&
+      employmentStart.getFullYear() === firstDayOfTheYear.getFullYear()
+        ? employmentStart
+        : firstDayOfTheYear;
+    const lastEmployedDayOfTheYear =
+      employmentEnd &&
+      employmentEnd.getFullYear() === lastDayOfTheYear.getFullYear()
+        ? employmentEnd
+        : lastDayOfTheYear;
+
+    const employedWorkdays = countWorkdays(
+      firstEmployedDayOfTheYear,
+      lastEmployedDayOfTheYear,
+      [],
+      newWorkdaysOfTheWeek
+    );
+    let multiplierBasedOnEmployment: number = employedWorkdays / totalWorkdays;
+
+    // Need to count number of workdays
+    let multiplierBasedOnNumberOfWorkdays: number =
+      Object.values(newWorkdaysOfTheWeek).filter(Boolean).length / 5;
+
+    // set recommended multiplier
+    let holidayEntitlementMultiplier: number =
+      multiplierBasedOnNumberOfWorkdays * multiplierBasedOnEmployment;
+
+    // set recommended reduction
+    let holidayEntitlementDeduction: number = numberOfBankHolidays;
+
+    let holidayEntitlementTotal: number = calculateHolidayEntitlementTotal(
+      holidayEntitlementBase,
+      holidayEntitlementAdditional,
+      holidayEntitlementMultiplier,
+      holidayEntitlementDeduction
+    );
+
+    setSelectedForEditing({
+      holidayEntitlementBase,
+      holidayEntitlementAdditional,
+      holidayEntitlementMultiplier,
+      holidayEntitlementDeduction,
+      holidayEntitlementTotal,
+      ...newWorkdaysOfTheWeek,
+      bankHolidayRegionId,
+      numberOfBankHolidays,
+      id,
+    });
+
     setIsEditing(false);
     setScreenPhase(2);
   };
