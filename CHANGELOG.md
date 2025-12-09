@@ -1,3 +1,10 @@
+## [1.6.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.12...v1.6.13) (2025-12-09)
+
+
+### Bug Fixes
+
+* require managers to leave reason of rejection ([93243b5](https://github.com/ArpadGBondor/Leave-Management/commit/93243b57c5c31faaac05cbd21a09dca8c623c95b))
+
 ## [1.6.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.11...v1.6.12) (2025-12-09)
 
 
