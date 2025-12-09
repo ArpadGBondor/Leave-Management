@@ -169,17 +169,26 @@ The Leave Management a demo web application that allows users to register, manag
 
 - Restricted to: Owners only.
 
-- This section allows configuration of company-level settings with minimal setup required.
+- Allows configuring company-wide default settings applied to all users unless overridden individually.
+- Owners can manage:
 
-- Features:
+  - Default yearly holiday entitlement
+  - Default work schedule (standard workdays of the week)
+  - Default bank holiday region
 
-  - Define default yearly holiday entitlements.
+- Bank holidays:
 
-  - Set up fallback values used when team or user-specific configurations are missing.
+  - The system comes preloaded with several years of UK bank holiday data.
+  - When new years are published on GOV.UK, a built-in import process can be run
+    to update the data.
 
-  - Import UK bank holidays directly from GOV.UK data files.
+- Updates made here:
 
-- Preloaded data includes UK bank holidays for 2024–2027.
+  - Apply automatically to all new users
+  - Update existing users unless they have custom (overridden) personal settings
+
+- Provides a central place to maintain consistent leave and working-time
+  policies across the organisation.
 
 ### Manage team
 
