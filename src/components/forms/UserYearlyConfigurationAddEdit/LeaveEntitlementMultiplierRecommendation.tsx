@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import User from '../../../interface/User.interface';
 import WorkdaysOfTheWeek from '../../../interface/WorkdaysOfTheWeek.interface';
 import countWorkdays from '../../../utils/countWorkdays';
-import InfoBubble from '../../info/InfoBubble';
 import LeaveEntitlementMultiplierInfo from '../../info/LeaveEntitlementMultiplierInfo';
 import MissingEmploymentStartDateWarning from '../../warning/MissingEmploymentStartDateWarning';
 

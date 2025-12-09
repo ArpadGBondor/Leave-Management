@@ -3,10 +3,9 @@ import SelectInput, { SelectInputOption } from '../inputs/SelectInput';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import formatBankHolidayName from '../../utils/formatBankHolidayName';
 import { handleInputChange } from '../../utils/onFormDataChange';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { firebase_collections } from '../../../lib/firebase_collections';
 import WorkdaysOfTheWeek from '../../interface/WorkdaysOfTheWeek.interface';
 import { useFirebase } from '../../hooks/useFirebase';
+import countNumberOfBankHolidaysOnWorkdays from '../../utils/countNumberOfBankHolidaysOnWorkdays';
 
 interface BankHolidayRegionDropdownProps<T> {
   formData: T;
@@ -80,39 +79,13 @@ export default function BankHolidayRegionDropdown<
   }, [db, bankHolidayRegionId, year]);
 
   useEffect(() => {
-    let numberOfBankHolidays: number = 0;
+    let numberOfBankHolidays: number = countNumberOfBankHolidaysOnWorkdays(
+      bankHolidayDates,
+      { monday, tuesday, wednesday, thursday, friday, saturday, sunday },
+      employmentStart,
+      employmentEnd
+    );
 
-    for (const date of bankHolidayDates) {
-      // Do not count days outside of employment
-      if (employmentStart && date < employmentStart) continue;
-      if (employmentEnd && date > employmentEnd) continue;
-      const day = date.getDay();
-      switch (day) {
-        case 0:
-          if (sunday) ++numberOfBankHolidays;
-          break;
-        case 1:
-          if (monday) ++numberOfBankHolidays;
-          break;
-        case 2:
-          if (tuesday) ++numberOfBankHolidays;
-          break;
-        case 3:
-          if (wednesday) ++numberOfBankHolidays;
-          break;
-        case 4:
-          if (thursday) ++numberOfBankHolidays;
-          break;
-        case 5:
-          if (friday) ++numberOfBankHolidays;
-          break;
-        case 6:
-          if (saturday) ++numberOfBankHolidays;
-          break;
-        default:
-          break;
-      }
-    }
     setFormData((prevState) => {
       if (prevState.numberOfBankHolidays !== numberOfBankHolidays) {
         return {

@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 import Button from '../buttons/Button';
 import HolidayCalculationInputs from '../complexInputs/HolidayCalculationInputs';
 import WorkdaysOfTheWeekInputs from '../complexInputs/WorkdaysOfTheWeekInputs';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { firebase_collections } from '../../../lib/firebase_collections';
 import BankHolidayRegionDropdown from '../complexInputs/BankHolidayRegionDropdown';
 import User from '../../interface/User.interface';
 import LeaveEntitlementMultiplierRecommendation from './UserYearlyConfigurationAddEdit/LeaveEntitlementMultiplierRecommendation';
@@ -123,7 +121,7 @@ export default function UserYearlyConfigurationAddEdit({
   const onDeleteConfirm = () => {
     confirm(
       defaultConfirmationOptions(
-        `You are about to delete ${user.name}'s ${id} year configuration. Once removed, the user's workdays, bank holidays, and holiday entitlement will be recalculated using the company's default values.`,
+        `You are about to delete ${user.name}'s ${id} year configuration. Once removed, the user's workdays, bank holidays, and holiday entitlement will get calculated using the company's default values.`,
         onDelete
       )
     );

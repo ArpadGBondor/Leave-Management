@@ -1,4 +1,5 @@
 import HolidayEntitlement from '../../interface/HolidayEntitlement.interface';
+import calculateHolidayEntitlementTotal from '../../utils/calculateHolidayEntitlementTotal';
 import { handleInputChange } from '../../utils/onFormDataChange';
 import NumberInput from '../inputs/NumberInput';
 
@@ -27,17 +28,14 @@ export default function HolidayCalculationInputs<
   } = formData;
 
   const autoUpdate = (state: T1): T1 => {
-    const rawTotal =
-      (state.holidayEntitlementBase + state.holidayEntitlementAdditional) *
-        state.holidayEntitlementMultiplier -
-      state.holidayEntitlementDeduction;
-
-    // Always round UP to 1 decimal place (0.1)
-    const roundedUp = Math.ceil(rawTotal * 10) / 10;
-
     return {
       ...state,
-      holidayEntitlementTotal: roundedUp,
+      holidayEntitlementTotal: calculateHolidayEntitlementTotal(
+        state.holidayEntitlementBase,
+        state.holidayEntitlementAdditional,
+        state.holidayEntitlementMultiplier,
+        state.holidayEntitlementDeduction
+      ),
     };
   };
 
