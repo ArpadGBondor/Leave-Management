@@ -1,3 +1,10 @@
+## [1.6.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.10...v1.6.11) (2025-12-09)
+
+
+### Bug Fixes
+
+* document About page ([2241579](https://github.com/ArpadGBondor/Leave-Management/commit/2241579eae3fdbe0d7081aeab92f3e6f7470cc21))
+
 ## [1.6.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.9...v1.6.10) (2025-12-09)
 
 
