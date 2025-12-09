@@ -14,6 +14,9 @@
   - [Manage company](#manage-company)
   - [Manage team](#manage-team)
   - [Personal calendars](#personal-calendars)
+  - [Team's pending requests](#teams-pending-requests)
+  - [Team's approved leaves](#teams-approved-leaves)
+  - [Team's rejected leaves](#teams-rejected-leaves)
   - [Your pending requests](#your-pending-requests)
   - [Your approved leaves](#your-approved-leaves)
   - [Your rejected leaves](#your-rejected-leaves)
@@ -232,6 +235,62 @@ The Leave Management a demo web application that allows users to register, manag
 - Managers and Owners can use this page to view team members’ calendars for
   planning and monitoring availability.
 - Calendars update automatically when leave requests are created, approved, rejected, or modified.
+
+### Team's pending requests
+
+- Restricted to: Managers and Owners.
+- Shows all pending leave requests submitted by team members.
+- Managers and Owners can:
+
+  - Review request details (dates, type, notes, workday count)
+  - Approve a request
+  - Reject a request (with an optional reason)
+  - Submit new leave requests on behalf of team members if needed
+
+- Supports all request types:
+
+  - New request
+  - Change request
+  - Cancellation request
+
+- Actions taken here automatically update:
+
+  - The employee’s pending/approved/rejected lists
+  - Their personal calendar
+
+- Provides a central place for managers to handle all outstanding team leave decisions.
+
+### Team's approved leaves
+
+- Restricted to: Managers and Owners.
+- Displays all approved leave requests for team members.
+- Managers and Owners can:
+
+  - View details of approved leaves (dates, type, notes, workday count)
+  - Undo approval, returning a leave request to the pending state if adjustments are needed
+
+- Actions automatically update:
+
+  - The employee’s calendars
+  - Their pending, approved, and rejected leave lists
+
+- Provides a central place to track confirmed team leaves and make adjustments when necessary.
+
+### Team's rejected leaves
+
+- Restricted to: Managers and Owners.
+- Displays all rejected leave requests for team members.
+- Managers and Owners can:
+
+  - View details of rejected leaves (dates, type, notes, workday count)
+  - Reopen rejected requests, returning them to the pending state if adjustments are needed
+
+- Actions automatically update:
+
+  - The employee’s calendars
+  - Their pending, approved, and rejected leave lists
+
+- Provides a central place for managers to track and handle all rejected leave requests for the team.
 
 ### Your pending requests
 
