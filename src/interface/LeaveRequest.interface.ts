@@ -22,6 +22,10 @@ export interface LeaveRequest {
   requestType: RequestType;
 
   description: string;
+
+  // Require managers to give feedback on what's wrong with the request
+  reasonOfRejection?: string;
+
   created?: Timestamp;
   updated?: Timestamp;
   year: string; // store year separately for indexing
