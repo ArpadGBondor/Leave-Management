@@ -1,3 +1,10 @@
+## [1.6.10](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.9...v1.6.10) (2025-12-09)
+
+
+### Bug Fixes
+
+* document Manage Company page ([601823e](https://github.com/ArpadGBondor/Leave-Management/commit/601823ebaac078e081d7e324a0b274baf441891e))
+
 ## [1.6.9](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.8...v1.6.9) (2025-12-08)
 
 
