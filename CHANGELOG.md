@@ -1,3 +1,10 @@
+## [1.6.12](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.11...v1.6.12) (2025-12-09)
+
+
+### Bug Fixes
+
+* when adding a new yearly configuration, holiday entitlement multiplier and deductions recommendations should get applied automatically ([3c0dfc3](https://github.com/ArpadGBondor/Leave-Management/commit/3c0dfc3b69d777f5a4330fe719787dfa525105e8))
+
 ## [1.6.11](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.10...v1.6.11) (2025-12-09)
 
 
