@@ -6,7 +6,7 @@
 - [Pages](#pages)
   - [Home](#home)
   - [Getting Started](#getting-started)
-  - [About (WIP)](#about-wip)
+  - [About](#about)
   - [Register](#register)
   - [Login](#login)
   - [Logout](#logout)
@@ -119,7 +119,13 @@ The Leave Management a demo web application that allows users to register, manag
     bank holidays)
   - Defaults apply automatically unless overridden per user
 
-### About (WIP)
+### About
+
+- This project is a Leave Management practice application, built to keep my React skills sharp and explore practical UI and data-handling patterns.
+
+- Created by [Árpád Gábor Bondor](https://github.com/ArpadGBondor) (2025)
+
+- The background image used in the UI is a photo by [Asad Photo Maldives](https://www.pexels.com/hu-hu/foto/457882/), sourced from Pexels:
 
 ### Register
 
