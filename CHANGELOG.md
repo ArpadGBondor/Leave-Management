@@ -1,3 +1,10 @@
+## [1.6.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.14...v1.6.15) (2025-12-10)
+
+
+### Bug Fixes
+
+* add transition + duration to links, buttons and inputs, Replace anchor tags with styled Links, rename Calendars page ([5bedcd1](https://github.com/ArpadGBondor/Leave-Management/commit/5bedcd1bff0a3b7430c04bb4e4f696e237566364))
+
 ## [1.6.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.13...v1.6.14) (2025-12-10)
 
 
