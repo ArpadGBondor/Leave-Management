@@ -59,7 +59,7 @@ export default function TextInput({
           autoComplete={autoComplete}
           disabled={disabled}
           hidden={hidden}
-          className={`block w-full rounded-full border focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
+          className={`block w-full rounded-full border transition duration-200 focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
             disabled
               ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed pointer-events-none'
               : error

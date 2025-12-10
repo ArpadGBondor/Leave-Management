@@ -1,4 +1,5 @@
 import NavButton from '../components/buttons/NavButton';
+import InternalLink from '../components/link/InternalLink';
 
 export default function GettingStarted() {
   return (
@@ -14,20 +15,8 @@ export default function GettingStarted() {
 
           <p className="text-brand-green-800">
             Before exploring the app, you’ll need to{' '}
-            <a
-              href="/register"
-              className="underline text-brand-purple-600 hover:text-brand-purple-700"
-            >
-              register
-            </a>{' '}
-            or{' '}
-            <a
-              href="/login"
-              className="underline text-brand-purple-600 hover:text-brand-purple-700"
-            >
-              log in
-            </a>
-            .
+            <InternalLink to="/register" label="register" /> or{' '}
+            <InternalLink to="/login" label="log in" />.
           </p>
           <ul className="list-disc pl-6 text-brand-green-800 space-y-1">
             <li>Register with an email and password</li>
@@ -74,35 +63,18 @@ export default function GettingStarted() {
                 View and update your personal details
               </span>
               <div>
-                Visit your{' '}
-                <a
-                  href="/profile"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  Profile
-                </a>{' '}
-                page to keep your personal information up to date.
+                Visit your <InternalLink to="/profile" label="Profile" /> page
+                to keep your personal information up to date.
               </div>
             </li>
             <li>
               <span className="font-semibold">Submit leave requests</span>
               <div>
                 Create a{' '}
-                <a
-                  href="/requests/new"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  new leave request
-                </a>
-                , or view{' '}
-                <a
-                  href="/requests"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  your pending requests
-                </a>
-                . Requests remain pending until an admin approves or rejects
-                them.
+                <InternalLink to="/requests/new" label="new leave request" />,
+                or view{' '}
+                <InternalLink to="/requests" label="your pending requests" />.
+                Requests remain pending until an admin approves or rejects them.
               </div>
             </li>
             <li>
@@ -111,12 +83,10 @@ export default function GettingStarted() {
               </span>
               <div>
                 See{' '}
-                <a
-                  href="/approved-leaves"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  your approved leaves
-                </a>
+                <InternalLink
+                  to="/approved-leaves"
+                  label="your approved leaves"
+                />
                 , and submit change or cancellation requests when needed.
               </div>
             </li>
@@ -126,25 +96,17 @@ export default function GettingStarted() {
               </span>
               <div>
                 Review{' '}
-                <a
-                  href="/rejected-leaves"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  your rejected requests
-                </a>
+                <InternalLink
+                  to="/rejected-leaves"
+                  label="your rejected requests"
+                />
                 , and submit new requests based on adjusted plans.
               </div>
             </li>
             <li>
               <span className="font-semibold">View your calendar</span>
               <div>
-                Go to{' '}
-                <a
-                  href="/your-calendar"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  your calendar
-                </a>{' '}
+                Go to <InternalLink to="/your-calendar" label="your calendar" />{' '}
                 to view your days off, approved and pending leaves, workdays,
                 and bank holidays. Your yearly holiday entitlement is also shown
                 here—using the company’s default values until an admin updates
@@ -158,15 +120,9 @@ export default function GettingStarted() {
           </p>
           <ul className="list-disc pl-6 text-brand-green-800">
             <li>
-              Visit your{' '}
-              <a
-                href="/profile"
-                className="underline text-brand-purple-600 hover:text-brand-purple-700"
-              >
-                Profile
-              </a>{' '}
-              page to try switching to a different role (Manager or Owner) if
-              you want to explore additional features.
+              Visit your <InternalLink to="/profile" label="Profile" /> page to
+              try switching to a different role (Manager or Owner) if you want
+              to explore additional features.
             </li>
           </ul>
         </section>
@@ -190,26 +146,20 @@ export default function GettingStarted() {
               </span>
               <div>
                 Review and manage team requests on the{' '}
-                <a
-                  href="/manage-requests"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  team’s pending requests
-                </a>{' '}
+                <InternalLink
+                  to="/manage-requests"
+                  label="team’s pending requests"
+                />{' '}
                 page, or view the team’s{' '}
-                <a
-                  href="/manage-approved-leaves"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  approved leaves
-                </a>{' '}
+                <InternalLink
+                  to="/manage-approved-leaves"
+                  label="approved leaves"
+                />{' '}
                 and{' '}
-                <a
-                  href="/manage-rejected-leaves"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  rejected leave requests
-                </a>{' '}
+                <InternalLink
+                  to="/manage-rejected-leaves"
+                  label="rejected leave requests"
+                />{' '}
                 on their dedicated pages.
               </div>
             </li>
@@ -219,13 +169,7 @@ export default function GettingStarted() {
               </span>
               <div>
                 Update team member information on the{' '}
-                <a
-                  href="/manage-team"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  Manage Team
-                </a>{' '}
-                page:
+                <InternalLink to="/manage-team" label="Manage Team" /> page:
               </div>
               <ul className="list-disc pl-6 mt-1 space-y-1">
                 <li>Employment start and end dates</li>
@@ -238,13 +182,8 @@ export default function GettingStarted() {
               <span className="font-semibold">Monitor team availability</span>
               <div>
                 View individual team member calendars on the{' '}
-                <a
-                  href="/calendars"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  Calendars
-                </a>{' '}
-                page to track leave patterns and staffing levels.
+                <InternalLink to="/calendars" label="Calendars" /> page to track
+                leave patterns and staffing levels.
               </div>
             </li>
           </ul>
@@ -269,12 +208,7 @@ export default function GettingStarted() {
               </span>
               <div>
                 Set organisation-wide fallback values on the{' '}
-                <a
-                  href="/manage-company"
-                  className="underline text-brand-purple-600 hover:text-brand-purple-700"
-                >
-                  Manage Company
-                </a>{' '}
+                <InternalLink to="/manage-company" label="Manage Company" />{' '}
                 page:
               </div>
               <ul className="list-disc pl-6 mt-1">
