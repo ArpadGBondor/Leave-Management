@@ -27,6 +27,7 @@ import {
   FaEyeSlash,
   FaEye,
   FaExclamationTriangle,
+  FaRegCalendarAlt,
 } from 'react-icons/fa';
 
 import { FaClipboardQuestion, FaRocket } from 'react-icons/fa6';
@@ -61,4 +62,5 @@ export {
   FaClipboardQuestion,
   FaRocket,
   FaExclamationTriangle,
+  FaRegCalendarAlt,
 };

@@ -11,7 +11,7 @@ import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
 import ConfirmationOverlay from './components/confirmation/ConfirmationOverlay';
 
-const Home = lazy(() => import('./pages/Home'));
+const YourCalendar = lazy(() => import('./pages/YourCalendar'));
 const GettingStarted = lazy(() => import('./pages/GettingStarted'));
 const Requests = lazy(() => import('./pages/Requests'));
 const Login = lazy(() => import('./pages/Login'));
@@ -68,9 +68,8 @@ export default function App() {
           <Suspense fallback={<Spinner />}>
             <Routes>
               <Route element={<PrivateRoute />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/getting-started" element={<GettingStarted />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/your-calendar" element={<YourCalendar />} />
                 <Route path="/requests" element={<Requests />} />
                 <Route
                   path="/requests/:requestId"
@@ -130,6 +129,7 @@ export default function App() {
                   element={<ManageRejectedLeavesView />}
                 />
               </Route>
+              <Route path="/" element={<GettingStarted />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
