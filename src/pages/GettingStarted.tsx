@@ -9,13 +9,48 @@ export default function GettingStarted() {
             Getting started
           </h1>
           <h2 className="text-2xl font-bold text-brand-green-700">
-            Welcome to my demo app!
+            Welcome to my Leave Management demo app!
           </h2>
+
           <p className="text-brand-green-800">
-            Every user begins with the Employee role, but you can switch roles
-            at any time from your Profile page (for demo purposes). Each role
-            adds more capabilities on top of the previous one.
+            Before exploring the app, you’ll need to{' '}
+            <a
+              href="/register"
+              className="underline text-brand-purple-600 hover:text-brand-purple-700"
+            >
+              register
+            </a>{' '}
+            or{' '}
+            <a
+              href="/login"
+              className="underline text-brand-purple-600 hover:text-brand-purple-700"
+            >
+              log in
+            </a>
+            .
           </p>
+          <ul className="list-disc pl-6 text-brand-green-800 space-y-1">
+            <li>Register with an email and password</li>
+            <li>
+              Or sign in instantly using{' '}
+              <span className="font-semibold">Google SSO</span>
+            </li>
+          </ul>
+
+          <p className="text-brand-green-800">
+            Every user begins with the{' '}
+            <span className="font-semibold">Employee</span> role, but you can
+            switch roles at any time from your Profile page (for demo purposes).
+            Each role adds more capabilities on top of the previous one.
+          </p>
+
+          <p className="text-brand-green-800">
+            If you’re testing and want to remove your account, the app includes
+            a full
+            <span className="font-semibold"> Right to Be Forgotten</span>{' '}
+            feature—allowing you to permanently delete all your data.
+          </p>
+
           <p className="text-brand-green-800">
             Below are the three main sections you need to know to get started.
           </p>
@@ -103,18 +138,17 @@ export default function GettingStarted() {
             <li>
               <span className="font-semibold">View your calendar</span>
               <div>
-                Access your personal calendar on the{' '}
+                Go to{' '}
                 <a
-                  href="/"
+                  href="/your-calendar"
                   className="underline text-brand-purple-600 hover:text-brand-purple-700"
                 >
-                  Home
+                  your calendar
                 </a>{' '}
-                page. It shows your days off, approved and pending leaves, bank
-                holidays, and workdays. You can also view your yearly holiday
-                entitlement on your Home screen. This will display the company’s
-                default values until an admin configures your individual
-                entitlement.
+                to view your days off, approved and pending leaves, workdays,
+                and bank holidays. Your yearly holiday entitlement is also shown
+                here—using the company’s default values until an admin updates
+                your personal entitlement.
               </div>
             </li>
           </ul>

@@ -16,14 +16,11 @@ const useNavItems = () => {
   const topNavItems: NavItem[] = [];
   const bottomNavItems: NavItem[] = [];
 
-  topNavItems.push({ name: 'Home', link: '/', icon: 'FaHome' });
-  if (loggedIn) {
-    topNavItems.push({
-      name: 'Getting started',
-      link: '/getting-started',
-      icon: 'FaRocket',
-    });
-  }
+  topNavItems.push({
+    name: 'Getting started',
+    link: '/',
+    icon: 'FaRocket',
+  });
   if (loggedIn && user?.claims?.SUPER_ADMIN) {
     topNavItems.push({
       name: 'Manage company',
@@ -67,11 +64,11 @@ const useNavItems = () => {
     });
   }
   if (loggedIn) {
-    // topNavItems.push({
-    //   name: `New leave request`,
-    //   link: '/requests/new',
-    //   icon: 'FaPaperPlane',
-    // });
+    topNavItems.push({
+      name: `Your calendar`,
+      link: '/your-calendar',
+      icon: 'FaRegCalendarAlt',
+    });
     topNavItems.push({
       name: `Your pending requests (${ownRequestCount})`,
       link: '/requests',
