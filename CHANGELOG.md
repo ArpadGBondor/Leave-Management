@@ -1,3 +1,10 @@
+## [1.6.14](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.13...v1.6.14) (2025-12-10)
+
+
+### Bug Fixes
+
+* show Getting Started page as the homepage ([8f74553](https://github.com/ArpadGBondor/Leave-Management/commit/8f745532d38bf7a213de0e76f45c74ed11afef6a))
+
 ## [1.6.13](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.12...v1.6.13) (2025-12-09)
 
 
