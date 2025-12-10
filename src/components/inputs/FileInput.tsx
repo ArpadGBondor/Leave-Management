@@ -71,7 +71,7 @@ export default function FileInput({
 
       <div className="relative">
         <div
-          className={` w-32 h-32 rounded-full border-8  flex items-center justify-center cursor-pointer overflow-hidden ${
+          className={` w-32 h-32 rounded-full border-8 transition duration-200 flex items-center justify-center cursor-pointer overflow-hidden ${
             dragOver
               ? error
                 ? 'bg-red-200 border-red-600 text-red-800'

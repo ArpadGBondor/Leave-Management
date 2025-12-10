@@ -26,7 +26,7 @@ export default function CheckboxInput({
       {!flatten && <div className="h-6"></div>}
       <label
         htmlFor={id}
-        className={`flex items-center gap-2 text-base rounded-full border py-2 px-4 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-green-700  ${
+        className={`flex items-center gap-2 text-base rounded-full border transition duration-200 py-2 px-4 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-green-700  ${
           disabled
             ? 'text-brand-purple-800 border-brand-purple-700 bg-brand-purple-100'
             : error

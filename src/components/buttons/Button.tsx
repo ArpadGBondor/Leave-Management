@@ -19,7 +19,7 @@ export default function Button({
   size = 'md',
   className,
 }: ButtonProps) {
-  const baseClasses = `w-full flex items-center justify-center rounded-xl transition focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
+  const baseClasses = `w-full flex items-center justify-center rounded-xl transition duration-200 focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
     size === 'sm' ? 'px-2 py-1 font-small' : 'px-4 py-2 font-medium'
   }`;
   const variants = {

@@ -43,7 +43,7 @@ export default function SelectInput({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className={`block w-full py-2 px-4 rounded-full border focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
+        className={`block w-full py-2 px-4 rounded-full border transition duration-200 focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2 ${
           disabled
             ? 'border-brand-purple-700 bg-brand-purple-100 text-brand-purple-700 cursor-not-allowed pointer-events-none'
             : error

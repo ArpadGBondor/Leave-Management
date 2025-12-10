@@ -46,7 +46,7 @@ export default function RadioInput({
           return (
             <label
               key={optValue}
-              className={` px-2 flex items-center gap-2 rounded-full cursor-pointer transition-colors
+              className={` px-2 flex items-center gap-2 rounded-full cursor-pointer transition duration-200
                 ${
                   disabled || optDisabled
                     ? `cursor-not-allowed pointer-events-none ${

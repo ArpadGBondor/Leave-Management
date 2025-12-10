@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TextInput from '../inputs/TextInput';
 import Button from '../buttons/Button';
@@ -11,6 +11,7 @@ import {
   validatePasswordComplexity,
   validateRequiredField,
 } from '../../utils/fieldValidators';
+import InternalLink from '../link/InternalLink';
 
 export default function UserLogin() {
   const [formData, setFormData] = useState({
@@ -119,12 +120,7 @@ export default function UserLogin() {
       <Button label="Sign In" />
 
       <div className="text-center">
-        <Link
-          to="/forgot-password"
-          className="text-brand-purple-600 hover:text-brand-purple-800 underline cursor-pointer"
-        >
-          Forgot your password?
-        </Link>
+        <InternalLink to="/forgot-password" label="Forgot your password?" />
       </div>
     </form>
   );

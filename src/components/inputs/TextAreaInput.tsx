@@ -26,7 +26,7 @@ export default function TextAreaInput({
   onChange,
 }: TextAreaInputProps) {
   const baseBorder =
-    'transition-colors duration-200 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-offset-2 ring-offset-brand-purple-50';
+    'transition duration-200 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-offset-2 ring-offset-brand-purple-50';
 
   const stateStyles = disabled
     ? 'border-brand-purple-700 bg-brand-purple-100 cursor-not-allowed bg-brand-purple-100 text-brand-purple-700'

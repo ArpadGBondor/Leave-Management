@@ -37,7 +37,7 @@ const useNavItems = () => {
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
-      name: `Personal calendars (${userCount})`,
+      name: `Team member calendars (${userCount})`,
       link: '/calendars',
       icon: 'FaCalendarAlt',
     });

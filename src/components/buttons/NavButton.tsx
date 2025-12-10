@@ -25,7 +25,7 @@ export default function NavButton({
       location.pathname.startsWith(link));
   const IconComponent = icon ? FaIcons[icon] : null;
   const baseClasses =
-    'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition font-medium focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2';
+    'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition duration-200 font-medium focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2';
   const variants = {
     primary: `${
       highlight
