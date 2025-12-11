@@ -1,3 +1,10 @@
+## [1.6.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.16...v1.6.17) (2025-12-11)
+
+
+### Bug Fixes
+
+* adjust mobile design ([b0c5836](https://github.com/ArpadGBondor/Leave-Management/commit/b0c58368e9d397f7e2aa45d14000561e8a1f6587))
+
 ## [1.6.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.15...v1.6.16) (2025-12-11)
 
 
