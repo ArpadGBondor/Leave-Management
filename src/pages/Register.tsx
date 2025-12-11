@@ -1,14 +1,12 @@
 import OAuth from '../components/auth/OAuth';
 import UserRegister from '../components/forms/UserRegister';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function Register() {
   return (
-    <div className="p-4 md:p-8 m-4 md:m-8 md:min-w-sm lg:min-w-md max-w-lg rounded-xl border-4 border-brand-green-500 bg-brand-purple-50 overflow-auto">
-      <h1 className="text-4xl font-bold text-brand-purple-700 mb-4">
-        Register
-      </h1>
+    <PageWrapper title={'Register'} size={'max-w-2xl'}>
       <UserRegister />
       <OAuth />
-    </div>
+    </PageWrapper>
   );
 }

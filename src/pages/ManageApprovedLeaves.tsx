@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import ChangeYear from '../components/complexInputs/ChangeYear';
 import { useFirebase } from '../hooks/useFirebase';
 import { useNavigate } from 'react-router-dom';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function ManageApprovedLeaves() {
   const [approvedLeaves, setApprovedLeaves] = useState<LeaveRequest[]>([]);
@@ -115,10 +116,7 @@ export default function ManageApprovedLeaves() {
   if (loading) return <div className="p-8">Loading approved leaves...</div>;
 
   return (
-    <div className="p-4 md:p-8 w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
-      <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
-        Team's approved leaves
-      </h1>
+    <PageWrapper title={"Team's approved leaves"} size={'max-w-4xl'}>
       <ChangeYear year={year} setYear={setYear} />
       <Table
         data={approvedLeaves}
@@ -127,6 +125,6 @@ export default function ManageApprovedLeaves() {
           navigate(`/manage-approved-leaves/${request.id}`)
         }
       />
-    </div>
+    </PageWrapper>
   );
 }
