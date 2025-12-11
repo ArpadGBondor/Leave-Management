@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import { format } from 'date-fns';
 import { useFirebase } from '../hooks/useFirebase';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function Requests() {
   const [requests, setRequests] = useState<LeaveRequest[]>([]);
@@ -116,10 +117,7 @@ export default function Requests() {
   if (loading) return <div className="p-8">Loading requests...</div>;
 
   return (
-    <div className="p-4 md:p-8 w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-full space-y-4">
-      <h1 className="text-4xl font-bold text-brand-purple-600 mb-4">
-        Your pending leave requests
-      </h1>
+    <PageWrapper title={'Your pending leave requests'} size={'max-w-4xl'}>
       <Table
         data={requests}
         columns={columns}
@@ -129,6 +127,6 @@ export default function Requests() {
         label="New leave request"
         onClick={() => navigate(`/requests/new`)}
       />
-    </div>
+    </PageWrapper>
   );
 }

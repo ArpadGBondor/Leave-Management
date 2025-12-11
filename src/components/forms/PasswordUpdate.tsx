@@ -108,7 +108,7 @@ export default function PasswordUpdate() {
       {user && (
         <form
           onSubmit={onSubmitUpdatePassword}
-          className="flex flex-col gap-4 w-full"
+          className="flex flex-col gap-2 w-full"
         >
           {/* Hidden field have to be at the beginnins of the form to make the warning go away */}
           <TextInput
@@ -120,7 +120,7 @@ export default function PasswordUpdate() {
             autoComplete="username"
             hidden
           />
-          <h2 className="text-4xl font-bold text-brand-purple-700">
+          <h2 className="text-2xl font-bold text-brand-green-700">
             Update password
           </h2>
           <TextInput

@@ -110,7 +110,7 @@ export default function CalendarCells({
   }
 
   return (
-    <div className="flex-grow mt-1 space-y-1 min-h-[310px]  sm:min-h-[405px]">
+    <div className="flex-grow mt-1 space-y-1 min-h-[260px]  sm:min-h-[310px]">
       {weeks.map((weekDates) => (
         <div
           key={weekDates[0].toISOString()}
@@ -124,7 +124,7 @@ export default function CalendarCells({
             return (
               <div
                 key={dayDate.toISOString()}
-                className={`h-12 sm:h-16 border border-brand-green-600 rounded-lg sm:rounded-xl flex items-center justify-center ${bgColor} ${textColor}`}
+                className={`h-10 sm:h-12 border border-brand-green-600 rounded-lg sm:rounded-xl flex items-center justify-center ${bgColor} ${textColor}`}
               >
                 <span className="text-sm md:text-base font-bold">
                   {format(dayDate, 'd')}

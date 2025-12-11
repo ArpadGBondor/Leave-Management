@@ -7,6 +7,7 @@ import CompanyWorkdayDefaults from '../components/forms/CompanyWorkdayDefaults';
 import { toast } from 'react-toastify';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import SubmitFormResponse from '../interface/SubmitFormResponse.interface';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 type FormRef = {
   submit: () => Promise<SubmitFormResponse>;
@@ -42,26 +43,20 @@ export default function ManageCompany() {
   };
 
   return (
-    <div className="p-4 md:p-8 md:min-w-sm lg:min-w-md md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto max-w-6xl space-y-4">
-      <div className="flex flex-col justify-stretch items-stretch gap-4 w-full">
-        <h2 className="text-4xl font-bold text-brand-purple-700">
-          Manage company
-        </h2>
-
-        <p className="text-brand-green-800">
-          These values act as defaults when an employee does not have a specific
-          configuration for a given year.
-        </p>
-        <CompanyImportBankHolidays />
-        <CompanyBankHolidayRegionDefault ref={regionRef} />
-        <CompanyWorkdayDefaults ref={workdayRef} />
-        <CompanyHolidayDefaults ref={holidayRef} />
-        <Button
-          type="button"
-          label="Update default company configuration"
-          onClick={handleSubmitAll}
-        />
-      </div>
-    </div>
+    <PageWrapper title={'Manage company'} size={'max-w-6xl'}>
+      <p className="text-brand-green-800">
+        These values act as defaults when an employee does not have a specific
+        configuration for a given year.
+      </p>
+      <CompanyImportBankHolidays />
+      <CompanyBankHolidayRegionDefault ref={regionRef} />
+      <CompanyWorkdayDefaults ref={workdayRef} />
+      <CompanyHolidayDefaults ref={holidayRef} />
+      <Button
+        type="button"
+        label="Update default company configuration"
+        onClick={handleSubmitAll}
+      />
+    </PageWrapper>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/spinner/Spinner';
 import { useUserContext } from '../context/user/useUserContext';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function Logout() {
   const { loggedIn, loading: userLoading, logout } = useUserContext();
@@ -26,11 +27,10 @@ export default function Logout() {
   }, [navigate, loggedIn, userLoading]);
 
   return (
-    <div className="p-8 m-8 rounded-xl border-4 border-brand-green-500 bg-brand-purple-50">
-      <h1 className="text-4xl font-bold text-brand-purple-600">Logout</h1>
-      <div className="mt-10 flex flex-col justify-center items-center">
+    <PageWrapper title={'Logout'} size={'max-w-2xl'}>
+      <div className="p-10 flex flex-col justify-center items-center">
         <Spinner variant="secondary" />
       </div>
-    </div>
+    </PageWrapper>
   );
 }

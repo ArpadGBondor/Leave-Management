@@ -3,18 +3,19 @@ import PasswordAdd from '../components/forms/PasswordAdd';
 import PasswordUpdate from '../components/forms/PasswordUpdate';
 import UserUpdate from '../components/forms/UserUpdate';
 import UserDelete from '../components/forms/UserDelete';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function Profile() {
   const { hasPassword } = useUserContext();
   return (
-    <div className="p-4 md:p-8 md:min-w-sm lg:min-w-2xl xl:min-w-4xl md:max-w-lg lg:max-w-6xl w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto space-y-4">
-      <div className="flex flex-col lg:flex-row justify-stretch items-stretch gap-8 w-full">
+    <PageWrapper title="Profile" size="max-w-6xl">
+      <div className="flex flex-col xl:flex-row justify-stretch items-stretch gap-8 md:max-w-lg xl:max-w-6xl w-full">
         <UserUpdate />
         <div className="w-full flex flex-col justify-between items-stretch gap-8">
           {hasPassword ? <PasswordUpdate /> : <PasswordAdd />}
           <UserDelete />
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

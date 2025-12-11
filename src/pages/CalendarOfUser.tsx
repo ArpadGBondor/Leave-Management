@@ -8,6 +8,7 @@ import UserCalendar from '../components/userCalendar/UserCalendar';
 import NavButton from '../components/buttons/NavButton';
 import ProfileBadge from '../components/profile/ProfileBadge';
 import { useFirebase } from '../hooks/useFirebase';
+import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function CalendarOfUser() {
   const { userId } = useParams();
@@ -44,17 +45,12 @@ export default function CalendarOfUser() {
   return (
     <>
       {user && (
-        <div className="p-4 md:p-8 md:min-w-sm lg:min-w-md w-full h-full md:w-auto md:h-auto md:m-4 md:rounded-xl md:border-4 md:border-brand-green-500 bg-brand-purple-50 overflow-auto  max-w-full">
-          <div className="flex flex-col justify-stretch items-stretch gap-4 w-full">
-            <h1 className="text-4xl font-bold text-brand-purple-600">
-              Team member calendar
-            </h1>
-            <UserCalendar user={user} />
-            <div className="flex flex-col items-center">
-              <NavButton label="Back" link="/calendars" icon="FaArrowLeft" />
-            </div>
+        <PageWrapper title={'Team member calendar'} size={'max-w-4xl'}>
+          <UserCalendar user={user} />
+          <div className="flex flex-col items-center">
+            <NavButton label="Back" link="/calendars" icon="FaArrowLeft" />
           </div>
-        </div>
+        </PageWrapper>
       )}
     </>
   );

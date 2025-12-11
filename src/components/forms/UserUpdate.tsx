@@ -140,8 +140,8 @@ export default function UserUpdate() {
   };
 
   return (
-    <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-4 w-full">
-      <h2 className="text-4xl font-bold text-brand-purple-700">
+    <form onSubmit={onSubmitUpdateUser} className="flex flex-col gap-2 w-full">
+      <h2 className="text-2xl font-bold text-brand-green-700">
         Update user details
       </h2>
       <TextInput
