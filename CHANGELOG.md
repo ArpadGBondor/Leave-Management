@@ -1,3 +1,10 @@
+## [1.6.16](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.15...v1.6.16) (2025-12-11)
+
+
+### Bug Fixes
+
+* use page wrapper and restyle pages ([2c3134e](https://github.com/ArpadGBondor/Leave-Management/commit/2c3134e315bc0d8c9d2c63bb9a39a5e574452148))
+
 ## [1.6.15](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.14...v1.6.15) (2025-12-10)
 
 
