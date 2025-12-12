@@ -1,3 +1,10 @@
+## [1.6.18](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.17...v1.6.18) (2025-12-12)
+
+
+### Bug Fixes
+
+* adjust page wrapper ([0407936](https://github.com/ArpadGBondor/Leave-Management/commit/040793684660046807e4053435954f04604410e0))
+
 ## [1.6.17](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.16...v1.6.17) (2025-12-11)
 
 
