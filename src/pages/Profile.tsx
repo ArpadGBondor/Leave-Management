@@ -8,7 +8,7 @@ import PageWrapper from '../components/pageWrapper/PageWrapper';
 export default function Profile() {
   const { hasPassword } = useUserContext();
   return (
-    <PageWrapper title="Profile" size="max-w-6xl">
+    <PageWrapper title="Profile" size="max-w-6xl" backPath="/">
       <div className="flex flex-col xl:flex-row justify-stretch items-stretch gap-8 md:max-w-lg xl:max-w-6xl w-full">
         <UserUpdate />
         <div className="w-full flex flex-col justify-between items-stretch gap-8">

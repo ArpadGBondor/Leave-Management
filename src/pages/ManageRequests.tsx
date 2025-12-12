@@ -111,7 +111,11 @@ export default function ManageRequests() {
   if (loading) return <div className="p-8">Loading requests...</div>;
 
   return (
-    <PageWrapper title={"Team's pending leave requests"} size={'max-w-4xl'}>
+    <PageWrapper
+      title={"Team's pending leave requests"}
+      size={'max-w-4xl'}
+      backPath="/"
+    >
       <Table
         data={requests}
         columns={columns}

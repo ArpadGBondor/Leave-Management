@@ -9,7 +9,11 @@ export default function RejectedLeavesViev() {
   const { user } = useUserContext();
 
   return (
-    <PageWrapper title={'Rejected leave request details'} size={'max-w-2xl'}>
+    <PageWrapper
+      title={'Rejected leave request details'}
+      size={'max-w-4xl'}
+      backPath="/rejected-leaves"
+    >
       {user && (
         <RequestAddEditForm
           requestId={requestId}

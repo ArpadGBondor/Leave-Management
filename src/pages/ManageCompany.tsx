@@ -43,7 +43,7 @@ export default function ManageCompany() {
   };
 
   return (
-    <PageWrapper title={'Manage company'} size={'max-w-6xl'}>
+    <PageWrapper title={'Manage company'} size={'max-w-6xl'} backPath="/">
       <p className="text-brand-green-800">
         These values act as defaults when an employee does not have a specific
         configuration for a given year.

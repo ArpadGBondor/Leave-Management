@@ -41,9 +41,13 @@ export default function ManageRejectedLeavesView() {
   }, [db, request?.requestedById]);
 
   return (
-    <PageWrapper title={'Rejected leave request details'} size={'max-w-10xl'}>
+    <PageWrapper
+      title={'Rejected leave request details'}
+      size={'max-w-10xl'}
+      backPath="/manage-rejected-leaves"
+    >
       <div className="flex flex-col 2xl:flex-row gap-8">
-        <div className="flex-1 space-y-4">
+        <div className="flex-2 space-y-4">
           {user && (
             <RequestAddEditForm
               requestId={requestId}
@@ -55,7 +59,7 @@ export default function ManageRejectedLeavesView() {
           )}
           {request && <ManageRejectedLeaveActions request={request} />}
         </div>
-        <div className="flex-1">
+        <div className="flex-3">
           {requestingUser && (
             <UserCalendar user={requestingUser} initialDate={request?.from} />
           )}

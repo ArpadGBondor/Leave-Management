@@ -9,7 +9,11 @@ export default function ApprovedLeavesViev() {
   const { user } = useUserContext();
 
   return (
-    <PageWrapper title={'Approved leave details'} size={'max-w-2xl'}>
+    <PageWrapper
+      title={'Approved leave details'}
+      size={'max-w-2xl'}
+      backPath="/approved-leaves"
+    >
       {user && (
         <RequestAddEditForm
           requestId={requestId}

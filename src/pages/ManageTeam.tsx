@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function ManageTeam() {
   const navigate = useNavigate();
   return (
-    <PageWrapper title={'Manage team'} size={'max-w-4xl'}>
+    <PageWrapper title={'Manage team'} size={'max-w-4xl'} backPath="/">
       <UserPicker onClick={(user) => navigate(`/manage-team/${user.id}`)} />
     </PageWrapper>
   );

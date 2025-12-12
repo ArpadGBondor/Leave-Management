@@ -117,8 +117,7 @@ export default function RejectedLeaves() {
   if (loading) return <div className="p-8">Loading rejected leaves...</div>;
 
   return (
-    <PageWrapper title={'Your rejected leaves'} size={'max-w-4xl'}>
-      <ChangeYear year={year} setYear={setYear} />
+    <PageWrapper title={'Your rejected leaves'} size={'max-w-4xl'} backPath="/">
       <Table
         data={rejectedLeaves}
         columns={columns}

@@ -117,7 +117,11 @@ export default function Requests() {
   if (loading) return <div className="p-8">Loading requests...</div>;
 
   return (
-    <PageWrapper title={'Your pending leave requests'} size={'max-w-4xl'}>
+    <PageWrapper
+      title={'Your pending leave requests'}
+      size={'max-w-4xl'}
+      backPath="/"
+    >
       <Table
         data={requests}
         columns={columns}

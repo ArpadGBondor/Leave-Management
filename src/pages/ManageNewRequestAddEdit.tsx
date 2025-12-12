@@ -46,6 +46,7 @@ export default function ManageNewRequestAddEdit() {
           : 'New leave request as a team member'
       }
       size={'max-w-4xl'}
+      backPath="/manage-new-request"
     >
       {requestingUser && (
         <>
@@ -53,7 +54,7 @@ export default function ManageNewRequestAddEdit() {
           <RequestAddEditForm
             requestId={requestId}
             user={requestingUser}
-            navigateBack="/manage-requests"
+            navigateBack="/manage-new-request"
           />
         </>
       )}
