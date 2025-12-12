@@ -1,38 +1,34 @@
-import { Link } from 'react-router-dom';
-import NavButton from '../components/buttons/NavButton';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
+import ExternalLink from '../components/link/ExternalLink';
+import { version } from '../../package.json';
 
 export default function About() {
   return (
     <PageWrapper title={'About this project'} size={'max-w-2xl'}>
       <div className="max-w-sm">
+        <p className="text-brand-green-800 text-2xl font-bold">
+          Manage your leaves
+        </p>
+        <p className="mb-4 text-brand-green-800">Version: {version}</p>
         <p className="mb-4 text-brand-green-800">
-          This is a Leave Management practise project, to keep my React skills
-          up to date.
+          This project is a Leave Management practice application built to
+          maintain and enhance my React development skills.
         </p>
         <p className="mb-4 text-brand-green-800">
           Created by{' '}
-          <a
-            href="https://github.com/ArpadGBondor"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-purple-600 hover:text-brand-purple-400 active:text-brand-purple-900 cursor-pointer hover:underline"
-          >
-            Árpád Gábor Bondor
-          </a>{' '}
+          <ExternalLink
+            to="https://github.com/ArpadGBondor"
+            label="Árpád Gábor Bondor"
+          />{' '}
           in 2025.
         </p>
 
         <p className="text-brand-green-800">
           Background image is{' '}
-          <a
-            href="https://www.pexels.com/hu-hu/foto/457882/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-purple-600 hover:text-brand-purple-400 active:text-brand-purple-900 cursor-pointer hover:underline"
-          >
-            Asad Photo Maldives's foto
-          </a>{' '}
+          <ExternalLink
+            to="https://www.pexels.com/hu-hu/foto/457882/"
+            label="Asad Photo Maldives's foto"
+          />{' '}
           from Pexels.
         </p>
       </div>
