@@ -15,10 +15,10 @@ export default function PageWrapper({
 }: PageWrapperProps) {
   return (
     <div
-      className={`w-full h-full sm:w-auto sm:h-auto md:min-w-md ${
+      className={`w-full h-full sm:w-auto sm:h-auto md:min-w-md border-0 sm:border-4 ${
         variant === 'primary'
-          ? 'bg-brand-green-600 sm:bg-gradient-to-br sm:from-brand-green-600  sm:to-brand-green-800'
-          : 'bg-brand-purple-600 sm:bg-gradient-to-br sm:from-brand-purple-600  sm:to-brand-purple-800'
+          ? 'bg-brand-green-600 sm:bg-gradient-to-br sm:from-brand-green-600  sm:to-brand-green-800 border-b-brand-green-800 border-r-brand-green-800 border-t-brand-green-600 border-l-brand-green-600'
+          : 'bg-brand-purple-600 sm:bg-gradient-to-br sm:from-brand-purple-600  sm:to-brand-purple-800 border-b-brand-purple-800 border-r-brand-purple-800 border-t-brand-purple-600 border-l-brand-purple-600'
       }  p-0 sm:p-4 md:p-6 lg:p-8 sm:pt-2 md:pt-2 lg:pt-4 m-0 sm:m-2 md:m-4 lg:m-8 rounded-none sm:rounded-xl flex flex-col justify-stretch items-stretch ${size} overflow-hidden`}
     >
       <header className="mb-2 md:mb-4">
@@ -27,7 +27,7 @@ export default function PageWrapper({
         </h1>
       </header>
       <div
-        className={`flex-1 bg-brand-purple-50 p-4 sm:p-6 overflow-auto shadow-lg space-y-4 border-4 ${
+        className={`flex-1 bg-brand-purple-50 p-4 sm:p-6 overflow-auto space-y-4 border-4 ${
           variant === 'primary'
             ? 'border-b-brand-green-600 border-r-brand-green-600 border-t-brand-green-800 border-l-brand-green-800'
             : 'border-b-brand-purple-600 border-r-brand-purple-600 border-t-brand-purple-800 border-l-brand-purple-800'
