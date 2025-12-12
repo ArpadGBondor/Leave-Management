@@ -41,9 +41,13 @@ export default function ManageApprovedLeavesView() {
   }, [db, request?.requestedById]);
 
   return (
-    <PageWrapper title={'Approved leave details'} size={'max-w-10xl'}>
+    <PageWrapper
+      title={'Approved leave details'}
+      size={'max-w-10xl'}
+      backPath="/manage-approved-leaves"
+    >
       <div className="flex flex-col 2xl:flex-row gap-8">
-        <div className="flex-1 space-y-4">
+        <div className="flex-2 space-y-4">
           {user && (
             <RequestAddEditForm
               requestId={requestId}
@@ -55,7 +59,7 @@ export default function ManageApprovedLeavesView() {
           )}
           {request && <ManageApprovedLeaveActions request={request} />}
         </div>
-        <div className="flex-1">
+        <div className="flex-3">
           {requestingUser && (
             <UserCalendar user={requestingUser} initialDate={request?.from} />
           )}

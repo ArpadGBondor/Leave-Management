@@ -6,7 +6,7 @@ export default function Home() {
   const { user } = useUserContext();
 
   return (
-    <PageWrapper title={'Your calendar'} size={'max-w-4xl'}>
+    <PageWrapper title={'Your calendar'} size={'max-w-4xl'} backPath="/">
       {user && <UserCalendar user={user} />}
     </PageWrapper>
   );

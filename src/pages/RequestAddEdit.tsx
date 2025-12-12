@@ -12,7 +12,8 @@ export default function RequestAddEdit() {
   return (
     <PageWrapper
       title={isEditing ? 'Pending leave request details' : 'New leave request'}
-      size={'max-w-2xl'}
+      size={'max-w-4xl'}
+      backPath="/requests"
     >
       {user && <RequestAddEditForm requestId={requestId} user={user} />}
     </PageWrapper>

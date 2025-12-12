@@ -4,7 +4,7 @@ import { version } from '../../package.json';
 
 export default function About() {
   return (
-    <PageWrapper title={'About this project'} size={'max-w-2xl'}>
+    <PageWrapper title={'About this project'} size={'max-w-2xl'} backPath="/">
       <div className="max-w-sm">
         <p className="text-brand-green-800 text-2xl font-bold">
           Manage your leaves

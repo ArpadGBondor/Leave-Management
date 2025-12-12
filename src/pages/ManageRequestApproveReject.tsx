@@ -51,9 +51,10 @@ export default function ManageRequestApproveReject() {
           : 'Pending leave request details'
       }
       size={'max-w-10xl'}
+      backPath="/manage-requests"
     >
       <div className="flex flex-col 2xl:flex-row gap-8">
-        <div className="flex-1 space-y-4">
+        <div className="flex-2 space-y-4">
           {user && (
             <RequestAddEditForm
               requestId={requestId}
@@ -64,7 +65,7 @@ export default function ManageRequestApproveReject() {
           )}
           {request && <ManageRequestActions request={request} />}
         </div>
-        <div className="flex-1">
+        <div className="flex-3">
           {requestingUser && (
             <UserCalendar user={requestingUser} initialDate={request?.from} />
           )}

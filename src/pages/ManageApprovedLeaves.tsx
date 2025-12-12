@@ -116,7 +116,11 @@ export default function ManageApprovedLeaves() {
   if (loading) return <div className="p-8">Loading approved leaves...</div>;
 
   return (
-    <PageWrapper title={"Team's approved leaves"} size={'max-w-4xl'}>
+    <PageWrapper
+      title={"Team's approved leaves"}
+      size={'max-w-4xl'}
+      backPath="/"
+    >
       <ChangeYear year={year} setYear={setYear} />
       <Table
         data={approvedLeaves}

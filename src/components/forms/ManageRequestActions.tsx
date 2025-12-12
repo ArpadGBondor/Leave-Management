@@ -116,12 +116,12 @@ export default function ManageRequestActions({
           }
           onClick={onReject}
         />
-        <Button
+        {/* <Button
           type="button"
           variant="secondary"
           label={'Back'}
           onClick={() => navigate('/manage-requests')}
-        />
+        /> */}
         <Button
           type="button"
           label={

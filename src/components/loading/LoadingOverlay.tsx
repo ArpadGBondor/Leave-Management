@@ -10,7 +10,7 @@ const LoadingOverlay: React.FC = () => {
 
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center bg-brand-green-900/40">
-      <PageWrapper title={'Loading...'} size={'max-w-2xl'}>
+      <PageWrapper title={'Loading...'} size={'max-w-2xl'} isModal>
         <div className="flex justify-center">
           <Spinner size="lg" />
         </div>

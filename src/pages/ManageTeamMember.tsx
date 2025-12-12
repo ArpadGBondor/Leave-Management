@@ -309,7 +309,11 @@ export default function ManageTeamMember() {
   };
 
   return (
-    <PageWrapper title={'Manage team member'} size={'max-w-6xl'}>
+    <PageWrapper
+      title={'Manage team member'}
+      size={'max-w-6xl'}
+      backPath="/manage-team"
+    >
       {user && (
         <div>
           <div
@@ -360,12 +364,12 @@ export default function ManageTeamMember() {
                 configuredYears.map((config) => config.id).includes(year)
               )}
             />
-            <Button
+            {/* <Button
               type="button"
               variant="secondary"
               label="Back"
               onClick={() => navigate('/manage-team')}
-            />
+            /> */}
           </div>
         </>
       )}

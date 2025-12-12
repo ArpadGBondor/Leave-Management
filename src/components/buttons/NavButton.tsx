@@ -5,7 +5,7 @@ type ButtonProps = {
   label: string;
   link: string;
   icon?: keyof typeof FaIcons;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'light';
   onClick?: () => void;
   className?: string;
 };
@@ -25,18 +25,23 @@ export default function NavButton({
       location.pathname.startsWith(link));
   const IconComponent = icon ? FaIcons[icon] : null;
   const baseClasses =
-    'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition duration-200 font-medium focus:outline-none ring-offset-brand-purple-50 focus:ring-2 focus:ring-offset-2';
+    'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
   const variants = {
     primary: `${
       highlight
         ? 'bg-brand-green-800 focus:ring-brand-green-800'
         : 'bg-brand-green-700 focus:ring-brand-green-700'
-    } hover:bg-brand-green-600 text-white`,
+    } hover:bg-brand-green-600 text-white ring-offset-brand-purple-50`,
     secondary: `${
       highlight
         ? 'bg-brand-purple-800 focus:ring-brand-purple-800'
         : 'bg-brand-purple-700 focus:ring-brand-purple-700'
-    } hover:bg-brand-purple-600 text-white`,
+    } hover:bg-brand-purple-600 text-white ring-offset-brand-purple-50`,
+    light: `${
+      highlight
+        ? 'bg-brand-green-100 focus:ring-brand-green-100'
+        : 'bg-white focus:ring-white '
+    } hover:bg-brand-green-100 text-brand-green-800 ring-offset-brand-green-700`,
   };
 
   return (

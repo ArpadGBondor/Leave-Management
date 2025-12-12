@@ -45,11 +45,12 @@ export default function CalendarOfUser() {
   return (
     <>
       {user && (
-        <PageWrapper title={'Team member calendar'} size={'max-w-4xl'}>
+        <PageWrapper
+          title={'Team member calendar'}
+          size={'max-w-4xl'}
+          backPath={'/calendars'}
+        >
           <UserCalendar user={user} />
-          <div className="flex flex-col items-center">
-            <NavButton label="Back" link="/calendars" icon="FaArrowLeft" />
-          </div>
         </PageWrapper>
       )}
     </>

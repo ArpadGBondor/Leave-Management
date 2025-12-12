@@ -1,9 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useRequestsContext } from '../../context/requests/useRequestsContext';
-import {
-  LeaveRequest,
-  RequestTypeEnum,
-} from '../../interface/LeaveRequest.interface';
+import { LeaveRequest } from '../../interface/LeaveRequest.interface';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
@@ -56,12 +53,12 @@ export default function ManageApprovedLeaveActions({
           label={'Unapprove request'}
           onClick={onUnapproveConfirm}
         />
-        <Button
+        {/* <Button
           type="button"
           variant="secondary"
           label={'Back'}
           onClick={onBack}
-        />
+        /> */}
       </div>
     </>
   );
