@@ -11,10 +11,6 @@ export default function About() {
         </p>
         <p className="mb-4 text-brand-green-800">Version: {version}</p>
         <p className="mb-4 text-brand-green-800">
-          This project is a Leave Management practice application built to
-          maintain and enhance my React development skills.
-        </p>
-        <p className="mb-4 text-brand-green-800">
           Created by{' '}
           <ExternalLink
             to="https://github.com/ArpadGBondor"
@@ -22,9 +18,16 @@ export default function About() {
           />{' '}
           in 2025.
         </p>
+        <p className="mb-4 text-brand-green-800">
+          I created this leave management web application to expand my
+          portfolio, and improve my React skills. The goal was to create a
+          full-stack web-application with React, Tailwind, serverless backend,
+          and database connection. I chose Firebase Firestore as the database,
+          and Firebase also handles the user-authentication for the project.
+        </p>
 
         <p className="text-brand-green-800">
-          Background image is{' '}
+          The background image is{' '}
           <ExternalLink
             to="https://www.pexels.com/hu-hu/foto/457882/"
             label="Asad Photo Maldives's foto"

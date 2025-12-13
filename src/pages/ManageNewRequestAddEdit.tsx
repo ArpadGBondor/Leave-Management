@@ -5,13 +5,14 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/User.interface';
 import { useFirebase } from '../hooks/useFirebase';
-import NewRequestAsATeamMemberInfo from '../components/info/NewRequestAsATeamMemberInfo';
 import ActingAsTemaMemberWarning from '../components/warning/ActingAsTemaMemberWarning';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
+import ErrorBlock from '../components/error/ErrorBlock';
 
 export default function ManageNewRequestAddEdit() {
   const { requestId, requestingUserId } = useParams();
   const [requestingUser, setRequestingUser] = useState<User | null>(null);
+  const [userError, setUserError] = useState('');
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -29,8 +30,10 @@ export default function ManageNewRequestAddEdit() {
     const userUnsubscribe = onSnapshot(userRef, (snapshot) => {
       if (!snapshot.exists()) {
         setRequestingUser(null);
+        setUserError('User not found.');
       } else {
         setRequestingUser(snapshot.data() as User);
+        setUserError('');
       }
     });
 
@@ -45,9 +48,12 @@ export default function ManageNewRequestAddEdit() {
           ? 'Editing leave request as a team member'
           : 'New leave request as a team member'
       }
-      size={'max-w-4xl'}
-      backPath="/manage-new-request"
+      size={'max-w-2xl'}
+      backPath={
+        isEditing ? `/manage-requests/${requestId}` : '/manage-new-request'
+      }
     >
+      {userError && <ErrorBlock error={userError} />}
       {requestingUser && (
         <>
           <ActingAsTemaMemberWarning name={requestingUser.name} />

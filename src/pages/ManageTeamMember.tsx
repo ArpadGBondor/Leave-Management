@@ -26,6 +26,7 @@ import countNumberOfBankHolidaysOnWorkdays from '../utils/countNumberOfBankHolid
 import calculateHolidayEntitlementTotal from '../utils/calculateHolidayEntitlementTotal';
 import countWorkdays from '../utils/countWorkdays';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
+import ErrorBlock from '../components/error/ErrorBlock';
 
 const columns: TableColumn<UserHolidayEntitlement>[] = [
   {
@@ -78,7 +79,7 @@ export default function ManageTeamMember() {
     bankHolidayRegion: companyBankHolidayRegion,
     holidayEntitlement: companyHolidayEntitlement,
   } = useCompanyContext();
-  const navigate = useNavigate();
+  const [userError, setUserError] = useState('');
 
   const firebase = useFirebase();
   const db = firebase?.db;
@@ -135,8 +136,10 @@ export default function ManageTeamMember() {
       (snapshot) => {
         if (!snapshot.exists()) {
           setUser(null);
+          setUserError('User not found.');
         } else {
           setUser(snapshot.data() as User);
+          setUserError('');
         }
         stopLoading('fetch-user');
       },
@@ -314,85 +317,86 @@ export default function ManageTeamMember() {
       size={'max-w-6xl'}
       backPath="/manage-team"
     >
-      {user && (
-        <div>
-          <div
-            className={`bg-brand-green-600 p-4 flex flex-col md:flex-row gap-4 justify-between items-center ${
-              editUserDetails ? 'rounded-t-xl' : 'rounded-xl'
-            }`}
-          >
-            <ProfileBadge user={user} />
-            <div className="w-full md:w-1/2">
-              {!editUserDetails && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  label="Update Details"
-                  onClick={() => setEditUserDetails(true)}
-                />
-              )}
-            </div>
-          </div>
-          {user && editUserDetails && (
-            <div className="p-4 rounded-b-xl border border-brand-green-600 bg-brand-purple-100">
-              <TeamMemberUserDetailsUpdate
-                user={user}
-                onBack={() => {
-                  setEditUserDetails(false);
-                }}
-              />
-            </div>
-          )}
-        </div>
-      )}
-      {screenPhase === 1 && (
+      {userError ? (
+        <ErrorBlock error={userError} />
+      ) : (
         <>
-          <Table
-            data={configuredYears}
-            columns={columns}
-            title="Configured years"
-            onRowClick={(row) => selectRow(row)}
-            highlightRow={(row) =>
-              selectedForEditing !== null && row.id === selectedForEditing.id
-            }
-          />
-          <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
-            <Button
-              label="Add new year"
-              onClick={addNew}
-              disabled={employmentYears.every((year) =>
-                configuredYears.map((config) => config.id).includes(year)
+          {user && (
+            <div>
+              <div
+                className={`bg-brand-green-600 p-4 flex flex-col md:flex-row gap-4 justify-between items-center ${
+                  editUserDetails ? 'rounded-t-xl' : 'rounded-xl'
+                }`}
+              >
+                <ProfileBadge user={user} />
+                <div className="w-full md:w-1/2">
+                  {!editUserDetails && (
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      label="Update Details"
+                      onClick={() => setEditUserDetails(true)}
+                    />
+                  )}
+                </div>
+              </div>
+              {user && editUserDetails && (
+                <div className="p-4 rounded-b-xl border border-brand-green-600 bg-brand-purple-100">
+                  <TeamMemberUserDetailsUpdate
+                    user={user}
+                    onBack={() => {
+                      setEditUserDetails(false);
+                    }}
+                  />
+                </div>
               )}
-            />
-            {/* <Button
-              type="button"
-              variant="secondary"
-              label="Back"
-              onClick={() => navigate('/manage-team')}
-            /> */}
-          </div>
-        </>
-      )}
-      {screenPhase === 2 && selectedForEditing && (
-        <UserYearlyConfigurationAddEdit
-          isEditing={isEditing}
-          selectedForEditing={selectedForEditing}
-          yearOptions={employmentYears.map(
-            (year): SelectInputOption => ({
-              label: year,
-              value: year,
-              disabled: configuredYears
-                .map((config) => config.id)
-                .includes(year),
-            })
+            </div>
           )}
-          userId={userId!}
-          user={user!}
-          onBack={() => {
-            setScreenPhase(1);
-            setSelectedForEditing(null);
-          }}
-        />
+          {screenPhase === 1 && (
+            <>
+              <Table
+                data={configuredYears}
+                columns={columns}
+                title="Configured years"
+                onRowClick={(row) => selectRow(row)}
+                highlightRow={(row) =>
+                  selectedForEditing !== null &&
+                  row.id === selectedForEditing.id
+                }
+              />
+              <div className="flex flex-col md:flex-row-reverse md:justify-stretch gap-1 md:gap-4">
+                <Button
+                  label="Add new year"
+                  onClick={addNew}
+                  disabled={employmentYears.every((year) =>
+                    configuredYears.map((config) => config.id).includes(year)
+                  )}
+                />
+              </div>
+            </>
+          )}
+          {screenPhase === 2 && selectedForEditing && (
+            <UserYearlyConfigurationAddEdit
+              isEditing={isEditing}
+              selectedForEditing={selectedForEditing}
+              yearOptions={employmentYears.map(
+                (year): SelectInputOption => ({
+                  label: year,
+                  value: year,
+                  disabled: configuredYears
+                    .map((config) => config.id)
+                    .includes(year),
+                })
+              )}
+              userId={userId!}
+              user={user!}
+              onBack={() => {
+                setScreenPhase(1);
+                setSelectedForEditing(null);
+              }}
+            />
+          )}
+        </>
       )}
     </PageWrapper>
   );

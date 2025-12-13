@@ -69,18 +69,15 @@ export default function UserDashboard({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
         <UserDashboardInfo
-          label={'Total leave entitlement days'}
+          label={'Entitlement'}
           value={totalLeaveEntitlement}
         />
-        <UserDashboardInfo label={'Approved leave days'} value={approvedDays} />
+        <UserDashboardInfo label={'Approved'} value={approvedDays} />
         <UserDashboardInfo
-          label={'Available leave days'}
+          label={'Available'}
           value={totalLeaveEntitlement - approvedDays}
         />
-        <UserDashboardInfo
-          label={'Pending requested days'}
-          value={requestedDays}
-        />
+        <UserDashboardInfo label={'Pending'} value={requestedDays} />
       </div>
     </div>
   );

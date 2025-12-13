@@ -17,7 +17,6 @@ import {
   RequestType,
   RequestTypeEnum,
 } from '../../interface/LeaveRequest.interface';
-import NavButton from '../buttons/NavButton';
 import Button from '../buttons/Button';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
@@ -40,6 +39,7 @@ import useLoadUserYearlyConfiguration from '../../hooks/useLoadUserYearlyConfigu
 import User from '../../interface/User.interface';
 import { useConfirmationContext } from '../../context/confirmation/useConfirmationContext';
 import { defaultConfirmationOptions } from '../../context/confirmation/types';
+import ErrorBlock from '../error/ErrorBlock';
 
 interface RequestAddEditFormProps {
   requestId?: string;
@@ -171,14 +171,14 @@ export default function RequestAddEditForm({
 
   useEffect(() => {
     if (!db) return;
-    if (!requestId) return setFormError("Can't find request.");
+    if (!requestId) return setFormError('Request not found.');
     if (!user?.id) return setFormError("Can't find logged in user.");
     if (requestId === 'new') return; /* New request, nothing to load */
     startLoading('fetch-request-details');
     const ref = doc(db, requestCollection, requestId);
     getDoc(ref)
       .then(async (snap) => {
-        if (!snap.exists()) return setFormError("Can't find request.");
+        if (!snap.exists()) return setFormError('Request not found.');
 
         const doc = snap.data() as LeaveRequest;
         if (!disabled && doc.requestedById !== user.id)
@@ -498,15 +498,7 @@ export default function RequestAddEditForm({
   };
 
   // Prevent editing if request does not belong to user
-  if (formError)
-    return (
-      <>
-        <h2 className="text-4xl font-bold text-red-700">{formError}</h2>
-        <div className="flex flex-col items-center">
-          <NavButton label="Back" link={'/'} icon="FaArrowLeft" />
-        </div>
-      </>
-    );
+  if (formError) return <ErrorBlock error={formError} />;
 
   return (
     <form onSubmit={onSubmitUpdateRequest} className="flex flex-col gap-4 ">
@@ -681,18 +673,6 @@ export default function RequestAddEditForm({
             />
           )}
 
-          {/* <Button
-            type="button"
-            variant="secondary"
-            label={
-              isEditing
-                ? requestType === RequestTypeEnum.Cancellation
-                  ? 'Back'
-                  : 'Discard changes'
-                : 'Cancel'
-            }
-            onClick={onBack}
-          /> */}
           {isEditing && (
             <Button
               type="button"

@@ -34,7 +34,7 @@ export default function UserDelete() {
     }
   };
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-4">
       <h2 className="text-2xl font-bold text-brand-purple-700">
         You have the right to be forgotten
       </h2>

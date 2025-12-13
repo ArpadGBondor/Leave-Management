@@ -34,12 +34,6 @@ export default function ManageRejectedLeaveActions({
   return (
     <>
       <div className="flex flex-col md:flex-row md:justify-stretch gap-1 md:gap-4">
-        {/* <Button
-          type="button"
-          variant="secondary"
-          label={'Back'}
-          onClick={onBack}
-        /> */}
         <Button
           type="button"
           variant="primary"

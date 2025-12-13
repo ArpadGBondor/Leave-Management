@@ -1,6 +1,5 @@
 import { forwardRef, useImperativeHandle } from 'react';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import { useLoadingContext } from '../../context/loading/useLoadingContext';
 import { useCompanyContext } from '../../context/company/useCompanyContext';
 import BankHolidayRegion from '../../interface/BankHolidayRegion.interface';

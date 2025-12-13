@@ -108,7 +108,7 @@ export default function PasswordUpdate() {
       {user && (
         <form
           onSubmit={onSubmitUpdatePassword}
-          className="flex flex-col gap-2 w-full"
+          className="flex flex-col gap-4 w-full"
         >
           {/* Hidden field have to be at the beginnins of the form to make the warning go away */}
           <TextInput

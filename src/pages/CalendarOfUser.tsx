@@ -5,14 +5,15 @@ import { firebase_collections } from '../../lib/firebase_collections';
 import User from '../interface/User.interface';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import UserCalendar from '../components/userCalendar/UserCalendar';
-import NavButton from '../components/buttons/NavButton';
-import ProfileBadge from '../components/profile/ProfileBadge';
 import { useFirebase } from '../hooks/useFirebase';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
+import ErrorBlock from '../components/error/ErrorBlock';
 
 export default function CalendarOfUser() {
   const { userId } = useParams();
   const [user, setUser] = useState<User | null>(null);
+  const [userError, setUserError] = useState('');
+
   const { startLoading, stopLoading } = useLoadingContext();
 
   const firebase = useFirebase();
@@ -29,8 +30,10 @@ export default function CalendarOfUser() {
       (snapshot) => {
         if (!snapshot.exists()) {
           setUser(null);
+          setUserError('User not found');
         } else {
           setUser(snapshot.data() as User);
+          setUserError('');
         }
         stopLoading('fetch-user');
       },
@@ -43,16 +46,13 @@ export default function CalendarOfUser() {
   }, [db, userId]);
 
   return (
-    <>
-      {user && (
-        <PageWrapper
-          title={'Team member calendar'}
-          size={'max-w-4xl'}
-          backPath={'/calendars'}
-        >
-          <UserCalendar user={user} />
-        </PageWrapper>
-      )}
-    </>
+    <PageWrapper
+      title={'Team member calendar'}
+      size={'max-w-4xl'}
+      backPath={'/calendars'}
+    >
+      {userError && <ErrorBlock error={userError} />}
+      {user && <UserCalendar user={user} />}
+    </PageWrapper>
   );
 }
