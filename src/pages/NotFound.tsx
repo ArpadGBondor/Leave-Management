@@ -1,4 +1,3 @@
-import NavButton from '../components/buttons/NavButton';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
 
 export default function NotFound() {

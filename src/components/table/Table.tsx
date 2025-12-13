@@ -179,7 +179,6 @@ export default function Table<T extends Record<string, any>>({
         </table>
       </div>
 
-      {/* Mobile */}
       {/* MOBILE CARD VIEW */}
       <div className=" grid md:hidden grid-cols-1 sm:grid-cols-2 gap-2">
         {pageData.length === 0 ? (

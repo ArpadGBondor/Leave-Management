@@ -59,11 +59,11 @@ export default function ManageApprovedLeavesView() {
           )}
           {request && <ManageApprovedLeaveActions request={request} />}
         </div>
-        <div className="flex-3">
-          {requestingUser && (
+        {requestingUser && (
+          <div className="flex-2">
             <UserCalendar user={requestingUser} initialDate={request?.from} />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );

@@ -53,12 +53,6 @@ export default function ManageApprovedLeaveActions({
           label={'Unapprove request'}
           onClick={onUnapproveConfirm}
         />
-        {/* <Button
-          type="button"
-          variant="secondary"
-          label={'Back'}
-          onClick={onBack}
-        /> */}
       </div>
     </>
   );

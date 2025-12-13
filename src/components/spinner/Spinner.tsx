@@ -65,7 +65,6 @@ export default function Spinner({
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden={label === null}
       >
-        {/* faded circle */}
         <circle
           cx="25"
           cy="25"
@@ -75,7 +74,6 @@ export default function Spinner({
           opacity="0.15"
         />
 
-        {/* active arc */}
         <path
           d="M45 25a20 20 0 0 1-20 20"
           stroke="currentColor"

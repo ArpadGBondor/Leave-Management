@@ -118,6 +118,7 @@ export default function RejectedLeaves() {
 
   return (
     <PageWrapper title={'Your rejected leaves'} size={'max-w-4xl'} backPath="/">
+      <ChangeYear year={year} setYear={setYear} />
       <Table
         data={rejectedLeaves}
         columns={columns}

@@ -43,7 +43,6 @@ export default function DateInput({
 
   return (
     <div className="flex flex-col gap-1">
-      {/* Label */}
       <label htmlFor={id} className="block text-brand-green-800 text-base">
         {label}
       </label>
@@ -61,14 +60,12 @@ export default function DateInput({
               : 'focus:ring-brand-green-700 border-brand-green-700 hover:border-brand-green-600 bg-brand-green-200 hover:bg-brand-green-100 text-brand-purple-900'
           }`}
         >
-          {/* Display value or placeholder */}
           <span className={`flex-1 text-left ${!value ? 'text-gray-500' : ''}`}>
             {value
               ? format(new Date(value), 'dd-MM-yyyy')
               : placeholder || 'Select a date'}
           </span>
 
-          {/* Hidden native date input */}
           <input
             ref={hiddenInputRef}
             id={id}
@@ -82,7 +79,6 @@ export default function DateInput({
           />
         </button>
 
-        {/* Clear button */}
         {!disabled && value && (
           <button
             type="button"
@@ -95,7 +91,6 @@ export default function DateInput({
         )}
       </div>
 
-      {/* Error message */}
       {error && <div className="text-sm text-red-600 font-medium">{error}</div>}
     </div>
   );

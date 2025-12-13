@@ -11,7 +11,7 @@ export default function UserDashboardInfo({
     <div
       className={`bg-brand-green-100 rounded-xl flex-1 p-2 flex flex-row md:flex-col justify-between gap-2 items-center`}
     >
-      <div className="flex-4 text-sm md:text-base text-brand-green-700 font-medium md:text-center ">
+      <div className="flex-1 text-sm md:text-base text-brand-green-700 font-medium md:text-center ">
         {label}
       </div>
       <div
@@ -21,7 +21,7 @@ export default function UserDashboardInfo({
             : 'text-brand-purple-700'
         }`}
       >
-        {typeof value === 'number' ? value.toFixed(1) : value}
+        {typeof value === 'number' ? value.toFixed(1) : value} days
       </div>
     </div>
   );

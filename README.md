@@ -49,7 +49,7 @@
 
 Overview
 
-The Leave Management a demo web application that allows users to register, manage leave requests, and configure company-wide holiday policies. It demonstrates a typical employee leave workflow, including authentication, user roles, and entitlement management.
+The Leave Management is a demo web application that allows users to register, manage leave requests, and configure company-wide holiday policies. It demonstrates a typical employee leave workflow, including authentication, user roles, and entitlement management.
 
 - Note:
 
