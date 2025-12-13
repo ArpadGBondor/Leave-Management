@@ -1,3 +1,10 @@
+## [1.6.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.19...v1.6.20) (2025-12-13)
+
+
+### Bug Fixes
+
+* handle wring request ids and user ids passed through the url. fix smaller issues ([1eb8321](https://github.com/ArpadGBondor/Leave-Management/commit/1eb832153ef4e84ce404569e0168f40f1a36a2ed))
+
 ## [1.6.19](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.18...v1.6.19) (2025-12-12)
 
 
