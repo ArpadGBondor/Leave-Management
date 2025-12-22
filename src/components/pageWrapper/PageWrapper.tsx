@@ -45,7 +45,7 @@ export default function PageWrapper({
         )}
       </header>
       <div
-        className={`flex-1 bg-brand-purple-50 p-4 sm:p-6 overflow-auto space-y-4 border-4 ${
+        className={`flex-1 bg-brand-purple-50 p-4 sm:p-6 overflow-auto space-y-4 border-4 custom-scrollbar ${
           variant === 'primary'
             ? 'border-b-brand-green-600 border-r-brand-green-600 border-t-brand-green-800 border-l-brand-green-800'
             : 'border-b-brand-purple-600 border-r-brand-purple-600 border-t-brand-purple-800 border-l-brand-purple-800'
