@@ -15,7 +15,7 @@ export default function UserDashboardInfo({
         {label}
       </div>
       <div
-        className={`flex-1 text-base sm:text-lg md:text-2xl font-semibold text-right md:text-center ${
+        className={`flex-1 text-base sm:text-lg font-semibold text-right md:text-center ${
           typeof value === 'number' && value < 0
             ? 'text-red-500'
             : 'text-brand-purple-700'
