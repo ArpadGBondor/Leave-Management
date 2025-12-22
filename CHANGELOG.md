@@ -1,3 +1,10 @@
+## [1.6.21](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.20...v1.6.21) (2025-12-22)
+
+
+### Bug Fixes
+
+* add custom scrollbar to page-wrapper ([c7d7f1e](https://github.com/ArpadGBondor/Leave-Management/commit/c7d7f1e9a53c387de0629c4b2706c76df9b6e009))
+
 ## [1.6.20](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.19...v1.6.20) (2025-12-13)
 
 
