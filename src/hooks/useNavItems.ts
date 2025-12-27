@@ -44,6 +44,13 @@ const useNavItems = () => {
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
+      name: `Reports`,
+      link: '/reports',
+      icon: 'FaChartBar',
+    });
+  }
+  if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
       name: `Team's pending requests  (${managableRequestCount})`,
       link: '/manage-requests',
       icon: 'FaClipboardQuestion',
