@@ -4,6 +4,7 @@ import useNavItems from '../../hooks/useNavItems';
 import { useUserContext } from '../../context/user/useUserContext';
 import ProfileBadge from '../profile/ProfileBadge';
 import NavbarToggler from '../buttons/NavBarToggler';
+import NavGroup from './NavGroup';
 
 const appName = 'Manage your leaves';
 
@@ -20,14 +21,18 @@ export default function Navbar() {
           <h1 className="text-xl font-bold mb-4">{appName}</h1>
           <hr className="my-1" />
           <nav className="flex flex-col gap-2 mb-2">
-            {topNavItems.map((item) => (
-              <NavButton
-                key={item.name}
-                label={item.name}
-                link={item.link}
-                icon={item.icon}
-              />
-            ))}
+            {topNavItems.map((item) => {
+              if (item.link)
+                return (
+                  <NavButton
+                    key={item.name}
+                    label={item.name}
+                    link={item.link}
+                    icon={item.icon}
+                  />
+                );
+              return <NavGroup group={item} />;
+            })}
           </nav>
         </div>
         <div className="px-4 pb-4">
@@ -43,7 +48,7 @@ export default function Navbar() {
               <NavButton
                 key={item.name}
                 label={item.name}
-                link={item.link}
+                link={item.link!}
                 icon={item.icon}
               />
             ))}
@@ -67,28 +72,31 @@ export default function Navbar() {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`lg:hidden fixed top-14 left-0 py-4 pt-0 w-full bg-brand-green-600/75 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+        className={`lg:hidden fixed top-14 left-0 py-4 pt-0 w-full bg-brand-green-600/90 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
           isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
         <hr className="mb-1 px-4" />
         <div>
           <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pt-2 pb-1 px-4 custom-scrollbar">
-            {topNavItems.map((item) => (
-              <NavButton
-                key={item.name}
-                label={item.name}
-                link={item.link}
-                icon={item.icon}
-                onClick={() => setIsOpen(!isOpen)}
-              />
-            ))}
+            {topNavItems.map((item) => {
+              if (item.link)
+                return (
+                  <NavButton
+                    key={item.name}
+                    label={item.name}
+                    link={item.link}
+                    icon={item.icon}
+                  />
+                );
+              return <NavGroup group={item} />;
+            })}
             <hr />
             {bottomNavItems.map((item) => (
               <NavButton
                 key={item.name}
                 label={item.name}
-                link={item.link}
+                link={item.link!}
                 icon={item.icon}
                 onClick={() => setIsOpen(!isOpen)}
               />
