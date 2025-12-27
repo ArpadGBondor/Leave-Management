@@ -11,31 +11,25 @@ import LoadingOverlay from './components/loading/LoadingOverlay';
 import Spinner from './components/spinner/Spinner';
 import ConfirmationOverlay from './components/confirmation/ConfirmationOverlay';
 
-const YourCalendar = lazy(() => import('./pages/YourCalendar'));
 const GettingStarted = lazy(() => import('./pages/GettingStarted'));
-const Requests = lazy(() => import('./pages/Requests'));
-const Login = lazy(() => import('./pages/Login'));
 const About = lazy(() => import('./pages/About'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+const Login = lazy(() => import('./pages/Login'));
 const Logout = lazy(() => import('./pages/Logout'));
 const Register = lazy(() => import('./pages/Register'));
-const Profile = lazy(() => import('./pages/Profile'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const Unauthorised = lazy(() => import('./pages/Unauthorised'));
+const Profile = lazy(() => import('./pages/Profile'));
+
 const ManageCompany = lazy(() => import('./pages/ManageCompany'));
+
 const ManageTeam = lazy(() => import('./pages/ManageTeam'));
 const ManageTeamMember = lazy(() => import('./pages/ManageTeamMember'));
 const ManageRequests = lazy(() => import('./pages/ManageRequests'));
-const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const RequestAddEdit = lazy(() => import('./pages/RequestAddEdit'));
 const ManageRequestApproveReject = lazy(
   () => import('./pages/ManageRequestApproveReject')
 );
-const Calendars = lazy(() => import('./pages/Calendars'));
-const CalendarOfUser = lazy(() => import('./pages/CalendarOfUser'));
-const ApprovedLeaves = lazy(() => import('./pages/ApprovedLeaves'));
-const ApprovedLeavesViev = lazy(() => import('./pages/ApprovedLeavesViev'));
-const RejectedLeaves = lazy(() => import('./pages/RejectedLeaves'));
-const RejectedLeavesViev = lazy(() => import('./pages/RejectedLeavesViev'));
 const ManageRejectedLeaves = lazy(() => import('./pages/ManageRejectedLeaves'));
 const ManageRejectedLeavesView = lazy(
   () => import('./pages/ManageRejectedLeavesView')
@@ -48,6 +42,18 @@ const ManageNewRequest = lazy(() => import('./pages/ManageNewRequest'));
 const ManageNewRequestAddEdit = lazy(
   () => import('./pages/ManageNewRequestAddEdit')
 );
+const Calendars = lazy(() => import('./pages/Calendars'));
+const CalendarOfUser = lazy(() => import('./pages/CalendarOfUser'));
+const Reports = lazy(() => import('./pages/Reports'));
+const ReportLeaveSummary = lazy(() => import('./pages/ReportLeaveSummary'));
+
+const YourCalendar = lazy(() => import('./pages/YourCalendar'));
+const Requests = lazy(() => import('./pages/Requests'));
+const RequestAddEdit = lazy(() => import('./pages/RequestAddEdit'));
+const ApprovedLeaves = lazy(() => import('./pages/ApprovedLeaves'));
+const ApprovedLeavesViev = lazy(() => import('./pages/ApprovedLeavesViev'));
+const RejectedLeaves = lazy(() => import('./pages/RejectedLeaves'));
+const RejectedLeavesViev = lazy(() => import('./pages/RejectedLeavesViev'));
 
 export default function App() {
   return (
@@ -97,6 +103,12 @@ export default function App() {
                   path="/manage-team/:userId"
                   element={<ManageTeamMember />}
                 />
+                <Route path="/reports" element={<Reports />} />
+                <Route
+                  path="/reports/leave-summary/:year"
+                  element={<ReportLeaveSummary />}
+                />
+
                 <Route path="/calendars" element={<Calendars />} />
                 <Route path="/calendars/:userId" element={<CalendarOfUser />} />
                 <Route
