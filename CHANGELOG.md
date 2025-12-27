@@ -1,3 +1,10 @@
+## [1.6.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.24...v1.6.25) (2025-12-27)
+
+
+### Bug Fixes
+
+* refactor navItem generation ([6327817](https://github.com/ArpadGBondor/Leave-Management/commit/632781764b94360bcd4e97e3748192e8c3754de5))
+
 ## [1.6.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.23...v1.6.24) (2025-12-27)
 
 
