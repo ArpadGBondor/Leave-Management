@@ -29,6 +29,9 @@ import {
   FaExclamationTriangle,
   FaRegCalendarAlt,
   FaChartBar,
+  FaTools,
+  FaArrowAltCircleRight,
+  FaUserCircle,
 } from 'react-icons/fa';
 
 import { FaClipboardQuestion, FaRocket } from 'react-icons/fa6';
@@ -65,4 +68,7 @@ export {
   FaExclamationTriangle,
   FaRegCalendarAlt,
   FaChartBar,
+  FaTools,
+  FaArrowAltCircleRight,
+  FaUserCircle,
 };
