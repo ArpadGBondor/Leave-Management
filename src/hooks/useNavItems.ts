@@ -22,26 +22,28 @@ const useNavItems = () => {
     icon: 'FaRocket',
   });
 
-  const configGroup: NavItem[] = [];
   if (loggedIn && user?.claims?.SUPER_ADMIN) {
+    const configGroup: NavItem[] = [];
     configGroup.push({
       name: 'Manage company',
       link: '/manage-company',
       icon: 'FaBriefcase',
     });
-  }
-  if (loggedIn && user?.claims?.ADMIN) {
     configGroup.push({
       name: `Manage team members (${userCount})`,
       link: '/manage-team',
       icon: 'FaUsers',
     });
-  }
-  if (configGroup.length) {
     topNavItems.push({
       name: 'Configuration',
       icon: 'FaTools',
       children: configGroup,
+    });
+  } else if (loggedIn && user?.claims?.ADMIN) {
+    topNavItems.push({
+      name: `Manage team members (${userCount})`,
+      link: '/manage-team',
+      icon: 'FaUsers',
     });
   }
   if (loggedIn && user?.claims?.ADMIN) {
@@ -50,9 +52,7 @@ const useNavItems = () => {
       link: '/calendars',
       icon: 'FaCalendarAlt',
     });
-  }
 
-  if (loggedIn && user?.claims?.ADMIN) {
     const teamRequests: NavItem[] = [];
     teamRequests.push({
       name: `Team's pending requests  (${managableRequestCount})`,
@@ -69,17 +69,15 @@ const useNavItems = () => {
       link: '/manage-rejected-leaves',
       icon: 'FaCalendarTimes',
     });
-    if (teamRequests.length) {
-      topNavItems.push({
-        name: `Team's leave requests (${
-          managableRequestCount +
-          managableApprovedLeavesCount +
-          managableRejectedLeavesCount
-        })`,
-        icon: 'FaUsers',
-        children: teamRequests,
-      });
-    }
+    topNavItems.push({
+      name: `Team's leave requests (${
+        managableRequestCount +
+        managableApprovedLeavesCount +
+        managableRejectedLeavesCount
+      })`,
+      icon: 'FaUsers',
+      children: teamRequests,
+    });
   }
 
   if (loggedIn) {
@@ -88,8 +86,8 @@ const useNavItems = () => {
       link: '/your-calendar',
       icon: 'FaRegCalendarAlt',
     });
-    const yourRequests: NavItem[] = [];
 
+    const yourRequests: NavItem[] = [];
     yourRequests.push({
       name: `Your pending requests (${ownRequestCount})`,
       link: '/requests',
@@ -105,15 +103,13 @@ const useNavItems = () => {
       link: '/rejected-leaves',
       icon: 'FaTimesCircle',
     });
-    if (yourRequests.length) {
-      topNavItems.push({
-        name: `Your leave requests (${
-          ownRequestCount + ownApprovedLeavesCount + ownRejectedLeavesCount
-        })`,
-        icon: 'FaUser',
-        children: yourRequests,
-      });
-    }
+    topNavItems.push({
+      name: `Your leave requests (${
+        ownRequestCount + ownApprovedLeavesCount + ownRejectedLeavesCount
+      })`,
+      icon: 'FaUser',
+      children: yourRequests,
+    });
   }
   if (loggedIn && user?.claims?.ADMIN) {
     topNavItems.push({
