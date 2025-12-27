@@ -211,14 +211,18 @@ export default function Table<T extends Record<string, any>>({
                     <div
                       key={col.key ?? i}
                       className={`py-1 w-full grid grid-cols-2 gap-2 items-center ${
-                        i > 0 ? 'border-t border-brand-green-300' : ''
+                        i > 0
+                          ? `border-t ${
+                              highlightRow && highlightRow(row)
+                                ? 'border-brand-purple-300'
+                                : 'border-brand-green-300'
+                            }`
+                          : ''
                       }`}
                     >
-                      <div className="text-sm text-brand-green-600 font-semibold">
-                        {col.header}
-                      </div>
+                      <div className="text-sm font-semibold">{col.header}</div>
 
-                      <div className="text-sm text-brand-green-600 text-right place-self-end">
+                      <div className="text-sm text-right place-self-end">
                         {rendered}
                       </div>
                     </div>

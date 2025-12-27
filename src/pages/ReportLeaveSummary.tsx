@@ -250,7 +250,7 @@ export default function ReportLeaveSummary() {
         data={leaveSummary}
         columns={columns}
         pageSize={10}
-        title="Please select a team member"
+        title={`Employed team members`}
         defaultSort={{
           columnIndex: 0,
           direction: 'desc',
