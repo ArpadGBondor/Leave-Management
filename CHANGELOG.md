@@ -1,3 +1,10 @@
+## [1.6.23](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.22...v1.6.23) (2025-12-27)
+
+
+### Bug Fixes
+
+* select current year by default for report, show highlighted table rows on mobile ([2a66e0c](https://github.com/ArpadGBondor/Leave-Management/commit/2a66e0c5479bf9ad935b045267b1891687bec5ae))
+
 ## [1.6.22](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.21...v1.6.22) (2025-12-27)
 
 
