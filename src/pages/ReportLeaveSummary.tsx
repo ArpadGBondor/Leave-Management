@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import PageWrapper from '../components/pageWrapper/PageWrapper';
 import { useParams } from 'react-router-dom';
-import Spinner from '../components/spinner/Spinner';
 import User from '../interface/User.interface';
-import { createLeaveObject, Leave } from '../interface/Leave.interface';
+import { createLeaveObject } from '../interface/Leave.interface';
 import { useFirebase } from '../hooks/useFirebase';
 import {
   collection,
@@ -22,12 +21,14 @@ import Table from '../components/table/Table';
 import { useLoadingContext } from '../context/loading/useLoadingContext';
 import { toast } from 'react-toastify';
 import { LeaveRequest } from '../interface/LeaveRequest.interface';
+import ReportSomeTeamMembersMissingYearlyHolidayEntitlementWarning from '../components/warning/ReportSomeTeamMembersMissingYearlyHolidayEntitlementWarning';
 
 type SummaryData = {
   userName: string;
   userEmail: string;
   userType: string;
   userPhoto: string;
+  isEntitlementConfigured: boolean;
   entitlement: number;
   approved: number;
   requested: number;
@@ -70,7 +71,10 @@ export default function ReportLeaveSummary() {
           if (end.getUTCFullYear() < currentYear) continue;
         }
 
-        const holidayEntitlement = await fetchHolidayEntitlement(year, user);
+        const { entitlement, isConfigured } = await fetchHolidayEntitlement(
+          year,
+          user
+        );
         const approved = await fetchApprovedLeaves(year, user);
         const requested = await fetchRequests(year, user);
 
@@ -79,10 +83,11 @@ export default function ReportLeaveSummary() {
           userEmail: maskEmail(user.email),
           userType: user.userType,
           userPhoto: user.photo,
-          entitlement: holidayEntitlement,
+          isEntitlementConfigured: isConfigured,
+          entitlement: entitlement,
           approved: approved,
           requested: requested,
-          available: holidayEntitlement - approved,
+          available: entitlement - approved,
           year: year,
         };
         setLeaveSummary((prevState) => {
@@ -100,7 +105,7 @@ export default function ReportLeaveSummary() {
   const fetchHolidayEntitlement = async (
     year: string,
     user: User
-  ): Promise<number> => {
+  ): Promise<{ entitlement: number; isConfigured: boolean }> => {
     const configurationRef = doc(
       db,
       `${firebase_collections.USERS}/${user.id}/${firebase_collections.HOLIDAY_ENTITLEMENT_SUBCOLLECTION}/${year}`
@@ -112,10 +117,16 @@ export default function ReportLeaveSummary() {
       const configurationData =
         configurationSnap.data() as UserHolidayEntitlement;
 
-      return configurationData.holidayEntitlementTotal;
+      return {
+        entitlement: configurationData.holidayEntitlementTotal,
+        isConfigured: true,
+      };
     }
 
-    return companyHolidayEntitlement.holidayEntitlementTotal;
+    return {
+      entitlement: companyHolidayEntitlement.holidayEntitlementTotal,
+      isConfigured: false,
+    };
   };
 
   const fetchApprovedLeaves = async (
@@ -232,6 +243,9 @@ export default function ReportLeaveSummary() {
       size={'max-w-6xl'}
       backPath="/reports"
     >
+      {leaveSummary.some((summary) => !summary.isEntitlementConfigured) && (
+        <ReportSomeTeamMembersMissingYearlyHolidayEntitlementWarning />
+      )}
       <Table
         data={leaveSummary}
         columns={columns}
@@ -241,6 +255,7 @@ export default function ReportLeaveSummary() {
           columnIndex: 0,
           direction: 'desc',
         }}
+        highlightRow={(row) => !row.isEntitlementConfigured}
       />
     </PageWrapper>
   );

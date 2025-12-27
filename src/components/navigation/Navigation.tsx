@@ -73,7 +73,7 @@ export default function Navbar() {
       >
         <hr className="mb-1 px-4" />
         <div>
-          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pt-2 pb-1 px-4">
+          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pt-2 pb-1 px-4 custom-scrollbar">
             {topNavItems.map((item) => (
               <NavButton
                 key={item.name}
