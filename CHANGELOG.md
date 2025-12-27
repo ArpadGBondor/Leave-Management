@@ -1,3 +1,10 @@
+## [1.6.24](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.23...v1.6.24) (2025-12-27)
+
+
+### Bug Fixes
+
+* add collapsable NavGroup and organise navigation ([7c6db3a](https://github.com/ArpadGBondor/Leave-Management/commit/7c6db3a7a721e35a9cfce1af9dc2ee61dd6e1f24))
+
 ## [1.6.23](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.22...v1.6.23) (2025-12-27)
 
 
