@@ -1,3 +1,11 @@
+## [1.6.22](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.21...v1.6.22) (2025-12-27)
+
+
+### Bug Fixes
+
+* add Leave Summary Report ([886868d](https://github.com/ArpadGBondor/Leave-Management/commit/886868d2e14a3f5e54e9a3c59758773405762c51))
+* highlight unconfigured team members, and add warning bubble ([4e5ef83](https://github.com/ArpadGBondor/Leave-Management/commit/4e5ef8377b8dc1769a384e0bda104a7ce867a68a))
+
 ## [1.6.21](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.20...v1.6.21) (2025-12-22)
 
 
