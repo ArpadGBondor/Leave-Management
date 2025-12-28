@@ -1,3 +1,10 @@
+## [1.6.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.25...v1.6.26) (2025-12-28)
+
+
+### Bug Fixes
+
+* adjust mobile navigation, navbar grouping and nav item highlight ([6eeb321](https://github.com/ArpadGBondor/Leave-Management/commit/6eeb321bd520d0fe79a81e31d1243a35277fc6d9))
+
 ## [1.6.25](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.24...v1.6.25) (2025-12-27)
 
 
