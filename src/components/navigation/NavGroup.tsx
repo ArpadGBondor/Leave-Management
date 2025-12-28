@@ -7,9 +7,11 @@ import { FaArrowAltCircleRight } from '../../icons/fa';
 
 interface NavGroupProps {
   group: NavItem;
+  mobile: boolean;
+  onClick?: () => void;
 }
 
-export default function NavGroup({ group }: NavGroupProps) {
+export default function NavGroup({ group, mobile, onClick }: NavGroupProps) {
   const location = useLocation();
 
   const hasActiveChild = group.children?.some(
@@ -53,15 +55,21 @@ export default function NavGroup({ group }: NavGroupProps) {
           open ? 'grid-rows-[1fr] border-b-2 border-x-2' : 'grid-rows-[0fr]'
         } border-brand-green-800 rounded-b-2xl`}
       >
-        <div className="overflow-hidden flex flex-col">
+        <div
+          className={`overflow-hidden flex flex-col ${
+            open && mobile ? 'py-2' : ''
+          }`}
+        >
           {group.children
             .filter((item) => item.link)
             .map((item) => (
-              <div className="px-1 py-1" key={item.name}>
+              <div className={mobile ? 'p-2' : 'p-1'} key={item.name}>
                 <NavButton
                   label={item.name}
                   link={item.link!}
                   icon={item.icon}
+                  onClick={onClick}
+                  markActive={item.markActive}
                 />
               </div>
             ))}

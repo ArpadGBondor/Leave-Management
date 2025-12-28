@@ -29,9 +29,10 @@ export default function Navbar() {
                     label={item.name}
                     link={item.link}
                     icon={item.icon}
+                    markActive={item.markActive}
                   />
                 );
-              return <NavGroup group={item} />;
+              return <NavGroup group={item} mobile={false} />;
             })}
           </nav>
         </div>
@@ -50,6 +51,7 @@ export default function Navbar() {
                 label={item.name}
                 link={item.link!}
                 icon={item.icon}
+                markActive={item.markActive}
               />
             ))}
           </nav>
@@ -72,13 +74,13 @@ export default function Navbar() {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`lg:hidden fixed top-14 left-0 py-4 pt-0 w-full bg-brand-green-600/90 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
+        className={`lg:hidden fixed top-14 left-0 py-4 pt-0 w-full bg-brand-green-600 text-white z-40 shadow-lg rounded-b-2xl transform-gpu origin-top transition-transform duration-500 ease-in-out ${
           isOpen ? 'scale-y-100' : 'scale-y-0 pointer-events-none'
         }`}
       >
         <hr className="mb-1 px-4" />
         <div>
-          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pt-2 pb-1 px-4 custom-scrollbar">
+          <nav className="flex flex-col gap-2 max-h-[60vh] overflow-y-scroll pt-2 pb-1 px-4 custom-scrollbar">
             {topNavItems.map((item) => {
               if (item.link)
                 return (
@@ -87,9 +89,17 @@ export default function Navbar() {
                     label={item.name}
                     link={item.link}
                     icon={item.icon}
+                    onClick={() => setIsOpen(false)}
+                    markActive={item.markActive}
                   />
                 );
-              return <NavGroup group={item} />;
+              return (
+                <NavGroup
+                  group={item}
+                  mobile={true}
+                  onClick={() => setIsOpen(false)}
+                />
+              );
             })}
             <hr />
             {bottomNavItems.map((item) => (
@@ -98,7 +108,8 @@ export default function Navbar() {
                 label={item.name}
                 link={item.link!}
                 icon={item.icon}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsOpen(false)}
+                markActive={item.markActive}
               />
             ))}
           </nav>

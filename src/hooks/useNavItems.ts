@@ -57,6 +57,7 @@ const useNavItems = () => {
     teamRequests.push({
       name: `Team's pending requests  (${managableRequestCount})`,
       link: '/manage-requests',
+      markActive: ['/manage-new-request'],
       icon: 'FaClipboardQuestion',
     });
     teamRequests.push({
@@ -86,7 +87,8 @@ const useNavItems = () => {
       link: '/your-calendar',
       icon: 'FaRegCalendarAlt',
     });
-
+  }
+  if (loggedIn && user?.claims?.ADMIN) {
     const yourRequests: NavItem[] = [];
     yourRequests.push({
       name: `Your pending requests (${ownRequestCount})`,
@@ -109,6 +111,22 @@ const useNavItems = () => {
       })`,
       icon: 'FaUser',
       children: yourRequests,
+    });
+  } else if (loggedIn) {
+    topNavItems.push({
+      name: `Your pending requests (${ownRequestCount})`,
+      link: '/requests',
+      icon: 'FaQuestionCircle',
+    });
+    topNavItems.push({
+      name: `Your approved leaves (${ownApprovedLeavesCount})`,
+      link: '/approved-leaves',
+      icon: 'FaCheckCircle',
+    });
+    topNavItems.push({
+      name: `Your rejected leaves (${ownRejectedLeavesCount})`,
+      link: '/rejected-leaves',
+      icon: 'FaTimesCircle',
     });
   }
   if (loggedIn && user?.claims?.ADMIN) {
