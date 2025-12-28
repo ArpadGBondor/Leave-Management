@@ -35,8 +35,6 @@
   - [/api/user-yearly-holiday-configuration (POST|PUT|DELETE)](#apiuser-yearly-holiday-configuration-postputdelete)
 - [Environment variables](#environment-variables)
 
-![work in progress](work-in-progress.jpg)
-
 ## Project goals
 
 - Practise React

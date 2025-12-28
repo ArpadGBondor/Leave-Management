@@ -8,6 +8,7 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'light';
   onClick?: () => void;
   className?: string;
+  markActive?: string[];
 };
 
 export default function NavButton({
@@ -17,12 +18,16 @@ export default function NavButton({
   variant = 'primary',
   onClick,
   className,
+  markActive,
 }: ButtonProps) {
   const location = useLocation();
   const highlight =
     location.pathname === link ||
     (link !== '/' && // I don't want Home button to always stay highlighted
-      location.pathname.startsWith(link));
+      (location.pathname.startsWith(link) ||
+        markActive?.some((alternativeLink) =>
+          location.pathname.startsWith(alternativeLink)
+        )));
   const IconComponent = icon ? FaIcons[icon] : null;
   const baseClasses =
     'w-full flex flex-row items-center gap-2 px-4 py-2 rounded-xl transition duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
