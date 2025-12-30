@@ -3,6 +3,8 @@
 - [Project goals](#project-goals)
 - [Overview](#overview)
 - [Highlights](#highlights)
+  - [Real-time, Dashboard-like Behaviour](#real-time-dashboard-like-behaviour)
+  - [Database Management](#database-management)
 - [Pages](#pages)
   - [Home](#home)
   - [Getting Started](#getting-started)
@@ -55,22 +57,47 @@ The Leave Management is a demo web application that allows users to register, ma
 
 ## Highlights
 
-- Database Management
+### Real-time, Dashboard-like Behaviour
 
-  - Firebase Firestore rules are configured to allow the web application to read collections directly from Firebase, enabling fast and efficient data access.
+- The application uses Firebase Firestore real-time listeners (subscriptions)
+  across most pages. Any change in the database, whether triggered by the current user or another
+  user, is reflected immediately in the UI without requiring a page refresh.
 
-  - Netlify backend functions leverage the firebase-admin SDK to securely update, create, or delete data in the Firestore database.
+- When data in Firestore changes, the UI of the following features will synchronise automatically:
 
-  - Database handler functions are automatically generated using the createUpdateOrDeleteDoc utility located in the libs/handlers directory.
-    Using HandlerConfigOptions, these functions can be configured to:
+  - Personal and team calendars
+  - Pending, approved, and rejected leave lists
+  - Team request queues for Managers and Owners
+  - Remaining yearly holiday entitlement calculations
+  - Role-dependent views and permissions
 
-    - Update documents in a top-level collection or within a subcollection of another document.
+- Actions taken by one user (for example, a manager approving a leave request)
+  are instantly visible to all affected users:
 
-    - Accept document IDs and parent document IDs as fields in the request body, with customizable field names.
+  - The employee sees the update on their Home dashboard and request lists
+  - Managers see team views update in real time
+  - Calendars recalculate availability immediately
 
-    - Control whether these fields are included or excluded from the written Firestore document.
+- Reports are intentionally excluded from using real-time subscriptions.
+  These are calculated on demand to reduce unnecessary reads and improve
+  performance.
 
-  - All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
+### Database Management
+
+- Firebase Firestore rules are configured to allow the web application to read collections directly from Firebase, enabling fast and efficient data access.
+
+- Netlify backend functions leverage the firebase-admin SDK to securely update, create, or delete data in the Firestore database.
+
+- Database handler functions are automatically generated using the createUpdateOrDeleteDoc utility located in the libs/handlers directory.
+  Using HandlerConfigOptions, these functions can be configured to:
+
+  - Update documents in a top-level collection or within a subcollection of another document.
+
+  - Accept document IDs and parent document IDs as fields in the request body, with customizable field names.
+
+  - Control whether these fields are included or excluded from the written Firestore document.
+
+- All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
 
 ## Pages
 
