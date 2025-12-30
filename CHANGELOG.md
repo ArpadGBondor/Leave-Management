@@ -1,3 +1,10 @@
+## [1.6.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.26...v1.6.27) (2025-12-30)
+
+
+### Bug Fixes
+
+* highlight dashboard-like behaviour in documentation ([1d14b2e](https://github.com/ArpadGBondor/Leave-Management/commit/1d14b2e090101c8ea28a7b297eb08dc83ecedc28))
+
 ## [1.6.26](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.25...v1.6.26) (2025-12-28)
 
 
