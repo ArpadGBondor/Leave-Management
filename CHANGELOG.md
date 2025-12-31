@@ -1,3 +1,10 @@
+## [1.6.30](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.29...v1.6.30) (2025-12-31)
+
+
+### Bug Fixes
+
+* update readme and getting started page about reports, and restructure pages on readme ([24798b9](https://github.com/ArpadGBondor/Leave-Management/commit/24798b9187398739827db0f9b5389c5ef7e35729))
+
 ## [1.6.29](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.28...v1.6.29) (2025-12-31)
 
 
