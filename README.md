@@ -107,6 +107,8 @@ The Leave Management is a demo web application that allows users to register, ma
 
 ### Getting Started
 
+![Getting Started](screenshots/getting-started.png)
+
 - This page introduces new users to the application and explains the three
   available roles: Employee, Manager, and Owner.
 
@@ -136,6 +138,8 @@ The Leave Management is a demo web application that allows users to register, ma
 
 ### About
 
+![About](screenshots/about.png)
+
 - This project is a Leave Management practice application, built to keep my React skills sharp and explore practical UI and data-handling patterns.
 
 - Created by [Árpád Gábor Bondor](https://github.com/ArpadGBondor) (2025)
@@ -145,6 +149,8 @@ The Leave Management is a demo web application that allows users to register, ma
 ### Authentication
 
 #### Register
+
+![Register](screenshots/register.png)
 
 - Users can register by:
 
@@ -157,6 +163,8 @@ The Leave Management is a demo web application that allows users to register, ma
 - In a production system, only Management should be able to add or remove users.
 
 #### Login
+
+![Login](screenshots/login.png)
 
 - Users can log in using:
 
@@ -171,6 +179,8 @@ The Leave Management is a demo web application that allows users to register, ma
 - This clears their active session and returns them to the login page.
 
 #### Profile
+
+![Profile](screenshots/profile.png)
 
 - Users can:
 
@@ -191,6 +201,8 @@ The Leave Management is a demo web application that allows users to register, ma
 ### Employee features
 
 #### Your calendar
+
+![Your calendar](screenshots/your-calendar.png)
 
 - Displays the logged-in user’s personal leave calendar.
 
@@ -217,6 +229,9 @@ The Leave Management is a demo web application that allows users to register, ma
   - Visually plan future leave requests
 
 #### Your pending requests
+
+![New leave request](screenshots/your-new-leave-request.png)
+![Your pending requests](screenshots/your-pending-requests.png)
 
 - Displays all leave requests that are awaiting manager approval.
 
@@ -253,6 +268,9 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Your approved leaves
 
+![Your approved leaves](screenshots/your-approved-leaves.png)
+![Approved leave details](screenshots/your-approved-details.png)
+
 - Displays all leave requests that have been approved by a manager.
 - Users can:
 
@@ -270,6 +288,9 @@ The Leave Management is a demo web application that allows users to register, ma
 - Helps users track all confirmed time off and plan future leave accordingly.
 
 #### Your rejected leaves
+
+![Your rejected leaves](screenshots/your-rejected-leaves.png)
+![Rejected leave details](screenshots/your-rejected-details.png)
 
 - Displays all leave requests that have been rejected by a manager.
 - Users can:
