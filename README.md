@@ -8,20 +8,26 @@
 - [Pages](#pages)
   - [Getting Started](#getting-started)
   - [About](#about)
-  - [Register](#register)
-  - [Login](#login)
-  - [Logout](#logout)
-  - [Profile](#profile)
-  - [Manage company](#manage-company)
-  - [Manage team](#manage-team)
-  - [Team member calendars](#team-member-calendars)
-  - [Team's pending requests](#teams-pending-requests)
-  - [Team's approved leaves](#teams-approved-leaves)
-  - [Team's rejected leaves](#teams-rejected-leaves)
-  - [Your calendar](#your-calendar)
-  - [Your pending requests](#your-pending-requests)
-  - [Your approved leaves](#your-approved-leaves)
-  - [Your rejected leaves](#your-rejected-leaves)
+  - [Authentication](#authentication)
+    - [Register](#register)
+    - [Login](#login)
+    - [Logout](#logout)
+    - [Profile](#profile)
+  - [Employee features](#employee-features)
+    - [Your calendar](#your-calendar)
+    - [Your pending requests](#your-pending-requests)
+    - [Your approved leaves](#your-approved-leaves)
+    - [Your rejected leaves](#your-rejected-leaves)
+  - [Manager features](#manager-features)
+    - [Manage team](#manage-team)
+    - [Team member calendars](#team-member-calendars)
+    - [Team's pending requests](#teams-pending-requests)
+    - [Team's approved leaves](#teams-approved-leaves)
+    - [Team's rejected leaves](#teams-rejected-leaves)
+    - [Reports](#reports)
+      - [Leave Summary Report](#leave-summary-report)
+  - [Owner features](#owner-features)
+    - [Manage company](#manage-company)
 - [Serverless Backend Functions](#serverless-backend-functions)
   - [/api/approved-leave-cancel (DELETE)](#apiapproved-leave-cancel-delete)
   - [/api/approved-leave-change-request (POST)](#apiapproved-leave-change-request-post)
@@ -46,8 +52,6 @@
 - Practise Serverless backend functions
 
 ## Overview
-
-Overview
 
 The Leave Management is a demo web application that allows users to register, manage leave requests, and configure company-wide holiday policies. It demonstrates a typical employee leave workflow, including authentication, user roles, and entitlement management.
 
@@ -138,7 +142,9 @@ The Leave Management is a demo web application that allows users to register, ma
 
 - The background image used in the UI is a photo by [Asad Photo Maldives](https://www.pexels.com/hu-hu/foto/457882/), sourced from Pexels:
 
-### Register
+### Authentication
+
+#### Register
 
 - Users can register by:
 
@@ -150,7 +156,7 @@ The Leave Management is a demo web application that allows users to register, ma
 
 - In a production system, only Management should be able to add or remove users.
 
-### Login
+#### Login
 
 - Users can log in using:
 
@@ -158,13 +164,13 @@ The Leave Management is a demo web application that allows users to register, ma
 
   - Google SSO.
 
-### Logout
+#### Logout
 
 - Users can sign out by navigating to the Logout page.
 
 - This clears their active session and returns them to the login page.
 
-### Profile
+#### Profile
 
 - Users can:
 
@@ -182,131 +188,9 @@ The Leave Management is a demo web application that allows users to register, ma
   - Users can delete their own accounts.
     This feature ensures that testers can remove their data from the system at any time.
 
-### Manage company
+### Employee features
 
-- Restricted to: Owners only.
-
-- Allows configuring company-wide default settings applied to all users unless overridden individually.
-- Owners can manage:
-
-  - Default yearly holiday entitlement
-  - Default work schedule (standard workdays of the week)
-  - Default bank holiday region
-
-- Bank holidays:
-
-  - The system comes preloaded with several years of UK bank holiday data.
-  - When new years are published on GOV.UK, a built-in import process can be run
-    to update the data.
-
-- Updates made here:
-
-  - Apply automatically to all new users
-  - Update existing users unless they have custom (overridden) personal settings
-
-- Provides a central place to maintain consistent leave and working-time
-  policies across the organisation.
-
-### Manage team
-
-- Restricted to: Managers and Owners.
-
-- Managers and Owners can update team member details, including:
-
-  - User type / role (promotions allowed; restrictions not enforced in the demo)
-  - Employment start date
-  - Employment end date
-
-- They can also configure individual yearly settings for each user:
-
-  - Yearly holiday entitlement
-  - Work schedule (workdays of the week)
-  - Bank holiday region
-
-### Team member calendars
-
-- Restricted to: Managers and Owners.
-
-- Displays the calendar for an individual user.
-
-- Each calendar provides a real-time overview of an individual employee’s
-  availability and leave status.
-
-- For each team member, the calendar shows:
-
-  - Configured workdays
-  - Bank holidays based on the user’s selected region
-  - Pending leave requests
-  - Approved leave requests
-  - Remaining yearly holiday entitlement
-
-- Calendars are powered by Firebase Firestore real-time subscriptions. Any change to leave data or configuration is reflected immediately, including:
-
-  - New leave requests
-  - Approvals or rejections by managers
-  - Change or cancellation requests
-  - Updates to company-wide or user-level settings
-
-- Managers and Owners can use this page to view team members’ calendars for
-  planning and monitoring availability.
-
-### Team's pending requests
-
-- Restricted to: Managers and Owners.
-- Shows all pending leave requests submitted by team members.
-- Managers and Owners can:
-
-  - Review request details (dates, type, notes, workday count)
-  - Approve a request
-  - Reject a request (with an optional reason)
-  - Submit new leave requests on behalf of team members if needed
-
-- Supports all request types:
-
-  - New request
-  - Change request
-  - Cancellation request
-
-- Actions taken here automatically update:
-
-  - The employee’s pending/approved/rejected lists
-  - Their personal calendar
-
-- Provides a central place for managers to handle all outstanding team leave decisions.
-
-### Team's approved leaves
-
-- Restricted to: Managers and Owners.
-- Displays all approved leave requests for team members.
-- Managers and Owners can:
-
-  - View details of approved leaves (dates, type, notes, workday count)
-  - Undo approval, returning a leave request to the pending state if adjustments are needed
-
-- Actions automatically update:
-
-  - The employee’s calendars
-  - Their pending, approved, and rejected leave lists
-
-- Provides a central place to track confirmed team leaves and make adjustments when necessary.
-
-### Team's rejected leaves
-
-- Restricted to: Managers and Owners.
-- Displays all rejected leave requests for team members.
-- Managers and Owners can:
-
-  - View details of rejected leaves (dates, type, notes, workday count)
-  - Reopen rejected requests, returning them to the pending state if adjustments are needed
-
-- Actions automatically update:
-
-  - The employee’s calendars
-  - Their pending, approved, and rejected leave lists
-
-- Provides a central place for managers to track and handle all rejected leave requests for the team.
-
-### Your calendar
+#### Your calendar
 
 - Displays the logged-in user’s personal leave calendar.
 
@@ -332,7 +216,7 @@ The Leave Management is a demo web application that allows users to register, ma
   - Understand remaining entitlement
   - Visually plan future leave requests
 
-### Your pending requests
+#### Your pending requests
 
 - Displays all leave requests that are awaiting manager approval.
 
@@ -367,7 +251,7 @@ The Leave Management is a demo web application that allows users to register, ma
   - Modified
   - Approved or rejected by a manager
 
-### Your approved leaves
+#### Your approved leaves
 
 - Displays all leave requests that have been approved by a manager.
 - Users can:
@@ -385,7 +269,7 @@ The Leave Management is a demo web application that allows users to register, ma
 
 - Helps users track all confirmed time off and plan future leave accordingly.
 
-### Your rejected leaves
+#### Your rejected leaves
 
 - Displays all leave requests that have been rejected by a manager.
 - Users can:
@@ -400,6 +284,177 @@ The Leave Management is a demo web application that allows users to register, ma
   - A new request is submitted
 
 - Helps users track unsuccessful leave requests and plan adjustments for future submissions.
+
+### Manager features
+
+#### Manage team
+
+- Restricted to: Managers and Owners.
+
+- Managers and Owners can update team member details, including:
+
+  - User type / role (promotions allowed; restrictions not enforced in the demo)
+  - Employment start date
+  - Employment end date
+
+- They can also configure individual yearly settings for each user:
+
+  - Yearly holiday entitlement
+  - Work schedule (workdays of the week)
+  - Bank holiday region
+
+#### Team member calendars
+
+- Restricted to: Managers and Owners.
+
+- Displays the calendar for an individual user.
+
+- Each calendar provides a real-time overview of an individual employee’s
+  availability and leave status.
+
+- For each team member, the calendar shows:
+
+  - Configured workdays
+  - Bank holidays based on the user’s selected region
+  - Pending leave requests
+  - Approved leave requests
+  - Remaining yearly holiday entitlement
+
+- Calendars are powered by Firebase Firestore real-time subscriptions. Any change to leave data or configuration is reflected immediately, including:
+
+  - New leave requests
+  - Approvals or rejections by managers
+  - Change or cancellation requests
+  - Updates to company-wide or user-level settings
+
+- Managers and Owners can use this page to view team members’ calendars for
+  planning and monitoring availability.
+
+#### Team's pending requests
+
+- Restricted to: Managers and Owners.
+- Shows all pending leave requests submitted by team members.
+- Managers and Owners can:
+
+  - Review request details (dates, type, notes, workday count)
+  - Approve a request
+  - Reject a request (with an optional reason)
+  - Submit new leave requests on behalf of team members if needed
+
+- Supports all request types:
+
+  - New request
+  - Change request
+  - Cancellation request
+
+- Actions taken here automatically update:
+
+  - The employee’s pending/approved/rejected lists
+  - Their personal calendar
+
+- Provides a central place for managers to handle all outstanding team leave decisions.
+
+#### Team's approved leaves
+
+- Restricted to: Managers and Owners.
+- Displays all approved leave requests for team members.
+- Managers and Owners can:
+
+  - View details of approved leaves (dates, type, notes, workday count)
+  - Undo approval, returning a leave request to the pending state if adjustments are needed
+
+- Actions automatically update:
+
+  - The employee’s calendars
+  - Their pending, approved, and rejected leave lists
+
+- Provides a central place to track confirmed team leaves and make adjustments when necessary.
+
+#### Team's rejected leaves
+
+- Restricted to: Managers and Owners.
+- Displays all rejected leave requests for team members.
+- Managers and Owners can:
+
+  - View details of rejected leaves (dates, type, notes, workday count)
+  - Reopen rejected requests, returning them to the pending state if adjustments are needed
+
+- Actions automatically update:
+
+  - The employee’s calendars
+  - Their pending, approved, and rejected leave lists
+
+- Provides a central place for managers to track and handle all rejected leave requests for the team.
+
+#### Reports
+
+- Restricted to: Managers and Owners.
+
+- The Reports section provides on-demand, aggregated views of leave data across the organisation.
+
+- Unlike most other pages in the application, reports are not powered by
+  real-time Firestore subscriptions. Instead, data is fetched and calculated
+  when a report is generated.
+
+- This design choice:
+
+  - Reduces unnecessary database reads
+  - Improves performance for large datasets
+
+##### Leave Summary Report
+
+- Restricted to: Managers and Owners.
+
+- Purpose: Provides a per-user summary of leave entitlement and usage
+  for a selected year.
+
+- The report includes all team members who were employed during the selected year:
+
+  - Users whose employment starts after the selected year are excluded
+  - Users whose employment ends before the selected year are excluded
+
+- For each included user, the report displays:
+  - User type (Employee, Manager, Owner)
+  - Name
+  - Yearly holiday entitlement
+    - If a team member does not have a user-specific yearly holiday entitlement
+      configured for the selected year, the report automatically falls back to the
+      company default entitlement.
+    - When this occurs:
+      - A warning message is displayed at the top of the report
+      - Affected team members are visually highlighted in the table, which can help managers quickly identify users who require
+        yearly entitlement configuration before relying on the report for
+        planning or payroll-related decisions.
+  - Total approved leave (workdays)
+  - Total pending leave (workdays)
+  - Remaining available leave
+
+### Owner features
+
+#### Manage company
+
+- Restricted to: Owners only.
+
+- Allows configuring company-wide default settings applied to all users unless overridden individually.
+- Owners can manage:
+
+  - Default yearly holiday entitlement
+  - Default work schedule (standard workdays of the week)
+  - Default bank holiday region
+
+- Bank holidays:
+
+  - The system comes preloaded with several years of UK bank holiday data.
+  - When new years are published on GOV.UK, a built-in import process can be run
+    to update the data.
+
+- Updates made here:
+
+  - Apply automatically to all new users
+  - Update existing users unless they have custom (overridden) personal settings
+
+- Provides a central place to maintain consistent leave and working-time
+  policies across the organisation.
 
 ## Serverless Backend Functions
 
