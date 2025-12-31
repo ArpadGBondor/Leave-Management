@@ -179,6 +179,14 @@ export default function GettingStarted() {
               leave patterns and staffing levels.
             </div>
           </li>
+          <li>
+            <span className="font-semibold">Generate reports</span>
+            <div>
+              Access the <InternalLink to="/reports" label="Reports" /> page to
+              generate on-demand summaries of leave data across the
+              organisation.
+            </div>
+          </li>
         </ul>
       </section>
 
