@@ -107,6 +107,8 @@ The Leave Management is a demo web application that allows users to register, ma
 
 ### Getting Started
 
+![Getting Started](screenshots/getting-started.png)
+
 - This page introduces new users to the application and explains the three
   available roles: Employee, Manager, and Owner.
 
