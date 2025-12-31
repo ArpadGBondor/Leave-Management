@@ -1,3 +1,10 @@
+## [1.6.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.27...v1.6.28) (2025-12-31)
+
+
+### Bug Fixes
+
+* update readme Home -> Your Calendar ([c2b078a](https://github.com/ArpadGBondor/Leave-Management/commit/c2b078ac8be53226c46983ed3c25624c846a88aa))
+
 ## [1.6.27](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.26...v1.6.27) (2025-12-30)
 
 
