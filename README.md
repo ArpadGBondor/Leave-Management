@@ -6,7 +6,6 @@
   - [Real-time, Dashboard-like Behaviour](#real-time-dashboard-like-behaviour)
   - [Database Management](#database-management)
 - [Pages](#pages)
-  - [Home](#home)
   - [Getting Started](#getting-started)
   - [About](#about)
   - [Register](#register)
@@ -19,6 +18,7 @@
   - [Team's pending requests](#teams-pending-requests)
   - [Team's approved leaves](#teams-approved-leaves)
   - [Team's rejected leaves](#teams-rejected-leaves)
+  - [Your calendar](#your-calendar)
   - [Your pending requests](#your-pending-requests)
   - [Your approved leaves](#your-approved-leaves)
   - [Your rejected leaves](#your-rejected-leaves)
@@ -100,23 +100,6 @@ The Leave Management is a demo web application that allows users to register, ma
 - All handler functions are restricted to authenticated users by default. Additionally, access can be limited to specific roles, such as Manager or Owner, for enhanced security and data governance.
 
 ## Pages
-
-### Home
-
-- Displays the user’s personal calendar, showing:
-
-  - Workdays
-  - Bank holidays
-  - Pending and approved leaves
-  - Remaining yearly holiday entitlement
-
-- The calendar updates automatically based on:
-
-  - The user’s role
-  - Their configured entitlement
-  - Their approved/pending leave data
-
-- Provides a quick overview of current and upcoming time off, making it the main dashboard for day-to-day use.
 
 ### Getting Started
 
@@ -316,6 +299,32 @@ The Leave Management is a demo web application that allows users to register, ma
   - Their pending, approved, and rejected leave lists
 
 - Provides a central place for managers to track and handle all rejected leave requests for the team.
+
+### Your calendar
+
+- Displays the logged-in user’s personal leave calendar.
+
+- The calendar shows:
+
+  - Workdays based on the user’s configured work schedule
+  - Bank holidays for the selected region
+  - Pending leave requests
+  - Approved leaves
+  - Remaining yearly holiday entitlement
+
+- The calendar updates automatically in real time based on:
+
+  - The user’s role (Employee, Manager, Owner)
+  - Their user-level configured or company default holiday entitlement
+  - Approved, pending, changed, or cancelled leave requests
+
+- Any action taken by the user or by a manager (approval, rejection, cancellation)
+  is reflected immediately without page refresh.
+
+- This page serves as the **primary day-to-day dashboard** for employees to:
+  - Track upcoming time off
+  - Understand remaining entitlement
+  - Visually plan future leave requests
 
 ### Your pending requests
 
