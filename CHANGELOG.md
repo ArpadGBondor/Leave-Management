@@ -1,3 +1,10 @@
+## [1.6.29](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.28...v1.6.29) (2025-12-31)
+
+
+### Bug Fixes
+
+* Update readme Team member calendars ([c87b50b](https://github.com/ArpadGBondor/Leave-Management/commit/c87b50b817303f08e90887edb028085481d1735a))
+
 ## [1.6.28](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.27...v1.6.28) (2025-12-31)
 
 
