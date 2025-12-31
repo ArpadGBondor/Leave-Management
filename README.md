@@ -14,7 +14,7 @@
   - [Profile](#profile)
   - [Manage company](#manage-company)
   - [Manage team](#manage-team)
-  - [Personal calendars](#personal-calendars)
+  - [Team member calendars](#team-member-calendars)
   - [Team's pending requests](#teams-pending-requests)
   - [Team's approved leaves](#teams-approved-leaves)
   - [Team's rejected leaves](#teams-rejected-leaves)
@@ -223,26 +223,32 @@ The Leave Management is a demo web application that allows users to register, ma
   - Work schedule (workdays of the week)
   - Bank holiday region
 
-### Personal calendars
+### Team member calendars
 
 - Restricted to: Managers and Owners.
-- Displays the calendar for an individual user.
-- Similar to the Home page, it shows:
 
-  - Workdays
-  - Bank holidays
-  - Pending and approved leaves
+- Displays the calendar for an individual user.
+
+- Each calendar provides a real-time overview of an individual employee’s
+  availability and leave status.
+
+- For each team member, the calendar shows:
+
+  - Configured workdays
+  - Bank holidays based on the user’s selected region
+  - Pending leave requests
+  - Approved leave requests
   - Remaining yearly holiday entitlement
 
-- The calendar updates automatically based on:
+- Calendars are powered by Firebase Firestore real-time subscriptions. Any change to leave data or configuration is reflected immediately, including:
 
-  - The user’s role
-  - Their configured entitlement
-  - Their approved/pending leave data
+  - New leave requests
+  - Approvals or rejections by managers
+  - Change or cancellation requests
+  - Updates to company-wide or user-level settings
 
 - Managers and Owners can use this page to view team members’ calendars for
   planning and monitoring availability.
-- Calendars update automatically when leave requests are created, approved, rejected, or modified.
 
 ### Team's pending requests
 
