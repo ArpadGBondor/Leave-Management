@@ -138,6 +138,8 @@ The Leave Management is a demo web application that allows users to register, ma
 
 ### About
 
+![About](screenshots/about.png)
+
 - This project is a Leave Management practice application, built to keep my React skills sharp and explore practical UI and data-handling patterns.
 
 - Created by [Árpád Gábor Bondor](https://github.com/ArpadGBondor) (2025)
@@ -147,6 +149,8 @@ The Leave Management is a demo web application that allows users to register, ma
 ### Authentication
 
 #### Register
+
+![Register](screenshots/register.png)
 
 - Users can register by:
 
@@ -159,6 +163,8 @@ The Leave Management is a demo web application that allows users to register, ma
 - In a production system, only Management should be able to add or remove users.
 
 #### Login
+
+![Login](screenshots/login.png)
 
 - Users can log in using:
 
@@ -173,6 +179,8 @@ The Leave Management is a demo web application that allows users to register, ma
 - This clears their active session and returns them to the login page.
 
 #### Profile
+
+![Profile](screenshots/profile.png)
 
 - Users can:
 
