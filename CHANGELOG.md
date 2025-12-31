@@ -1,3 +1,12 @@
+## [1.6.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.30...v1.6.31) (2025-12-31)
+
+
+### Bug Fixes
+
+* add getting started screenshot to readme ([ca32bfd](https://github.com/ArpadGBondor/Leave-Management/commit/ca32bfd9a02daf1448fc596adf4ecb4afce61d53))
+* add screenshot of authentication pages to readme ([27ac23f](https://github.com/ArpadGBondor/Leave-Management/commit/27ac23fa82296ba426a0fb1058f8e3a555c7eade))
+* add screenshots of employee features to readme ([bcabe0e](https://github.com/ArpadGBondor/Leave-Management/commit/bcabe0e1213efa583f3922b9e35959d4b8de3fd0))
+
 ## [1.6.30](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.29...v1.6.30) (2025-12-31)
 
 
