@@ -24,6 +24,7 @@
     - [Team's pending requests](#teams-pending-requests)
     - [Team's approved leaves](#teams-approved-leaves)
     - [Team's rejected leaves](#teams-rejected-leaves)
+    - [Acting on behalf of team members](#acting-on-behalf-of-team-members)
     - [Reports](#reports)
       - [Leave Summary Report](#leave-summary-report)
   - [Owner features](#owner-features)
@@ -422,6 +423,36 @@ The Leave Management is a demo web application that allows users to register, ma
   - Their pending, approved, and rejected leave lists
 
 - Provides a central place for managers to track and handle all rejected leave requests for the team.
+
+#### Acting on behalf of team members
+
+![Acting as a team member](screenshots/acting-as-a-team-member.png)
+![Acting as a team member - New request](screenshots/acting-as-a-team-member-new-request.png)
+![Acting as a team member - Pending request details](screenshots/acting-as-a-team-member-pending-request-details.png)
+
+- Restricted to: Managers and Owners.
+
+- On the team’s pending, approved, and rejected request pages, Managers and
+  Owners can navigate to a dedicated page that allows them to act **as if they
+  were the selected team member**.
+
+- This enables Managers to create, edit, and manage leave requests on behalf of
+  employees, using the same workflows available to individual users.
+
+- Supported actions include:
+
+  - Creating new leave requests for a team member
+  - Editing pending requests
+  - Submitting change or cancellation requests for approved leaves
+  - Reopening rejected requests for correction
+
+- This feature is especially useful for:
+
+  - **Onboarding new employees**, where historical or mid-year leave needs to be
+    entered manually
+  - **Backfilling data** when migrating from another system
+  - Organisations where a **single administrator or accountant manages all
+    employee leave**, without requiring individual employee logins
 
 #### Reports
 
