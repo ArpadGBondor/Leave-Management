@@ -1,3 +1,14 @@
+## [1.6.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.31...v1.6.32) (2026-01-01)
+
+
+### Bug Fixes
+
+* add screenshots of manage team members feature to readme ([24e81cf](https://github.com/ArpadGBondor/Leave-Management/commit/24e81cf620f5eb1ab85f78d0a2e981496bdce341))
+* add screenshots of team's pending/approved/rejected leaves features to readme ([9ce3bb7](https://github.com/ArpadGBondor/Leave-Management/commit/9ce3bb77888aa57883345ce3b748ebc22cf1469f))
+* add screenshots of tem member calendars feature to readme ([f0780d0](https://github.com/ArpadGBondor/Leave-Management/commit/f0780d0acf036dfe52ee3b0eb50af3b299a3d36b))
+* bugfix for verified bearer tokens showing outdated claims ([cf28025](https://github.com/ArpadGBondor/Leave-Management/commit/cf28025fcd9da0c3f5332779106c90663cb8a351))
+* document acting on behalf of team members ([16c6962](https://github.com/ArpadGBondor/Leave-Management/commit/16c69628a267aa20bbdf642cbbe585292a29b7f3))
+
 ## [1.6.31](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.30...v1.6.31) (2025-12-31)
 
 
