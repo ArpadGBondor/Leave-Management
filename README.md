@@ -360,6 +360,9 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Team's pending requests
 
+![Team's pending requests](screenshots/teams-pending-requests.png)
+![Team's pending request details](screenshots/teams-pending-request-details.png)
+
 - Restricted to: Managers and Owners.
 - Shows all pending leave requests submitted by team members.
 - Managers and Owners can:
@@ -384,6 +387,9 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Team's approved leaves
 
+![Team's approved requests](screenshots/teams-approved-requests.png)
+![Team's approved request details](screenshots/teams-approved-request-details.png)
+
 - Restricted to: Managers and Owners.
 - Displays all approved leave requests for team members.
 - Managers and Owners can:
@@ -399,6 +405,9 @@ The Leave Management is a demo web application that allows users to register, ma
 - Provides a central place to track confirmed team leaves and make adjustments when necessary.
 
 #### Team's rejected leaves
+
+![Team's rejected requests](screenshots/teams-rejected-requests.png)
+![Team's rejected request details](screenshots/teams-rejected-request-details.png)
 
 - Restricted to: Managers and Owners.
 - Displays all rejected leave requests for team members.
