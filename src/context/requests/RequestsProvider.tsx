@@ -63,7 +63,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const data: Partial<LeaveRequest> = {
         // id: '', ID will be auto generated
@@ -104,7 +104,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/requests', {
         method: 'PUT',
@@ -131,7 +131,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/request-approve', {
         method: 'POST',
@@ -161,7 +161,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/request-reject', {
         method: 'POST',
@@ -189,7 +189,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/requests', {
         method: 'DELETE',
@@ -209,7 +209,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/rejected-leaves', {
         method: 'DELETE',
@@ -230,7 +230,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/rejected-leave-re-request', {
         method: 'POST',
@@ -259,7 +259,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch(
         '/api/rejected-cancellation-re-request',
@@ -290,7 +290,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch(
         '/api/approved-leave-change-request',
@@ -322,7 +322,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch(
         '/api/approved-leave-change-request',
@@ -352,7 +352,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const deleteApprovedLeaveResponse = await fetch(
         '/api/approved-leave-cancel',
@@ -377,7 +377,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/approved-leave-unapprove', {
         method: 'POST',
@@ -409,7 +409,7 @@ const RequestsProvider: React.FC<RequestsProviderProps> = ({ children }) => {
       const currentUser = auth.currentUser;
       if (!user) throw new Error('User not logged in');
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const requestResponse = await fetch('/api/rejected-leave-re-request', {
         method: 'POST',

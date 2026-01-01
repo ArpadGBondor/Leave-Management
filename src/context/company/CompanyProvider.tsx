@@ -60,7 +60,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const setHolidayEntitlementResponse = await fetch('/api/config', {
         method: 'POST',
@@ -87,7 +87,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const setWorkdaysOfTheWeekResponse = await fetch('/api/config', {
         method: 'POST',
@@ -114,7 +114,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const setWorkdaysOfTheWeekResponse = await fetch('/api/config', {
         method: 'POST',
@@ -141,7 +141,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const response = await fetch('/api/import-bank-holidays', {
         method: 'POST',

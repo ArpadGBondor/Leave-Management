@@ -94,7 +94,7 @@ export default function UserYearlyConfigurationAddEdit({
       const { auth } = await getFirebase();
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const response = await fetch('/api/user-yearly-holiday-configuration', {
         method: isEditing ? 'PUT' : 'POST',
@@ -133,7 +133,7 @@ export default function UserYearlyConfigurationAddEdit({
       const { auth } = await getFirebase();
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const response = await fetch('/api/user-yearly-holiday-configuration', {
         method: 'DELETE',
