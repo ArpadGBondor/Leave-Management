@@ -456,6 +456,8 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Reports
 
+![Reports](screenshots/reports.png)
+
 - Restricted to: Managers and Owners.
 
 - The Reports section provides on-demand, aggregated views of leave data across the organisation.
@@ -470,6 +472,8 @@ The Leave Management is a demo web application that allows users to register, ma
   - Improves performance for large datasets
 
 ##### Leave Summary Report
+
+![Leave Summary Report](screenshots/reports-leave-summary.png)
 
 - Restricted to: Managers and Owners.
 
@@ -500,6 +504,8 @@ The Leave Management is a demo web application that allows users to register, ma
 ### Owner features
 
 #### Manage company
+
+![Manage company](screenshots/manage-company.png)
 
 - Restricted to: Owners only.
 
