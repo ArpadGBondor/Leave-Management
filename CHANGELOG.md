@@ -1,3 +1,10 @@
+## [1.6.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.32...v1.6.33) (2026-01-01)
+
+
+### Bug Fixes
+
+* add screenshots of reports and manage company features to readme ([6b4a6ce](https://github.com/ArpadGBondor/Leave-Management/commit/6b4a6ce76ce3f61f645bfa3eda537abae577108e))
+
 ## [1.6.32](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.31...v1.6.32) (2026-01-01)
 
 
