@@ -74,7 +74,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
           }
         }
 
-        const token = await cred.user.getIdToken();
+        const token = await cred.user.getIdToken(true);
         const createUserResponse = await fetch('/api/user', {
           method: 'POST',
           headers: {
@@ -105,7 +105,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       if (cred.user) {
         await updateProfile(cred.user, { displayName: name });
 
-        const token = await cred.user.getIdToken();
+        const token = await cred.user.getIdToken(true);
         const updateUserResponse = await fetch('/api/user', {
           method: 'POST',
           headers: {
@@ -143,7 +143,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const setClaimsResponse = await fetch('/api/auth-set-user-claims', {
         method: 'POST',
@@ -191,7 +191,7 @@ const UserProvider: React.FC<Props> = ({ children }) => {
       if (!auth) throw new Error('Firebase not loaded yet');
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('User not logged in');
-      const token = await currentUser.getIdToken();
+      const token = await currentUser.getIdToken(true);
 
       const updateUserResponse = await fetch('/api/user', {
         method: 'DELETE',
