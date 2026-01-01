@@ -310,6 +310,10 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Manage team
 
+![Manage team](screenshots/manage-team.png)
+![Manage team member](screenshots/manage-team-member.png)
+![Manage team member - Configure year](screenshots/manage-team-member-configure-year.png)
+
 - Restricted to: Managers and Owners.
 
 - Managers and Owners can update team member details, including:
