@@ -330,6 +330,9 @@ The Leave Management is a demo web application that allows users to register, ma
 
 #### Team member calendars
 
+![Team member calendars](screenshots/team-member-calendars.png)
+![Team member personal calendar](screenshots/team-member-calendar.png)
+
 - Restricted to: Managers and Owners.
 
 - Displays the calendar for an individual user.
