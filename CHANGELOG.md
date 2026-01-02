@@ -1,3 +1,10 @@
+## [1.6.34](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.33...v1.6.34) (2026-01-02)
+
+
+### Bug Fixes
+
+* custom number of workdays should not show DD-MM-YYYY placeholder ([8c13804](https://github.com/ArpadGBondor/Leave-Management/commit/8c1380428334f38d73e4400f63461068f3c1fad2))
+
 ## [1.6.33](https://github.com/ArpadGBondor/Leave-Management/compare/v1.6.32...v1.6.33) (2026-01-01)
 
 
