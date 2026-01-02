@@ -570,7 +570,7 @@ export default function RequestAddEditForm({
                 name="numberOfWorkdaysOverwritten"
                 value={numberOfWorkdaysOverwritten}
                 onChange={(e) => handleInputChange(e, setFormData, setError)}
-                placeholder="DD-MM-YYYY"
+                placeholder="Number of workdays"
                 error={errors.numberOfWorkdaysOverwritten}
                 disabled={formInputsDisabled}
                 min={0}
@@ -583,7 +583,7 @@ export default function RequestAddEditForm({
                 name="numberOfWorkdays"
                 value={numberOfWorkdays}
                 onChange={() => {}}
-                placeholder="DD-MM-YYYY"
+                placeholder="Number of workdays"
                 error={errors.numberOfWorkdays}
                 disabled
               />
